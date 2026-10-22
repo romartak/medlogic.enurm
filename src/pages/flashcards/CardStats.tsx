@@ -186,7 +186,7 @@ export default function CardStats() {
                 ))}
               </Pie>
               <Tooltip contentStyle={tooltipStyle} />
-              <Legend wrapperStyle={{ fontSize: 12 }} />
+              <Legend wrapperStyle={{ fontSize: 12 }} formatter={(v) => <span style={{ color: 'var(--text)' }}>{v}</span>} />
             </PieChart>
           </ResponsiveContainer>
         </Panel>

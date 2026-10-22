@@ -6,7 +6,7 @@ import { GUIDES } from '@/data/guides'
 import { getSpecialty, normalizeText, slugify } from '@/data/specialties'
 import { useProgress } from '@/store/progress'
 import { Badge, Button, Card, Chip, EmptyState, PageHeader, SpecialtyBadge, SpecialtyIcon } from '@/components/ui/primitives'
-import { cn } from '@/lib/utils'
+import { cn, tintText } from '@/lib/utils'
 import { celebrate } from '@/lib/fx'
 
 export default function Guides() {
@@ -68,7 +68,7 @@ export default function Guides() {
                     <span>·</span>
                     <span>{g.level}</span>
                     <span>·</span>
-                    <span style={{ color: s.color }}>{s.short}</span>
+                    <span style={tintText(s.color)}>{s.short}</span>
                   </div>
                 </Link>
               </motion.div>

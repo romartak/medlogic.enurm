@@ -9,6 +9,7 @@ import { Icon } from '@/components/ui/Icon'
 import { GUIDES } from '@/data/guides'
 import { BUILTIN_CARDS } from '@/data/flashcards'
 import { REPO_URL } from '@/components/layout/AppLayout'
+import { tintText } from '@/lib/utils'
 
 const FEATURES = [
   { icon: Target, title: 'Práctica inteligente', body: 'Filtra por especialidad, año o tus errores. Retroalimentación inmediata con explicación.', color: '#06c4b0' },
@@ -32,7 +33,7 @@ const STEPS = [
 
 function FloatingCard({ className, delay, children }: { className: string; delay: number; children: React.ReactNode }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 30, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay, type: 'spring', stiffness: 120, damping: 18 }} className={`glass absolute rounded-2xl p-4 shadow-lift ${className}`}>
+    <motion.div initial={{ opacity: 0, y: 30, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay, type: 'spring', stiffness: 120, damping: 18 }} className={`glass absolute rounded-2xl p-4 shadow-lift max-sm:hidden ${className}`}>
       <div className="animate-float" style={{ animationDelay: `${delay}s` }}>
         {children}
       </div>
@@ -96,10 +97,10 @@ export default function Landing() {
         </motion.div>
 
         {/* Ilustración interactiva */}
-        <div className="relative mx-auto h-[420px] w-full max-w-lg sm:h-[480px]">
-          <motion.div initial={{ opacity: 0, scale: 0.9, rotate: -2 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 90, damping: 16 }} className="card absolute inset-x-6 top-10 p-6 shadow-lift sm:inset-x-10">
+        <div className="relative mx-auto w-full max-w-lg sm:h-[480px]">
+          <motion.div initial={{ opacity: 0, scale: 0.9, rotate: -2 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 90, damping: 16 }} className="card relative p-5 shadow-lift sm:absolute sm:inset-x-10 sm:top-10 sm:p-6">
             <div className="mb-3 flex items-center gap-2">
-              <span className="rounded-full bg-rose-500/15 px-2.5 py-0.5 text-[11px] font-semibold text-rose-500">Ginecología y Obstetricia</span>
+              <span className="rounded-full bg-rose-500/15 px-2.5 py-0.5 text-[11px] font-semibold text-rose-700 dark:text-rose-300">Ginecología y Obstetricia</span>
               <span className="surface-2 rounded-full px-2.5 py-0.5 text-[11px] font-semibold text-muted">Pregunta 12/100</span>
             </div>
             <p className="text-sm font-medium sm:text-base">Embarazada de 34 semanas con TA 165/112 mmHg y cefalea. ¿Qué fármaco previene las convulsiones?</p>
@@ -118,7 +119,7 @@ export default function Landing() {
               ))}
             </div>
           </motion.div>
-          <FloatingCard className="-top-2 right-0 sm:-right-4" delay={0.7}>
+          <FloatingCard className="-top-2 -right-4" delay={0.7}>
             <div className="flex items-center gap-3">
               <span className="grid size-10 place-items-center rounded-xl bg-gradient-to-br from-orange-400 to-rose-500 text-white">
                 <Flame className="size-5" />
@@ -129,7 +130,7 @@ export default function Landing() {
               </div>
             </div>
           </FloatingCard>
-          <FloatingCard className="bottom-6 -left-2 sm:-left-6" delay={0.9}>
+          <FloatingCard className="bottom-6 -left-6" delay={0.9}>
             <div className="text-xs text-muted">Puntaje estimado</div>
             <div className="font-display text-2xl font-bold text-gradient">78%</div>
             <div className="mt-2 flex h-8 items-end gap-1">
@@ -138,17 +139,33 @@ export default function Landing() {
               ))}
             </div>
           </FloatingCard>
-          <FloatingCard className="right-2 bottom-0 sm:-right-2" delay={1.1}>
+          <FloatingCard className="bottom-0 -right-2" delay={1.1}>
             <div className="flex items-center gap-2 text-sm font-semibold">
               <Sparkles className="size-4 text-amber-500" /> Logro: Semana perfecta
             </div>
           </FloatingCard>
+          {/* En móvil, los mismos datos van en una fila debajo para no tapar la pregunta */}
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:hidden">
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="card flex items-center gap-3 p-3">
+              <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-orange-400 to-rose-500 text-white">
+                <Flame className="size-4" />
+              </span>
+              <div className="min-w-0">
+                <div className="text-xs text-muted">Racha</div>
+                <div className="font-display font-bold">12 días</div>
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="card p-3">
+              <div className="text-xs text-muted">Puntaje estimado</div>
+              <div className="font-display text-xl font-bold text-gradient">78%</div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Números */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="card grid grid-cols-2 divide-[var(--border)] overflow-hidden sm:grid-cols-4 sm:divide-x">
+        <div className="card grid grid-cols-2 overflow-hidden sm:grid-cols-4 sm:divide-x sm:divide-[var(--border)] max-sm:[&>*:nth-child(-n+2)]:border-b max-sm:[&>*:nth-child(odd)]:border-r max-sm:[&>*]:border-[var(--border)]">
           {[
             { n: source === 'sample' ? 'Todos los años' : total.toLocaleString('es-DO'), l: source === 'sample' ? 'del ENURM (próximamente)' : 'preguntas en el banco' },
             { n: SPECIALTIES.length, l: 'áreas del examen' },
@@ -214,7 +231,7 @@ export default function Landing() {
           <motion.div className="flex shrink-0 gap-3 pr-3" animate={{ x: ['0%', '-50%'] }} transition={{ duration: 50, ease: 'linear', repeat: Infinity }}>
             {[...SPECIALTIES, ...SPECIALTIES].map((s, i) => (
               <span key={i} className="card flex shrink-0 items-center gap-2 px-4 py-2.5 text-sm font-medium">
-                <span style={{ color: s.color }}>
+                <span style={tintText(s.color)}>
                   <Icon name={s.icon} className="size-4" />
                 </span>
                 {s.name}

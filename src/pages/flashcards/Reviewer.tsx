@@ -15,7 +15,7 @@ import { CardHtml, CountTriplet, FLAGS, useNoteEditor } from '@/components/anki/
 import { CustomStudy } from '@/components/anki/CustomStudy'
 import { useHotkeys } from '@/hooks/useHotkeys'
 import { celebrate, playSound } from '@/lib/fx'
-import { cn, formatDate, shuffle } from '@/lib/utils'
+import { cn, formatDate, shuffle, tintText } from '@/lib/utils'
 import { toast } from '@/store/toasts'
 import { getSpecialty } from '@/data/specialties'
 
@@ -307,7 +307,7 @@ export default function Reviewer() {
           <div className="mb-6 flex items-center justify-between text-[11px] font-semibold text-muted">
             <span className="flex items-center gap-2">
               <span className={cn('rounded-full px-2 py-0.5', state?.type === 'new' ? 'bg-sky-500/15 text-sky-600' : state?.type === 'review' ? 'bg-emerald-500/15 text-emerald-600' : 'bg-rose-500/15 text-rose-600')}>{KIND_LABEL[state?.type ?? 'new']}</span>
-              {current.note.specialty && <span style={{ color: getSpecialty(current.note.specialty).color }}>{getSpecialty(current.note.specialty).short}</span>}
+              {current.note.specialty && <span style={tintText(getSpecialty(current.note.specialty).color)}>{getSpecialty(current.note.specialty).short}</span>}
               {state?.leech && <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-amber-600">Sanguijuela</span>}
             </span>
             <div className="relative">

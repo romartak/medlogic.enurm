@@ -267,7 +267,7 @@ export default function AiGuide() {
         </div>
         <div className="mt-4 grid gap-4 md:grid-cols-2">
           <Card className="border-rose-500/30 p-5">
-            <div className="flex items-center gap-2 text-sm font-semibold text-rose-600">
+            <div className="flex items-center gap-2 text-sm font-semibold text-rose-600 dark:text-rose-400">
               <X className="size-4" /> Prompt débil
             </div>
             <p className="mt-2 rounded-lg surface-2 p-3 font-mono text-sm">Explícame la preeclampsia.</p>

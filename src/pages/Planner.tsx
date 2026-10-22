@@ -9,7 +9,7 @@ import { useDailyPlan, usePlanInputs, useWeekPreview } from '@/hooks/useDailyPla
 import { PHASES, PHASE_ORDER, describeProfile, resolveExamDate } from '@/lib/plan'
 import { getSpecialty } from '@/data/specialties'
 import { Button, Card, PageHeader, Ring, Segmented, SpecialtyIcon } from '@/components/ui/primitives'
-import { addDays, cn, dayKey, formatClock } from '@/lib/utils'
+import { addDays, cn, dayKey, formatClock, tintText } from '@/lib/utils'
 import { playSound } from '@/lib/fx'
 import { toast } from '@/store/toasts'
 
@@ -132,7 +132,7 @@ function PhaseTimeline({ current }: { current: PlanPhase }) {
             <div className="h-1.5 overflow-hidden rounded-full surface-2">
               <motion.div className="h-full rounded-full" style={{ backgroundColor: info.color }} initial={{ width: 0 }} animate={{ width: state === 'past' ? '100%' : state === 'current' ? '55%' : '0%' }} transition={{ duration: 0.8, delay: i * 0.1 }} />
             </div>
-            <div className={cn('mt-2 text-xs font-semibold', state === 'current' ? '' : 'text-muted')} style={state === 'current' ? { color: info.color } : undefined}>
+            <div className={cn('mt-2 text-xs font-semibold', state === 'current' ? '' : 'text-muted')} style={state === 'current' ? tintText(info.color) : undefined}>
               {info.name}
             </div>
             <div className="hidden text-[11px] text-muted sm:block">{ph === 'fundamentos' ? '> 6 meses' : ph === 'consolidacion' ? '2–6 meses' : ph === 'intensivo' ? '15–60 días' : '≤ 14 días'}</div>
@@ -175,7 +175,7 @@ export default function Planner() {
       />
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-3xl bg-brand-gradient p-6 text-white shadow-glow sm:p-8">
             <div className="pointer-events-none absolute -top-16 -right-16 size-64 rounded-full bg-white/10 blur-2xl" />
             <div className="relative flex flex-col gap-5">

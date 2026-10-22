@@ -13,9 +13,9 @@
   --color-brand-200: #91feea;
   --color-brand-300: #53f5dd;
   --color-brand-400: #1fe0c9;
-  --color-brand-500: #06c4b0;
-  --color-brand-600: #029e91;
-  --color-brand-700: #077e75;
+  --color-brand-500: #0ba595;
+  --color-brand-600: #067c71;
+  --color-brand-700: #075f58;
   --color-brand-800: #0b635e;
   --color-brand-900: #0e524e;
   --color-brand-950: #003231;
@@ -66,35 +66,49 @@
   }
 }
 
-@layer base {
-  :root {
-    --bg: #f6f8fb;
-    --surface: #ffffff;
-    --surface-2: #f1f5f9;
-    --border: rgb(15 23 42 / 0.08);
-    --text: #0f172a;
-    --muted: #64748b;
-    color-scheme: light;
-  }
-  .dark {
-    --bg: #070b14;
-    --surface: #0e1524;
-    --surface-2: #131c2e;
-    --border: rgb(148 163 184 / 0.12);
-    --text: #e2e8f0;
-    --muted: #94a3b8;
-    color-scheme: dark;
-  }
+/*
+ * Tokens y fondo fuera de @layer y con más especificidad: si la página se incrusta
+ * en otro documento (p. ej. un visor que inyecta `body{background:#fff;color:#000}`),
+ * esos estilos sin capa ganarían a los de @layer base y romperían el contraste.
+ */
+html:root {
+  --bg: #f6f8fb;
+  --surface: #ffffff;
+  --surface-2: #f1f5f9;
+  --border: rgb(15 23 42 / 0.08);
+  --text: #0f172a;
+  --muted: #5b6b80;
+  color-scheme: light;
+  background: var(--bg);
+  color: var(--text);
+}
+html:root.dark {
+  --bg: #070b14;
+  --surface: #0e1524;
+  --surface-2: #131c2e;
+  --border: rgb(148 163 184 / 0.14);
+  --text: #e2e8f0;
+  --muted: #9fb0c6;
+  color-scheme: dark;
+}
+html:root body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  min-height: 100dvh;
+  overflow-x: clip;
+}
 
+@layer base {
   html {
     -webkit-tap-highlight-color: transparent;
     text-rendering: optimizeLegibility;
   }
   body {
     @apply font-sans antialiased;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100dvh;
   }
   h1,
   h2,
@@ -125,6 +139,7 @@
 @layer components {
   .card {
     background: var(--surface);
+    color: var(--text);
     border: 1px solid var(--border);
     border-radius: var(--radius-2xl);
     box-shadow: var(--shadow-soft);
@@ -145,6 +160,7 @@
     backdrop-filter: blur(16px) saturate(160%);
     -webkit-backdrop-filter: blur(16px) saturate(160%);
     border: 1px solid var(--border);
+    color: var(--text);
   }
   .surface-2 {
     background: var(--surface-2);
@@ -162,7 +178,7 @@
     color: transparent;
   }
   .bg-brand-gradient {
-    background: linear-gradient(135deg, var(--color-brand-500), var(--color-accent-500));
+    background: linear-gradient(135deg, var(--color-brand-600), var(--color-accent-600));
   }
   .bg-mesh {
     background:
@@ -201,6 +217,31 @@
   .prose-guide p {
     @apply leading-relaxed;
   }
+}
+
+/* En tema claro, los tonos 500 de estado no llegan a 4.5:1 sobre blanco: se oscurecen. */
+html:not(.dark) .text-brand-500,
+html:not(.dark) .text-brand-600 {
+  color: var(--color-brand-700);
+}
+html:not(.dark) .text-sky-500,
+html:not(.dark) .text-sky-600 {
+  color: var(--color-sky-700);
+}
+html:not(.dark) .text-rose-500 {
+  color: var(--color-rose-600);
+}
+html:not(.dark) .text-emerald-500,
+html:not(.dark) .text-emerald-600 {
+  color: var(--color-emerald-700);
+}
+html:not(.dark) .text-amber-500,
+html:not(.dark) .text-amber-600 {
+  color: var(--color-amber-700);
+}
+html:not(.dark) .text-violet-500,
+html:not(.dark) .text-violet-600 {
+  color: var(--color-violet-700);
 }
 
 .reduce-motion *,

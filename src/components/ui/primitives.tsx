@@ -1,7 +1,7 @@
 import { forwardRef, type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode } from 'react'
 import { motion } from 'motion/react'
 import { Link } from 'react-router-dom'
-import { cn } from '@/lib/utils'
+import { cn, solidBg, tintText } from '@/lib/utils'
 import { getSpecialty } from '@/data/specialties'
 import { Icon } from './Icon'
 
@@ -13,8 +13,8 @@ const VARIANTS: Record<Variant, string> = {
   secondary: 'surface-2 text-[var(--text)] hover:bg-slate-200/70 dark:hover:bg-slate-700/40',
   ghost: 'text-[var(--text)] hover:bg-slate-900/5 dark:hover:bg-white/5',
   outline: 'border border-soft text-[var(--text)] hover:border-brand-500/50 hover:bg-brand-500/5',
-  danger: 'bg-rose-500 text-white hover:bg-rose-600',
-  success: 'bg-emerald-500 text-white hover:bg-emerald-600',
+  danger: 'bg-rose-600 text-white hover:bg-rose-700',
+  success: 'bg-emerald-600 text-white hover:bg-emerald-700',
 }
 const SIZES: Record<Size, string> = {
   sm: 'h-8 px-3 text-xs gap-1.5 rounded-lg',
@@ -56,7 +56,7 @@ export function Badge({ children, color, className }: { children: ReactNode; col
   return (
     <span
       className={cn('inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold', !color && 'surface-2 text-muted', className)}
-      style={color ? { backgroundColor: `${color}1f`, color } : undefined}
+      style={color ? { backgroundColor: `${color}1f`, ...tintText(color) } : undefined}
     >
       {children}
     </span>
@@ -226,7 +226,7 @@ export function Chip({ active, onClick, children, color }: { active: boolean; on
         'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-all',
         active ? 'border-transparent text-white shadow-sm' : 'border-soft text-muted hover:border-brand-500/40 hover:text-[var(--text)]',
       )}
-      style={active ? { backgroundColor: color ?? 'var(--color-brand-500)' } : undefined}
+      style={active ? solidBg(color ?? 'var(--color-brand-500)') : undefined}
     >
       {children}
     </button>

@@ -10,7 +10,7 @@ import { getSpecialty } from '@/data/specialties'
 import { Logo } from '@/components/ui/Logo'
 import { Icon } from '@/components/ui/Icon'
 import { Button, SpecialtyBadge } from '@/components/ui/primitives'
-import { cn, daysBetween } from '@/lib/utils'
+import { cn, daysBetween, tintText } from '@/lib/utils'
 import { celebrate } from '@/lib/fx'
 import { useBank } from '@/store/bank'
 
@@ -42,7 +42,7 @@ const WEEKDAYS = [
 const TIMES = [30, 60, 90, 120, 180, 240]
 const CONF_LABELS = { 1: 'Me cuesta', 2: 'Regular', 3: 'Lo domino' } as const
 
-function OptionCard({ active, onClick, children, className }: { active: boolean; onClick: () => void; children: React.ReactNode; className?: string }) {
+function OptionCard({ active, onClick, children, className, check = true }: { active: boolean; onClick: () => void; children: React.ReactNode; className?: string; check?: boolean }) {
   return (
     <motion.button
       whileTap={{ scale: 0.97 }}
@@ -50,7 +50,7 @@ function OptionCard({ active, onClick, children, className }: { active: boolean;
       aria-pressed={active}
       className={cn('relative rounded-2xl border-2 p-4 text-left transition-all', active ? 'border-brand-500 bg-brand-500/[0.07] shadow-glow' : 'border-soft bg-[var(--surface)] hover:border-brand-500/40', className)}
     >
-      {active && (
+      {active && check && (
         <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute top-2.5 right-2.5 grid size-5 place-items-center rounded-full bg-brand-500 text-white">
           <Check className="size-3" />
         </motion.span>
@@ -187,8 +187,8 @@ export default function Onboarding() {
                           <OptionCard key={y} active={p.examYear === y} onClick={() => {
                             set({ examYear: y })
                             setExactDate('')
-                          }} className="text-center">
-                            <div className="font-display text-xl font-bold">{y}</div>
+                          }} check={false} className="px-2 py-4 text-center">
+                            <div className="text-center font-display text-xl font-bold">{y}</div>
                           </OptionCard>
                         )
                       })}
@@ -237,7 +237,7 @@ export default function Onboarding() {
                         ) : (
                           <>
                             Faltan <b>{daysLeft} días</b>
-                            {target.estimated && ' (aprox.)'}. Empezarás en la fase <b style={{ color: phase.color }}>{phase.name}</b>.
+                            {target.estimated && ' (aprox.)'}. Empezarás en la fase <b style={tintText(phase.color)}>{phase.name}</b>.
                           </>
                         )}
                       </div>
@@ -389,7 +389,7 @@ export default function Onboarding() {
         </AnimatePresence>
       </main>
 
-      <footer className="glass fixed inset-x-0 bottom-0 z-10 border-x-0 border-b-0" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+      <footer className="fixed inset-x-0 bottom-0 z-10 border-t border-soft bg-[color-mix(in_oklab,var(--bg)_94%,transparent)] backdrop-blur-xl" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <Button variant="ghost" onClick={() => (step === 0 ? navigate(-1) : go(-1))}>
             <ArrowLeft className="size-4" /> {step === 0 ? 'Volver' : 'Atrás'}

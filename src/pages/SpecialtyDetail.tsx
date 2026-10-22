@@ -143,7 +143,7 @@ export default function SpecialtyDetail() {
       </motion.section>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
           {info && (
             <Card className="p-5 sm:p-6">
               <h2 className="mb-1 font-semibold">Temas de alto rendimiento</h2>

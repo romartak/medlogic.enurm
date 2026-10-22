@@ -70,7 +70,7 @@ export default function Exam() {
       <PageHeader icon={<GraduationCap className="size-6" />} eyebrow="Modo examen" title="Simulacro" subtitle="Condiciones reales: tiempo limitado, sin retroalimentación hasta el final y resultados por especialidad." />
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
           <div className="grid gap-3 sm:grid-cols-4">
             {[...PRESETS, { id: 'custom', label: 'Personalizado', count: custom.count, minutes: custom.minutes, description: 'Tú decides' }].map((x) => (
               <button
@@ -452,7 +452,7 @@ export function ExamResults() {
               <div className="text-[11px] text-muted">Correctas</div>
             </div>
             <div className="rounded-xl bg-rose-500/10 p-3">
-              <div className="font-display text-xl font-bold text-rose-600">{exam.total - exam.correct - blank}</div>
+              <div className="font-display text-xl font-bold text-rose-600 dark:text-rose-400">{exam.total - exam.correct - blank}</div>
               <div className="text-[11px] text-muted">Incorrectas</div>
             </div>
             <div className="rounded-xl surface-2 p-3">

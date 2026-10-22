@@ -8,7 +8,7 @@ import { ROADMAP } from '@/data/roadmap'
 import { Card, PageHeader } from '@/components/ui/primitives'
 import { GithubIcon } from '@/components/ui/Logo'
 import { REPO_URL } from '@/components/layout/AppLayout'
-import { cn } from '@/lib/utils'
+import { cn, tintText, solidBg } from '@/lib/utils'
 
 const ICONS: Record<string, LucideIcon> = {
   calendar: Calendar, layers: Layers, grid: LayoutGrid, microscope: Microscope, gamepad: Gamepad2, database: Database, flame: Flame, graduation: GraduationCap, gauge: Gauge, brain: Brain, sparkles: Sparkles, download: Download,
@@ -46,13 +46,13 @@ export default function Roadmap() {
         {ROADMAP.map((stage, si) => (
           <section key={stage.id}>
             <div className="mb-5 flex items-center gap-3">
-              <span className="relative grid size-11 place-items-center rounded-2xl font-display text-lg font-extrabold text-white shadow-lg" style={{ backgroundColor: stage.color }}>
+              <span className="relative grid size-11 place-items-center rounded-2xl font-display text-lg font-extrabold text-white shadow-lg" style={solidBg(stage.color)}>
                 {si + 1}
-                {stage.id === 'hecho' && <span className="absolute -right-1 -bottom-1 grid size-5 place-items-center rounded-full bg-white text-[10px] text-emerald-600 shadow">✓</span>}
+                {stage.id === 'hecho' && <span className="absolute -right-1 -bottom-1 grid size-5 place-items-center rounded-full bg-white text-[10px] text-emerald-700 shadow">✓</span>}
               </span>
               <div>
                 <h2 className="font-display text-xl font-bold">{stage.name}</h2>
-                <div className="text-xs font-semibold" style={{ color: stage.color }}>
+                <div className="text-xs font-semibold" style={tintText(stage.color)}>
                   {stage.when}
                 </div>
               </div>

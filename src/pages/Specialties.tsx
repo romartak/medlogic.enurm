@@ -11,6 +11,7 @@ import { useProgress } from '@/store/progress'
 import { specialtyStats } from '@/lib/stats'
 import { Icon } from '@/components/ui/Icon'
 import { PageHeader, ProgressBar, Ring } from '@/components/ui/primitives'
+import { tintText } from '@/lib/utils'
 
 export default function Specialties() {
   const questions = useBank((s) => s.questions)
@@ -50,7 +51,7 @@ export default function Specialties() {
                       <Link to={`/especialidades/${id}`} className="card card-hover group relative flex items-center gap-4 overflow-hidden p-4">
                         <div className="absolute inset-y-0 left-0 w-1" style={{ backgroundColor: s.color }} />
                         <Ring value={st?.answered ? st.accuracy : 0} size={56} stroke={5} color={s.color}>
-                          <span style={{ color: s.color }}>
+                          <span style={tintText(s.color)}>
                             <Icon name={s.icon} className="size-5" />
                           </span>
                         </Ring>
@@ -70,7 +71,7 @@ export default function Specialties() {
                                 <Layers className="size-3" /> {cards}
                               </span>
                             )}
-                            {st?.answered ? <span className="font-semibold" style={{ color: s.color }}>{Math.round(st.accuracy * 100)}% precisión</span> : null}
+                            {st?.answered ? <span className="font-semibold" style={tintText(s.color)}>{Math.round(st.accuracy * 100)}% precisión</span> : null}
                           </div>
                           <ProgressBar value={st && st.total ? st.seen / st.total : 0} color={s.color} height="h-1" className="mt-2" />
                         </div>

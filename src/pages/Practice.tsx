@@ -58,7 +58,7 @@ export default function Practice() {
     <div>
       <PageHeader icon={<Target className="size-6" />} eyebrow="Modo tutor" title="Práctica" subtitle="Responde y recibe la explicación al instante. Ideal para aprender tema por tema." />
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
           <Card className="p-5 sm:p-6">
             <h2 className="mb-3 font-semibold">Especialidades</h2>
             <SpecialtyPicker value={config.specialties} onChange={(specialties) => setConfig({ ...config, specialties })} />

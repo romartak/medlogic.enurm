@@ -10,7 +10,7 @@ import { Button, Card, Chip, EmptyState, LinkButton, PageHeader, Segmented } fro
 import { copyText, openInAi } from '@/lib/clipboard'
 import { normalizeText } from '@/data/specialties'
 import { toast } from '@/store/toasts'
-import { cn } from '@/lib/utils'
+import { cn, tintText } from '@/lib/utils'
 
 export const PROMPT_ICONS: Record<string, LucideIcon> = {
   presentation: Presentation, layers: Layers, 'user-round': UserRound, 'message-circle-question': MessageCircleQuestion, lightbulb: Lightbulb, 'list-checks': ListChecks, stethoscope: Stethoscope, 'file-text': FileText,
@@ -50,7 +50,7 @@ function PromptCard({ p, fav, onFav, i }: { p: PromptItem; fav: boolean; onFav: 
         <h3 className="mt-4 pr-6 font-display font-bold">{p.title}</h3>
         <p className="mt-1 flex-1 text-sm text-muted">{p.description}</p>
         <div className="mt-4 flex items-center justify-between gap-2 text-xs font-semibold">
-          <span style={{ color: cat.color }}>{cat.name}</span>
+          <span style={tintText(cat.color)}>{cat.name}</span>
           {p.attachment && (
             <span className="flex items-center gap-1 rounded-full surface-2 px-2 py-0.5 text-[10px] text-muted" title={p.attachment}>
               <Paperclip className="size-3" /> Adjunta archivo
@@ -203,7 +203,7 @@ function PromptDetail({ p }: { p: PromptItem }) {
           <Icon className="size-7" />
         </span>
         <div className="flex-1">
-          <div className="text-xs font-semibold tracking-wider uppercase" style={{ color: cat.color }}>
+          <div className="text-xs font-semibold tracking-wider uppercase" style={tintText(cat.color)}>
             {cat.name}
           </div>
           <h1 className="text-2xl font-extrabold sm:text-3xl">{p.title}</h1>

@@ -121,7 +121,7 @@ export default function Dashboard() {
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Acciones */}
-        <div className="space-y-6 lg:col-span-2">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
           <div className="grid gap-3 sm:grid-cols-3">
             {[
               { to: '/repaso', icon: RotateCcw, title: 'Repasar errores', value: failedCount, hint: failedCount ? 'pendientes de corregir' : 'sin errores pendientes', color: '#ef4444' },

@@ -1,3 +1,13 @@
+/** Texto con el color de una categoría, mezclado con el color de texto para que se lea en ambos temas. */
+export function tintText(color: string): { color: string } {
+  return { color: `color-mix(in oklab, ${color} 55%, var(--text))` }
+}
+
+/** Fondo sólido con el color de una categoría, oscurecido para que el texto blanco tenga contraste. */
+export function solidBg(color: string): { backgroundColor: string } {
+  return { backgroundColor: `color-mix(in oklab, ${color} 72%, black)` }
+}
+
 export function cn(...classes: (string | false | null | undefined)[]): string {
   return classes.filter(Boolean).join(' ')
 }

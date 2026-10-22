@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { BedDouble, Brain, CalendarDays, Check, ChevronDown, Compass, GraduationCap, Layers, ListChecks, RefreshCcw, Shuffle, Sparkles, Target, Timer, TriangleAlert } from 'lucide-react'
 import { Card, LinkButton, PageHeader } from '@/components/ui/primitives'
 import { PHASES, PHASE_ORDER } from '@/lib/plan'
-import { cn } from '@/lib/utils'
+import { cn, solidBg } from '@/lib/utils'
 
 const PHASE_TODO: Record<string, string[]> = {
   fundamentos: ['Lee una guía y luego responde preguntas del mismo tema.', 'Recorre todas las especialidades al menos una vez.', 'Empieza tus flashcards desde el primer día.', 'Un simulacro corto por semana para medir tu punto de partida.'],
@@ -97,7 +97,7 @@ export default function PrepGuide() {
               <motion.div key={ph} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }} className="card relative overflow-hidden p-5">
                 <div className="absolute inset-x-0 top-0 h-1" style={{ backgroundColor: info.color }} />
                 <div className="flex items-center gap-2">
-                  <span className="grid size-8 place-items-center rounded-full font-display text-sm font-bold text-white" style={{ backgroundColor: info.color }}>
+                  <span className="grid size-8 place-items-center rounded-full font-display text-sm font-bold text-white" style={solidBg(info.color)}>
                     {i + 1}
                   </span>
                   <h3 className="font-display font-bold">{info.name}</h3>
