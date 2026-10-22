@@ -20,6 +20,7 @@ const FEATURES = [
   { icon: CalendarCheck, title: 'Plan diario personalizado', body: 'Según tu fecha de examen, tu tiempo y tus puntos débiles. Cambia de fase a medida que se acerca el día.', color: '#a855f7' },
   { icon: LayoutGrid, title: 'Espacio por especialidad', body: 'Temas de alto rendimiento, perlas, preguntas, flashcards y guías de cada área.', color: '#14b8a6' },
   { icon: Calculator, title: 'Herramientas clínicas', body: 'Glasgow, Parkland, TFG, anion gap, CHA₂DS₂-VASc, Alvarado y más.', color: '#64748b' },
+  { icon: Sparkles, title: 'Prompts de IA', body: 'Prompts listos para ChatGPT, Claude o Gemini: mejora tus diapositivas, crea flashcards y estudia con un tutor.', color: '#ec4899' },
   { icon: Newspaper, title: 'Actualizaciones', body: 'Cambios recientes en guías clínicas que pueden aparecer en el examen.', color: '#ef4444' },
 ]
 
@@ -168,7 +169,7 @@ export default function Landing() {
           <h2 className="text-3xl font-extrabold sm:text-4xl">Todos los métodos de estudio, en una sola plataforma</h2>
           <p className="mt-3 text-muted">Combina técnicas con evidencia: práctica de recuperación, repetición espaciada, intercalado y simulación del examen.</p>
         </div>
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {FEATURES.map((f, i) => (
             <motion.div key={f.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ delay: (i % 4) * 0.08 }} className="card card-hover group p-6">
               <span className="grid size-12 place-items-center rounded-2xl transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3" style={{ backgroundColor: `${f.color}1a`, color: f.color }}>

@@ -8,6 +8,7 @@ Hacia dónde va el proyecto. También se ve dentro de la app en **Lo que viene**
 - **Flashcards con la arquitectura de Anki.** Mazos y submazos, cloze, presets, pasos de aprendizaje, sanguijuelas, explorador, estudio personalizado y estadísticas.
 - **Espacio por especialidad.** 23 áreas con temas de alto rendimiento, perlas, preguntas, flashcards y guías.
 - **Análisis por opción.** Por qué cada opción es correcta o incorrecta, fisiopatología y bibliografía con DOI.
+- **Prompts e IA para médicos.** Biblioteca de prompts (diapositivas, flashcards, casos, tutor) y una guía para usar la IA con seguridad.
 - **Simulacros, juegos y herramientas.** Examen cronometrado, 5 juegos y 12 calculadoras clínicas.
 
 ## Próximo — 1–3 meses

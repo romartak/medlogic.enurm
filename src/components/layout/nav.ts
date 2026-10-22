@@ -1,4 +1,4 @@
-import { BookOpen, Calculator, Rocket, CalendarCheck, ChartColumn, Compass, Gamepad2, GraduationCap, House, Layers, LayoutGrid, Library, Newspaper, RotateCcw, Settings, Target, Trophy, type LucideIcon } from 'lucide-react'
+import { BookOpen, Calculator, Rocket, Sparkles, WandSparkles, CalendarCheck, ChartColumn, Compass, Gamepad2, GraduationCap, House, Layers, LayoutGrid, Library, Newspaper, RotateCcw, Settings, Target, Trophy, type LucideIcon } from 'lucide-react'
 
 export interface NavItem {
   to: string
@@ -29,6 +29,13 @@ export const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
       { to: '/herramientas', label: 'Herramientas', icon: Calculator, description: 'Calculadoras y escalas clínicas' },
       { to: '/actualizaciones', label: 'Actualizaciones', icon: Newspaper, description: 'Cambios recientes en guías' },
       { to: '/como-prepararte', label: 'Cómo prepararte', icon: Compass, description: 'Estrategia, fases y consejos' },
+    ],
+  },
+  {
+    title: 'Inteligencia artificial',
+    items: [
+      { to: '/prompts', label: 'Prompts', icon: WandSparkles, description: 'Prompts listos para ChatGPT, Claude o Gemini' },
+      { to: '/ia', label: 'IA para médicos', icon: Sparkles, description: 'Qué puede hacer la IA, cómo funciona y cómo usarla con seguridad' },
     ],
   },
   {

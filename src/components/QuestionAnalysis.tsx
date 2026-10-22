@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { Activity, BookMarked, Check, ChevronDown, CircleAlert, ExternalLink, Layers, Lightbulb, ListChecks, MessageSquareWarning, X } from 'lucide-react'
+import { Activity, BookMarked, Check, ChevronDown, CircleAlert, ExternalLink, Layers, Lightbulb, ListChecks, MessageSquareWarning, Sparkles, X } from 'lucide-react'
 import type { Question } from '@/types'
 import { useNoteEditor } from '@/components/anki/common'
 import { cn, LETTERS } from '@/lib/utils'
 import { REPO_URL } from '@/components/layout/AppLayout'
+import { PROMPTS, fillPrompt } from '@/data/prompts'
+import { openInAi } from '@/lib/clipboard'
 
 function Section({ icon, title, tone, children, collapsible = false, defaultOpen = true }: { icon: React.ReactNode; title: string; tone: string; children: React.ReactNode; collapsible?: boolean; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen)
@@ -131,6 +133,19 @@ export function QuestionAnalysis({ q, selected, order }: { q: Question; selected
             className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-violet-500/10 px-3 text-xs font-semibold text-violet-700 transition-colors hover:bg-violet-500/20 dark:text-violet-300"
           >
             <Layers className="size-3.5" /> Crear flashcard
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              const tpl = PROMPTS.find((x) => x.id === 'explica-mi-error')!
+              const text = `${q.stem}\n\n${positions.map((orig) => `${letterOf(orig)}) ${q.options[orig]}`).join('\n')}`
+              const mine = selected !== null ? `${letterOf(selected)}) ${q.options[selected]}` : 'no respondí'
+              openInAi('chatgpt', fillPrompt(tpl, { pregunta: text, mi_respuesta: mine, correcta: `${letterOf(q.answer)}) ${q.options[q.answer]}` }))
+            }}
+            className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-brand-500/10 px-3 text-xs font-semibold text-brand-700 transition-colors hover:bg-brand-500/20 dark:text-brand-300"
+            title="Abre ChatGPT con la pregunta y tu respuesta (el prompt también queda copiado para usarlo en otra IA)"
+          >
+            <Sparkles className="size-3.5" /> Explícalo con IA
           </button>
           <a href={issueUrl} target="_blank" rel="noreferrer" className="inline-flex h-8 items-center gap-1.5 rounded-lg px-3 text-xs font-semibold text-muted hover:bg-slate-900/5 hover:text-[var(--text)] dark:hover:bg-white/5">
             <MessageSquareWarning className="size-3.5" /> Reportar un error

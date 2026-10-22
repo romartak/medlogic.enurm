@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { ArrowLeftRight, Brain, ChartColumn, ChevronRight, FolderPlus, Layers, Pencil, Plus, Search, Settings2, Sparkles, Trash2, Zap } from 'lucide-react'
+import { ArrowLeftRight, Brain, ChartColumn, ChevronRight, FolderPlus, Layers, Pencil, Plus, Search, Settings2, Sparkles, Trash2, WandSparkles, Zap } from 'lucide-react'
 import { useCollection, useQueueInputFactory } from '@/hooks/useCollection'
 import { useAnki } from '@/store/anki'
 import { buildQueues } from '@/lib/anki/queue'
@@ -203,6 +203,9 @@ export default function Decks() {
         </Button>
         <Button variant="ghost" size="sm" onClick={() => setIo(true)}>
           <ArrowLeftRight className="size-4" /> Importar / exportar (Anki)
+        </Button>
+        <Button variant="ghost" size="sm" onClick={() => navigate('/prompts/flashcards-anki')}>
+          <WandSparkles className="size-4" /> Crear flashcards con IA
         </Button>
         <Button variant="ghost" size="sm" onClick={() => setCustom({ key: ALL_DECK, name: 'Todas las tarjetas' })}>
           <Sparkles className="size-4" /> Estudio personalizado

@@ -24,6 +24,7 @@ export const ROADMAP: RoadmapStage[] = [
       { title: 'Flashcards con la arquitectura de Anki', body: 'Mazos y submazos, cloze, presets, pasos de aprendizaje, sanguijuelas, explorador, estudio personalizado y estadísticas.', icon: 'layers' },
       { title: 'Espacio por especialidad', body: '23 áreas con temas de alto rendimiento, perlas, preguntas, flashcards y guías.', icon: 'grid' },
       { title: 'Análisis por opción', body: 'Por qué cada opción es correcta o incorrecta, fisiopatología y bibliografía con DOI.', icon: 'microscope' },
+      { title: 'Prompts e IA para médicos', body: 'Biblioteca de prompts (diapositivas, flashcards, casos, tutor) y una guía para usar la IA con seguridad.', icon: 'bot' },
       { title: 'Simulacros, juegos y herramientas', body: 'Examen cronometrado, 5 juegos y 12 calculadoras clínicas.', icon: 'gamepad' },
     ],
   },

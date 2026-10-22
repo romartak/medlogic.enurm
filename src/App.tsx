@@ -37,6 +37,8 @@ const SpecialtyDetail = lazy(() => import('@/pages/SpecialtyDetail'))
 const Tools = lazy(() => import('@/pages/Tools'))
 const PrepGuide = lazy(() => import('@/pages/PrepGuide'))
 const Roadmap = lazy(() => import('@/pages/Roadmap'))
+const Prompts = lazy(() => import('@/pages/Prompts'))
+const AiGuide = lazy(() => import('@/pages/AiGuide'))
 const Settings = lazy(() => import('@/pages/Settings'))
 
 function Splash() {
@@ -114,6 +116,9 @@ export default function App() {
               <Route path="/herramientas" element={<Lazy><Tools /></Lazy>} />
               <Route path="/como-prepararte" element={<Lazy><PrepGuide /></Lazy>} />
               <Route path="/roadmap" element={<Lazy><Roadmap /></Lazy>} />
+              <Route path="/prompts" element={<Lazy><Prompts /></Lazy>} />
+              <Route path="/prompts/:id" element={<Lazy><Prompts /></Lazy>} />
+              <Route path="/ia" element={<Lazy><AiGuide /></Lazy>} />
               <Route path="/ajustes" element={<Lazy><Settings /></Lazy>} />
               <Route path="*" element={<Navigate to="/inicio" replace />} />
             </Route>

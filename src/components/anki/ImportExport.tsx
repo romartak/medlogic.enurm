@@ -86,7 +86,7 @@ export function ImportExport({ open, onClose }: { open: boolean; onClose: () => 
       {tab === 'import' ? (
         <div className="space-y-4">
           <p className="text-sm text-muted">
-            Pega o sube tarjetas en el formato de texto de Anki: <b>frente⇥reverso⇥etiquetas</b> por línea (tabulador, punto y coma o coma). Las notas con <code>{'{{c1::…}}'}</code> se importan como cloze.
+            Pega o sube tarjetas en el formato de texto de Anki: <b>frente⇥reverso⇥etiquetas</b> por línea (tabulador, punto y coma o coma). Las notas con <code>{'{{c1::…}}'}</code> se importan como cloze. ¿No tienes tarjetas? Usa el prompt «Flashcards de alto rendimiento» en la sección Prompts y pega aquí el resultado.
           </p>
           <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-soft px-3 py-2 text-sm font-semibold hover:border-brand-500/40">
             <Upload className="size-4" /> Elegir archivo .txt / .csv
