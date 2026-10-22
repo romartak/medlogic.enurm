@@ -13,9 +13,10 @@ La app funciona sin servidor: si no configuras Supabase, todo se guarda en el na
      - `https://*-TU-USUARIO-DE-VERCEL.vercel.app/**` (vistas previas de Vercel)
      - `http://localhost:5173/**` (desarrollo)
 4. **Authentication → Providers**
-   - **Email**: activado. Deja «Confirm email» activado para verificar los correos.
+   - **Email**: activado. «Confirm email» puede quedar **desactivado** para que cualquiera se registre y entre al instante, sin códigos (la app lo soporta). Los correos de «olvidé mi contraseña» y de enlace de acceso siguen funcionando, pero el servidor de correo gratuito de Supabase permite pocos envíos por hora; para mucho tráfico conecta un SMTP propio (Resend, Brevo) en Authentication → SMTP.
    - **Google** (opcional): crea un cliente OAuth en Google Cloud Console (tipo «Aplicación web») con la URI de redirección autorizada `https://TU-PROYECTO.supabase.co/auth/v1/callback`, y pega el *Client ID* y el *Client Secret* en Supabase.
-5. **Project Settings → API**: copia la **Project URL** y la clave **anon public**.
+5. **Google Cloud → Google Auth Platform**: en *Información de la marca* pon la página principal, la política de privacidad (`/privacidad/`) y los términos (`/terminos/`) de tu dominio, y en *Público* pulsa **Publicar aplicación** para salir del modo de prueba (solo se piden datos básicos: correo y perfil, sin revisión larga).
+6. **Project Settings → API**: copia la **Project URL** y la clave **anon public**.
 
 > Nunca pongas la clave `service_role` en la app ni en Vercel: la app solo usa la clave pública `anon`, y la protección real son las políticas RLS.
 
@@ -27,6 +28,8 @@ La app funciona sin servidor: si no configuras Supabase, todo se guarda en el na
    - `VITE_SUPABASE_URL` = la Project URL
    - `VITE_SUPABASE_ANON_KEY` = la clave anon public
 4. **Deploy**. Si cambias una variable, vuelve a desplegar para que se aplique.
+
+Las páginas legales son archivos estáticos en `public/privacidad/` y `public/terminos/` (se sirven en `/privacidad/` y `/terminos/`). Revísalas y ajusta el correo de contacto si cambia.
 
 La app usa rutas con `#` (por ejemplo `/#/inicio`), así que no hace falta configurar reescrituras.
 
