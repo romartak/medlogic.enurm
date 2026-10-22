@@ -132,3 +132,18 @@ export function softHyphens(text: string, minLength = 9): string {
     return out + w.slice(last)
   })
 }
+
+/** «Dra. Pérez», «doctor», «Ana» o '' según el trato elegido y el nombre opcional. */
+export function addressName(s: { name: string; honorific?: 'dr' | 'dra' | 'none' | null }): string {
+  const name = s.name.trim()
+  if (s.honorific === 'dr') return name ? `Dr. ${name}` : 'doctor'
+  if (s.honorific === 'dra') return name ? `Dra. ${name}` : 'doctora'
+  return name
+}
+
+/** «30 min», «1 h», «1 h 30 min». */
+export function formatMinutes(t: number): string {
+  const h = Math.floor(t / 60)
+  const m = Math.round(t % 60)
+  return h ? `${h} h${m ? ` ${m} min` : ''}` : `${m} min`
+}

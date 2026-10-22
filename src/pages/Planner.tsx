@@ -6,7 +6,8 @@ import type { PlanPhase } from '@/types'
 import { useProgress } from '@/store/progress'
 import { DailyPlanCard } from '@/components/DailyPlanCard'
 import { useDailyPlan, usePlanInputs, useWeekPreview } from '@/hooks/useDailyPlan'
-import { PHASES, PHASE_ORDER, describeProfile, resolveExamDate } from '@/lib/plan'
+import { PHASES, PHASE_ORDER, describeProfile, questionAdvice, resolveExamDate } from '@/lib/plan'
+import { StudyEvidence } from '@/components/StudyEvidence'
 import { formatEnurmDate } from '@/data/enurm'
 import { getSpecialty } from '@/data/specialties'
 import { Button, Card, PageHeader, Ring, Segmented, SpecialtyIcon } from '@/components/ui/primitives'
@@ -206,6 +207,8 @@ export default function Planner() {
             </div>
             <PhaseTimeline current={plan.phase} />
           </Card>
+
+          {profile.completed && <StudyEvidence advice={questionAdvice(profile, priorities)} minutesPerDay={profile.minutesPerDay} />}
 
           <DailyPlanCard compact />
 

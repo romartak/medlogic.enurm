@@ -35,3 +35,13 @@ describe('contenido de terminología', () => {
     expect(isBuildCorrect(item, ['megalia', 'hepato'])).toBe(false)
   })
 })
+
+describe('pronunciación', () => {
+  it('quita los guiones de prefijos y sufijos', async () => {
+    const { spokenText } = await import('@/lib/lingo')
+    expect(spokenText('taqui-')).toBe('taqui')
+    expect(spokenText('-itis')).toBe('itis')
+    expect(spokenText('a-, an-')).toBe('a, an')
+    expect(spokenText('N-acetilcisteína')).toBe('N-acetilcisteína')
+  })
+})

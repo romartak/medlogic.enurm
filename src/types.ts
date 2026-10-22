@@ -208,8 +208,13 @@ export interface Achievement {
 
 export type Theme = 'light' | 'dark' | 'system'
 
+export type Honorific = 'dr' | 'dra' | 'none'
+
 export interface Settings {
+  /** Nombre o apellido opcional. */
   name: string
+  /** Cómo quiere que le llamemos; null si aún no lo eligió. */
+  honorific: Honorific | null
   theme: Theme
   dailyGoal: number
   examDate: string | null

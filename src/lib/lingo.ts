@@ -98,17 +98,67 @@ export function correctAnswerText(ex: LingoExercise): string {
 
 export const TOTAL_LESSONS = LINGO_UNITS.reduce((a, u) => a + u.lessons.length, 0)
 
-/** Pronuncia un término con la voz del sistema (si el navegador la tiene). */
-export function speak(text: string) {
+/* ---------- Pronunciación ---------- */
+
+let voicesCache: SpeechSynthesisVoice[] = []
+
+function loadVoices(): SpeechSynthesisVoice[] {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return []
+  const all = window.speechSynthesis.getVoices()
+  if (all.length) voicesCache = all
+  return voicesCache
+}
+
+if (typeof window !== 'undefined' && window.speechSynthesis) {
+  loadVoices()
+  window.speechSynthesis.addEventListener?.('voiceschanged', loadVoices)
+}
+
+/** Puntúa una voz: primero las naturales/mejoradas y las de español latino (más cercano al dominicano). */
+function voiceScore(v: SpeechSynthesisVoice): number {
+  const name = v.name.toLowerCase()
+  const lang = v.lang.toLowerCase().replace('_', '-')
+  let score = 0
+  if (/natural|neural|premium|enhanced|mejorad|online/.test(name)) score += 40
+  if (/google/.test(name)) score += 25
+  if (/paulina|mónica|monica|marisol|jorge|juan|diego|francisca|helena|dalia|elvira|sabina|siri/.test(name)) score += 15
+  if (/^es-(mx|us|419|do|co|ar|cl|pe|ve)/.test(lang)) score += 12
+  else if (lang.startsWith('es-es')) score += 8
+  if (/compact|eloquence|novelty|grandma|grandpa|bubbles|bad news|whisper/.test(name)) score -= 50
+  return score
+}
+
+/** Voces en español disponibles en este dispositivo, de mejor a peor. */
+export function spanishVoices(): SpeechSynthesisVoice[] {
+  return loadVoices()
+    .filter((v) => v.lang.toLowerCase().startsWith('es'))
+    .sort((a, b) => voiceScore(b) - voiceScore(a))
+}
+
+/** Texto que se pronuncia: sin guiones de prefijo/sufijo («-itis» → «itis», «a-, an-» → «a, an»). */
+export function spokenText(term: string): string {
+  return term
+    .replace(/(^|\s|,)-/g, '$1')
+    .replace(/-(,|\s|$)/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+/** Pronuncia un término con la mejor voz en español del dispositivo (o la elegida). */
+export function speak(text: string, voiceURI?: string | null) {
   try {
     const synth = window.speechSynthesis
     if (!synth) return
     synth.cancel()
-    const u = new SpeechSynthesisUtterance(text.replace(/[-,]/g, ' '))
-    u.lang = 'es-ES'
-    const voice = synth.getVoices().find((v) => v.lang.startsWith('es'))
-    if (voice) u.voice = voice
-    u.rate = 0.9
+    const u = new SpeechSynthesisUtterance(spokenText(text))
+    const voices = spanishVoices()
+    const voice = (voiceURI && voices.find((v) => v.voiceURI === voiceURI)) || voices[0]
+    if (voice) {
+      u.voice = voice
+      u.lang = voice.lang
+    } else u.lang = 'es-MX'
+    u.rate = 0.92
+    u.pitch = 1
     synth.speak(u)
   } catch {
     /* sin voz disponible */

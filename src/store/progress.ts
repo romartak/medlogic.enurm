@@ -62,6 +62,7 @@ export type ProgressState = ProgressData & ProgressActions
 
 const DEFAULT_SETTINGS: Settings = {
   name: '',
+  honorific: null,
   theme: 'system',
   dailyGoal: 40,
   examDate: null,

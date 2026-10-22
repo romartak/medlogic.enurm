@@ -6,15 +6,16 @@ import { KIND_LABEL, LINGO_BY_ID, lessonById, type LingoItem } from '@/data/ling
 import { buildLesson, canSpeak, correctAnswerText, dueItems, isBuildCorrect, reviewSession, speak, type LingoExercise } from '@/lib/lingo'
 import { starsFor, useLingo } from '@/store/lingo'
 import { useProgress } from '@/store/progress'
-import { celebrate, playSound } from '@/lib/fx'
+import { celebrate, playLesson } from '@/lib/fx'
 import { cn } from '@/lib/utils'
+import { toast } from '@/store/toasts'
 
 const HEARTS = 5
 
 function SpeakButton({ text, className }: { text: string; className?: string }) {
   if (!canSpeak) return null
   return (
-    <button type="button" onClick={() => speak(text)} className={cn('grid size-10 shrink-0 place-items-center rounded-xl bg-sky-500/15 text-sky-700 transition-transform active:scale-90 dark:text-sky-300', className)} aria-label={`Escuchar «${text}»`}>
+    <button type="button" onClick={() => speak(text, useLingo.getState().voiceURI)} className={cn('grid size-10 shrink-0 place-items-center rounded-xl bg-sky-500/15 text-sky-700 transition-transform active:scale-90 dark:text-sky-300', className)} aria-label={`Escuchar «${text}»`}>
       <Volume2 className="size-5" />
     </button>
   )
@@ -52,7 +53,7 @@ function OptionList({ options, selected, onSelect, disabled, answer, revealed }:
             key={o}
             whileTap={{ scale: 0.98 }}
             disabled={disabled}
-            onClick={() => onSelect(i)}
+            onClick={() => (playLesson('tap'), onSelect(i))}
             className={cn(
               'flex min-h-14 items-center gap-3 rounded-2xl border-2 border-b-4 px-4 py-3 text-left font-medium transition-colors',
               isAnswer ? 'border-emerald-500 bg-emerald-500/10' : isWrong ? 'border-rose-500 bg-rose-500/10' : selected === i ? 'border-sky-500 bg-sky-500/10' : 'border-soft bg-[var(--surface)] hover:bg-slate-900/[0.03] dark:hover:bg-white/[0.04]',
@@ -80,13 +81,13 @@ function MatchBoard({ items, onMistake, onPair, onDone }: { items: LingoItem[]; 
   useEffect(() => {
     if (!pickL || !pickR) return
     if (pickL === pickR) {
-      playSound('correct')
+      playLesson('correct')
       const next = [...done, pickL]
       setDone(next)
       onPair(LINGO_BY_ID.get(pickL)!)
       if (next.length === items.length) setTimeout(onDone, 350)
     } else {
-      playSound('wrong')
+      playLesson('wrong')
       onMistake(LINGO_BY_ID.get(pickL)!)
       setBad([pickL, `r:${pickR}`])
       setTimeout(() => setBad([]), 500)
@@ -140,22 +141,43 @@ export default function LingoLesson() {
     return lesson ? buildLesson(lesson.items.map((id) => LINGO_BY_ID.get(id)!).filter(Boolean)) : []
   }, [review, lesson])
 
-  const [queue, setQueue] = useState<LingoExercise[]>(makeQueue)
-  const [idx, setIdx] = useState(0)
-  const [hearts, setHearts] = useState(HEARTS)
-  const [mistakes, setMistakes] = useState(0)
+  // Si la lección quedó a medias (en la última semana), se continúa donde se dejó.
+  const [saved] = useState(() => {
+    const a = useLingo.getState().active
+    return a && a.lessonId === (review ? 'repaso' : lessonId) && a.idx < a.queue.length && Date.now() - a.savedAt < 7 * 86_400_000 ? a : null
+  })
+  const [queue, setQueue] = useState<LingoExercise[]>(() => saved?.queue ?? makeQueue())
+  const [idx, setIdx] = useState(saved?.idx ?? 0)
+  const [hearts, setHearts] = useState(saved?.hearts ?? HEARTS)
+  const [mistakes, setMistakes] = useState(saved?.mistakes ?? 0)
   const [phase, setPhase] = useState<Phase>('answer')
   const [selected, setSelected] = useState<number | null>(null)
   const [chosen, setChosen] = useState<number[]>([])
   const [lastCorrect, setLastCorrect] = useState(true)
-  const [requeued, setRequeued] = useState<Set<number>>(new Set())
+  const [requeued, setRequeued] = useState<Set<number>>(() => new Set(saved?.requeued ?? []))
   const [xpEarned, setXpEarned] = useState(0)
-  const [answered, setAnswered] = useState(0)
+  const [answered, setAnswered] = useState(saved?.answered ?? 0)
+  const [confirmExit, setConfirmExit] = useState(false)
+  const saveActive = useLingo((s) => s.saveActive)
+  const voiceURI = useLingo((s) => s.voiceURI)
+
+  useEffect(() => {
+    if (saved) toast({ kind: 'info', title: 'Continuamos donde lo dejaste' })
+  }, [saved])
+
+  // Guarda el avance tras cada paso: si sales, la lección te espera.
+  useEffect(() => {
+    if (phase === 'done' || phase === 'failed' || !queue.length) return
+    const at = phase === 'feedback' ? idx + 1 : idx
+    if (at >= queue.length) return
+    saveActive({ lessonId: review ? 'repaso' : lessonId, queue, idx: at, hearts, mistakes, answered, requeued: [...requeued], savedAt: Date.now() })
+  }, [phase, idx, queue, hearts, mistakes, answered, requeued, review, lessonId, saveActive])
 
   const ex = queue[idx] as LingoExercise | undefined
   const progress = queue.length ? Math.min(1, (idx + (phase === 'feedback' ? 1 : 0)) / queue.length) : 0
 
   const restart = () => {
+    saveActive(null)
     setQueue(makeQueue())
     setIdx(0)
     setHearts(HEARTS)
@@ -180,7 +202,7 @@ export default function LingoLesson() {
     if (ex.kind !== 'match') answerWord(ex.item.id, ok)
     setAnswered((a) => a + 1)
     setLastCorrect(ok)
-    playSound(ok ? 'correct' : 'wrong')
+    playLesson(ok ? 'correct' : 'wrong')
     if (!ok) {
       // Una palabra que se presenta por primera vez no cuesta vidas: se aprende con el error.
       if (!(ex.kind === 'meaning' && ex.intro)) loseHeart()
@@ -195,7 +217,8 @@ export default function LingoLesson() {
 
   const next = () => {
     if (hearts <= 0) {
-      playSound('wrong')
+      playLesson('fail')
+      saveActive(null)
       setPhase('failed')
       return
     }
@@ -203,7 +226,7 @@ export default function LingoLesson() {
       const xp = finishLesson(review ? 'repaso' : lessonId, mistakes, review)
       addXp(xp)
       setXpEarned(xp)
-      playSound('win')
+      playLesson('complete')
       celebrate(mistakes === 0 ? 'big' : 'small')
       setPhase('done')
       return
@@ -233,8 +256,8 @@ export default function LingoLesson() {
 
   // Pronuncia los términos nuevos al presentarlos.
   useEffect(() => {
-    if (phase === 'answer' && ex?.kind === 'meaning' && ex.intro && useProgress.getState().settings.sound) speak(ex.item.term)
-  }, [ex, phase])
+    if (phase === 'answer' && ex?.kind === 'meaning' && ex.intro && useProgress.getState().settings.sound) speak(ex.item.term, voiceURI)
+  }, [ex, phase, voiceURI])
 
   if (!review && !lesson)
     return (
@@ -324,7 +347,7 @@ export default function LingoLesson() {
     <div className="flex min-h-dvh flex-col">
       <header className="sticky top-0 z-10 bg-[var(--bg)]/95 backdrop-blur" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
         <div className="mx-auto flex max-w-2xl items-center gap-3 px-4 py-4">
-          <button onClick={() => navigate('/terminologia')} className="grid size-10 shrink-0 place-items-center rounded-xl text-muted hover:text-[var(--text)]" aria-label="Salir de la lección">
+          <button onClick={() => (idx > 0 || phase === 'feedback' ? setConfirmExit(true) : navigate('/terminologia'))} className="grid size-10 shrink-0 place-items-center rounded-xl text-muted hover:text-[var(--text)]" aria-label="Salir de la lección">
             <X className="size-6" />
           </button>
           <div className="h-4 flex-1 overflow-hidden rounded-full surface-2" role="progressbar" aria-valuenow={Math.round(progress * 100)} aria-valuemin={0} aria-valuemax={100}>
@@ -404,7 +427,7 @@ export default function LingoLesson() {
                           {t}
                         </span>
                       ) : (
-                        <motion.button layoutId={`tile-${i}`} key={i} disabled={phase !== 'answer'} onClick={() => setChosen([...chosen, i])} className="rounded-xl border-2 border-b-4 border-soft bg-[var(--surface)] px-3.5 py-2 font-display text-lg font-bold active:translate-y-0.5">
+                        <motion.button layoutId={`tile-${i}`} key={i} disabled={phase !== 'answer'} onClick={() => (playLesson('tap'), setChosen([...chosen, i]))} className="rounded-xl border-2 border-b-4 border-soft bg-[var(--surface)] px-3.5 py-2 font-display text-lg font-bold active:translate-y-0.5">
                           {t}
                         </motion.button>
                       ),
@@ -432,6 +455,25 @@ export default function LingoLesson() {
           </motion.div>
         </AnimatePresence>
       </main>
+
+      <AnimatePresence>
+        {confirmExit && (
+          <motion.div className="fixed inset-0 z-40 flex items-end justify-center bg-slate-950/50 p-4 backdrop-blur-sm sm:items-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setConfirmExit(false)}>
+            <motion.div role="dialog" aria-modal="true" aria-labelledby="exit-title" initial={{ y: 40 }} animate={{ y: 0 }} exit={{ y: 40 }} onClick={(e) => e.stopPropagation()} className="card w-full max-w-sm p-6 text-center" style={{ marginBottom: 'env(safe-area-inset-bottom)' }}>
+              <h2 id="exit-title" className="font-display text-xl font-extrabold">
+                ¿Seguro que quieres salir?
+              </h2>
+              <p className="mt-2 text-sm text-muted">Tu avance en esta lección queda guardado: cuando vuelvas, sigues desde aquí.</p>
+              <button autoFocus onClick={() => setConfirmExit(false)} className="mt-5 w-full rounded-2xl border-b-4 border-black/20 bg-emerald-600 py-3.5 font-bold tracking-wide text-white uppercase">
+                Seguir aprendiendo
+              </button>
+              <button onClick={() => navigate('/terminologia')} className="mt-2 w-full rounded-2xl py-3 font-bold tracking-wide text-rose-600 uppercase dark:text-rose-400">
+                Salir
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Pie: comprobar / retroalimentación */}
       <footer className="fixed inset-x-0 bottom-0 z-20">

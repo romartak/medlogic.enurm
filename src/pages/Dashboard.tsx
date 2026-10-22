@@ -13,7 +13,7 @@ import { QuestionCard } from '@/components/QuestionCard'
 import { UPDATES } from '@/data/updates'
 import { getSpecialty } from '@/data/specialties'
 import { useCardTotals } from '@/hooks/useCollection'
-import { cn, dayKey, daysBetween, formatDate, hashString, pct } from '@/lib/utils'
+import { addressName, cn, dayKey, daysBetween, formatDate, hashString, pct } from '@/lib/utils'
 import { playSound } from '@/lib/fx'
 import { LINGO_LESSONS } from '@/data/lingo'
 import { lingoStreak, useLingo } from '@/store/lingo'
@@ -94,7 +94,7 @@ export default function Dashboard() {
         <div className="pointer-events-none absolute right-40 -bottom-28 size-60 rounded-full bg-fuchsia-400/20 blur-2xl" />
         <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
-            <p className="text-sm font-medium text-white/80">{greeting()}{settings.name ? `, ${settings.name}` : ''}</p>
+            <p className="text-sm font-medium text-white/80">{greeting()}{addressName(settings) ? `, ${addressName(settings)}` : ''}</p>
             <h1 className="mt-1 text-2xl font-extrabold sm:text-3xl">{ov.todayAnswered >= settings.dailyGoal ? '¡Meta diaria cumplida! Sigue así.' : ov.todayAnswered > 0 ? `Vas por buen camino: ${ov.todayAnswered} preguntas hoy.` : '¿Listo para tu sesión de hoy?'}</h1>
             <div className="mt-4 flex flex-wrap items-center gap-3 text-sm">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 font-semibold backdrop-blur">

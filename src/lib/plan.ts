@@ -3,7 +3,7 @@ import { SPECIALTIES, getSpecialty } from '@/data/specialties'
 import { AREAS, RESIDENCIES, areaOf } from '@/data/areas'
 import { GUIDES } from '@/data/guides'
 import type { SpecialtyStat } from './stats'
-import { dayKey, daysBetween } from './utils'
+import { dayKey, daysBetween, formatMinutes } from './utils'
 import { enurmDate, formatEnurmDate, type EnurmDate } from '@/data/enurm'
 
 export const DEFAULT_PROFILE: StudyProfile = {
@@ -44,13 +44,13 @@ export interface PhaseInfo {
 }
 
 export const PHASES: Record<PlanPhase, PhaseInfo> = {
-  fundamentos: { id: 'fundamentos', name: 'Fundamentos', description: 'Más de 6 meses: construye la base tema por tema con guías y preguntas.', color: '#22c55e', alloc: { questions: 0.45, review: 0.1, flashcards: 0.2, guides: 0.25 }, examSize: 20 },
-  consolidacion: { id: 'consolidacion', name: 'Consolidación', description: 'De 2 a 6 meses: más preguntas, repaso de errores y un simulacro semanal.', color: '#0ea5e9', alloc: { questions: 0.5, review: 0.15, flashcards: 0.2, guides: 0.15 }, examSize: 50 },
+  fundamentos: { id: 'fundamentos', name: 'Fundamentos', description: 'Más de 6 meses: construye la base tema por tema con guías y preguntas.', color: '#22c55e', alloc: { questions: 0.45, review: 0.1, flashcards: 0.2, guides: 0.25 }, examSize: 50 },
+  consolidacion: { id: 'consolidacion', name: 'Consolidación', description: 'De 2 a 6 meses: más preguntas, repaso de errores y un simulacro completo cada semana.', color: '#0ea5e9', alloc: { questions: 0.5, review: 0.15, flashcards: 0.2, guides: 0.15 }, examSize: 100 },
   intensivo: { id: 'intensivo', name: 'Repaso intensivo', description: 'Últimos 2 meses: simulacros frecuentes y foco en tus puntos débiles.', color: '#f59e0b', alloc: { questions: 0.55, review: 0.2, flashcards: 0.2, guides: 0.05 }, examSize: 100 },
   final: { id: 'final', name: 'Recta final', description: 'Últimas 2 semanas: repaso de errores, perlas y simulacros completos. Cuida el sueño.', color: '#ef4444', alloc: { questions: 0.45, review: 0.3, flashcards: 0.25, guides: 0 }, examSize: 100 },
-  'sin-fecha': { id: 'sin-fecha', name: 'Sin fecha definida', description: 'Plan equilibrado. Elige tu convocatoria del ENURM para ajustarlo a tu calendario.', color: '#6366f1', alloc: { questions: 0.5, review: 0.15, flashcards: 0.2, guides: 0.15 }, examSize: 50 },
+  'sin-fecha': { id: 'sin-fecha', name: 'Sin fecha definida', description: 'Plan equilibrado. Elige tu convocatoria del ENURM para ajustarlo a tu calendario.', color: '#6366f1', alloc: { questions: 0.5, review: 0.15, flashcards: 0.2, guides: 0.15 }, examSize: 100 },
   examen: { id: 'examen', name: 'Día del examen', description: '¡Hoy es el día! Confía en tu preparación.', color: '#ec4899', alloc: { questions: 0, review: 0, flashcards: 0, guides: 0 }, examSize: 0 },
-  pasado: { id: 'pasado', name: 'Examen realizado', description: 'Si vas a presentarlo de nuevo, elige la próxima convocatoria.', color: '#64748b', alloc: { questions: 0.5, review: 0.2, flashcards: 0.2, guides: 0.1 }, examSize: 50 },
+  pasado: { id: 'pasado', name: 'Examen realizado', description: 'Si vas a presentarlo de nuevo, elige la próxima convocatoria.', color: '#64748b', alloc: { questions: 0.5, review: 0.2, flashcards: 0.2, guides: 0.1 }, examSize: 100 },
 }
 
 export const PHASE_ORDER: PlanPhase[] = ['fundamentos', 'consolidacion', 'intensivo', 'final']
@@ -213,8 +213,10 @@ export function buildDailyPlan(input: PlanInput): DailyPlan {
   const isExamDay = info.examSize > 0 && (date.getDay() === examDay || (phase === 'intensivo' && date.getDay() === midWeek)) && (daysLeft === null || daysLeft > 2)
   let examMinutes = 0
   if (isExamDay) {
+    // El simulacro semanal no se recorta al tiempo diario: es el día de practicar el examen real (100 preguntas, 2 h).
+    // Solo con menos de 1 h al día se propone medio examen.
     const size = phase === 'intensivo' && date.getDay() === midWeek ? 50 : info.examSize
-    const sized = Math.min(size, Math.max(20, Math.floor((minutes * 0.8) / 1.2 / 10) * 10))
+    const sized = minutes < 60 ? Math.min(size, 50) : size
     examMinutes = Math.round(sized * 1.2)
     tasks.push({ id: 'exam', kind: 'exam', title: `Simulacro de ${sized} preguntas`, detail: `${examMinutes} minutos en condiciones de examen. Revisa los resultados al terminar.`, minutes: examMinutes, target: 1, link: `/simulacro?count=${sized}&start=1` })
   }
@@ -264,6 +266,46 @@ export function buildDailyPlan(input: PlanInput): DailyPlan {
   }
 
   return { ...base, restDay: false, focus, minutes: tasks.filter((t) => !t.optional).reduce((a, t) => a + t.minutes, 0), tasks }
+}
+
+/** Minutos por pregunta en modo tutor: 72 s como en el ENURM más la lectura de la explicación. */
+export const MINUTES_PER_QUESTION = 1.5
+
+/**
+ * Rango orientativo de preguntas diarias por fase. No sale de un único estudio: combina la evidencia
+ * (practicar con preguntas y espaciar es lo que más funciona; más preguntas únicas se asocian a mejor
+ * puntaje, pero el porcentaje de aciertos y revisar los errores pesan más) con el tiempo realista de cada fase.
+ */
+export const DAILY_QUESTION_RANGE: Record<PlanPhase, [number, number]> = {
+  fundamentos: [20, 40],
+  consolidacion: [40, 60],
+  intensivo: [60, 90],
+  final: [40, 60],
+  'sin-fecha': [30, 50],
+  examen: [0, 0],
+  pasado: [30, 50],
+}
+
+export interface QuestionAdvice {
+  perDay: number
+  range: [number, number]
+  /** Preguntas acumuladas hasta el examen al ritmo del plan (null sin fecha). */
+  untilExam: number | null
+  /** Minutos diarios que harían falta para llegar al mínimo del rango (null si ya alcanza). */
+  minutesForMin: number | null
+}
+
+/** Recomendación de preguntas diarias explicada: lo que cabe en tu tiempo frente al rango de tu fase. */
+export function questionAdvice(profile: StudyProfile, priorities: Priority[], now = new Date()): QuestionAdvice {
+  const perDay = typicalQuestionsPerDay(profile, priorities)
+  const target = resolveExamDate(profile).date
+  const daysLeft = target ? daysBetween(now, target) : null
+  const range = DAILY_QUESTION_RANGE[phaseFor(daysLeft)]
+  const studyDays = profile.studyDays.length || DEFAULT_PROFILE.studyDays.length
+  const untilExam = daysLeft && daysLeft > 0 ? Math.round(((perDay * daysLeft * studyDays) / 7) / 100) * 100 : null
+  // Si no alcanza el mínimo, cuánto tiempo extra haría falta (las preguntas son ~la mitad del tiempo diario).
+  const minutesForMin = perDay < range[0] ? Math.ceil(((range[0] - perDay) * MINUTES_PER_QUESTION * 2 + profile.minutesPerDay) / 15) * 15 : null
+  return { perDay, range, untilExam, minutesForMin }
 }
 
 /** Preguntas que tendría un día de estudio típico con este perfil (para resúmenes y la meta diaria). */
@@ -318,7 +360,7 @@ export function describeProfile(p: StudyProfile): string[] {
   const out: string[] = []
   if (p.examYear) out.push(`ENURM ${p.examYear}: ${formatEnurmDate(enurmDate(p.examYear))}`)
   if (p.residency) out.push(`Residencia: ${RESIDENCIES.find((r) => r.id === p.residency)?.name ?? p.residency}`)
-  out.push(`${p.studyDays.length} días/semana · ${p.minutesPerDay >= 60 ? `${p.minutesPerDay / 60} h` : `${p.minutesPerDay} min`} al día`)
+  out.push(`${p.studyDays.length} días/semana · ${formatMinutes(p.minutesPerDay)} al día`)
   const weak = AREAS.filter((a) => p.confidence[a.id] === 1).map((a) => a.name)
   if (weak.length) out.push(`A reforzar: ${weak.join(', ')}`)
   return out

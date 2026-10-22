@@ -7,6 +7,7 @@ import { getSpecialty, normalizeText, slugify } from '@/data/specialties'
 import { useProgress } from '@/store/progress'
 import { Badge, Button, Card, Chip, EmptyState, PageHeader, SpecialtyBadge, SpecialtyIcon } from '@/components/ui/primitives'
 import { cn, tintText } from '@/lib/utils'
+import { GuidePractice } from '@/components/GuidePractice'
 import { celebrate } from '@/lib/fx'
 
 export default function Guides() {
@@ -113,6 +114,9 @@ export function GuideDetail() {
                 <Clock className="size-3" /> {guide.minutes} min de lectura
               </Badge>
               <Badge>{guide.level}</Badge>
+              <a href="#practicar" onClick={(e) => (e.preventDefault(), document.getElementById('practicar')?.scrollIntoView({ behavior: 'smooth' }))} className="inline-flex items-center gap-1 rounded-full bg-brand-500/10 px-2.5 py-0.5 text-xs font-semibold text-brand-800 hover:bg-brand-500/15 dark:text-brand-200">
+                Al final: practícala ↓
+              </a>
             </div>
           </header>
 
@@ -202,6 +206,8 @@ export function GuideDetail() {
               </motion.section>
             ))}
           </div>
+
+          <GuidePractice key={guide.id} guide={guide} />
 
           <Card className="mt-6 p-5 sm:p-6">
             <h3 className="text-sm font-semibold">Referencias</h3>

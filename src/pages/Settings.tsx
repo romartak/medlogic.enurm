@@ -60,9 +60,22 @@ export default function Settings() {
 
         <Card className="p-5 sm:p-6">
           <h2 className="font-semibold">Perfil</h2>
+          <div className="mt-4">
+            <span className="text-sm text-muted">¿Cómo quieres que te llamemos?</span>
+            <Segmented
+              value={settings.honorific ?? 'none'}
+              onChange={(h) => update({ honorific: h })}
+              className="mt-1.5 grid w-full grid-cols-3"
+              options={[
+                { value: 'dr', label: 'Doctor' },
+                { value: 'dra', label: 'Doctora' },
+                { value: 'none', label: 'No decirlo' },
+              ]}
+            />
+          </div>
           <label className="mt-4 block">
-            <span className="text-sm text-muted">¿Cómo te llamamos?</span>
-            <input value={settings.name} onChange={(e) => update({ name: e.target.value })} placeholder="Dra. / Dr. …" className="mt-1.5 h-11 w-full rounded-xl border border-soft surface-2 px-3 text-sm outline-none focus:border-brand-500" />
+            <span className="text-sm text-muted">Nombre o apellido (opcional)</span>
+            <input value={settings.name} onChange={(e) => update({ name: e.target.value })} placeholder="Ej.: Pichardo" className="mt-1.5 h-11 w-full rounded-xl border border-soft surface-2 px-3 text-sm outline-none focus:border-brand-500" />
           </label>
           <div className="mt-4">
             <span className="text-sm text-muted">Convocatoria del ENURM</span>

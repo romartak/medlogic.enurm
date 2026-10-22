@@ -2,17 +2,18 @@ import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowLeft, ArrowRight, BookOpen, CalendarDays, Check, Clock, Gamepad2, GraduationCap, Info, Layers, Sparkles, Stethoscope, Target, UserRound } from 'lucide-react'
-import type { StudentRole, StudyMethod, StudyProfile } from '@/types'
+import type { Honorific, StudentRole, StudyMethod, StudyProfile } from '@/types'
 import { useProgress } from '@/store/progress'
 import { AREAS, RESIDENCIES } from '@/data/areas'
-import { PHASES, phaseFor, resolveExamDate, specialtyPriorities, rotation, typicalQuestionsPerDay, DEFAULT_PROFILE } from '@/lib/plan'
+import { PHASES, phaseFor, resolveExamDate, specialtyPriorities, rotation, questionAdvice, DEFAULT_PROFILE } from '@/lib/plan'
 import { getSpecialty } from '@/data/specialties'
 import { Logo } from '@/components/ui/Logo'
 import { Icon } from '@/components/ui/Icon'
 import { Button, SpecialtyBadge } from '@/components/ui/primitives'
-import { cn, daysBetween, tintText } from '@/lib/utils'
+import { addressName, cn, daysBetween, formatMinutes, tintText } from '@/lib/utils'
 import { celebrate } from '@/lib/fx'
 import { useBank } from '@/store/bank'
+import { StudyEvidence } from '@/components/StudyEvidence'
 import { formatEnurmDate, upcomingEnurm } from '@/data/enurm'
 
 const ROLES: { id: StudentRole; title: string; body: string }[] = [
@@ -41,6 +42,11 @@ const WEEKDAYS = [
 ]
 
 const TIMES = [30, 60, 90, 120, 180, 240]
+const HONORIFICS: { id: Honorific; label: string }[] = [
+  { id: 'dr', label: 'Doctor' },
+  { id: 'dra', label: 'Doctora' },
+  { id: 'none', label: 'Prefiero no decirlo' },
+]
 const CONF_LABELS = { 1: 'Me cuesta', 2: 'Regular', 3: 'Lo domino' } as const
 
 function OptionCard({ active, onClick, children, className, check = true }: { active: boolean; onClick: () => void; children: React.ReactNode; className?: string; check?: boolean }) {
@@ -72,6 +78,7 @@ export default function Onboarding() {
   const [step, setStep] = useState(0)
   const [dir, setDir] = useState(1)
   const [name, setName] = useState(settings.name)
+  const [honorific, setHonorific] = useState<Honorific | null>(settings.honorific ?? null)
   const upcoming = useMemo(() => upcomingEnurm(3), [])
   const [p, setP] = useState<StudyProfile>(() => ({ ...DEFAULT_PROFILE, ...stored, examYear: upcoming.some((e) => e.year === stored.examYear) ? stored.examYear : null }))
   const set = (patch: Partial<StudyProfile>) => setP((cur) => ({ ...cur, ...patch }))
@@ -81,7 +88,8 @@ export default function Onboarding() {
   const phase = PHASES[phaseFor(daysLeft)]
   const priorities = useMemo(() => specialtyPriorities(p, [], counts), [p, counts])
   const firstWeek = useMemo(() => [...new Set(rotation(priorities, 7))].slice(0, 5), [priorities])
-  const questionsPerDay = useMemo(() => typicalQuestionsPerDay(p, priorities), [p, priorities])
+  const advice = useMemo(() => questionAdvice(p, priorities), [p, priorities])
+  const questionsPerDay = advice.perDay
 
   const steps = [
     { key: 'hola', title: '¡Bienvenido a MedLogic!', subtitle: 'Responde unas preguntas rápidas y crearemos un plan de estudio diario hecho para ti.', valid: true },
@@ -103,7 +111,7 @@ export default function Onboarding() {
   const finish = () => {
     const methods: StudyMethod[] = p.methods.includes('preguntas') ? p.methods : ['preguntas', ...p.methods]
     updateProfile({ ...p, methods, completed: true, skipped: false })
-    updateSettings({ name: name.trim(), examDate: target.enurm?.iso ?? null, dailyGoal: questionsPerDay })
+    updateSettings({ name: name.trim(), honorific, examDate: target.enurm?.iso ?? null, dailyGoal: questionsPerDay })
     celebrate('big')
     navigate('/plan', { replace: true })
   }
@@ -150,10 +158,27 @@ export default function Onboarding() {
                   <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 15 }} className="grid size-24 place-items-center rounded-3xl bg-brand-gradient text-white shadow-glow">
                     <Stethoscope className="size-12" />
                   </motion.div>
-                  <label className="block max-w-md">
-                    <span className="text-sm font-medium">¿Cómo te llamas?</span>
-                    <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Dra. / Dr. …" className="mt-2 h-12 w-full rounded-xl border border-soft bg-[var(--surface)] px-4 outline-none focus:border-brand-500" autoFocus />
-                  </label>
+                  <div className="max-w-md">
+                    <div className="text-sm font-medium" id="trato">¿Cómo quieres que te llamemos?</div>
+                    <div className="mt-2 grid grid-cols-3 gap-2" role="radiogroup" aria-labelledby="trato">
+                      {HONORIFICS.map((h) => (
+                        <OptionCard key={h.id} active={honorific === h.id} onClick={() => setHonorific(h.id)} check={false} className="flex min-h-14 items-center justify-center px-2 py-3 text-center">
+                          <span className="text-center text-sm font-semibold leading-tight">{h.label}</span>
+                        </OptionCard>
+                      ))}
+                    </div>
+                    <label className="mt-4 block">
+                      <span className="text-sm font-medium">
+                        Tu nombre o apellido <span className="font-normal text-muted">(opcional)</span>
+                      </span>
+                      <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ej.: Pichardo" autoComplete="family-name" className="mt-2 h-12 w-full rounded-xl border border-soft bg-[var(--surface)] px-4 outline-none focus:border-brand-500" />
+                    </label>
+                    {(honorific || name.trim()) && (
+                      <p className="mt-3 text-sm text-muted">
+                        Te saludaremos así: <b className="text-[var(--text)]">Buenos días{addressName({ name, honorific }) ? `, ${addressName({ name, honorific })}` : ''}</b>
+                      </p>
+                    )}
+                  </div>
                   <ul className="space-y-2 text-sm text-muted">
                     {['Plan diario con tareas concretas', 'Se adapta a tu fecha de examen y a tus resultados', 'Toma menos de 2 minutos'].map((t) => (
                       <li key={t} className="flex items-center gap-2">
@@ -239,11 +264,11 @@ export default function Onboarding() {
                   </div>
                   <div>
                     <div className="mb-3 text-sm font-semibold">Tiempo por día</div>
-                    <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
+                    <div className="grid grid-cols-2 gap-2 min-[400px]:grid-cols-3 lg:grid-cols-6">
                       {TIMES.map((t) => (
-                        <OptionCard key={t} active={p.minutesPerDay === t} onClick={() => set({ minutesPerDay: t })} className="p-3 text-center">
-                          <Clock className="mx-auto mb-1 size-4 text-muted" />
-                          <div className="font-display font-bold">{t < 60 ? `${t} min` : `${t / 60} h`}</div>
+                        <OptionCard key={t} active={p.minutesPerDay === t} onClick={() => set({ minutesPerDay: t })} check={false} className="flex min-h-14 items-center justify-center gap-1.5 px-2 py-3">
+                          <Clock className={cn('size-4 shrink-0', p.minutesPerDay === t ? 'text-brand-600 dark:text-brand-400' : 'text-muted')} />
+                          <span className="font-display font-bold whitespace-nowrap">{formatMinutes(t)}</span>
                         </OptionCard>
                       ))}
                     </div>
@@ -307,7 +332,7 @@ export default function Onboarding() {
                 <div className="space-y-4">
                   <div className="relative overflow-hidden rounded-3xl bg-brand-gradient p-6 text-white shadow-glow">
                     <Sparkles className="absolute top-5 right-5 size-6 text-white/60" />
-                    <div className="text-sm text-white/80">{name ? `${name}, tu` : 'Tu'} punto de partida</div>
+                    <div className="text-sm text-white/80">{addressName({ name, honorific }) ? `${addressName({ name, honorific }).replace(/^./, (c) => c.toUpperCase())}, tu` : 'Tu'} punto de partida</div>
                     <div className="mt-1 font-display text-2xl font-extrabold">{phase.name}</div>
                     <p className="mt-1 max-w-md text-sm text-white/85">{phase.description}</p>
                     <div className="mt-5 grid grid-cols-3 gap-2 text-center">
@@ -325,6 +350,7 @@ export default function Onboarding() {
                       </div>
                     </div>
                   </div>
+                  <StudyEvidence advice={advice} minutesPerDay={p.minutesPerDay} />
                   <div className="rounded-2xl border border-soft bg-[var(--surface)] p-5">
                     <div className="text-sm font-semibold">Especialidades con más peso en tu primera semana</div>
                     <div className="mt-3 flex flex-wrap gap-2">
@@ -341,7 +367,7 @@ export default function Onboarding() {
                       `Preguntas de ${getSpecialty(firstWeek[0] ?? 'medicina-interna').short} y otra especialidad intercalada cada día`,
                       p.methods.includes('flashcards') ? 'Flashcards pendientes con repetición espaciada' : 'Repaso de tus errores',
                       p.methods.includes('guias') ? 'Una guía corta según el enfoque del día' : 'Perlas de alto rendimiento',
-                      `Simulacro semanal de ${phase.examSize || 50} preguntas`,
+                      `Simulacro semanal de ${p.minutesPerDay < 60 ? Math.min(phase.examSize || 100, 50) : phase.examSize || 100} preguntas en condiciones de examen`,
                     ].map((t) => (
                       <li key={t} className="flex items-start gap-2 rounded-xl surface-2 p-3">
                         <Check className="mt-0.5 size-4 shrink-0 text-brand-500" /> {t}

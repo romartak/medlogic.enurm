@@ -1,9 +1,9 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { BookA, Check, Crown, Flame, Languages, Lock, RotateCcw, Search, Star, Volume2, Zap } from 'lucide-react'
 import { KIND_LABEL, LINGO_ITEMS, LINGO_LESSONS, LINGO_UNITS, type LingoKind } from '@/data/lingo'
-import { canSpeak, dueItems, speak, TOTAL_LESSONS } from '@/lib/lingo'
+import { canSpeak, dueItems, spanishVoices, speak, TOTAL_LESSONS } from '@/lib/lingo'
 import { lingoStreak, useLingo } from '@/store/lingo'
 import { Card, PageHeader, Ring, Segmented } from '@/components/ui/primitives'
 import { Icon } from '@/components/ui/Icon'
@@ -16,6 +16,7 @@ const OFFSETS = [0, 44, 66, 44, 0, -44, -66, -44]
 function PathView() {
   const navigate = useNavigate()
   const lessons = useLingo((s) => s.lessons)
+  const active = useLingo((s) => s.active)
   const firstOpen = LINGO_LESSONS.findIndex((l) => !lessons[l.id])
   const current = firstOpen === -1 ? LINGO_LESSONS.length : firstOpen
 
@@ -50,7 +51,7 @@ function PathView() {
                   <li key={lesson.id} className="flex flex-col items-center" style={{ transform: `translateX(${offset}px)` }}>
                     {state === 'current' && (
                       <motion.div initial={{ y: 6, opacity: 0 }} animate={{ y: [0, -4, 0], opacity: 1 }} transition={{ y: { repeat: Infinity, duration: 2, ease: 'easeInOut' } }} className="mb-2 rounded-xl border-2 border-soft bg-[var(--surface)] px-3 py-1.5 text-xs font-bold tracking-wide uppercase" style={tintText(unit.color)}>
-                        Empezar
+                        {active?.lessonId === lesson.id ? 'Continuar' : 'Empezar'}
                       </motion.div>
                     )}
                     <motion.button
@@ -140,7 +141,7 @@ function Dictionary() {
                 </div>
               </div>
               {canSpeak && (
-                <button onClick={() => speak(i.term)} className="grid size-10 shrink-0 place-items-center rounded-xl text-muted hover:bg-slate-900/[0.04] hover:text-[var(--text)] dark:hover:bg-white/[0.05]" aria-label={`Escuchar «${i.term}»`}>
+                <button onClick={() => speak(i.term, useLingo.getState().voiceURI)} className="grid size-10 shrink-0 place-items-center rounded-xl text-muted hover:bg-slate-900/[0.04] hover:text-[var(--text)] dark:hover:bg-white/[0.05]" aria-label={`Escuchar «${i.term}»`}>
                   <Volume2 className="size-5" />
                 </button>
               )}
@@ -149,6 +150,65 @@ function Dictionary() {
         })}
       </ul>
     </div>
+  )
+}
+
+/** Aviso para continuar una lección a medias. */
+function ContinueBanner() {
+  const navigate = useNavigate()
+  const active = useLingo((s) => s.active)
+  const activeLesson = active && active.lessonId !== 'repaso' ? LINGO_LESSONS.find((l) => l.id === active.lessonId) : null
+  if (!activeLesson || !active) return null
+  return (
+    <Card className="flex items-center gap-4 border-emerald-500/40 bg-emerald-500/[0.06] p-4">
+      <div className="min-w-0 flex-1">
+        <div className="text-xs font-bold tracking-wide text-emerald-800 uppercase dark:text-emerald-300">Lección a medias</div>
+        <div className="font-semibold">{activeLesson.title}</div>
+        <div className="mt-1.5 h-2 overflow-hidden rounded-full surface-2">
+          <div className="h-full rounded-full bg-emerald-500" style={{ width: `${(active.idx / active.queue.length) * 100}%` }} />
+        </div>
+      </div>
+      <button onClick={() => navigate(`/terminologia/leccion/${activeLesson.id}`)} className="h-11 shrink-0 rounded-xl border-b-4 border-emerald-800 bg-emerald-600 px-4 text-sm font-bold tracking-wide text-white uppercase">
+        Continuar
+      </button>
+    </Card>
+  )
+}
+
+/** Elegir la voz de pronunciación entre las voces en español del dispositivo. */
+function VoicePicker() {
+  const voiceURI = useLingo((s) => s.voiceURI)
+  const setVoice = useLingo((s) => s.setVoice)
+  const [voices, setVoices] = useState(() => spanishVoices())
+  useEffect(() => {
+    const synth = typeof window !== 'undefined' ? window.speechSynthesis : undefined
+    if (!synth) return
+    const update = () => setVoices(spanishVoices())
+    update()
+    synth.addEventListener?.('voiceschanged', update)
+    return () => synth.removeEventListener?.('voiceschanged', update)
+  }, [])
+  if (!canSpeak) return null
+  return (
+    <Card className="p-5">
+      <label htmlFor="lingo-voice" className="text-sm font-semibold">
+        Voz de pronunciación
+      </label>
+      <div className="mt-2 flex gap-2">
+        <select id="lingo-voice" value={voiceURI ?? ''} onChange={(e) => setVoice(e.target.value || null)} className="h-11 min-w-0 flex-1 rounded-xl border border-soft surface-2 px-3 text-sm outline-none focus:border-brand-500">
+          <option value="">La más natural disponible</option>
+          {voices.map((v) => (
+            <option key={v.voiceURI} value={v.voiceURI}>
+              {v.name} ({v.lang})
+            </option>
+          ))}
+        </select>
+        <button onClick={() => speak('hepatomegalia', voiceURI)} className="grid size-11 shrink-0 place-items-center rounded-xl bg-sky-500/15 text-sky-700 dark:text-sky-300" aria-label="Probar la voz">
+          <Volume2 className="size-5" />
+        </button>
+      </div>
+      <p className="mt-2 text-xs text-muted">{voices.length ? 'Usa las voces de tu teléfono o computadora. En iPhone, las voces «mejoradas» se descargan en Ajustes → Accesibilidad → Contenido leído → Voces.' : 'Este navegador no tiene voces en español instaladas.'}</p>
+    </Card>
   )
 }
 
@@ -167,6 +227,9 @@ export default function LingoPath() {
 
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         <div className="min-w-0">
+          <div className="mb-6 empty:hidden">
+            <ContinueBanner />
+          </div>
           <Segmented
             value={tab}
             onChange={setTab}
@@ -177,6 +240,9 @@ export default function LingoPath() {
             ]}
           />
           {tab === 'ruta' ? <PathView /> : <Dictionary />}
+          <div className="mt-10 lg:hidden">
+            <VoicePicker />
+          </div>
         </div>
 
         <aside className="space-y-4 max-lg:order-first lg:sticky lg:top-24 lg:h-fit">
@@ -209,7 +275,7 @@ export default function LingoPath() {
             </Card>
           </div>
 
-          <Card className="p-5">
+          <Card className={cn('p-5', !due && 'max-lg:hidden')}>
             <div className="flex items-center gap-3">
               <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-sky-500/15 text-sky-700 dark:text-sky-300">
                 <RotateCcw className="size-5" />
@@ -225,6 +291,10 @@ export default function LingoPath() {
               </Link>
             )}
           </Card>
+
+          <div className="max-lg:hidden">
+            <VoicePicker />
+          </div>
 
           <Card className="p-5 max-lg:hidden">
             <div className="text-sm font-semibold">Tu avance</div>

@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { dayKey } from '@/lib/utils'
+import type { LingoExercise } from '@/lib/lingo'
 
 /** Estado de un término en el repaso espaciado de «Terminología». */
 export interface WordState {
@@ -20,8 +21,23 @@ export interface LessonResult {
   completedAt: number
 }
 
+/** Lección a medias, para continuar donde se dejó. */
+export interface ActiveLesson {
+  lessonId: string
+  queue: LingoExercise[]
+  idx: number
+  hearts: number
+  mistakes: number
+  answered: number
+  requeued: number[]
+  savedAt: number
+}
+
 export interface LingoData {
   lessons: Record<string, LessonResult>
+  active: ActiveLesson | null
+  /** Voz elegida para pronunciar (voiceURI); null = la mejor disponible. */
+  voiceURI: string | null
   words: Record<string, WordState>
   /** XP ganado por día (clave yyyy-mm-dd), para la racha y la meta diaria. */
   days: Record<string, number>
@@ -34,11 +50,13 @@ interface LingoActions {
   /** Guarda el resultado de una lección y devuelve el XP ganado. */
   finishLesson: (lessonId: string, mistakes: number, review?: boolean) => number
   setDailyGoal: (n: number) => void
+  saveActive: (a: ActiveLesson | null) => void
+  setVoice: (uri: string | null) => void
   importBackup: (data: Partial<LingoData>) => void
   reset: () => void
 }
 
-const INITIAL: LingoData = { lessons: {}, words: {}, days: {}, dailyGoal: 30 }
+const INITIAL: LingoData = { lessons: {}, active: null, voiceURI: null, words: {}, days: {}, dailyGoal: 30 }
 const MIN = 60_000
 const DAY = 24 * 60 * MIN
 /** Intervalos de repaso por nivel de dominio. */
@@ -74,6 +92,7 @@ export const useLingo = create<LingoData & LingoActions>()(
         const s = get()
         const prev = s.lessons[lessonId]
         set({
+          active: null,
           lessons: review ? s.lessons : { ...s.lessons, [lessonId]: { stars: Math.max(stars, prev?.stars ?? 0), times: (prev?.times ?? 0) + 1, completedAt: Date.now() } },
           days: { ...s.days, [k]: (s.days[k] ?? 0) + xp },
         })
@@ -82,6 +101,10 @@ export const useLingo = create<LingoData & LingoActions>()(
 
       setDailyGoal: (n) => set({ dailyGoal: n }),
 
+      saveActive: (active) => set({ active }),
+
+      setVoice: (voiceURI) => set({ voiceURI }),
+
       importBackup: (data) => set({ ...INITIAL, ...data }),
 
       reset: () => set(INITIAL),
@@ -89,7 +112,7 @@ export const useLingo = create<LingoData & LingoActions>()(
     {
       name: 'medlogic-lingo',
       version: 1,
-      partialize: (s) => ({ lessons: s.lessons, words: s.words, days: s.days, dailyGoal: s.dailyGoal }),
+      partialize: (s) => ({ lessons: s.lessons, active: s.active, voiceURI: s.voiceURI, words: s.words, days: s.days, dailyGoal: s.dailyGoal }),
     },
   ),
 )

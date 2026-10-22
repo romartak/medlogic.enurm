@@ -91,6 +91,14 @@ describe('plan diario', () => {
     expect(buildDailyPlan(input(monday)).tasks.some((t) => t.kind === 'exam')).toBe(false)
   })
 
+  it('el simulacro semanal es un examen completo de 100 preguntas desde la fase de consolidación', () => {
+    const saturday = addDays(monday, 5)
+    const exam = buildDailyPlan(input(saturday)).tasks.find((t) => t.kind === 'exam')
+    expect(exam?.title).toMatch(/100 preguntas/)
+    const short = buildDailyPlan(input(saturday, { ...profile, minutesPerDay: 30 })).tasks.find((t) => t.kind === 'exam')
+    expect(short?.title).toMatch(/50 preguntas/)
+  })
+
   it('omite guías si el estudiante no las eligió', () => {
     const plan = buildDailyPlan(input(monday, { ...profile, methods: ['preguntas', 'flashcards'] }))
     expect(plan.tasks.some((t) => t.kind === 'guide')).toBe(false)
