@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="MedLogic ENURM: plataforma gratuita y de código abierto para preparar el Examen Nacional Único de Residencias Médicas. Banco de preguntas, simulacros, flashcards, guías y juegos." />
+    <meta name="theme-color" content="#0d9488" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <title>MedLogic ENURM</title>
+    <script>
+      // Aplica el tema antes de pintar para evitar parpadeo.
+      try {
+        var s = JSON.parse(localStorage.getItem('medlogic-progress') || '{}');
+        var t = (s.state && s.state.settings && s.state.settings.theme) || 'system';
+        var dark = t === 'dark' || (t === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
+        if (dark) document.documentElement.classList.add('dark');
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
