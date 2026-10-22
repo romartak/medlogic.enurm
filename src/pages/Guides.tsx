@@ -89,7 +89,7 @@ export function GuideDetail() {
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30 })
 
-  if (!guide) return <EmptyState icon={<BookOpen className="size-7" />} title="Guía no encontrada" action={<Link to="/guias" className="text-sm font-semibold text-brand-600">Ver guías</Link>} />
+  if (!guide) return <EmptyState icon={<BookOpen className="size-7" />} title="Guía no encontrada" action={<Link to="/guias" className="text-sm font-semibold text-brand-700 hover:underline dark:text-brand-400">Ver guías</Link>} />
 
   const s = getSpecialty(guide.specialty)
   const idx = GUIDES.indexOf(guide)
@@ -138,7 +138,24 @@ export function GuideDetail() {
                     </ul>
                   )}
                   {sec.table && (
-                    <div className="-mx-1 overflow-x-auto rounded-xl border border-soft">
+                    <ul className="space-y-2 sm:hidden">
+                      {sec.table.rows.map((r, j) => (
+                        <li key={j} className="rounded-xl border border-soft p-3.5">
+                          <div className="font-semibold">{r[0]}</div>
+                          <dl className="mt-2 space-y-1.5 text-sm">
+                            {r.slice(1).map((c, k) => (
+                              <div key={k}>
+                                <dt className="text-[11px] font-semibold tracking-wide text-muted uppercase">{sec.table!.head[k + 1]}</dt>
+                                <dd className="leading-relaxed">{c}</dd>
+                              </div>
+                            ))}
+                          </dl>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {sec.table && (
+                    <div className="-mx-1 overflow-x-auto rounded-xl border border-soft max-sm:hidden">
                       <table className="w-full min-w-[480px] text-left text-sm">
                         <thead>
                           <tr className="surface-2">

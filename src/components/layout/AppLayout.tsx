@@ -7,17 +7,35 @@ import { Logo, GithubIcon } from '@/components/ui/Logo'
 import { CommandPalette } from './CommandPalette'
 import { useProgress, levelFromXp } from '@/store/progress'
 import { computeStreak } from '@/lib/stats'
-import { cn } from '@/lib/utils'
+import { cn, daysBetween } from '@/lib/utils'
+import { enurmDate, formatEnurmDate, upcomingEnurm } from '@/data/enurm'
 import type { Theme } from '@/types'
 
 export const REPO_URL = 'https://github.com/romartak/medlogic.enurm'
 
+/** Cuenta regresiva compacta al ENURM de la convocatoria elegida (o al próximo). */
+function ExamChip() {
+  const profile = useProgress((s) => s.profile)
+  const exam = profile.examYear ? enurmDate(profile.examYear) : upcomingEnurm(1)[0]
+  const days = daysBetween(new Date(), exam.date)
+  if (days < 0) return null
+  return (
+    <NavLink to="/plan" className="flex items-center gap-3 rounded-xl px-2 py-1.5 transition-colors hover:bg-slate-900/[0.04] dark:hover:bg-white/[0.04]">
+      <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-brand-gradient font-display text-sm font-extrabold text-white tabular-nums">{days > 999 ? '99+' : days}</span>
+      <span className="min-w-0 text-xs leading-tight">
+        <span className="block font-semibold">{days === 0 ? '¡Hoy es el ENURM!' : `días para el ENURM ${exam.year}`}</span>
+        <span className="block truncate text-muted first-letter:uppercase">{formatEnurmDate(exam, { weekday: true })}</span>
+      </span>
+    </NavLink>
+  )
+}
+
 function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   return (
-    <nav className="flex flex-col gap-6">
+    <nav className="flex flex-col gap-5">
       {NAV_GROUPS.map((g) => (
         <div key={g.title}>
-          <div className="mb-2 px-3 text-[10px] font-bold tracking-[0.18em] text-muted uppercase">{g.title}</div>
+          <div className="mb-1.5 px-3 text-[10px] font-bold tracking-[0.18em] text-muted uppercase">{g.title}</div>
           <ul className="flex flex-col gap-0.5">
             {g.items.map((item) => (
               <li key={item.to}>
@@ -26,7 +44,7 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
                   onClick={onNavigate}
                   className={({ isActive }) =>
                     cn(
-                      'group relative flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors',
+                      'group relative flex items-center gap-3 rounded-xl px-3 py-[7px] text-sm font-medium transition-colors',
                       isActive ? 'text-brand-700 dark:text-brand-300' : 'text-muted hover:bg-slate-900/[0.04] hover:text-[var(--text)] dark:hover:bg-white/[0.04]',
                     )
                   }
@@ -124,14 +142,11 @@ export function AppLayout() {
             <Logo />
           </NavLink>
         </div>
-        <div className="flex-1 overflow-y-auto px-3 pt-2 pb-6">
+        <div className="flex-1 overflow-y-auto px-3 pt-1 pb-6 [mask-image:linear-gradient(to_bottom,black_calc(100%-28px),transparent)]">
           <SidebarNav />
         </div>
-        <div className="border-t border-soft p-4">
-          <a href={REPO_URL} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-xs text-muted hover:text-[var(--text)]">
-            <GithubIcon className="size-4" />
-            Gratis y de código abierto
-          </a>
+        <div className="border-t border-soft p-3">
+          <ExamChip />
         </div>
       </aside>
 
@@ -155,6 +170,12 @@ export function AppLayout() {
               </div>
               <div className="flex-1 overflow-y-auto px-3 pb-8">
                 <SidebarNav onNavigate={() => setDrawerOpen(false)} />
+              </div>
+              <div className="space-y-1 border-t border-soft p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+                <ExamChip />
+                <a href={REPO_URL} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-2 py-2 text-xs text-muted hover:text-[var(--text)]">
+                  <GithubIcon className="size-4" /> Gratis y de código abierto
+                </a>
               </div>
             </motion.aside>
           </motion.div>

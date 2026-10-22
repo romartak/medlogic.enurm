@@ -76,8 +76,8 @@ export default function Roadmap() {
                         <Icon className="size-5" />
                       </span>
                       {stage.id !== 'hecho' && (
-                        <motion.button whileTap={{ scale: 0.8 }} onClick={() => toggle(it.title)} className={cn('rounded-full px-2 py-1 text-xs font-semibold transition-colors', liked ? 'bg-pink-500/15 text-pink-600' : 'text-muted hover:text-pink-500')} aria-pressed={liked} aria-label="Me interesa">
-                          {liked ? '♥' : '♡'}
+                        <motion.button whileTap={{ scale: 0.8 }} onClick={() => toggle(it.title)} className={cn('grid size-9 place-items-center rounded-full transition-colors', liked ? 'bg-pink-500/15 text-pink-600 dark:text-pink-400' : 'text-muted hover:text-pink-500')} aria-pressed={liked} aria-label="Me interesa">
+                          <Heart className={cn('size-4', liked && 'fill-current')} />
                         </motion.button>
                       )}
                     </div>

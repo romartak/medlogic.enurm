@@ -23,7 +23,7 @@ interface ExamConfig {
 }
 
 const PRESETS = [
-  { id: 'full', label: 'Completo', count: 100, minutes: 120, description: 'Formato de examen completo' },
+  { id: 'full', label: 'Completo', count: 100, minutes: 120, description: 'Igual que el ENURM' },
   { id: 'half', label: 'Medio', count: 50, minutes: 60, description: 'Media jornada' },
   { id: 'quick', label: 'Rápido', count: 20, minutes: 24, description: 'Para un rato libre' },
 ] as const
@@ -71,21 +71,22 @@ export default function Exam() {
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="min-w-0 space-y-6 lg:col-span-2">
-          <div className="grid gap-3 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {[...PRESETS, { id: 'custom', label: 'Personalizado', count: custom.count, minutes: custom.minutes, description: 'Tú decides' }].map((x) => (
               <button
                 key={x.id}
                 onClick={() => setPreset(x.id)}
-                className={cn('card card-hover relative p-4 text-left transition-all', preset === x.id && 'ring-2 ring-brand-500')}
+                aria-pressed={preset === x.id}
+                className={cn('card card-hover relative flex flex-col p-4 text-left transition-all', preset === x.id && 'ring-2 ring-brand-500')}
               >
                 {preset === x.id && (
                   <motion.span layoutId="preset-check" className="absolute top-3 right-3 grid size-5 place-items-center rounded-full bg-brand-500 text-white">
                     <Check className="size-3" />
                   </motion.span>
                 )}
-                <div className="font-display text-lg font-bold">{x.label}</div>
+                <div className="font-display text-base font-bold min-[400px]:pr-6 min-[400px]:text-lg">{x.label}</div>
                 <div className="mt-1 text-xs text-muted">{x.description}</div>
-                <div className="mt-3 flex items-center gap-3 text-xs font-semibold">
+                <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 pt-3 text-xs font-semibold">
                   <span>{x.count} preg.</span>
                   <span className="flex items-center gap-1 text-muted">
                     <Timer className="size-3" /> {x.minutes} min
@@ -414,7 +415,7 @@ export function ExamResults() {
   const byId = useBank((s) => s.byId)
   const [filter, setFilter] = useState<'all' | 'wrong' | 'blank'>('all')
 
-  if (!exam) return <EmptyState icon={<GraduationCap className="size-7" />} title="Simulacro no encontrado" action={<Link to="/simulacro" className="text-sm font-semibold text-brand-600">Volver</Link>} />
+  if (!exam) return <EmptyState icon={<GraduationCap className="size-7" />} title="Simulacro no encontrado" action={<Link to="/simulacro" className="text-sm font-semibold text-brand-700 hover:underline dark:text-brand-400">Volver</Link>} />
 
   const score = exam.correct / exam.total
   const blank = exam.answers.filter((a) => a === null).length

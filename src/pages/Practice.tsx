@@ -24,6 +24,7 @@ interface Config {
 export default function Practice() {
   const [params] = useSearchParams()
   const questions = useBank((s) => s.questions)
+  const hasYears = useMemo(() => questions.some((q) => q.year), [questions])
   const status = useBank((s) => s.status)
   const { attempts, bookmarks } = useProgress()
   const [config, setConfig] = useState<Config>(() => ({
@@ -63,10 +64,12 @@ export default function Practice() {
             <h2 className="mb-3 font-semibold">Especialidades</h2>
             <SpecialtyPicker value={config.specialties} onChange={(specialties) => setConfig({ ...config, specialties })} />
           </Card>
-          <Card className="p-5 sm:p-6">
-            <h2 className="mb-3 font-semibold">Año del examen</h2>
-            <YearPicker value={config.years} onChange={(years) => setConfig({ ...config, years })} />
-          </Card>
+          {hasYears && (
+            <Card className="p-5 sm:p-6">
+              <h2 className="mb-3 font-semibold">Año del examen</h2>
+              <YearPicker value={config.years} onChange={(years) => setConfig({ ...config, years })} />
+            </Card>
+          )}
           <Card className="p-5 sm:p-6">
             <h2 className="mb-3 font-semibold">Preguntas</h2>
             <Segmented

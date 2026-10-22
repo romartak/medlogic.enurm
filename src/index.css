@@ -133,6 +133,10 @@ html:root {
   h3,
   h4 {
     @apply font-display tracking-tight;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
   }
   ::selection {
     background: rgb(6 196 176 / 0.25);
@@ -171,7 +175,7 @@ html:root {
   .card-hover:hover {
     transform: translateY(-3px);
     box-shadow: var(--shadow-lift);
-    border-color: rgb(6 196 176 / 0.35);
+    border-color: color-mix(in oklab, var(--color-brand-500) 40%, transparent);
   }
   .glass {
     background: color-mix(in oklab, var(--surface) 72%, transparent);

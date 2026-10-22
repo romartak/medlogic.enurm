@@ -91,7 +91,7 @@ export function GameShell({ id, rules, children }: { id: GameId; rules: string[]
               </motion.div>
             )}
             <div className="text-sm font-semibold tracking-wider text-muted uppercase">Puntuación</div>
-            <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 14 }} className="mt-2 font-display text-7xl font-extrabold text-gradient">
+            <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 14 }} className="mt-2 font-display text-7xl font-extrabold text-brand-600 tabular-nums dark:text-brand-400">
               {result.score}
             </motion.div>
             <div className="text-sm text-muted">{game.unit}</div>

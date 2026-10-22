@@ -131,7 +131,7 @@ export default function Decks() {
             <Button variant="outline" onClick={() => navigate('/flashcards/estadisticas')} title="Estadísticas (T)">
               <ChartColumn className="size-4" /> Estadísticas
             </Button>
-            <Button onClick={() => navigate(`/flashcards/${ALL_DECK}/estudiar`)}>
+            <Button onClick={() => navigate(`/flashcards/${ALL_DECK}/estudiar`)} className="max-sm:order-first max-sm:w-full">
               <Brain className="size-4" /> Estudiar todo
             </Button>
           </>

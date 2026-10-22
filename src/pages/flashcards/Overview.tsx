@@ -125,11 +125,19 @@ export default function Overview() {
               ))}
             </div>
             <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-muted">
-              <span>🔵 Nuevas {dist.new}</span>
-              <span>🔴 Aprendiendo {dist.learning}</span>
-              <span>🟢 Jóvenes {dist.young}</span>
-              <span>🌲 Maduras {dist.mature}</span>
-              <span>🟡 Suspendidas {dist.suspended}</span>
+              {(
+                [
+                  ['Nuevas', dist.new, '#0ea5e9'],
+                  ['Aprendiendo', dist.learning, '#f43f5e'],
+                  ['Jóvenes', dist.young, '#86efac'],
+                  ['Maduras', dist.mature, '#16a34a'],
+                  ['Suspendidas', dist.suspended, '#facc15'],
+                ] as const
+              ).map(([l, n, c]) => (
+                <span key={l} className="inline-flex items-center gap-1.5">
+                  <span className="size-2 rounded-full" style={{ backgroundColor: c }} /> {l} {n}
+                </span>
+              ))}
             </div>
           </div>
         </Card>

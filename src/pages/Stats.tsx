@@ -5,7 +5,7 @@ import { ChartColumn, Clock, Flame, Target, Trophy } from 'lucide-react'
 import { useProgress } from '@/store/progress'
 import { useBank } from '@/store/bank'
 import { bestStreak, computeStreak, dailySeries, overview, predictedScore, specialtyStats } from '@/lib/stats'
-import { Card, EmptyState, PageHeader, ProgressBar, Segmented, SpecialtyIcon, StatCard } from '@/components/ui/primitives'
+import { Card, EmptyState, PageHeader, ProgressBar, Segmented, SpecialtyIcon, StatCard, LinkButton } from '@/components/ui/primitives'
 import { getSpecialty } from '@/data/specialties'
 import { addDays, dayKey, formatDate, pct } from '@/lib/utils'
 
@@ -71,7 +71,7 @@ export default function Stats() {
     return (
       <div>
         <PageHeader icon={<ChartColumn className="size-6" />} title="Estadísticas" />
-        <EmptyState icon={<ChartColumn className="size-7" />} title="Aún no hay datos" body="Responde preguntas, haz un simulacro o repasa flashcards y aquí verás tu evolución." />
+        <EmptyState icon={<ChartColumn className="size-7" />} title="Aún no hay datos" body="Responde preguntas, haz un simulacro o repasa flashcards y aquí verás tu evolución." action={<LinkButton to="/practica?auto=1"><Target className="size-4" /> Empezar a practicar</LinkButton>} />
       </div>
     )
   }

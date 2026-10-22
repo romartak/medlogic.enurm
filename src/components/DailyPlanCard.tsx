@@ -81,7 +81,7 @@ export function DailyPlanCard({ compact = false }: { compact?: boolean }) {
               <motion.li key={t.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.04 }} className="flex items-center gap-3 px-5 py-3.5 sm:px-6">
                 <button
                   onClick={() => toggleCheck(t.id)}
-                  className={cn('grid size-7 shrink-0 place-items-center rounded-full border-2 transition-all', t.complete ? 'border-emerald-500 bg-emerald-500 text-white' : 'border-soft hover:border-brand-500')}
+                  className={cn('relative grid size-7 shrink-0 place-items-center rounded-full border-2 transition-all after:absolute after:-inset-2.5', t.complete ? 'border-emerald-500 bg-emerald-500 text-white' : 'border-soft hover:border-brand-500')}
                   aria-label={t.complete ? 'Marcar como pendiente' : 'Marcar como hecha'}
                   title={t.complete ? 'Hecha' : 'Marcar como hecha'}
                 >
@@ -91,7 +91,7 @@ export function DailyPlanCard({ compact = false }: { compact?: boolean }) {
                     </motion.span>
                   )}
                 </button>
-                <span className="grid size-9 shrink-0 place-items-center rounded-xl" style={{ backgroundColor: `${color}1a`, color }}>
+                <span className="grid size-9 shrink-0 place-items-center rounded-xl max-sm:hidden" style={{ backgroundColor: `${color}1a`, color }}>
                   <k.icon className="size-[18px]" />
                 </span>
                 <div className="min-w-0 flex-1">
@@ -105,15 +105,15 @@ export function DailyPlanCard({ compact = false }: { compact?: boolean }) {
                   {t.target > 1 && !compact && (
                     <div className="mt-1.5 flex items-center gap-2">
                       <ProgressBar value={t.done / t.target} color={color} height="h-1" className="max-w-48" />
-                      <span className="text-[10px] text-muted tabular-nums">
+                      <span className="text-[10px] whitespace-nowrap text-muted tabular-nums">
                         {t.done}/{t.target} {k.unit}
                       </span>
                     </div>
                   )}
                 </div>
                 {!t.complete && (
-                  <Link to={t.link} aria-label={`Empezar: ${t.title}`} className="inline-flex h-8 shrink-0 items-center gap-1 rounded-lg bg-brand-500/10 px-3 text-xs font-semibold text-brand-700 transition-colors hover:bg-brand-500/20 dark:text-brand-300">
-                    <Play className="size-3 fill-current" /> <span className="hidden sm:inline">Empezar</span>
+                  <Link to={t.link} aria-label={`Empezar: ${t.title}`} className="inline-flex size-10 shrink-0 items-center justify-center gap-1 rounded-xl bg-brand-500/10 text-xs font-semibold sm:h-9 sm:w-auto sm:px-3 text-brand-700 transition-colors hover:bg-brand-500/20 dark:text-brand-300">
+                    <Play className="size-3.5 fill-current sm:size-3" /> <span className="hidden sm:inline">Empezar</span>
                   </Link>
                 )}
               </motion.li>

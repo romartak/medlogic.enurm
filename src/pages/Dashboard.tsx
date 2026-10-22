@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { ArrowRight, CalendarDays, Flame, GraduationCap, Layers, Newspaper, RotateCcw, Sparkles, Target, Trophy, Zap } from 'lucide-react'
+import { ArrowRight, BookOpen, CalendarDays, Check, ChartColumn, Flame, GraduationCap, Layers, Newspaper, RotateCcw, Sparkles, Target, Trophy, Zap } from 'lucide-react'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { useProgress, levelFromXp, levelTitle } from '@/store/progress'
 import { resolveExamDate } from '@/lib/plan'
@@ -13,7 +13,7 @@ import { QuestionCard } from '@/components/QuestionCard'
 import { UPDATES } from '@/data/updates'
 import { getSpecialty } from '@/data/specialties'
 import { useCardTotals } from '@/hooks/useCollection'
-import { dayKey, daysBetween, formatDate, hashString, pct } from '@/lib/utils'
+import { cn, dayKey, daysBetween, formatDate, hashString, pct } from '@/lib/utils'
 import { playSound } from '@/lib/fx'
 
 function greeting() {
@@ -23,7 +23,7 @@ function greeting() {
 
 export default function Dashboard() {
   const navigate = useNavigate()
-  const { attempts, activity, xp, settings, exams, profile } = useProgress()
+  const { attempts, activity, xp, settings, exams, profile, guidesRead } = useProgress()
   const cardTotals = useCardTotals()
   const recordAnswer = useProgress((s) => s.recordAnswer)
   const questions = useBank((s) => s.questions)
@@ -52,6 +52,16 @@ export default function Dashboard() {
   const [qotdChoice, setQotdChoice] = useState<number | null>(null)
 
   const goalProgress = Math.min(1, ov.todayAnswered / Math.max(1, settings.dailyGoal))
+  const isNew = ov.answered === 0 && exams.length === 0
+  const hasActivity = series.some((d) => d.answered > 0)
+  const cardsStudied = Object.values(activity).some((d) => d.cards > 0)
+  const firstSteps = [
+    { done: ov.answered > 0, icon: Target, title: 'Responde tu primera pregunta', body: 'Empieza por la pregunta del día, aquí abajo.', to: '/practica?auto=1' },
+    { done: cardsStudied, icon: Layers, title: 'Repasa tus primeras flashcards', body: 'Unos minutos al día bastan para no olvidar.', to: '/flashcards' },
+    { done: guidesRead.length > 0, icon: BookOpen, title: 'Lee una guía de alto rendimiento', body: 'Tablas, perlas y alertas en 5–10 minutos.', to: '/guias' },
+    { done: exams.length > 0, icon: GraduationCap, title: 'Haz un mini simulacro', body: 'Mide tu punto de partida con 20 preguntas.', to: '/simulacro' },
+  ]
+  const stepsDone = firstSteps.filter((f) => f.done).length
 
   return (
     <div className="space-y-6">
@@ -61,7 +71,7 @@ export default function Dashboard() {
         <div className="pointer-events-none absolute right-40 -bottom-28 size-60 rounded-full bg-fuchsia-400/20 blur-2xl" />
         <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div>
-            <p className="text-sm font-medium text-white/80">{greeting()}{settings.name ? `, ${settings.name}` : ''} 👋</p>
+            <p className="text-sm font-medium text-white/80">{greeting()}{settings.name ? `, ${settings.name}` : ''}</p>
             <h1 className="mt-1 text-2xl font-extrabold sm:text-3xl">{ov.todayAnswered >= settings.dailyGoal ? '¡Meta diaria cumplida! Sigue así.' : ov.todayAnswered > 0 ? `Vas por buen camino: ${ov.todayAnswered} preguntas hoy.` : '¿Listo para tu sesión de hoy?'}</h1>
             <div className="mt-4 flex flex-wrap items-center gap-3 text-sm">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 font-semibold backdrop-blur">
@@ -83,18 +93,18 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-          <div className="flex items-center gap-5">
-            <Ring value={goalProgress} size={132} stroke={11} color="#fff" track="rgb(255 255 255 / 0.22)">
+          <div className="flex items-center gap-4 sm:gap-5">
+            <Ring value={goalProgress} size={116} stroke={10} color="#fff" track="rgb(255 255 255 / 0.22)">
               <div>
                 <div className="font-display text-3xl font-extrabold">{ov.todayAnswered}</div>
                 <div className="text-[11px] text-white/80">de {settings.dailyGoal} hoy</div>
               </div>
             </Ring>
-            <div className="flex flex-col gap-2">
-              <button onClick={() => navigate('/practica?auto=1')} className="inline-flex h-11 items-center gap-2 rounded-xl bg-white px-4 text-sm font-semibold whitespace-nowrap text-slate-900 shadow-lg transition-transform hover:scale-[1.03] active:scale-95">
+            <div className="flex min-w-0 flex-1 flex-col gap-2 md:flex-none">
+              <button onClick={() => navigate('/practica?auto=1')} className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-white px-4 text-sm font-semibold whitespace-nowrap text-slate-900 shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.97]">
                 <Zap className="size-4" /> Práctica rápida
               </button>
-              <Link to="/simulacro" className="inline-flex h-11 items-center gap-2 rounded-xl bg-white/15 px-4 text-sm whitespace-nowrap font-semibold backdrop-blur transition-colors hover:bg-white/25">
+              <Link to="/simulacro" className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-white/15 px-4 text-sm font-semibold whitespace-nowrap backdrop-blur transition-colors hover:bg-white/25">
                 <GraduationCap className="size-4" /> Simulacro
               </Link>
             </div>
@@ -108,39 +118,64 @@ export default function Dashboard() {
         <Card className="flex items-start gap-3 border-dashed p-4 sm:items-center">
           <Sparkles className="size-5 shrink-0 text-amber-500" />
           <p className="flex-1 text-sm text-muted">
-            Estás usando <b className="text-[var(--text)]">preguntas de muestra</b> ({questions.length}). El banco completo con las preguntas de todos los años del ENURM se está preparando y aparecerá aquí automáticamente.
+            Estás usando <b className="text-[var(--text)]">{questions.length} preguntas de muestra</b>. El banco completo del ENURM aparecerá aquí automáticamente.
           </p>
         </Card>
       )}
 
-      {/* Métricas */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-        <StatCard icon={<Flame className="size-5" />} label="Racha" value={`${streak} ${streak === 1 ? 'día' : 'días'}`} hint={streak ? 'No la rompas hoy' : 'Empieza una racha hoy'} color="#f97316" />
-        <StatCard icon={<Target className="size-5" />} label="Precisión" value={`${Math.round(ov.accuracy * 100)}%`} hint={`${ov.correct} de ${ov.answered} correctas`} color="#06c4b0" delay={0.05} />
-        <StatCard icon={<Layers className="size-5" />} label="Cobertura del banco" value={`${Math.round(ov.coverage * 100)}%`} hint={`${ov.uniqueSeen} de ${questions.length} vistas`} color="#6366f1" delay={0.1} />
-        <StatCard icon={<Sparkles className="size-5" />} label="Puntaje estimado" value={predicted === null ? '—' : `${predicted}%`} hint={predicted === null ? 'Responde 10+ preguntas' : 'Según tu rendimiento'} color="#ec4899" delay={0.15} />
-      </div>
+      {isNew ? (
+        <Card className="p-5 sm:p-6">
+          <div className="flex flex-wrap items-end justify-between gap-2">
+            <div>
+              <h2 className="font-display text-lg font-bold">Primeros pasos</h2>
+              <p className="text-sm text-muted">Cuatro cosas para arrancar con buen pie. Tus métricas aparecerán aquí en cuanto empieces.</p>
+            </div>
+            <span className="text-sm font-semibold text-muted tabular-nums">{stepsDone}/4</span>
+          </div>
+          <ol className="mt-4 grid gap-2 sm:grid-cols-2">
+            {firstSteps.map((f, i) => (
+              <li key={f.title}>
+                <Link to={f.to} className={cn('group flex h-full items-center gap-3 rounded-xl border p-3 transition-colors', f.done ? 'border-emerald-500/30 bg-emerald-500/[0.06]' : 'border-soft hover:border-brand-500/40 hover:bg-brand-500/[0.04]')}>
+                  <span className={cn('grid size-9 shrink-0 place-items-center rounded-full text-sm font-bold', f.done ? 'bg-emerald-600 text-white' : 'surface-2 text-muted')}>{f.done ? <Check className="size-4" /> : i + 1}</span>
+                  <div className="min-w-0 flex-1">
+                    <div className={cn('text-sm font-semibold', f.done && 'text-muted line-through')}>{f.title}</div>
+                    <div className="text-xs text-muted">{f.body}</div>
+                  </div>
+                  <f.icon className="size-4 shrink-0 text-muted transition-colors group-hover:text-brand-600 dark:group-hover:text-brand-400" />
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </Card>
+      ) : (
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+          <StatCard icon={<Flame className="size-5" />} label="Racha" value={`${streak} ${streak === 1 ? 'día' : 'días'}`} hint={streak ? 'No la rompas hoy' : 'Empieza una racha hoy'} color="#f97316" />
+          <StatCard icon={<Target className="size-5" />} label="Precisión" value={`${Math.round(ov.accuracy * 100)}%`} hint={`${ov.correct} de ${ov.answered} correctas`} color="#06c4b0" delay={0.05} />
+          <StatCard icon={<Layers className="size-5" />} label="Cobertura" value={`${Math.round(ov.coverage * 100)}%`} hint={`${ov.uniqueSeen} de ${questions.length} vistas`} color="#6366f1" delay={0.1} />
+          <StatCard icon={<Sparkles className="size-5" />} label="Puntaje estimado" value={predicted === null ? '—' : `${predicted}%`} hint={predicted === null ? 'Responde 10+ preguntas' : 'Según tu rendimiento'} color="#ec4899" delay={0.15} />
+        </div>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Acciones */}
         <div className="min-w-0 space-y-6 lg:col-span-2">
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid grid-cols-3 gap-2 sm:gap-3">
             {[
-              { to: '/repaso', icon: RotateCcw, title: 'Repasar errores', value: failedCount, hint: failedCount ? 'pendientes de corregir' : 'sin errores pendientes', color: '#ef4444' },
+              { to: '/repaso', icon: RotateCcw, title: 'Errores', value: failedCount, hint: failedCount ? 'pendientes de corregir' : 'sin errores pendientes', color: '#ef4444' },
               { to: '/flashcards', icon: Layers, title: 'Flashcards', value: dueCards, hint: `para hoy · ${newCards} nuevas`, color: '#8b5cf6' },
               { to: '/simulacro', icon: GraduationCap, title: 'Simulacros', value: exams.length, hint: exams[0] ? `último: ${pct(exams[0].correct, exams[0].total)}%` : 'aún sin simulacros', color: '#0ea5e9' },
             ].map((a, i) => (
               <motion.div key={a.to} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.05 }}>
-                <Link to={a.to} className="card card-hover group flex h-full flex-col p-5">
+                <Link to={a.to} className="card card-hover group flex h-full flex-col p-3 sm:p-5">
                   <div className="flex items-center justify-between">
-                    <span className="grid size-10 place-items-center rounded-xl" style={{ backgroundColor: `${a.color}1a`, color: a.color }}>
+                    <span className="grid size-9 place-items-center rounded-xl sm:size-10" style={{ backgroundColor: `${a.color}1a`, color: a.color }}>
                       <a.icon className="size-5" />
                     </span>
-                    <ArrowRight className="size-4 text-muted transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="size-4 text-muted transition-transform group-hover:translate-x-1 max-sm:hidden" />
                   </div>
-                  <div className="mt-4 font-display text-3xl font-bold">{a.value}</div>
-                  <div className="text-sm font-semibold">{a.title}</div>
-                  <div className="text-xs text-muted">{a.hint}</div>
+                  <div className="mt-3 font-display text-2xl font-bold sm:mt-4 sm:text-3xl">{a.value}</div>
+                  <div className="text-xs leading-tight font-semibold sm:text-sm">{a.title}</div>
+                  <div className="mt-0.5 text-xs text-muted max-sm:hidden">{a.hint}</div>
                 </Link>
               </motion.div>
             ))}
@@ -176,7 +211,15 @@ export default function Dashboard() {
                 Ver todo
               </Link>
             </div>
-            <div className="h-36">
+            <div className="relative h-36">
+              {!hasActivity && (
+                <div className="absolute inset-0 z-10 grid place-items-center px-6 text-center">
+                  <div>
+                    <ChartColumn className="mx-auto size-6 text-muted" />
+                    <p className="mt-2 text-sm text-muted">Aún no hay actividad. Cada día que estudies aparecerá aquí.</p>
+                  </div>
+                </div>
+              )}
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={series} margin={{ top: 4, right: 0, left: 0, bottom: 0 }}>
                   <defs>
@@ -185,7 +228,7 @@ export default function Dashboard() {
                       <stop offset="100%" stopColor="#6366f1" />
                     </linearGradient>
                   </defs>
-                  <XAxis dataKey="label" tick={{ fontSize: 10, fill: 'var(--muted)' }} axisLine={false} tickLine={false} interval={2} />
+                  <XAxis dataKey="label" hide={!hasActivity} tick={{ fontSize: 10, fill: 'var(--muted)' }} axisLine={false} tickLine={false} interval={2} />
                   <Tooltip cursor={{ fill: 'var(--surface-2)' }} contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, fontSize: 12 }} formatter={(v) => [v, 'Preguntas']} />
                   <Bar dataKey="answered" fill="url(#dash-bar)" radius={[6, 6, 2, 2]} />
                 </BarChart>
