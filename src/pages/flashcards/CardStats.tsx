@@ -129,7 +129,7 @@ export default function CardStats() {
         title="Estadísticas de flashcards"
         subtitle="Pronóstico, retención real, intervalos y facilidad, como en Anki."
         actions={
-          <select value={deck} onChange={(e) => setDeck(e.target.value)} className="h-10 rounded-xl border border-soft bg-[var(--surface)] px-3 text-sm" aria-label="Mazo">
+          <select value={deck} onChange={(e) => setDeck(e.target.value)} className="h-10 w-full max-w-full min-w-0 rounded-xl border border-soft bg-[var(--surface)] px-3 text-sm sm:w-auto" aria-label="Mazo">
             <option value={ALL_DECK}>Toda la colección</option>
             {col.decks
               .filter((d) => !d.filtered)

@@ -8,7 +8,7 @@ Plataforma web para preparar el **ENURM** (Examen Nacional Único de Residencias
 
 | | |
 | --- | --- |
-| 🧭 **Cuestionario inicial** | Año y mes del examen (o fecha exacta), residencia deseada, días y horas disponibles, autoevaluación por área y métodos preferidos. |
+| 🧭 **Cuestionario inicial** | Convocatoria del ENURM (la fecha se calcula sola: primer domingo de marzo), residencia deseada, días y horas disponibles, autoevaluación por área y métodos preferidos. |
 | 🗓️ **Plan diario personalizado** | Tareas concretas cada día (preguntas de dos especialidades intercaladas, repaso de errores, flashcards, una guía, simulacro semanal) según la fase de preparación, tu tiempo, tus puntos débiles y tu residencia. Se recalcula con tu precisión real. |
 | 🩺 **Espacios por especialidad** | Una página para cada una de las 23 áreas: temas de alto rendimiento, perlas, temas del banco con tu precisión, flashcards, guías, actualizaciones y tus errores. |
 | 🎯 **Práctica (modo tutor)** | Filtra por especialidad, año o estado (no vistas, falladas, marcadas). Explicación inmediata, atajos de teclado, rachas. |

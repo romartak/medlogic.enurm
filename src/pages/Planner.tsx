@@ -7,9 +7,10 @@ import { useProgress } from '@/store/progress'
 import { DailyPlanCard } from '@/components/DailyPlanCard'
 import { useDailyPlan, usePlanInputs, useWeekPreview } from '@/hooks/useDailyPlan'
 import { PHASES, PHASE_ORDER, describeProfile, resolveExamDate } from '@/lib/plan'
+import { formatEnurmDate } from '@/data/enurm'
 import { getSpecialty } from '@/data/specialties'
 import { Button, Card, PageHeader, Ring, Segmented, SpecialtyIcon } from '@/components/ui/primitives'
-import { addDays, cn, dayKey, formatClock, tintText } from '@/lib/utils'
+import { addDays, cn, dayKey, formatClock, softHyphens, tintText } from '@/lib/utils'
 import { playSound } from '@/lib/fx'
 import { toast } from '@/store/toasts'
 
@@ -30,8 +31,8 @@ function Countdown({ date }: { date: string }) {
   return (
     <div className="grid grid-cols-4 gap-2 sm:gap-3">
       {parts.map((p) => (
-        <div key={p.l} className="rounded-2xl bg-white/15 p-3 text-center backdrop-blur sm:p-4">
-          <div className="relative h-9 overflow-hidden font-display text-3xl font-extrabold tabular-nums sm:h-11 sm:text-4xl">
+        <div key={p.l} className="rounded-2xl bg-white/15 px-1 py-3 text-center backdrop-blur sm:p-4">
+          <div className="relative h-8 overflow-hidden font-display text-2xl font-extrabold tabular-nums min-[400px]:h-9 min-[400px]:text-3xl sm:h-11 sm:text-4xl">
             <AnimatePresence mode="popLayout" initial={false}>
               <motion.span key={p.v} initial={{ y: -30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 30, opacity: 0 }} className="absolute inset-0">
                 {String(p.v).padStart(2, '0')}
@@ -132,8 +133,8 @@ function PhaseTimeline({ current }: { current: PlanPhase }) {
             <div className="h-1.5 overflow-hidden rounded-full surface-2">
               <motion.div className="h-full rounded-full" style={{ backgroundColor: info.color }} initial={{ width: 0 }} animate={{ width: state === 'past' ? '100%' : state === 'current' ? '55%' : '0%' }} transition={{ duration: 0.8, delay: i * 0.1 }} />
             </div>
-            <div className={cn('mt-2 text-xs font-semibold', state === 'current' ? '' : 'text-muted')} style={state === 'current' ? tintText(info.color) : undefined}>
-              {info.name}
+            <div lang="es" className={cn('mt-2 text-[11px] leading-tight font-semibold hyphens-auto [overflow-wrap:anywhere] sm:text-xs', state === 'current' ? '' : 'text-muted')} style={state === 'current' ? tintText(info.color) : undefined}>
+              {softHyphens(info.name, 8)}
             </div>
             <div className="hidden text-[11px] text-muted sm:block">{ph === 'fundamentos' ? '> 6 meses' : ph === 'consolidacion' ? '2–6 meses' : ph === 'intensivo' ? '15–60 días' : '≤ 14 días'}</div>
           </div>
@@ -145,13 +146,12 @@ function PhaseTimeline({ current }: { current: PlanPhase }) {
 
 export default function Planner() {
   const navigate = useNavigate()
-  const settings = useProgress((s) => s.settings)
   const profile = useProgress((s) => s.profile)
   const planDone = useProgress((s) => s.planDone)
   const { priorities } = usePlanInputs()
   const week = useWeekPreview(7)
   const { plan, regenerate } = useDailyPlan()
-  const target = resolveExamDate(profile, settings.examDate)
+  const target = resolveExamDate(profile)
   const phase = PHASES[plan.phase]
   const doneThisWeek = Object.keys(planDone).filter((k) => k >= dayKey(addDays(new Date(), -6))).length
 
@@ -180,25 +180,29 @@ export default function Planner() {
             <div className="pointer-events-none absolute -top-16 -right-16 size-64 rounded-full bg-white/10 blur-2xl" />
             <div className="relative flex flex-col gap-5">
               <div>
-                <div className="text-sm font-medium text-white/80">Cuenta regresiva{target.estimated && target.date ? ' (fecha estimada)' : ''}</div>
-                <h2 className="text-2xl font-extrabold">
-                  {target.date ? `ENURM · ${target.date.toLocaleDateString('es-DO', target.estimated ? { month: 'long', year: 'numeric' } : { day: 'numeric', month: 'long', year: 'numeric' })}` : 'Aún no has indicado la fecha del examen'}
-                </h2>
+                <div className="text-sm font-medium text-white/80">Cuenta regresiva</div>
+                <h2 className="text-2xl font-extrabold">{target.enurm ? `ENURM ${target.enurm.year}` : 'Aún no has elegido tu convocatoria'}</h2>
+                {target.enurm && (
+                  <p className="mt-1 text-sm text-white/85 first-letter:uppercase">
+                    {formatEnurmDate(target.enurm, { weekday: true })}
+                    {target.estimated && ' · fecha proyectada (primer domingo de marzo), pendiente de la convocatoria oficial'}
+                  </p>
+                )}
               </div>
               {target.date ? (
                 <Countdown date={dayKey(target.date)} />
               ) : (
                 <button onClick={() => navigate('/bienvenida')} className="self-start rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-900">
-                  Indicar fecha
+                  Elegir convocatoria
                 </button>
               )}
             </div>
           </motion.div>
 
           <Card className="p-5 sm:p-6">
-            <div className="mb-4 flex items-center justify-between">
+            <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
               <h2 className="font-semibold">Fases de preparación</h2>
-              <span className="text-xs text-muted">{phase.description}</span>
+              <span className="text-xs text-muted sm:max-w-xs sm:text-right">{phase.description}</span>
             </div>
             <PhaseTimeline current={plan.phase} />
           </Card>

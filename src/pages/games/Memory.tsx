@@ -3,7 +3,7 @@ import { motion } from 'motion/react'
 import { Clock, MousePointerClick } from 'lucide-react'
 import { MATCH_SETS } from '@/data/games'
 import { playSound } from '@/lib/fx'
-import { cn, formatClock, shuffle } from '@/lib/utils'
+import { cn, formatClock, shuffle, softHyphens } from '@/lib/utils'
 import { Segmented } from '@/components/ui/primitives'
 import { GameShell, type EndGame } from './GameShell'
 
@@ -79,14 +79,15 @@ function Board({ setId, end }: { setId: string; end: EndGame }) {
               <motion.div className="preserve-3d relative h-full w-full" animate={{ rotateY: isOpen ? 180 : 0, x: isMiss ? [0, -4, 4, 0] : 0 }} transition={{ type: 'spring', stiffness: 260, damping: 22 }}>
                 <div className="backface-hidden absolute inset-0 grid place-items-center rounded-xl bg-brand-gradient text-2xl font-black text-white/80 shadow-md">?</div>
                 <div
+                  lang="es"
                   className={cn(
-                    'backface-hidden absolute inset-0 grid place-items-center rounded-xl border-2 p-1.5 text-center text-[11px] leading-tight font-semibold sm:text-sm',
+                    'backface-hidden absolute inset-0 grid place-items-center overflow-hidden rounded-xl border-2 p-1 text-center text-[11px] leading-tight font-semibold hyphens-auto [overflow-wrap:anywhere] min-[400px]:p-1.5 sm:text-sm',
                     isMatched ? 'border-emerald-500 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' : isMiss ? 'border-rose-500 bg-rose-500/10' : 'border-brand-500 bg-[var(--surface)]',
                     t.side === 'b' && !isMatched && !isMiss && 'border-accent-500',
                   )}
                   style={{ transform: 'rotateY(180deg)' }}
                 >
-                  {t.text}
+                  {softHyphens(t.text)}
                 </div>
               </motion.div>
             </button>

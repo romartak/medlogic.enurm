@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
-import { ArrowLeft, ArrowRight, BookOpen, CalendarDays, Check, Clock, Gamepad2, GraduationCap, Layers, Sparkles, Stethoscope, Target, UserRound } from 'lucide-react'
+import { ArrowLeft, ArrowRight, BookOpen, CalendarDays, Check, Clock, Gamepad2, GraduationCap, Info, Layers, Sparkles, Stethoscope, Target, UserRound } from 'lucide-react'
 import type { StudentRole, StudyMethod, StudyProfile } from '@/types'
 import { useProgress } from '@/store/progress'
 import { AREAS, RESIDENCIES } from '@/data/areas'
-import { MONTHS, PHASES, phaseFor, resolveExamDate, specialtyPriorities, rotation, typicalQuestionsPerDay, DEFAULT_PROFILE } from '@/lib/plan'
+import { PHASES, phaseFor, resolveExamDate, specialtyPriorities, rotation, typicalQuestionsPerDay, DEFAULT_PROFILE } from '@/lib/plan'
 import { getSpecialty } from '@/data/specialties'
 import { Logo } from '@/components/ui/Logo'
 import { Icon } from '@/components/ui/Icon'
@@ -13,6 +13,7 @@ import { Button, SpecialtyBadge } from '@/components/ui/primitives'
 import { cn, daysBetween, tintText } from '@/lib/utils'
 import { celebrate } from '@/lib/fx'
 import { useBank } from '@/store/bank'
+import { formatEnurmDate, upcomingEnurm } from '@/data/enurm'
 
 const ROLES: { id: StudentRole; title: string; body: string }[] = [
   { id: 'estudiante', title: 'Estudiante de medicina', body: 'Aún cursando la carrera.' },
@@ -68,25 +69,24 @@ export default function Onboarding() {
   const updateSettings = useProgress((s) => s.updateSettings)
   const counts = useBank((s) => s.specialtyCounts)
 
-  const thisYear = new Date().getFullYear()
   const [step, setStep] = useState(0)
   const [dir, setDir] = useState(1)
   const [name, setName] = useState(settings.name)
-  const [exactDate, setExactDate] = useState(settings.examDate ?? '')
-  const [p, setP] = useState<StudyProfile>(() => ({ ...DEFAULT_PROFILE, ...stored, examYear: stored.examYear ?? null }))
+  const upcoming = useMemo(() => upcomingEnurm(3), [])
+  const [p, setP] = useState<StudyProfile>(() => ({ ...DEFAULT_PROFILE, ...stored, examYear: upcoming.some((e) => e.year === stored.examYear) ? stored.examYear : null }))
   const set = (patch: Partial<StudyProfile>) => setP((cur) => ({ ...cur, ...patch }))
 
-  const target = resolveExamDate(p, exactDate || null)
+  const target = resolveExamDate(p)
   const daysLeft = target.date ? daysBetween(new Date(), target.date) : null
   const phase = PHASES[phaseFor(daysLeft)]
   const priorities = useMemo(() => specialtyPriorities(p, [], counts), [p, counts])
   const firstWeek = useMemo(() => [...new Set(rotation(priorities, 7))].slice(0, 5), [priorities])
-  const questionsPerDay = useMemo(() => typicalQuestionsPerDay(p, exactDate || null, priorities), [p, exactDate, priorities])
+  const questionsPerDay = useMemo(() => typicalQuestionsPerDay(p, priorities), [p, priorities])
 
   const steps = [
     { key: 'hola', title: '¡Bienvenido a MedLogic!', subtitle: 'Responde unas preguntas rápidas y crearemos un plan de estudio diario hecho para ti.', valid: true },
     { key: 'rol', title: '¿En qué etapa estás?', subtitle: 'Así ajustamos el ritmo de tu plan.', valid: !!p.role },
-    { key: 'fecha', title: '¿Cuándo vas a tomar el ENURM?', subtitle: 'El plan cambia según el tiempo que te queda: de fundamentos a recta final.', valid: !!p.examYear || !!exactDate },
+    { key: 'fecha', title: '¿En qué convocatoria del ENURM te presentas?', subtitle: 'El plan cambia según el tiempo que te queda: de fundamentos a recta final.', valid: !!p.examYear },
     { key: 'residencia', title: '¿Qué residencia te gustaría hacer?', subtitle: 'Reforzaremos un poco más las áreas relacionadas.', valid: !!p.residency },
     { key: 'tiempo', title: '¿Cuánto tiempo puedes estudiar?', subtitle: 'Sé realista: un plan sostenible rinde más que uno ambicioso.', valid: p.studyDays.length > 0 },
     { key: 'nivel', title: '¿Cómo te sientes en cada área?', subtitle: 'Al principio priorizamos lo que te cuesta. Luego el plan se ajusta con tus resultados reales.', valid: AREAS.every((a) => p.confidence[a.id]) },
@@ -103,7 +103,7 @@ export default function Onboarding() {
   const finish = () => {
     const methods: StudyMethod[] = p.methods.includes('preguntas') ? p.methods : ['preguntas', ...p.methods]
     updateProfile({ ...p, methods, completed: true, skipped: false })
-    updateSettings({ name: name.trim(), examDate: exactDate || null, dailyGoal: questionsPerDay })
+    updateSettings({ name: name.trim(), examDate: target.enurm?.iso ?? null, dailyGoal: questionsPerDay })
     celebrate('big')
     navigate('/plan', { replace: true })
   }
@@ -177,69 +177,35 @@ export default function Onboarding() {
               )}
 
               {current.key === 'fecha' && (
-                <div className="space-y-6">
-                  <div>
-                    <div className="mb-3 text-sm font-semibold">Año</div>
-                    <div className="grid grid-cols-4 gap-2">
-                      {[0, 1, 2, 3].map((o) => {
-                        const y = thisYear + o
-                        return (
-                          <OptionCard key={y} active={p.examYear === y} onClick={() => {
-                            set({ examYear: y })
-                            setExactDate('')
-                          }} check={false} className="px-2 py-4 text-center">
-                            <div className="text-center font-display text-xl font-bold">{y}</div>
-                          </OptionCard>
-                        )
-                      })}
-                    </div>
+                <div className="space-y-5">
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    {upcoming.map((e) => {
+                      const left = daysBetween(new Date(), e.date)
+                      return (
+                        <OptionCard key={e.year} active={p.examYear === e.year} onClick={() => set({ examYear: e.year, examMonth: 3 })}>
+                          <div className="text-xs font-semibold tracking-wider text-muted uppercase">ENURM</div>
+                          <div className="font-display text-2xl font-extrabold">{e.year}</div>
+                          <div className="mt-1 text-sm font-medium first-letter:uppercase">{formatEnurmDate(e, { weekday: true })}</div>
+                          <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted">
+                            <span>Faltan {left} días</span>
+                            <span aria-hidden>·</span>
+                            <span className={e.confirmed ? 'font-semibold text-emerald-700 dark:text-emerald-400' : ''}>{e.confirmed ? 'Fecha oficial' : 'Fecha proyectada'}</span>
+                          </div>
+                        </OptionCard>
+                      )
+                    })}
                   </div>
-                  <div>
-                    <div className="mb-3 text-sm font-semibold">Mes aproximado</div>
-                    <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
-                      {MONTHS.map((m, i) => (
-                        <button key={m} onClick={() => {
-                          set({ examMonth: i + 1 })
-                          setExactDate('')
-                        }} className={cn('h-10 rounded-xl border text-sm font-medium transition-all', p.examMonth === i + 1 ? 'border-brand-500 bg-brand-500/10 text-brand-700 dark:text-brand-300' : 'border-soft hover:border-brand-500/40')}>
-                          {m.slice(0, 3)}
-                        </button>
-                      ))}
-                      <button onClick={() => {
-                          set({ examMonth: null })
-                          setExactDate('')
-                        }} className={cn('col-span-3 h-10 rounded-xl border text-sm font-medium transition-all sm:col-span-6', p.examMonth === null ? 'border-brand-500 bg-brand-500/10 text-brand-700 dark:text-brand-300' : 'border-soft hover:border-brand-500/40')}>
-                        Aún no sé el mes
-                      </button>
-                    </div>
+                  <div className="flex gap-3 rounded-2xl border border-soft bg-[var(--surface)] p-4 text-sm text-muted">
+                    <Info className="mt-0.5 size-4 shrink-0 text-brand-600 dark:text-brand-400" />
+                    <p>
+                      El ENURM se aplica una vez al año, el <b className="text-[var(--text)]">primer domingo de marzo</b>, en la UASD: así fue en 2024 (3 de marzo), 2025 (2 de marzo) y 2026 (1 de marzo). Por eso no tienes que indicar la fecha; solo elige en qué convocatoria te presentas. Si la convocatoria oficial anuncia otro día, actualizamos la fecha y tu plan se ajusta solo.
+                    </p>
                   </div>
-                  <label className="block max-w-xs">
-                    <span className="text-sm font-semibold">¿Ya sabes la fecha exacta? (opcional)</span>
-                    <input
-                      type="date"
-                      value={exactDate}
-                      onChange={(e) => {
-                        setExactDate(e.target.value)
-                        if (e.target.value) {
-                          const d = new Date(e.target.value + 'T00:00:00')
-                          set({ examYear: d.getFullYear(), examMonth: d.getMonth() + 1 })
-                        }
-                      }}
-                      className="mt-2 h-11 w-full rounded-xl border border-soft bg-[var(--surface)] px-3 text-sm outline-none focus:border-brand-500"
-                    />
-                  </label>
                   {daysLeft !== null && (
                     <motion.div key={daysLeft} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 rounded-2xl border border-soft bg-[var(--surface)] p-4">
                       <CalendarDays className="size-6 shrink-0" style={{ color: phase.color }} />
                       <div className="text-sm">
-                        {daysLeft < 0 ? (
-                          'Esa fecha ya pasó: elige una futura.'
-                        ) : (
-                          <>
-                            Faltan <b>{daysLeft} días</b>
-                            {target.estimated && ' (aprox.)'}. Empezarás en la fase <b style={tintText(phase.color)}>{phase.name}</b>.
-                          </>
-                        )}
+                        Faltan <b>{daysLeft} días</b>. Empezarás en la fase <b style={tintText(phase.color)}>{phase.name}</b>.
                       </div>
                     </motion.div>
                   )}

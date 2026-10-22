@@ -4,6 +4,7 @@ import { AREAS, RESIDENCIES, areaOf } from '@/data/areas'
 import { GUIDES } from '@/data/guides'
 import type { SpecialtyStat } from './stats'
 import { dayKey, daysBetween } from './utils'
+import { enurmDate, formatEnurmDate, type EnurmDate } from '@/data/enurm'
 
 export const DEFAULT_PROFILE: StudyProfile = {
   completed: false,
@@ -22,14 +23,13 @@ export const DEFAULT_PROFILE: StudyProfile = {
 export const MONTHS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 
 /**
- * Fecha objetivo: la fecha exacta si el estudiante la indicó; si no, el día 15 del mes elegido;
- * si solo sabe el año, se estima a mitad de año.
+ * Fecha objetivo: el día del ENURM de la convocatoria elegida (primer domingo de marzo).
+ * `estimated` indica que la fecha aún no está confirmada oficialmente.
  */
-export function resolveExamDate(profile: StudyProfile, exactDate: string | null): { date: Date | null; estimated: boolean } {
-  if (exactDate) return { date: new Date(exactDate + 'T08:00:00'), estimated: false }
-  if (!profile.examYear) return { date: null, estimated: true }
-  const month = profile.examMonth ?? 7
-  return { date: new Date(profile.examYear, month - 1, 15, 8), estimated: true }
+export function resolveExamDate(profile: StudyProfile): { date: Date | null; estimated: boolean; enurm: EnurmDate | null } {
+  if (!profile.examYear) return { date: null, estimated: true, enurm: null }
+  const enurm = enurmDate(profile.examYear)
+  return { date: enurm.date, estimated: !enurm.confirmed, enurm }
 }
 
 export interface PhaseInfo {
@@ -48,9 +48,9 @@ export const PHASES: Record<PlanPhase, PhaseInfo> = {
   consolidacion: { id: 'consolidacion', name: 'Consolidación', description: 'De 2 a 6 meses: más preguntas, repaso de errores y un simulacro semanal.', color: '#0ea5e9', alloc: { questions: 0.5, review: 0.15, flashcards: 0.2, guides: 0.15 }, examSize: 50 },
   intensivo: { id: 'intensivo', name: 'Repaso intensivo', description: 'Últimos 2 meses: simulacros frecuentes y foco en tus puntos débiles.', color: '#f59e0b', alloc: { questions: 0.55, review: 0.2, flashcards: 0.2, guides: 0.05 }, examSize: 100 },
   final: { id: 'final', name: 'Recta final', description: 'Últimas 2 semanas: repaso de errores, perlas y simulacros completos. Cuida el sueño.', color: '#ef4444', alloc: { questions: 0.45, review: 0.3, flashcards: 0.25, guides: 0 }, examSize: 100 },
-  'sin-fecha': { id: 'sin-fecha', name: 'Sin fecha definida', description: 'Plan equilibrado. Indica la fecha del examen para ajustarlo a tu calendario.', color: '#6366f1', alloc: { questions: 0.5, review: 0.15, flashcards: 0.2, guides: 0.15 }, examSize: 50 },
+  'sin-fecha': { id: 'sin-fecha', name: 'Sin fecha definida', description: 'Plan equilibrado. Elige tu convocatoria del ENURM para ajustarlo a tu calendario.', color: '#6366f1', alloc: { questions: 0.5, review: 0.15, flashcards: 0.2, guides: 0.15 }, examSize: 50 },
   examen: { id: 'examen', name: 'Día del examen', description: '¡Hoy es el día! Confía en tu preparación.', color: '#ec4899', alloc: { questions: 0, review: 0, flashcards: 0, guides: 0 }, examSize: 0 },
-  pasado: { id: 'pasado', name: 'Examen realizado', description: 'Actualiza la fecha si vas a presentarlo de nuevo.', color: '#64748b', alloc: { questions: 0.5, review: 0.2, flashcards: 0.2, guides: 0.1 }, examSize: 50 },
+  pasado: { id: 'pasado', name: 'Examen realizado', description: 'Si vas a presentarlo de nuevo, elige la próxima convocatoria.', color: '#64748b', alloc: { questions: 0.5, review: 0.2, flashcards: 0.2, guides: 0.1 }, examSize: 50 },
 }
 
 export const PHASE_ORDER: PlanPhase[] = ['fundamentos', 'consolidacion', 'intensivo', 'final']
@@ -152,7 +152,6 @@ function examWeekday(studyDays: number[]): number {
 export interface PlanInput {
   date: Date
   profile: StudyProfile
-  examDate: string | null
   priorities: Priority[]
   dueCards: number
   newCards: number
@@ -165,14 +164,14 @@ const MESSAGES: Record<PlanPhase, string[]> = {
   consolidacion: ['Tus errores son tu mejor material de estudio.', 'Intercala especialidades: así se fija mejor la información.', 'Cada simulacro te acerca al ritmo real del examen.'],
   intensivo: ['Prioriza lo que más pesa y lo que más fallas.', 'Simula condiciones reales: tiempo, silencio y concentración.', 'Repasa perlas y errores; ya tienes la base.'],
   final: ['Consolida, no empieces temas nuevos.', 'Duerme bien: la memoria se fija mientras descansas.', 'Repasa tus errores y confía en tu preparación.'],
-  'sin-fecha': ['Define la fecha del examen para afinar tu plan.', 'Un plan constante vale más que maratones esporádicas.', 'Practica, repasa tus errores y vuelve a practicar.'],
+  'sin-fecha': ['Elige en qué convocatoria del ENURM vas a presentarte para afinar tu plan.', 'Un plan constante vale más que maratones esporádicas.', 'Practica, repasa tus errores y vuelve a practicar.'],
   examen: ['¡Hoy es el día! Desayuna bien, llega temprano y lee cada pregunta con calma.'],
-  pasado: ['¿Vas a presentarlo de nuevo? Actualiza la fecha en tu perfil.'],
+  pasado: ['¿Vas a presentarlo de nuevo? Elige la próxima convocatoria en «Editar cuestionario».'],
 }
 
 export function buildDailyPlan(input: PlanInput): DailyPlan {
   const { date, profile, priorities } = input
-  const { date: target } = resolveExamDate(profile, input.examDate)
+  const { date: target } = resolveExamDate(profile)
   const daysLeft = target ? daysBetween(date, target) : null
   const phase = phaseFor(daysLeft)
   const info = PHASES[phase]
@@ -268,13 +267,13 @@ export function buildDailyPlan(input: PlanInput): DailyPlan {
 }
 
 /** Preguntas que tendría un día de estudio típico con este perfil (para resúmenes y la meta diaria). */
-export function typicalQuestionsPerDay(profile: StudyProfile, examDate: string | null, priorities: Priority[]): number {
+export function typicalQuestionsPerDay(profile: StudyProfile, priorities: Priority[]): number {
   const studyDays = profile.studyDays.length ? profile.studyDays : DEFAULT_PROFILE.studyDays
   const examDay = examWeekday(studyDays)
   const day = studyDays.find((d) => d !== examDay) ?? studyDays[0]
   const date = new Date()
   date.setDate(date.getDate() + ((day - date.getDay() + 7) % 7 || 7))
-  const plan = buildDailyPlan({ date, profile: { ...profile, studyDays }, examDate, priorities, dueCards: 20, newCards: 20, failedCount: 10, guidesRead: [] })
+  const plan = buildDailyPlan({ date, profile: { ...profile, studyDays }, priorities, dueCards: 20, newCards: 20, failedCount: 10, guidesRead: [] })
   return plan.tasks.filter((t) => t.kind === 'questions' || t.kind === 'review').reduce((a, t) => a + t.target, 0)
 }
 
@@ -317,7 +316,7 @@ export function taskProgress(task: PlanTask, ctx: TaskContext): { done: number; 
 /** Resumen legible del perfil. */
 export function describeProfile(p: StudyProfile): string[] {
   const out: string[] = []
-  if (p.examYear) out.push(`Examen: ${p.examMonth ? MONTHS[p.examMonth - 1] + ' de ' : ''}${p.examYear}`)
+  if (p.examYear) out.push(`ENURM ${p.examYear}: ${formatEnurmDate(enurmDate(p.examYear))}`)
   if (p.residency) out.push(`Residencia: ${RESIDENCIES.find((r) => r.id === p.residency)?.name ?? p.residency}`)
   out.push(`${p.studyDays.length} días/semana · ${p.minutesPerDay >= 60 ? `${p.minutesPerDay / 60} h` : `${p.minutesPerDay} min`} al día`)
   const weak = AREAS.filter((a) => p.confidence[a.id] === 1).map((a) => a.name)

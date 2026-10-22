@@ -11,7 +11,7 @@ import type { DailyPlan, PlanTask } from '@/types'
 
 /** Entradas comunes del plan (prioridades, tarjetas y errores pendientes). */
 export function usePlanInputs(): Omit<PlanInput, 'date'> {
-  const { profile, attempts, guidesRead, settings } = useProgress()
+  const { profile, attempts, guidesRead } = useProgress()
   const totals = useCardTotals()
   const questions = useBank((s) => s.questions)
   const byId = useBank((s) => s.byId)
@@ -21,14 +21,13 @@ export function usePlanInputs(): Omit<PlanInput, 'date'> {
     const stats = specialtyStats(attempts, questions)
     return {
       profile,
-      examDate: settings.examDate,
       priorities: specialtyPriorities(profile, stats, counts),
       dueCards: totals.due,
       newCards: totals.newAvailable,
       failedCount: Object.entries(attempts).filter(([id, a]) => !a.lastCorrect && byId.has(id)).length,
       guidesRead,
     }
-  }, [profile, attempts, totals.due, totals.newAvailable, guidesRead, settings.examDate, questions, byId, counts])
+  }, [profile, attempts, totals.due, totals.newAvailable, guidesRead, questions, byId, counts])
 }
 
 export interface TaskWithProgress extends PlanTask {

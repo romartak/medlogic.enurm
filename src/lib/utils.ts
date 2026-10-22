@@ -100,3 +100,35 @@ export function downloadFile(name: string, content: string, type = 'application/
 export function plural(n: number, one: string, many: string): string {
   return `${n.toLocaleString('es-DO')} ${n === 1 ? one : many}`
 }
+
+const VOWEL = /[aeiouáéíóúü]/i
+const INSEPARABLE = new Set(['bl', 'br', 'cl', 'cr', 'dr', 'fl', 'fr', 'gl', 'gr', 'kl', 'kr', 'pl', 'pr', 'tr', 'ch', 'll', 'rr', 'qu', 'gu'])
+
+/**
+ * Inserta guiones suaves (U+00AD) entre sílabas de las palabras largas, con las reglas básicas del
+ * español, para que el navegador las corte con guion en cajas estrechas aunque no tenga diccionario.
+ */
+export function softHyphens(text: string, minLength = 9): string {
+  return text.replace(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+/g, (w) => {
+    if (w.length < minLength) return w
+    let out = ''
+    let last = 0
+    for (let i = 2; i < w.length - 2; i++) {
+      const a = w[i - 1]
+      const b = w[i]
+      const c = w[i + 1]
+      let cut = -1
+      // V-CV: pa-ra
+      if (VOWEL.test(a) && !VOWEL.test(b) && VOWEL.test(c)) cut = i
+      // V-CCV con grupo inseparable: ta-blo
+      else if (VOWEL.test(a) && INSEPARABLE.has((b + c).toLowerCase()) && VOWEL.test(w[i + 2] ?? '')) cut = i
+      // VC-CV: ben-zo (salvo grupos inseparables: ca-bra)
+      else if (!VOWEL.test(a) && !VOWEL.test(b) && VOWEL.test(w[i - 2]) && VOWEL.test(c) && !INSEPARABLE.has((a + b).toLowerCase())) cut = i
+      if (cut > 0 && cut - last >= 2 && w.length - cut >= 3) {
+        out += w.slice(last, cut) + '­'
+        last = cut
+      }
+    }
+    return out + w.slice(last)
+  })
+}

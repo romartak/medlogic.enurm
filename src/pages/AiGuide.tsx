@@ -282,7 +282,7 @@ export default function AiGuide() {
           </Card>
         </div>
         <div className="mt-4 text-center">
-          <LinkButton to="/prompts" variant="outline">
+          <LinkButton to="/prompts" variant="outline" className="h-auto min-h-11 max-w-full py-2 whitespace-normal">
             <WandSparkles className="size-4" /> Practica en el constructor de prompts
           </LinkButton>
         </div>

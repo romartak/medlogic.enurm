@@ -4,6 +4,7 @@ import { motion } from 'motion/react'
 import { ArrowRight, CalendarDays, Flame, GraduationCap, Layers, Newspaper, RotateCcw, Sparkles, Target, Trophy, Zap } from 'lucide-react'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { useProgress, levelFromXp, levelTitle } from '@/store/progress'
+import { resolveExamDate } from '@/lib/plan'
 import { useBank } from '@/store/bank'
 import { computeStreak, dailySeries, overview, predictedScore, specialtyStats, weakest } from '@/lib/stats'
 import { Card, ProgressBar, Ring, SpecialtyIcon, StatCard } from '@/components/ui/primitives'
@@ -22,7 +23,7 @@ function greeting() {
 
 export default function Dashboard() {
   const navigate = useNavigate()
-  const { attempts, activity, xp, settings, exams } = useProgress()
+  const { attempts, activity, xp, settings, exams, profile } = useProgress()
   const cardTotals = useCardTotals()
   const recordAnswer = useProgress((s) => s.recordAnswer)
   const questions = useBank((s) => s.questions)
@@ -39,7 +40,8 @@ export default function Dashboard() {
   const failedCount = Object.entries(attempts).filter(([id, a]) => !a.lastCorrect && byId.has(id)).length
   const dueCards = cardTotals.due
   const newCards = cardTotals.newAvailable
-  const daysLeft = settings.examDate ? daysBetween(new Date(), new Date(settings.examDate + 'T00:00:00')) : null
+  const examDay = resolveExamDate(profile).date
+  const daysLeft = examDay ? daysBetween(new Date(), examDay) : null
 
   // Pregunta del día: determinista según la fecha.
   const qotd = useMemo(() => {

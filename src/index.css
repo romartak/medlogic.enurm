@@ -101,6 +101,20 @@ html:root body {
   min-height: 100dvh;
   overflow-x: clip;
 }
+/* Sin zoom por doble toque y sin que iOS agrande el texto al girar el teléfono. */
+html:root {
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+/* iOS hace zoom al enfocar un campo con letra menor de 16 px: en pantallas táctiles se fija en 16 px. */
+@media (pointer: coarse), (max-width: 640px) {
+  html:root input:not([type='checkbox'], [type='radio'], [type='range'], [type='file'], [type='color']),
+  html:root select,
+  html:root textarea {
+    font-size: 16px;
+  }
+}
 
 @layer base {
   html {
@@ -109,6 +123,10 @@ html:root body {
   }
   body {
     @apply font-sans antialiased;
+  }
+  /* Un hijo de grid no se ensancha más que su columna por un texto largo o truncado. */
+  :where(.grid) > * {
+    min-width: 0;
   }
   h1,
   h2,

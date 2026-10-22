@@ -2,6 +2,9 @@
  * Biblioteca de prompts para usar MedLogic con cualquier IA (ChatGPT, Claude, Gemini, Copilot…).
  * Las variables se escriben {{clave}} y se rellenan desde la página /prompts.
  */
+import { formatEnurmDate, upcomingEnurm } from './enurm'
+
+const NEXT_ENURM = ((e) => `ENURM ${e.year}, ${formatEnurmDate(e, { weekday: true })}`)(upcomingEnurm(1)[0])
 
 export interface PromptVariable {
   key: string
@@ -424,7 +427,7 @@ ${SAFE}`,
     icon: 'calendar-range',
     description: 'Un plan semana a semana hasta tu examen, con técnicas basadas en evidencia y repasos programados.',
     variables: [
-      { key: 'fecha', label: 'Fecha del examen', placeholder: 'marzo de 2027' },
+      { key: 'fecha', label: 'Fecha del examen', placeholder: NEXT_ENURM, default: NEXT_ENURM },
       { key: 'horas', label: 'Horas por día', placeholder: '2', default: '2' },
       { key: 'debiles', label: 'Áreas débiles', placeholder: 'pediatría y salud pública' },
     ],

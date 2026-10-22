@@ -9,7 +9,7 @@ import { AREAS } from '@/data/areas'
 const profile: StudyProfile = { ...DEFAULT_PROFILE, completed: true, examYear: 2027, examMonth: 3, studyDays: [1, 2, 3, 4, 5, 6], minutesPerDay: 120, confidence: { pediatria: 1 }, residency: 'pediatria', updatedAt: 1 }
 
 function input(date: Date, p: StudyProfile = profile, extra: Partial<PlanInput> = {}): PlanInput {
-  return { date, profile: p, examDate: null, priorities: specialtyPriorities(p, [], {}), dueCards: 30, newCards: 50, failedCount: 12, guidesRead: [], ...extra }
+  return { date, profile: p, priorities: specialtyPriorities(p, [], {}), dueCards: 30, newCards: 50, failedCount: 12, guidesRead: [], ...extra }
 }
 
 describe('fases', () => {
@@ -23,11 +23,14 @@ describe('fases', () => {
     expect(phaseFor(-3)).toBe('pasado')
   })
 
-  it('usa la fecha exacta o estima el día 15 del mes elegido', () => {
-    expect(resolveExamDate(profile, '2027-03-02').estimated).toBe(false)
-    const est = resolveExamDate(profile, null)
-    expect(est.estimated).toBe(true)
-    expect(dayKey(est.date!)).toBe('2027-03-15')
+  it('toma el día del ENURM de la convocatoria elegida', () => {
+    const proj = resolveExamDate(profile)
+    expect(proj.estimated).toBe(true)
+    expect(dayKey(proj.date!)).toBe('2027-03-07')
+    const official = resolveExamDate({ ...profile, examYear: 2026 })
+    expect(official.estimated).toBe(false)
+    expect(dayKey(official.date!)).toBe('2026-03-01')
+    expect(resolveExamDate({ ...profile, examYear: null }).date).toBeNull()
   })
 })
 
@@ -94,7 +97,7 @@ describe('plan diario', () => {
   })
 
   it('el día antes del examen recomienda descansar', () => {
-    const plan = buildDailyPlan(input(new Date(2027, 2, 14), profile))
+    const plan = buildDailyPlan(input(new Date(2027, 2, 6), profile))
     expect(plan.restDay).toBe(true)
     expect(plan.message).toContain('descansa')
   })

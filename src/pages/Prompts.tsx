@@ -127,7 +127,7 @@ function Builder() {
         </Card>
         <Card className="p-5">
           <div className="mb-3 text-xs font-semibold text-muted uppercase">Vista previa</div>
-          <pre className="max-h-80 overflow-y-auto rounded-xl surface-2 p-4 text-sm whitespace-pre-wrap">{prompt || 'Tu prompt aparecerá aquí…'}</pre>
+          <pre className="max-h-80 overflow-y-auto rounded-xl surface-2 p-4 text-sm whitespace-pre-wrap [overflow-wrap:anywhere]">{prompt || 'Tu prompt aparecerá aquí…'}</pre>
           <PromptActions prompt={prompt} disabled={!prompt} />
         </Card>
       </div>
@@ -226,7 +226,7 @@ function PromptDetail({ p }: { p: PromptItem }) {
               <span>Prompt</span>
               <span>{prompt.length.toLocaleString('es-DO')} caracteres</span>
             </div>
-            <pre className="max-h-[560px] overflow-y-auto p-5 font-sans text-sm leading-relaxed whitespace-pre-wrap">
+            <pre className="max-h-[560px] overflow-y-auto p-5 font-sans text-sm leading-relaxed whitespace-pre-wrap [overflow-wrap:anywhere]">
               {highlighted.map((part, i) =>
                 part.mark ? (
                   <mark key={i} className="rounded bg-brand-500/20 px-0.5 text-brand-800 dark:text-brand-200">

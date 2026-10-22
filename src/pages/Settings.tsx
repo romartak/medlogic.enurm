@@ -5,7 +5,8 @@ import { useProgress } from '@/store/progress'
 import { useAnki } from '@/store/anki'
 import { Button, Card, LinkButton, PageHeader, Segmented, Toggle } from '@/components/ui/primitives'
 import { Modal } from '@/components/ui/Modal'
-import { dayKey, downloadFile } from '@/lib/utils'
+import { cn, dayKey, downloadFile } from '@/lib/utils'
+import { formatEnurmDate, upcomingEnurm } from '@/data/enurm'
 import { toast } from '@/store/toasts'
 import { REPO_URL } from '@/components/layout/AppLayout'
 import { GithubIcon } from '@/components/ui/Logo'
@@ -15,6 +16,7 @@ export default function Settings() {
   const settings = useProgress((s) => s.settings)
   const profile = useProgress((s) => s.profile)
   const update = useProgress((s) => s.updateSettings)
+  const updateProfile = useProgress((s) => s.updateProfile)
   const reset = useProgress((s) => s.resetProgress)
   const importBackup = useProgress((s) => s.importBackup)
   const [confirmReset, setConfirmReset] = useState(false)
@@ -52,10 +54,28 @@ export default function Settings() {
             <span className="text-sm text-muted">¿Cómo te llamamos?</span>
             <input value={settings.name} onChange={(e) => update({ name: e.target.value })} placeholder="Dra. / Dr. …" className="mt-1.5 h-11 w-full rounded-xl border border-soft surface-2 px-3 text-sm outline-none focus:border-brand-500" />
           </label>
-          <label className="mt-4 block">
-            <span className="text-sm text-muted">Fecha exacta del examen (si ya la conoces)</span>
-            <input type="date" value={settings.examDate ?? ''} onChange={(e) => update({ examDate: e.target.value || null })} className="mt-1.5 h-11 w-full rounded-xl border border-soft surface-2 px-3 text-sm outline-none focus:border-brand-500" />
-          </label>
+          <div className="mt-4">
+            <span className="text-sm text-muted">Convocatoria del ENURM</span>
+            <div className="mt-1.5 grid gap-2 sm:grid-cols-3">
+              {upcomingEnurm(3).map((e) => (
+                <button
+                  key={e.year}
+                  onClick={() => {
+                    updateProfile({ examYear: e.year, examMonth: 3 })
+                    update({ examDate: e.iso })
+                  }}
+                  aria-pressed={profile.examYear === e.year}
+                  className={cn('rounded-xl border px-3 py-2.5 text-left transition-colors', profile.examYear === e.year ? 'border-brand-500 bg-brand-500/10' : 'border-soft hover:border-brand-500/40')}
+                >
+                  <div className="font-semibold">ENURM {e.year}</div>
+                  <div className="text-xs text-muted">
+                    {formatEnurmDate(e)} · {e.confirmed ? 'oficial' : 'proyectada'}
+                  </div>
+                </button>
+              ))}
+            </div>
+            <p className="mt-2 text-xs text-muted">El ENURM se aplica el primer domingo de marzo; la fecha la fija la convocatoria oficial, no tú.</p>
+          </div>
         </Card>
 
         <Card className="p-5 sm:p-6">
