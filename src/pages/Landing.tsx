@@ -542,9 +542,17 @@ export default function Landing() {
         <div className="border-t border-soft">
           <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
             <p>Contenido educativo. No sustituye el juicio clínico ni las guías oficiales. Fechas y requisitos: Ministerio de Salud Pública y UASD.</p>
-            <a href={REPO_URL} target="_blank" rel="noreferrer" className="flex shrink-0 items-center gap-2 font-medium hover:text-[var(--text)]">
-              <GithubIcon className="size-4" /> Código en GitHub
-            </a>
+            <div className="flex shrink-0 flex-wrap items-center gap-x-5 gap-y-2">
+              <a href={`${import.meta.env.BASE_URL}privacidad/`} className="font-medium hover:text-[var(--text)]">
+                Privacidad
+              </a>
+              <a href={`${import.meta.env.BASE_URL}terminos/`} className="font-medium hover:text-[var(--text)]">
+                Términos
+              </a>
+              <a href={REPO_URL} target="_blank" rel="noreferrer" className="flex items-center gap-2 font-medium hover:text-[var(--text)]">
+                <GithubIcon className="size-4" /> Código en GitHub
+              </a>
+            </div>
           </div>
         </div>
       </footer>

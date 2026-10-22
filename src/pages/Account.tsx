@@ -228,6 +228,20 @@ function AuthForm() {
           </Button>
         </form>
 
+        {(mode === 'signin' || mode === 'signup') && (
+          <p className="mt-4 text-center text-xs text-muted">
+            Al continuar aceptas los{' '}
+            <a href={`${import.meta.env.BASE_URL}terminos/`} className="font-semibold underline">
+              Términos
+            </a>{' '}
+            y la{' '}
+            <a href={`${import.meta.env.BASE_URL}privacidad/`} className="font-semibold underline">
+              Política de privacidad
+            </a>
+            .
+          </p>
+        )}
+
         <div className="mt-5 text-center text-sm">
           {mode === 'signin' && (
             <button onClick={() => (setMode('magic'), setError(''))} className="font-medium text-muted hover:text-[var(--text)]">

@@ -4,7 +4,6 @@
   "installCommand": "npm ci",
   "buildCommand": "npm run build:vercel",
   "outputDirectory": "dist",
-  "trailingSlash": false,
   "headers": [
     {
       "source": "/(.*)",

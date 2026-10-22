@@ -21,6 +21,9 @@ Abre Supabase desde Vercel (**Storage → tu base → Open in Supabase**):
    - **Site URL**: tu dirección final, por ejemplo `https://medlogic-enurm.vercel.app`.
    - **Redirect URLs**: añade `https://medlogic-enurm.vercel.app/**` y, para desarrollo, `http://localhost:5173/**`.
 2. **Authentication → Sign In / Providers → Google** (lo más cómodo para tus usuarios): crea un cliente OAuth en Google Cloud Console (tipo «Aplicación web») con la URI de redirección `https://TU-PROYECTO.supabase.co/auth/v1/callback` y pega el *Client ID* y el *Client Secret*.
+3. **Google Cloud → Google Auth Platform**: en *Información de la marca* pon la página principal, la política de privacidad (`/privacidad/`) y los términos (`/terminos/`) de tu dominio, y en *Público* pulsa **Publicar aplicación** para salir del modo de prueba (solo se piden correo y perfil, sin revisión larga).
+
+Las páginas legales son archivos estáticos en `public/privacidad/` y `public/terminos/`. Revísalas y ajusta el correo de contacto si cambia.
 
 ### 4. Correos: importante
 El remitente de correo que trae Supabase **solo envía a los miembros de tu equipo y unas 2 veces por hora**. Para que cualquiera pueda registrarse con correo elige una opción:
