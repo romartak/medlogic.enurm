@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { ArrowRight, BookOpen, CalendarDays, Check, ChartColumn, Flame, GraduationCap, Layers, Newspaper, RotateCcw, Sparkles, Target, Trophy, Zap } from 'lucide-react'
+import { ArrowRight, Languages, BookOpen, CalendarDays, Check, ChartColumn, Flame, GraduationCap, Layers, Newspaper, RotateCcw, Sparkles, Target, Trophy, Zap } from 'lucide-react'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { useProgress, levelFromXp, levelTitle } from '@/store/progress'
 import { resolveExamDate } from '@/lib/plan'
@@ -15,10 +15,33 @@ import { getSpecialty } from '@/data/specialties'
 import { useCardTotals } from '@/hooks/useCollection'
 import { cn, dayKey, daysBetween, formatDate, hashString, pct } from '@/lib/utils'
 import { playSound } from '@/lib/fx'
+import { LINGO_LESSONS } from '@/data/lingo'
+import { lingoStreak, useLingo } from '@/store/lingo'
 
 function greeting() {
   const h = new Date().getHours()
   return h < 12 ? 'Buenos días' : h < 19 ? 'Buenas tardes' : 'Buenas noches'
+}
+
+/** Acceso a Terminología: siguiente lección y racha. */
+function LingoCard() {
+  const lessons = useLingo((s) => s.lessons)
+  const days = useLingo((s) => s.days)
+  const next = LINGO_LESSONS.find((l) => !lessons[l.id])
+  const streak = lingoStreak(days)
+  return (
+    <Link to={next ? `/terminologia/leccion/${next.id}` : '/terminologia'} className="card card-hover group flex items-center gap-4 p-5">
+      <span className="grid size-12 shrink-0 place-items-center rounded-2xl border-b-4 border-emerald-800 bg-emerald-600 text-white">
+        <Languages className="size-6" />
+      </span>
+      <div className="min-w-0 flex-1">
+        <div className="text-xs font-semibold text-muted">Terminología{streak ? ` · ${streak} ${streak === 1 ? 'día' : 'días'} de racha` : ''}</div>
+        <div className="font-display font-bold">{next ? `Siguiente: ${next.title}` : 'Ruta completada'}</div>
+        <div className="truncate text-xs text-muted">{next ? next.unit.title : 'Sigue con el repaso diario'}</div>
+      </div>
+      <ArrowRight className="size-4 shrink-0 text-muted transition-transform group-hover:translate-x-1" />
+    </Link>
+  )
 }
 
 export default function Dashboard() {
@@ -235,6 +258,8 @@ export default function Dashboard() {
               </ResponsiveContainer>
             </div>
           </Card>
+
+          <LingoCard />
 
           <Card className="p-5">
             <h2 className="mb-1 font-display font-bold">Para reforzar</h2>

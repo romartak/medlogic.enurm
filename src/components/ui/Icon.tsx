@@ -1,10 +1,12 @@
 import {
-  Activity, Award, Baby, Bone, BookOpen, Brain, BrainCircuit, Bug, Crown, Droplet, Droplets, Eye, FlaskConical, Flame,
+  ArrowLeftToLine, ArrowRightToLine, Activity, Award, Baby, Bone, BookOpen, Brain, BrainCircuit, Bug, Crown, Droplet, Droplets, Eye, FlaskConical, Flame,
   Footprints, Gamepad2, GraduationCap, Hand, HeartPulse, Layers, Medal, Microscope, Pill, Rocket, Scale, Scissors, Siren,
   Sparkles, Stethoscope, Target, Users, Venus, Wind, Zap, type LucideIcon,
 } from 'lucide-react'
 
 const ICONS: Record<string, LucideIcon> = {
+  'arrow-left-to-line': ArrowLeftToLine,
+  'arrow-right-to-line': ArrowRightToLine,
   activity: Activity,
   award: Award,
   baby: Baby,

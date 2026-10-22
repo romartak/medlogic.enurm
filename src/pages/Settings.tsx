@@ -1,8 +1,11 @@
 import { useRef, useState } from 'react'
-import { Download, Monitor, Moon, Settings as SettingsIcon, Sparkles, Sun, Trash2, Upload } from 'lucide-react'
+import { Download, Monitor, Moon, Settings as SettingsIcon, Sparkles, Sun, Trash2, Upload, Cloud } from 'lucide-react'
 import { describeProfile } from '@/lib/plan'
 import { useProgress } from '@/store/progress'
 import { useAnki } from '@/store/anki'
+import { useLingo } from '@/store/lingo'
+import { restoreSnapshot, takeSnapshot } from '@/lib/backup'
+import { useAuth } from '@/store/auth'
 import { Button, Card, LinkButton, PageHeader, Segmented, Toggle } from '@/components/ui/primitives'
 import { Modal } from '@/components/ui/Modal'
 import { cn, dayKey, downloadFile } from '@/lib/utils'
@@ -14,29 +17,23 @@ import type { Theme } from '@/types'
 
 export default function Settings() {
   const settings = useProgress((s) => s.settings)
+  const authStatus = useAuth((s) => s.status)
   const profile = useProgress((s) => s.profile)
   const update = useProgress((s) => s.updateSettings)
   const updateProfile = useProgress((s) => s.updateProfile)
   const reset = useProgress((s) => s.resetProgress)
-  const importBackup = useProgress((s) => s.importBackup)
   const [confirmReset, setConfirmReset] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
 
   const exportBackup = () => {
-    const plain = (o: object) => Object.fromEntries(Object.entries(o).filter(([, v]) => typeof v !== 'function'))
-    const data = plain(useProgress.getState())
-    const anki = plain(useAnki.getState())
-    downloadFile(`medlogic-respaldo-${dayKey()}.json`, JSON.stringify({ app: 'medlogic-enurm', version: 2, data, anki }, null, 2))
+    downloadFile(`medlogic-respaldo-${dayKey()}.json`, JSON.stringify(takeSnapshot(), null, 2))
     toast({ kind: 'success', title: 'Respaldo descargado' })
   }
 
   const restore = async (f: File | undefined) => {
     if (!f) return
     try {
-      const json = JSON.parse(await f.text())
-      if (json.app !== 'medlogic-enurm' || !json.data) throw new Error()
-      importBackup(json.data)
-      if (json.anki) useAnki.getState().importBackup(json.anki)
+      restoreSnapshot(JSON.parse(await f.text()))
       toast({ kind: 'success', title: 'Progreso restaurado' })
     } catch {
       toast({ kind: 'error', title: 'Archivo de respaldo no válido' })
@@ -48,6 +45,19 @@ export default function Settings() {
       <PageHeader icon={<SettingsIcon className="size-6" />} title="Ajustes" />
 
       <div className="space-y-6">
+        <Card className="flex flex-wrap items-center gap-4 p-5 sm:p-6">
+          <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-brand-500/10 text-brand-700 dark:text-brand-300">
+            <Cloud className="size-5" />
+          </span>
+          <div className="min-w-[12rem] flex-1">
+            <h2 className="font-semibold">Cuenta y sincronización</h2>
+            <p className="text-sm text-muted">{authStatus === 'signed-in' ? 'Tu progreso se guarda en la nube y en este dispositivo.' : authStatus === 'disabled' ? 'Las cuentas se activan en la versión publicada. Por ahora todo queda en este navegador.' : 'Crea una cuenta gratis para estudiar desde cualquier dispositivo.'}</p>
+          </div>
+          <LinkButton to="/cuenta" variant={authStatus === 'signed-in' ? 'outline' : 'primary'}>
+            {authStatus === 'signed-in' ? 'Ver mi cuenta' : authStatus === 'disabled' ? 'Más información' : 'Iniciar sesión'}
+          </LinkButton>
+        </Card>
+
         <Card className="p-5 sm:p-6">
           <h2 className="font-semibold">Perfil</h2>
           <label className="mt-4 block">
@@ -170,6 +180,7 @@ export default function Settings() {
             onClick={() => {
               reset()
               useAnki.getState().resetAll()
+              useLingo.getState().reset()
               setConfirmReset(false)
               toast({ kind: 'info', title: 'Progreso borrado' })
             }}

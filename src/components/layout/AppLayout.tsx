@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Navigate, NavLink, useLocation, useOutlet } from 'react-router-dom'
+import { Navigate, NavLink, useLocation, useNavigate, useOutlet } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
-import { Flame, Menu, Moon, Search, Sun, Monitor, X, Zap } from 'lucide-react'
+import { Flame, LogIn, Menu, Moon, Search, Sun, Monitor, UserRound, X, Zap } from 'lucide-react'
 import { NAV_GROUPS, ALL_NAV, MOBILE_TABS } from './nav'
 import { Logo, GithubIcon } from '@/components/ui/Logo'
 import { CommandPalette } from './CommandPalette'
 import { useProgress, levelFromXp } from '@/store/progress'
+import { displayName, useAuth } from '@/store/auth'
 import { computeStreak } from '@/lib/stats'
 import { cn, daysBetween } from '@/lib/utils'
 import { enurmDate, formatEnurmDate, upcomingEnurm } from '@/data/enurm'
@@ -105,6 +106,27 @@ function UserChip() {
   )
 }
 
+/** Acceso a la cuenta: inicial del usuario si hay sesión, «Entrar» si no. Oculto si Supabase no está configurado. */
+function AccountButton() {
+  const status = useAuth((s) => s.status)
+  const user = useAuth((s) => s.user)
+  const sync = useAuth((s) => s.sync)
+  if (status === 'disabled' || status === 'loading') return null
+  if (status === 'signed-out')
+    return (
+      <NavLink to="/cuenta" className="ml-1 inline-flex h-9 items-center gap-1.5 rounded-xl bg-brand-gradient px-3 text-xs font-semibold text-white shadow-glow">
+        <LogIn className="size-4" /> <span className="max-sm:hidden">Iniciar sesión</span>
+      </NavLink>
+    )
+  const initial = displayName(user).charAt(0).toUpperCase()
+  return (
+    <NavLink to="/cuenta" className="relative ml-1 grid size-9 place-items-center rounded-full bg-brand-gradient font-display text-sm font-bold text-white" aria-label="Mi cuenta">
+      {initial || <UserRound className="size-4" />}
+      {(sync === 'error' || sync === 'offline' || sync === 'conflict') && <span className="absolute -top-0.5 -right-0.5 size-3 rounded-full border-2 border-[var(--surface)] bg-amber-500" aria-label="Sincronización pendiente" />}
+    </NavLink>
+  )
+}
+
 export function AppLayout() {
   const [paletteOpen, setPaletteOpen] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -112,6 +134,13 @@ export function AppLayout() {
   const outlet = useOutlet()
   const profile = useProgress((s) => s.profile)
   const current = ALL_NAV.find((n) => location.pathname.startsWith(n.to))
+  const recovering = useAuth((s) => s.recovering)
+  const navigate = useNavigate()
+
+  // Tras abrir el enlace de «olvidé mi contraseña», pedir la nueva.
+  useEffect(() => {
+    if (recovering && location.pathname !== '/cuenta') navigate('/cuenta')
+  }, [recovering, location.pathname, navigate])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -207,6 +236,7 @@ export function AppLayout() {
               </button>
               <ThemeButton />
               <UserChip />
+              <AccountButton />
             </div>
           </div>
         </header>

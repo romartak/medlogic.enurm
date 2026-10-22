@@ -13,7 +13,7 @@ import { QuestionCard } from '@/components/QuestionCard'
 import { useCountdown } from '@/hooks/useCountdown'
 import { useHotkeys } from '@/hooks/useHotkeys'
 import { celebrate, playSound } from '@/lib/fx'
-import { cn, formatClock, formatDate, formatDuration, LETTERS, pct, uid } from '@/lib/utils'
+import { cn, formatClock, formatDate, formatDuration, LETTERS, pct, uid, softHyphens } from '@/lib/utils'
 import { getSpecialty } from '@/data/specialties'
 
 interface ExamConfig {
@@ -84,7 +84,7 @@ export default function Exam() {
                     <Check className="size-3" />
                   </motion.span>
                 )}
-                <div className="font-display text-base font-bold min-[400px]:pr-6 min-[400px]:text-lg">{x.label}</div>
+                <div className="font-display text-base font-bold min-[400px]:pr-6 min-[400px]:text-lg">{softHyphens(x.label)}</div>
                 <div className="mt-1 text-xs text-muted">{x.description}</div>
                 <div className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1 pt-3 text-xs font-semibold">
                   <span>{x.count} preg.</span>

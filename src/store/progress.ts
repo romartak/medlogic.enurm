@@ -47,6 +47,8 @@ interface ProgressActions {
   markGuideRead: (id: string) => void
   recordGame: (id: GameId, score: number) => boolean
   addMinutes: (n: number) => void
+  /** Suma XP ganado fuera de las preguntas (p. ej., lecciones de terminología). */
+  addXp: (n: number) => void
   updateSettings: (s: Partial<Settings>) => void
   resetProgress: () => void
   importBackup: (data: Partial<ProgressData>) => void
@@ -238,6 +240,8 @@ export const useProgress = create<ProgressState>()(
         },
 
         addMinutes: (n) => set({ activity: bumpDay(get().activity, { minutes: n }) }),
+
+        addXp: (n) => commit({ xp: get().xp + n }),
 
         updateSettings: (patch) => set({ settings: { ...get().settings, ...patch } }),
 

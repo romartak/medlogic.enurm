@@ -42,7 +42,7 @@
       transform: translate3d(0, 0, 0) scale(1);
     }
     50% {
-      transform: translate3d(0, -18px, 0) scale(1.04);
+      transform: translate3d(0, -6px, 0);
     }
   }
   @keyframes shimmer {

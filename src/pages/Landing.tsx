@@ -17,6 +17,7 @@ import {
   Gamepad2,
   GraduationCap,
   HeartHandshake,
+  Languages,
   Layers,
   LayoutGrid,
   ListChecks,
@@ -100,7 +101,7 @@ function useNow(intervalMs = 1000) {
 
 function FloatingCard({ className, delay, children }: { className: string; delay: number; children: React.ReactNode }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 30, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay, type: 'spring', stiffness: 120, damping: 18 }} className={`glass absolute rounded-2xl p-4 shadow-lift max-sm:hidden ${className}`}>
+    <motion.div initial={{ opacity: 0, y: 30, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay, type: 'spring', stiffness: 120, damping: 18 }} className={`absolute z-10 rounded-2xl border border-soft bg-[var(--surface)] p-4 shadow-lift max-sm:hidden ${className}`}>
       <div className="animate-float" style={{ animationDelay: `${delay}s` }}>
         {children}
       </div>
@@ -264,7 +265,15 @@ function Features() {
             ))}
           </div>
         </Tile>
-        <Tile to="/prompts" className="lg:col-span-6" icon={Bot} color="#ec4899" title="Prompts e IA para médicos" body="Prompts listos para ChatGPT, Claude o Gemini: convierte tus diapositivas en una clase, crea flashcards de un PDF o estudia con un tutor socrático. Con una guía para usar la IA con seguridad." delay={0.04} />
+        <Tile to="/terminologia" className="lg:col-span-3" icon={Languages} color="#16a34a" title="Terminología, como en Duolingo" body="Aprende los términos médicos por partes: prefijos, raíces y sufijos en lecciones cortas, con vidas, racha y repaso." delay={0.04}>
+          <div className="flex flex-wrap items-center gap-1.5 font-display text-lg font-bold">
+            <span className="rounded-xl border-2 border-b-4 border-soft px-3 py-1">hepato</span>
+            <span className="text-muted">+</span>
+            <span className="rounded-xl border-2 border-b-4 border-soft px-3 py-1">megalia</span>
+            <span className="text-sm font-medium text-muted">= hígado agrandado</span>
+          </div>
+        </Tile>
+        <Tile to="/prompts" className="lg:col-span-3" icon={Bot} color="#ec4899" title="Prompts e IA para médicos" body="Prompts listos para ChatGPT, Claude o Gemini: convierte tus diapositivas en una clase, crea flashcards de un PDF o estudia con un tutor socrático." delay={0.08} />
       </div>
       <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
         {MORE.map((m) => (
@@ -370,7 +379,7 @@ export default function Landing() {
         </motion.div>
 
         {/* Ilustración interactiva */}
-        <div className="relative mx-auto w-full max-w-lg sm:h-[540px]">
+        <div className="relative mx-auto w-full max-w-lg sm:h-[610px]">
           <motion.div initial={{ opacity: 0, scale: 0.9, rotate: -2 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 90, damping: 16 }} className="card relative p-5 shadow-lift sm:absolute sm:inset-x-10 sm:top-10 sm:p-6">
             <div className="mb-3 flex flex-wrap items-center gap-2">
               <span className="rounded-full bg-rose-500/15 px-2.5 py-0.5 text-[11px] font-semibold text-rose-700 dark:text-rose-300">Ginecología y Obstetricia</span>
@@ -408,7 +417,7 @@ export default function Landing() {
               </div>
             </div>
           </FloatingCard>
-          <FloatingCard className="bottom-0 -left-8" delay={0.9}>
+          <FloatingCard className="bottom-0 -left-6" delay={0.9}>
             <div className="text-xs text-muted">Puntaje estimado</div>
             <div className="font-display text-2xl font-bold text-brand-600 dark:text-brand-400">78%</div>
             <div className="mt-2 flex h-8 items-end gap-1">

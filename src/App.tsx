@@ -9,6 +9,9 @@ import { useAnki } from '@/store/anki'
 import { seedSpecialtiesSeen, useProgress } from '@/store/progress'
 import { useThemeSync } from '@/hooks/useTheme'
 import { useStudyTimer } from '@/hooks/useStudyTimer'
+import { useAuth } from '@/store/auth'
+import { startSync } from '@/lib/sync'
+import { SyncConflict } from '@/components/SyncConflict'
 const Dashboard = lazy(() => import('@/pages/Dashboard'))
 
 const Landing = lazy(() => import('@/pages/Landing'))
@@ -40,6 +43,9 @@ const Roadmap = lazy(() => import('@/pages/Roadmap'))
 const Prompts = lazy(() => import('@/pages/Prompts'))
 const AiGuide = lazy(() => import('@/pages/AiGuide'))
 const Settings = lazy(() => import('@/pages/Settings'))
+const Account = lazy(() => import('@/pages/Account'))
+const LingoPath = lazy(() => import('@/pages/lingo/Path'))
+const LingoLesson = lazy(() => import('@/pages/lingo/Lesson'))
 
 function Splash() {
   return (
@@ -76,6 +82,15 @@ export default function App() {
   const reduceMotion = useProgress((s) => s.settings.reduceMotion)
 
   useEffect(() => {
+    const stopAuth = useAuth.getState().init()
+    const stopSync = startSync()
+    return () => {
+      stopSync()
+      stopAuth()
+    }
+  }, [])
+
+  useEffect(() => {
     load().then(() => seedSpecialtiesSeen(useProgress.getState().attempts, useBank.getState().byId))
     // Migra el progreso de flashcards anterior al sistema tipo Anki (una sola vez).
     const p = useProgress.getState()
@@ -91,6 +106,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/bienvenida" element={<Onboarding />} />
+            <Route path="/terminologia/leccion/:lessonId" element={<LingoLesson />} />
             <Route element={<AppLayout />}>
               <Route path="/inicio" element={<Lazy><Dashboard /></Lazy>} />
               <Route path="/practica" element={<Lazy><Practice /></Lazy>} />
@@ -120,6 +136,8 @@ export default function App() {
               <Route path="/prompts/:id" element={<Lazy><Prompts /></Lazy>} />
               <Route path="/ia" element={<Lazy><AiGuide /></Lazy>} />
               <Route path="/ajustes" element={<Lazy><Settings /></Lazy>} />
+              <Route path="/cuenta" element={<Lazy><Account /></Lazy>} />
+              <Route path="/terminologia" element={<Lazy><LingoPath /></Lazy>} />
               <Route path="*" element={<Navigate to="/inicio" replace />} />
             </Route>
           </Routes>
@@ -128,6 +146,7 @@ export default function App() {
       <Suspense fallback={null}>
         <NoteEditor />
       </Suspense>
+      <SyncConflict />
       <Toaster />
     </MotionConfig>
   )

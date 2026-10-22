@@ -1,4 +1,4 @@
-import { BookOpen, Calculator, Rocket, Sparkles, WandSparkles, CalendarCheck, ChartColumn, Compass, Gamepad2, GraduationCap, House, Layers, LayoutGrid, Library, Newspaper, RotateCcw, Settings, Target, Trophy, type LucideIcon } from 'lucide-react'
+import { Languages, UserRound, BookOpen, Calculator, Rocket, Sparkles, WandSparkles, CalendarCheck, ChartColumn, Compass, Gamepad2, GraduationCap, House, Layers, LayoutGrid, Library, Newspaper, RotateCcw, Settings, Target, Trophy, type LucideIcon } from 'lucide-react'
 
 export interface NavItem {
   to: string
@@ -17,6 +17,7 @@ export const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
       { to: '/practica', label: 'Práctica', icon: Target, description: 'Preguntas con retroalimentación inmediata' },
       { to: '/simulacro', label: 'Simulacro', icon: GraduationCap, description: 'Examen cronometrado tipo ENURM' },
       { to: '/flashcards', label: 'Flashcards', icon: Layers, description: 'Repetición espaciada' },
+      { to: '/terminologia', label: 'Terminología', icon: Languages, description: 'Aprende términos médicos por partes, como en Duolingo' },
       { to: '/guias', label: 'Guías', icon: BookOpen, description: 'Resúmenes de alto rendimiento' },
     ],
   },
@@ -44,6 +45,7 @@ export const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
       { to: '/estadisticas', label: 'Estadísticas', icon: ChartColumn, description: 'Tu rendimiento en detalle' },
       { to: '/logros', label: 'Logros', icon: Trophy, description: 'Niveles y medallas' },
       { to: '/roadmap', label: 'Lo que viene', icon: Rocket, description: 'Hoja de ruta y próximas funciones' },
+      { to: '/cuenta', label: 'Mi cuenta', icon: UserRound, description: 'Iniciar sesión y sincronizar tu progreso' },
       { to: '/ajustes', label: 'Ajustes', icon: Settings, description: 'Perfil, tema y respaldo' },
     ],
   },
