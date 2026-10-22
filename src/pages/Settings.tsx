@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react'
-import { Download, Monitor, Moon, Settings as SettingsIcon, Sun, Trash2, Upload } from 'lucide-react'
+import { Download, Monitor, Moon, Settings as SettingsIcon, Sparkles, Sun, Trash2, Upload } from 'lucide-react'
+import { describeProfile } from '@/lib/plan'
 import { useProgress } from '@/store/progress'
-import { Button, Card, PageHeader, Segmented, Toggle } from '@/components/ui/primitives'
+import { Button, Card, LinkButton, PageHeader, Segmented, Toggle } from '@/components/ui/primitives'
 import { Modal } from '@/components/ui/Modal'
 import { dayKey, downloadFile } from '@/lib/utils'
 import { toast } from '@/store/toasts'
@@ -11,6 +12,7 @@ import type { Theme } from '@/types'
 
 export default function Settings() {
   const settings = useProgress((s) => s.settings)
+  const profile = useProgress((s) => s.profile)
   const update = useProgress((s) => s.updateSettings)
   const reset = useProgress((s) => s.resetProgress)
   const importBackup = useProgress((s) => s.importBackup)
@@ -48,9 +50,30 @@ export default function Settings() {
             <input value={settings.name} onChange={(e) => update({ name: e.target.value })} placeholder="Dra. / Dr. …" className="mt-1.5 h-11 w-full rounded-xl border border-soft surface-2 px-3 text-sm outline-none focus:border-brand-500" />
           </label>
           <label className="mt-4 block">
-            <span className="text-sm text-muted">Fecha del examen</span>
+            <span className="text-sm text-muted">Fecha exacta del examen (si ya la conoces)</span>
             <input type="date" value={settings.examDate ?? ''} onChange={(e) => update({ examDate: e.target.value || null })} className="mt-1.5 h-11 w-full rounded-xl border border-soft surface-2 px-3 text-sm outline-none focus:border-brand-500" />
           </label>
+        </Card>
+
+        <Card className="p-5 sm:p-6">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h2 className="font-semibold">Perfil de estudio</h2>
+              <p className="mt-1 text-sm text-muted">Tus respuestas al cuestionario definen tu plan diario.</p>
+            </div>
+            <LinkButton to="/bienvenida" variant="outline" size="sm">
+              <Sparkles className="size-4" /> {profile.completed ? 'Editar cuestionario' : 'Responder cuestionario'}
+            </LinkButton>
+          </div>
+          {profile.completed && (
+            <ul className="mt-4 space-y-1.5 text-sm">
+              {describeProfile(profile).map((l) => (
+                <li key={l} className="text-muted">
+                  • {l}
+                </li>
+              ))}
+            </ul>
+          )}
         </Card>
 
         <Card className="p-5 sm:p-6">

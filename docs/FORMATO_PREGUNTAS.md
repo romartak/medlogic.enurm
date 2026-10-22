@@ -2,14 +2,15 @@
 
 La plataforma acepta **CSV** o **JSON**. El importador es flexible: reconoce encabezados en español o en inglés, con o sin tildes y mayúsculas.
 
-## Dos formas de cargar preguntas
+## Cómo se carga el banco
 
-| Forma | Para quién | Cómo |
-| --- | --- | --- |
-| **Banco oficial** (se publica con la web, lo ven todos) | Mantenedores del proyecto | `npm run import:questions -- banco.csv` → genera `public/data/questions.json`. Haz commit de ese archivo. |
-| **Importación local** (solo en ese navegador) | Cualquier usuario | Página **Importar preguntas** dentro de la app. Se guarda en IndexedDB. |
+El banco se carga **una sola vez, por el mantenedor del proyecto**, y se publica con la web para todos los usuarios (los usuarios no suben preguntas):
 
-Si existen ambas, se combinan por `id` (la importada local gana). Mientras no haya ninguna, se usan las preguntas de muestra.
+```bash
+npm run import:questions -- banco.csv
+```
+
+Esto valida el archivo, muestra los errores por fila y el conteo por año y especialidad, y genera `public/data/questions.json`. Al hacer commit de ese archivo, la web lo usa automáticamente. Mientras no exista, la plataforma usa las preguntas de muestra.
 
 El script acepta varios archivos a la vez y opciones:
 

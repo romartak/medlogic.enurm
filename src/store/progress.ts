@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { DayActivity, ExamResult, Flashcard, Question, QuestionAttempt, Settings, SrsGrade, SrsState } from '@/types'
+import type { DailyPlan, DayActivity, ExamResult, Flashcard, Question, QuestionAttempt, Settings, SrsGrade, SrsState, StudyProfile } from '@/types'
+import { DEFAULT_PROFILE } from '@/lib/plan'
 import { review } from '@/lib/srs'
 import { dayKey } from '@/lib/utils'
 import { ACHIEVEMENTS } from '@/data/achievements'
@@ -26,6 +27,13 @@ interface ProgressData {
   bestRun: number
   totalCardsReviewed: number
   settings: Settings
+  profile: StudyProfile
+  /** Tareas del plan marcadas a mano, por día. */
+  planChecks: Record<string, string[]>
+  /** Días en que se completó todo el plan. */
+  planDone: Record<string, number>
+  /** Plan del día congelado para que no cambie mientras se estudia. */
+  planSnapshot: { plan: DailyPlan; profileAt: number } | null
 }
 
 interface ProgressActions {
@@ -42,6 +50,10 @@ interface ProgressActions {
   updateSettings: (s: Partial<Settings>) => void
   resetProgress: () => void
   importBackup: (data: Partial<ProgressData>) => void
+  updateProfile: (p: Partial<StudyProfile>) => void
+  togglePlanCheck: (taskId: string) => void
+  setPlanSnapshot: (snap: ProgressData['planSnapshot']) => void
+  markPlanDone: () => boolean
 }
 
 export type ProgressState = ProgressData & ProgressActions
@@ -72,22 +84,30 @@ const INITIAL: ProgressData = {
   bestRun: 0,
   totalCardsReviewed: 0,
   settings: DEFAULT_SETTINGS,
+  profile: DEFAULT_PROFILE,
+  planChecks: {},
+  planDone: {},
+  planSnapshot: null,
 }
 
 const EMPTY_DAY: DayActivity = { answered: 0, correct: 0, cards: 0, minutes: 0 }
 
-function bumpDay(activity: Record<string, DayActivity>, patch: Partial<DayActivity>): Record<string, DayActivity> {
+type DayPatch = Partial<Pick<DayActivity, 'answered' | 'correct' | 'cards' | 'minutes' | 'reviewed' | 'games'>> & { specialty?: string }
+
+function bumpDay(activity: Record<string, DayActivity>, patch: DayPatch): Record<string, DayActivity> {
   const k = dayKey()
   const d = activity[k] ?? EMPTY_DAY
-  return {
-    ...activity,
-    [k]: {
-      answered: d.answered + (patch.answered ?? 0),
-      correct: d.correct + (patch.correct ?? 0),
-      cards: d.cards + (patch.cards ?? 0),
-      minutes: d.minutes + (patch.minutes ?? 0),
-    },
+  const next: DayActivity = {
+    ...d,
+    answered: d.answered + (patch.answered ?? 0),
+    correct: d.correct + (patch.correct ?? 0),
+    cards: d.cards + (patch.cards ?? 0),
+    minutes: d.minutes + (patch.minutes ?? 0),
   }
+  if (patch.reviewed) next.reviewed = (d.reviewed ?? 0) + patch.reviewed
+  if (patch.games) next.games = (d.games ?? 0) + patch.games
+  if (patch.specialty) next.bySpec = { ...d.bySpec, [patch.specialty]: (d.bySpec?.[patch.specialty] ?? 0) + (patch.answered ?? 0) }
+  return { ...activity, [k]: next }
 }
 
 /** Reglas de desbloqueo de logros; cada una recibe el estado ya actualizado. */
@@ -107,6 +127,9 @@ const RULES: Record<string, (s: ProgressData, specialtiesSeen: number) => boolea
   'all-specialties': (_s, n) => n >= 10,
   'guide-reader': (s) => s.guidesRead.length >= 5,
   'perfect-10': (s) => s.bestRun >= 10,
+  'plan-1': (s) => Object.keys(s.planDone).length >= 1,
+  'plan-7': (s) => Object.keys(s.planDone).length >= 7,
+  'plan-30': (s) => Object.keys(s.planDone).length >= 30,
 }
 
 function totalAnswered(s: ProgressData): number {
@@ -167,7 +190,7 @@ export const useProgress = create<ProgressState>()(
                 lastChoice: choice,
               },
             },
-            activity: bumpDay(s.activity, { answered: 1, correct: correct ? 1 : 0 }),
+            activity: bumpDay(s.activity, { answered: 1, correct: correct ? 1 : 0, specialty: q.specialty, reviewed: prev && !prev.lastCorrect ? 1 : 0 }),
             xp: s.xp + (correct ? 10 : 2),
             correctRun,
             bestRun: Math.max(s.bestRun, correctRun),
@@ -218,7 +241,7 @@ export const useProgress = create<ProgressState>()(
           const s = get()
           const prev = s.highscores[id]
           const isRecord = prev === undefined || score > prev
-          commit({ highscores: { ...s.highscores, [id]: isRecord ? score : prev }, xp: s.xp + Math.min(50, Math.round(score / 2)) })
+          commit({ highscores: { ...s.highscores, [id]: isRecord ? score : prev }, activity: bumpDay(s.activity, { games: 1 }), xp: s.xp + Math.min(50, Math.round(score / 2)) })
           return isRecord && score > 0
         },
 
@@ -228,7 +251,24 @@ export const useProgress = create<ProgressState>()(
 
         resetProgress: () => {
           specialtiesSeen.clear()
-          set({ ...INITIAL, settings: get().settings })
+          set({ ...INITIAL, settings: get().settings, profile: get().profile })
+        },
+
+        updateProfile: (patch) => set({ profile: { ...get().profile, ...patch, updatedAt: Date.now() }, planSnapshot: null }),
+
+        togglePlanCheck: (taskId) => {
+          const k = dayKey()
+          const cur = get().planChecks[k] ?? []
+          set({ planChecks: { [k]: cur.includes(taskId) ? cur.filter((x) => x !== taskId) : [...cur, taskId] } })
+        },
+
+        setPlanSnapshot: (planSnapshot) => set({ planSnapshot }),
+
+        markPlanDone: () => {
+          const k = dayKey()
+          if (get().planDone[k]) return false
+          commit({ planDone: { ...get().planDone, [k]: Date.now() }, xp: get().xp + 50 })
+          return true
         },
 
         importBackup: (data) => {
@@ -236,7 +276,7 @@ export const useProgress = create<ProgressState>()(
           for (const k of Object.keys(INITIAL) as (keyof ProgressData)[]) {
             if (data[k] !== undefined) (clean as Record<string, unknown>)[k] = data[k]
           }
-          set({ ...clean, settings: { ...DEFAULT_SETTINGS, ...(data.settings ?? get().settings) } })
+          set({ ...clean, settings: { ...DEFAULT_SETTINGS, ...(data.settings ?? get().settings) }, profile: { ...DEFAULT_PROFILE, ...(data.profile ?? get().profile) }, planSnapshot: null })
         },
       }
     },
@@ -250,7 +290,7 @@ export const useProgress = create<ProgressState>()(
       },
       merge: (persisted, current) => {
         const p = (persisted ?? {}) as Partial<ProgressData>
-        return { ...current, ...p, settings: { ...DEFAULT_SETTINGS, ...(p.settings ?? {}) } }
+        return { ...current, ...p, settings: { ...DEFAULT_SETTINGS, ...(p.settings ?? {}) }, profile: { ...DEFAULT_PROFILE, ...(p.profile ?? {}) } }
       },
     },
   ),

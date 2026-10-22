@@ -59,3 +59,12 @@ describe('importador de preguntas', () => {
     expect(a.questions[0].id.startsWith('2020-')).toBe(true)
   })
 })
+
+describe('banco oficial ya normalizado', () => {
+  it('conserva las respuestas desde 0 al recargarse en la app', () => {
+    const first = normalizeRows(Array.from({ length: 30 }, (_, i) => ({ stem: `p${i}`, options: ['a', 'b', 'c', 'd'], answer: 'BCD'[i % 3] })))
+    // Ninguna respuesta es 0 (A): el detector automático la confundiría con base 1.
+    const reloaded = normalizeRows(JSON.parse(JSON.stringify(first.questions)), { answerBase: 0 })
+    expect(reloaded.questions.map((q) => q.answer)).toEqual(first.questions.map((q) => q.answer))
+  })
+})

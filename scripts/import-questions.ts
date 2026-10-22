@@ -23,7 +23,7 @@ if (!files.length) {
 }
 
 let all: Question[] = []
-if (merge && existsSync(OUT)) all = normalizeRows(JSON.parse(readFileSync(OUT, 'utf8'))).questions
+if (merge && existsSync(OUT)) all = normalizeRows(JSON.parse(readFileSync(OUT, 'utf8')), { answerBase: 0 }).questions
 
 let totalErrors = 0
 for (const f of files) {

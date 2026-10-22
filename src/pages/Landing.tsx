@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion, useScroll, useTransform } from 'motion/react'
-import { ArrowRight, BookOpen, Flame, CalendarDays, ChartColumn, Check, Gamepad2, GraduationCap, HeartHandshake, Layers, Newspaper, Sparkles, Target, Upload } from 'lucide-react'
+import { ArrowRight, BookOpen, Flame, CalendarDays, ChartColumn, Check, Gamepad2, GraduationCap, HeartHandshake, Layers, Newspaper, Sparkles, Target, Compass, LayoutGrid, CalendarCheck, Calculator } from 'lucide-react'
 import { Logo, GithubIcon } from '@/components/ui/Logo'
 import { buttonClass } from '@/components/ui/primitives'
 import { useBank } from '@/store/bank'
@@ -17,8 +17,16 @@ const FEATURES = [
   { icon: BookOpen, title: 'Guías de alto rendimiento', body: 'Resúmenes claros con tablas, perlas y alertas de lo que no puedes olvidar.', color: '#f59e0b' },
   { icon: Gamepad2, title: 'Juegos clínicos', body: 'Contrarreloj, supervivencia, parejas, verdadero/falso y diagnóstico en 5 pistas.', color: '#22c55e' },
   { icon: ChartColumn, title: 'Analíticas', body: 'Precisión por especialidad, calendario de actividad y puntaje estimado.', color: '#0ea5e9' },
-  { icon: CalendarDays, title: 'Plan de estudio', body: 'Cuenta regresiva al examen, meta diaria y temporizador pomodoro.', color: '#a855f7' },
+  { icon: CalendarCheck, title: 'Plan diario personalizado', body: 'Según tu fecha de examen, tu tiempo y tus puntos débiles. Cambia de fase a medida que se acerca el día.', color: '#a855f7' },
+  { icon: LayoutGrid, title: 'Espacio por especialidad', body: 'Temas de alto rendimiento, perlas, preguntas, flashcards y guías de cada área.', color: '#14b8a6' },
+  { icon: Calculator, title: 'Herramientas clínicas', body: 'Glasgow, Parkland, TFG, anion gap, CHA₂DS₂-VASc, Alvarado y más.', color: '#64748b' },
   { icon: Newspaper, title: 'Actualizaciones', body: 'Cambios recientes en guías clínicas que pueden aparecer en el examen.', color: '#ef4444' },
+]
+
+const STEPS = [
+  { icon: Sparkles, title: 'Responde el cuestionario', body: 'Cuándo tomarás el ENURM, qué residencia quieres, cuánto tiempo tienes y cómo te sientes en cada área.' },
+  { icon: CalendarDays, title: 'Sigue tu plan del día', body: 'Tareas concretas: preguntas de dos especialidades, flashcards, una guía y simulacros semanales.' },
+  { icon: ChartColumn, title: 'Mide y ajusta', body: 'El plan se recalcula con tu precisión real: más tiempo para lo que más fallas y lo que más pesa.' },
 ]
 
 function FloatingCard({ className, delay, children }: { className: string; delay: number; children: React.ReactNode }) {
@@ -160,7 +168,7 @@ export default function Landing() {
           <h2 className="text-3xl font-extrabold sm:text-4xl">Todos los métodos de estudio, en una sola plataforma</h2>
           <p className="mt-3 text-muted">Combina técnicas con evidencia: práctica de recuperación, repetición espaciada, intercalado y simulación del examen.</p>
         </div>
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {FEATURES.map((f, i) => (
             <motion.div key={f.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ delay: (i % 4) * 0.08 }} className="card card-hover group p-6">
               <span className="grid size-12 place-items-center rounded-2xl transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3" style={{ backgroundColor: `${f.color}1a`, color: f.color }}>
@@ -170,6 +178,32 @@ export default function Landing() {
               <p className="mt-1.5 text-sm text-muted">{f.body}</p>
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      {/* Cómo funciona */}
+      <section className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-3xl font-extrabold sm:text-4xl">Un plan hecho para ti</h2>
+          <p className="mt-3 text-muted">En dos minutos tienes un plan diario que se adapta a tu calendario y a tus resultados.</p>
+        </div>
+        <div className="relative mt-12 grid gap-6 md:grid-cols-3">
+          <div className="pointer-events-none absolute top-8 right-[16%] left-[16%] hidden h-px bg-gradient-to-r from-brand-500/0 via-brand-500/50 to-brand-500/0 md:block" />
+          {STEPS.map((st, i) => (
+            <motion.div key={st.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 }} className="relative text-center">
+              <div className="relative mx-auto grid size-16 place-items-center rounded-2xl bg-brand-gradient text-white shadow-glow">
+                <st.icon className="size-7" />
+                <span className="absolute -top-2 -right-2 grid size-7 place-items-center rounded-full bg-[var(--surface)] text-xs font-bold text-brand-600 shadow">{i + 1}</span>
+              </div>
+              <h3 className="mt-5 font-display text-lg font-bold">{st.title}</h3>
+              <p className="mx-auto mt-2 max-w-xs text-sm text-muted">{st.body}</p>
+            </motion.div>
+          ))}
+        </div>
+        <div className="mt-10 flex justify-center">
+          <Link to="/bienvenida" className={buttonClass('primary', 'lg')}>
+            <Sparkles className="size-5" /> Crear mi plan gratis
+          </Link>
         </div>
       </section>
 
@@ -201,8 +235,8 @@ export default function Landing() {
               <Link to="/inicio" className="inline-flex h-12 items-center gap-2 rounded-xl bg-white px-6 font-semibold text-slate-900 transition-transform hover:scale-[1.03] active:scale-95">
                 Comenzar ahora <ArrowRight className="size-5" />
               </Link>
-              <Link to="/importar" className="inline-flex h-12 items-center gap-2 rounded-xl bg-white/15 px-6 font-semibold text-white backdrop-blur transition-colors hover:bg-white/25">
-                <Upload className="size-5" /> Importar preguntas
+              <Link to="/como-prepararte" className="inline-flex h-12 items-center gap-2 rounded-xl bg-white/15 px-6 font-semibold text-white backdrop-blur transition-colors hover:bg-white/25">
+                <Compass className="size-5" /> Cómo prepararte
               </Link>
             </div>
           </div>

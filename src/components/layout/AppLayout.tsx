@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { NavLink, useLocation, useOutlet } from 'react-router-dom'
+import { Navigate, NavLink, useLocation, useOutlet } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { Flame, Menu, Moon, Search, Sun, Monitor, X, Zap } from 'lucide-react'
-import { NAV_GROUPS, ALL_NAV } from './nav'
+import { NAV_GROUPS, ALL_NAV, MOBILE_TABS } from './nav'
 import { Logo, GithubIcon } from '@/components/ui/Logo'
 import { CommandPalette } from './CommandPalette'
 import { useProgress, levelFromXp } from '@/store/progress'
@@ -92,6 +92,7 @@ export function AppLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const location = useLocation()
   const outlet = useOutlet()
+  const profile = useProgress((s) => s.profile)
   const current = ALL_NAV.find((n) => location.pathname.startsWith(n.to))
 
   useEffect(() => {
@@ -108,6 +109,9 @@ export function AppLayout() {
   useEffect(() => {
     window.scrollTo({ top: 0 })
   }, [location.pathname])
+
+  // Primera visita: cuestionario para personalizar el plan.
+  if (!profile.completed && !profile.skipped) return <Navigate to="/bienvenida" replace />
 
   return (
     <div className="min-h-dvh">
@@ -202,7 +206,7 @@ export function AppLayout() {
 }
 
 function MobileTabBar() {
-  const tabs = [ALL_NAV[0], ALL_NAV[1], ALL_NAV[3], ALL_NAV[7], ALL_NAV[9]]
+  const tabs = MOBILE_TABS
   return (
     <nav className="glass fixed inset-x-3 bottom-3 z-30 rounded-2xl shadow-lift lg:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
       <ul className="grid grid-cols-5">
@@ -213,7 +217,7 @@ function MobileTabBar() {
                 <>
                   {isActive && <motion.span layoutId="tab-active" className="absolute inset-x-3 inset-y-1 rounded-xl bg-brand-500/10" />}
                   <t.icon className="relative size-5" />
-                  <span className="relative">{t.label === 'Estadísticas' ? 'Progreso' : t.label}</span>
+                  <span className="relative">{t.label === 'Especialidades' ? 'Áreas' : t.label}</span>
                 </>
               )}
             </NavLink>

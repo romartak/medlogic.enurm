@@ -27,8 +27,15 @@ export function allDecks(): FlashDeck[] {
   return [...DECKS, ERRORS_DECK, CUSTOM_DECK]
 }
 
+/** Mazo virtual con todas las tarjetas de una especialidad: id "esp-<especialidad>". */
+export const SPECIALTY_DECK_PREFIX = 'esp-'
+
 export function cardsForDeck(deckId: string, custom: Flashcard[], errors: Flashcard[]): Flashcard[] {
   if (deckId === ALL_DECK_ID) return [...BUILTIN_CARDS, ...custom, ...errors]
+  if (deckId.startsWith(SPECIALTY_DECK_PREFIX)) {
+    const spec = deckId.slice(SPECIALTY_DECK_PREFIX.length)
+    return [...BUILTIN_CARDS, ...custom, ...errors].filter((c) => c.specialty === spec)
+  }
   if (deckId === ERRORS_DECK.id) return errors
   if (deckId === CUSTOM_DECK.id) return custom
   return BUILTIN_CARDS.filter((c) => c.deck === deckId)

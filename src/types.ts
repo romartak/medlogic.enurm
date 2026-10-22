@@ -50,6 +50,61 @@ export interface DayActivity {
   correct: number
   cards: number
   minutes: number
+  /** Preguntas respondidas por especialidad ese día (para el plan diario). */
+  bySpec?: Record<string, number>
+  /** Preguntas previamente falladas que se volvieron a responder. */
+  reviewed?: number
+  /** Partidas jugadas. */
+  games?: number
+}
+
+export type StudyMethod = 'preguntas' | 'flashcards' | 'guias' | 'simulacros' | 'juegos'
+export type StudentRole = 'estudiante' | 'interno' | 'medico-general' | 'egresado'
+
+/** Respuestas del cuestionario inicial. */
+export interface StudyProfile {
+  completed: boolean
+  skipped: boolean
+  role: StudentRole | null
+  examYear: number | null
+  /** 1–12, o null si aún no lo sabe. */
+  examMonth: number | null
+  residency: string | null
+  /** Días de la semana en que estudia (0 = domingo). */
+  studyDays: number[]
+  minutesPerDay: number
+  /** Confianza autoevaluada por gran área: 1 = baja, 2 = media, 3 = alta. */
+  confidence: Record<string, 1 | 2 | 3>
+  methods: StudyMethod[]
+  updatedAt: number
+}
+
+export type PlanTaskKind = 'questions' | 'flashcards' | 'guide' | 'review' | 'exam' | 'game' | 'rest'
+
+export interface PlanTask {
+  id: string
+  kind: PlanTaskKind
+  title: string
+  detail: string
+  minutes: number
+  /** Meta numérica (preguntas, tarjetas…) cuando aplica. */
+  target: number
+  specialty?: string
+  guideId?: string
+  link: string
+  optional?: boolean
+}
+
+export type PlanPhase = 'fundamentos' | 'consolidacion' | 'intensivo' | 'final' | 'sin-fecha' | 'examen' | 'pasado'
+
+export interface DailyPlan {
+  date: string
+  phase: PlanPhase
+  restDay: boolean
+  focus: string[]
+  minutes: number
+  message: string
+  tasks: PlanTask[]
 }
 
 export interface ExamResult {

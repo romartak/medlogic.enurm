@@ -11,38 +11,38 @@ export const DECKS: FlashDeck[] = [
   { id: 'bioestadistica', name: 'Bioestadística y epidemiología', description: 'Fórmulas y definiciones que no puedes fallar.', specialty: 'salud-publica', color: '#0d9488', icon: 'users' },
 ]
 
-type C = [deck: string, front: string, back: string]
+type C = [deck: string, front: string, back: string, specialty?: string]
 
 const RAW: C[] = [
   // Signos clínicos
-  ['signos', 'Signo de Murphy', 'Detención de la inspiración al palpar el hipocondrio derecho → colecistitis aguda.'],
-  ['signos', 'Signo de Rovsing', 'Dolor en fosa ilíaca derecha al comprimir la fosa ilíaca izquierda → apendicitis.'],
-  ['signos', 'Signo de Blumberg', 'Dolor a la descompresión brusca → irritación peritoneal.'],
-  ['signos', 'Signo de Cullen / Grey-Turner', 'Equimosis periumbilical / en flancos → hemorragia retroperitoneal (pancreatitis necrohemorrágica, ectópico roto).'],
-  ['signos', 'Tríada de Charcot', 'Fiebre + ictericia + dolor en HCD → colangitis aguda. + hipotensión y confusión = péntada de Reynolds.'],
-  ['signos', 'Tríada de Beck', 'Hipotensión + ingurgitación yugular + ruidos cardíacos apagados → taponamiento cardíaco.'],
-  ['signos', 'Tríada de Cushing', 'Hipertensión + bradicardia + respiración irregular → hipertensión intracraneal.'],
-  ['signos', 'Signo de Kernig y Brudzinski', 'Signos de irritación meníngea (meningitis, hemorragia subaracnoidea).'],
-  ['signos', 'Signo de Chvostek y Trousseau', 'Contracción facial al percutir el nervio facial / espasmo carpal con el manguito → hipocalcemia.'],
-  ['signos', 'Pulso paradójico', 'Caída de la PAS > 10 mmHg en inspiración → taponamiento cardíaco, asma grave.'],
-  ['signos', 'Signo de Homans', 'Dolor en pantorrilla con la dorsiflexión del pie → TVP (poco sensible y poco específico).'],
-  ['signos', 'Signo de Courvoisier-Terrier', 'Vesícula palpable no dolorosa + ictericia → obstrucción maligna (cáncer de cabeza de páncreas).'],
-  ['signos', 'Manchas de Koplik', 'Puntos blanquecinos en mucosa yugal → sarampión (pródromo).'],
-  ['signos', 'Signo de Nikolsky', 'Desprendimiento epidérmico con la presión lateral → pénfigo vulgar, necrólisis epidérmica tóxica, SSSS.'],
+  ['signos', 'Signo de Murphy', 'Detención de la inspiración al palpar el hipocondrio derecho → colecistitis aguda.', 'cirugia'],
+  ['signos', 'Signo de Rovsing', 'Dolor en fosa ilíaca derecha al comprimir la fosa ilíaca izquierda → apendicitis.', 'cirugia'],
+  ['signos', 'Signo de Blumberg', 'Dolor a la descompresión brusca → irritación peritoneal.', 'cirugia'],
+  ['signos', 'Signo de Cullen / Grey-Turner', 'Equimosis periumbilical / en flancos → hemorragia retroperitoneal (pancreatitis necrohemorrágica, ectópico roto).', 'gastroenterologia'],
+  ['signos', 'Tríada de Charcot', 'Fiebre + ictericia + dolor en HCD → colangitis aguda. + hipotensión y confusión = péntada de Reynolds.', 'gastroenterologia'],
+  ['signos', 'Tríada de Beck', 'Hipotensión + ingurgitación yugular + ruidos cardíacos apagados → taponamiento cardíaco.', 'cardiologia'],
+  ['signos', 'Tríada de Cushing', 'Hipertensión + bradicardia + respiración irregular → hipertensión intracraneal.', 'neurologia'],
+  ['signos', 'Signo de Kernig y Brudzinski', 'Signos de irritación meníngea (meningitis, hemorragia subaracnoidea).', 'neurologia'],
+  ['signos', 'Signo de Chvostek y Trousseau', 'Contracción facial al percutir el nervio facial / espasmo carpal con el manguito → hipocalcemia.', 'endocrinologia'],
+  ['signos', 'Pulso paradójico', 'Caída de la PAS > 10 mmHg en inspiración → taponamiento cardíaco, asma grave.', 'cardiologia'],
+  ['signos', 'Signo de Homans', 'Dolor en pantorrilla con la dorsiflexión del pie → TVP (poco sensible y poco específico).', 'medicina-interna'],
+  ['signos', 'Signo de Courvoisier-Terrier', 'Vesícula palpable no dolorosa + ictericia → obstrucción maligna (cáncer de cabeza de páncreas).', 'gastroenterologia'],
+  ['signos', 'Manchas de Koplik', 'Puntos blanquecinos en mucosa yugal → sarampión (pródromo).', 'pediatria'],
+  ['signos', 'Signo de Nikolsky', 'Desprendimiento epidérmico con la presión lateral → pénfigo vulgar, necrólisis epidérmica tóxica, SSSS.', 'dermatologia'],
 
   // Tratamientos de elección
-  ['farmacos', 'Sífilis primaria', 'Penicilina G benzatínica 2,4 MUI IM dosis única.'],
-  ['farmacos', 'Neumonía por Pneumocystis', 'Trimetoprim-sulfametoxazol (+ corticoide si PaO₂ < 70 mmHg).'],
-  ['farmacos', 'Fibrilación auricular: control de frecuencia', 'Betabloqueador o calcioantagonista no dihidropiridínico (evitar este último si FEVI reducida).'],
-  ['farmacos', 'Crisis de ausencia típica', 'Etosuximida (o ácido valproico).'],
-  ['farmacos', 'Estado epiléptico (primera línea)', 'Benzodiacepina: lorazepam IV, diazepam IV o midazolam IM.'],
-  ['farmacos', 'Hipertensión en el embarazo (urgencia)', 'Labetalol IV, hidralazina IV o nifedipino oral.'],
-  ['farmacos', 'Gota aguda', 'AINE, colchicina o corticoide. No iniciar ni suspender alopurinol durante la crisis.'],
-  ['farmacos', 'Erradicación de H. pylori (esquema clásico)', 'IBP + amoxicilina + claritromicina por 14 días (si resistencia a claritromicina baja). Alternativa: cuádruple con bismuto.'],
-  ['farmacos', 'Malaria por P. falciparum no complicada', 'Terapia combinada con artemisinina (p. ej. artemeter-lumefantrina).'],
-  ['farmacos', 'Shock séptico: vasopresor de primera línea', 'Noradrenalina, con meta de PAM ≥ 65 mmHg.'],
-  ['farmacos', 'Toxoplasmosis cerebral', 'Pirimetamina + sulfadiazina + ácido folínico.'],
-  ['farmacos', 'Hipertiroidismo en el 1er trimestre de embarazo', 'Propiltiouracilo (metimazol en 2.º y 3.er trimestre).'],
+  ['farmacos', 'Sífilis primaria', 'Penicilina G benzatínica 2,4 MUI IM dosis única.', 'infectologia'],
+  ['farmacos', 'Neumonía por Pneumocystis', 'Trimetoprim-sulfametoxazol (+ corticoide si PaO₂ < 70 mmHg).', 'infectologia'],
+  ['farmacos', 'Fibrilación auricular: control de frecuencia', 'Betabloqueador o calcioantagonista no dihidropiridínico (evitar este último si FEVI reducida).', 'cardiologia'],
+  ['farmacos', 'Crisis de ausencia típica', 'Etosuximida (o ácido valproico).', 'neurologia'],
+  ['farmacos', 'Estado epiléptico (primera línea)', 'Benzodiacepina: lorazepam IV, diazepam IV o midazolam IM.', 'neurologia'],
+  ['farmacos', 'Hipertensión en el embarazo (urgencia)', 'Labetalol IV, hidralazina IV o nifedipino oral.', 'ginecologia-obstetricia'],
+  ['farmacos', 'Gota aguda', 'AINE, colchicina o corticoide. No iniciar ni suspender alopurinol durante la crisis.', 'reumatologia'],
+  ['farmacos', 'Erradicación de H. pylori (esquema clásico)', 'IBP + amoxicilina + claritromicina por 14 días (si resistencia a claritromicina baja). Alternativa: cuádruple con bismuto.', 'gastroenterologia'],
+  ['farmacos', 'Malaria por P. falciparum no complicada', 'Terapia combinada con artemisinina (p. ej. artemeter-lumefantrina).', 'infectologia'],
+  ['farmacos', 'Shock séptico: vasopresor de primera línea', 'Noradrenalina, con meta de PAM ≥ 65 mmHg.', 'emergencias'],
+  ['farmacos', 'Toxoplasmosis cerebral', 'Pirimetamina + sulfadiazina + ácido folínico.', 'infectologia'],
+  ['farmacos', 'Hipertiroidismo en el 1er trimestre de embarazo', 'Propiltiouracilo (metimazol en 2.º y 3.er trimestre).', 'endocrinologia'],
 
   // Antídotos
   ['antidotos', 'Paracetamol', 'N-acetilcisteína.'],
@@ -61,17 +61,17 @@ const RAW: C[] = [
   ['antidotos', 'Sulfato de magnesio', 'Gluconato de calcio.'],
 
   // Laboratorio
-  ['laboratorio', 'Sodio sérico normal', '135–145 mEq/L.'],
-  ['laboratorio', 'Potasio sérico normal', '3,5–5,0 mEq/L.'],
-  ['laboratorio', 'Anion gap', 'Na − (Cl + HCO₃) ≈ 8–12 mEq/L. Elevado: cetoacidosis, láctica, uremia, tóxicos (metanol, etilenglicol, salicilatos).'],
-  ['laboratorio', 'Gasometría arterial normal', 'pH 7,35–7,45 · PaCO₂ 35–45 mmHg · HCO₃ 22–26 mEq/L.'],
-  ['laboratorio', 'Fórmula de Winter', 'PaCO₂ esperada = 1,5 × HCO₃ + 8 ± 2 (compensación de acidosis metabólica).'],
-  ['laboratorio', 'Calcio corregido', 'Ca corregido = Ca medido + 0,8 × (4 − albúmina).'],
-  ['laboratorio', 'Diagnóstico de diabetes', 'Ayunas ≥ 126 mg/dL · PTOG 2 h ≥ 200 · HbA1c ≥ 6,5% · al azar ≥ 200 con síntomas.'],
-  ['laboratorio', 'Prediabetes', 'Ayunas 100–125 mg/dL · PTOG 2 h 140–199 · HbA1c 5,7–6,4%.'],
-  ['laboratorio', 'LDL: meta en muy alto riesgo cardiovascular', '< 55 mg/dL (ESC) y reducción ≥ 50% del basal.'],
-  ['laboratorio', 'Plaquetas normales', '150 000–450 000 /µL.'],
-  ['laboratorio', 'Osmolaridad sérica calculada', '2 × Na + glucosa/18 + BUN/2,8 ≈ 285–295 mOsm/kg.'],
+  ['laboratorio', 'Sodio sérico normal', '135–145 mEq/L.', 'nefrologia'],
+  ['laboratorio', 'Potasio sérico normal', '3,5–5,0 mEq/L.', 'nefrologia'],
+  ['laboratorio', 'Anion gap', 'Na − (Cl + HCO₃) ≈ 8–12 mEq/L. Elevado: cetoacidosis, láctica, uremia, tóxicos (metanol, etilenglicol, salicilatos).', 'nefrologia'],
+  ['laboratorio', 'Gasometría arterial normal', 'pH 7,35–7,45 · PaCO₂ 35–45 mmHg · HCO₃ 22–26 mEq/L.', 'nefrologia'],
+  ['laboratorio', 'Fórmula de Winter', 'PaCO₂ esperada = 1,5 × HCO₃ + 8 ± 2 (compensación de acidosis metabólica).', 'nefrologia'],
+  ['laboratorio', 'Calcio corregido', 'Ca corregido = Ca medido + 0,8 × (4 − albúmina).', 'endocrinologia'],
+  ['laboratorio', 'Diagnóstico de diabetes', 'Ayunas ≥ 126 mg/dL · PTOG 2 h ≥ 200 · HbA1c ≥ 6,5% · al azar ≥ 200 con síntomas.', 'endocrinologia'],
+  ['laboratorio', 'Prediabetes', 'Ayunas 100–125 mg/dL · PTOG 2 h 140–199 · HbA1c 5,7–6,4%.', 'endocrinologia'],
+  ['laboratorio', 'LDL: meta en muy alto riesgo cardiovascular', '< 55 mg/dL (ESC) y reducción ≥ 50% del basal.', 'cardiologia'],
+  ['laboratorio', 'Plaquetas normales', '150 000–450 000 /µL.', 'hematologia'],
+  ['laboratorio', 'Osmolaridad sérica calculada', '2 × Na + glucosa/18 + BUN/2,8 ≈ 285–295 mOsm/kg.', 'nefrologia'],
 
   // Pediatría
   ['pediatria', 'Sonrisa social', '~2 meses.'],
@@ -107,10 +107,10 @@ const RAW: C[] = [
   ['bioestadistica', 'Razón de mortalidad materna', 'Muertes maternas / nacidos vivos × 100 000.'],
 ]
 
-export const BUILTIN_CARDS: Flashcard[] = RAW.map(([deck, front, back]) => ({
+export const BUILTIN_CARDS: Flashcard[] = RAW.map(([deck, front, back, specialty]) => ({
   id: `fc-${deck}-${slugify(front)}`,
   deck,
   front,
   back,
-  specialty: DECKS.find((d) => d.id === deck)?.specialty,
+  specialty: specialty ?? DECKS.find((d) => d.id === deck)?.specialty,
 }))

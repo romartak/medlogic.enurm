@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { ArrowLeft, ArrowRight, Check, ChevronRight, Clock, Flag, GraduationCap, History, LayoutGrid, Play, Send, Timer, X } from 'lucide-react'
 import type { ExamResult, Question } from '@/types'
@@ -32,9 +32,11 @@ export default function Exam() {
   const questions = useBank((s) => s.questions)
   const years = useBank((s) => s.years)
   const { attempts, bookmarks, exams } = useProgress()
-  const [preset, setPreset] = useState<string>('quick')
-  const [specialties, setSpecialties] = useState<string[]>([])
-  const [custom, setCustom] = useState({ count: 30, minutes: 36 })
+  const [params] = useSearchParams()
+  const paramCount = Number(params.get('count')) || 0
+  const [preset, setPreset] = useState<string>(paramCount ? 'custom' : 'quick')
+  const [specialties, setSpecialties] = useState<string[]>(() => (params.get('specialty') ? [params.get('specialty')!] : []))
+  const [custom, setCustom] = useState(paramCount ? { count: paramCount, minutes: Math.round(paramCount * 1.2) } : { count: 30, minutes: 36 })
   const [running, setRunning] = useState<ExamConfig | null>(null)
 
   const pool = useMemo(() => filterQuestions(questions, { specialties, years: [], status: 'all' }, attempts, bookmarks), [questions, specialties, attempts, bookmarks])
@@ -42,7 +44,20 @@ export default function Exam() {
   const count = Math.min(p ? p.count : custom.count, pool.length)
   const minutes = p ? Math.round((p.minutes * count) / p.count) || 1 : custom.minutes
 
-  const startCustom = () => setRunning({ title: p ? `Simulacro ${p.label.toLowerCase()}` : 'Simulacro personalizado', questions: proportionalPick(pool, count), minutes })
+  const startCustom = () => {
+    const title = specialties.length === 1 ? `Simulacro de ${getSpecialty(specialties[0]).name}` : p ? `Simulacro ${p.label.toLowerCase()}` : 'Simulacro personalizado'
+    setRunning({ title, questions: proportionalPick(pool, count), minutes })
+  }
+
+  // Inicio directo desde el plan diario (?count=50&start=1).
+  const autoStarted = useRef(false)
+  useEffect(() => {
+    if (params.get('start') && !autoStarted.current && pool.length) {
+      autoStarted.current = true
+      startCustom()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pool.length])
   const startYear = (y: number) => {
     const qs = questions.filter((q) => q.year === y).sort((a, b) => a.id.localeCompare(b.id, 'es', { numeric: true }))
     setRunning({ title: `ENURM ${y}`, questions: qs, minutes: Math.max(10, Math.round(qs.length * 1.2)) })

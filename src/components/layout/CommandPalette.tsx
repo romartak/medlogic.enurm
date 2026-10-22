@@ -2,23 +2,23 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import Fuse from 'fuse.js'
-import { BookOpen, CornerDownLeft, FileQuestion, Layers, Search } from 'lucide-react'
+import { BookOpen, CornerDownLeft, FileQuestion, Layers, LayoutGrid, Search } from 'lucide-react'
 import { ALL_NAV } from './nav'
 import { useBank } from '@/store/bank'
 import { GUIDES } from '@/data/guides'
 import { BUILTIN_CARDS } from '@/data/flashcards'
-import { getSpecialty } from '@/data/specialties'
+import { getSpecialty, normalizeText, SPECIALTIES } from '@/data/specialties'
 import { cn } from '@/lib/utils'
 
 interface Result {
   key: string
-  kind: 'page' | 'question' | 'guide' | 'card'
+  kind: 'page' | 'specialty' | 'question' | 'guide' | 'card'
   title: string
   subtitle?: string
   to: string
 }
 
-const KIND_LABEL: Record<Result['kind'], string> = { page: 'Páginas', question: 'Preguntas', guide: 'Guías', card: 'Flashcards' }
+const KIND_LABEL: Record<Result['kind'], string> = { page: 'Páginas', specialty: 'Especialidades', question: 'Preguntas', guide: 'Guías', card: 'Flashcards' }
 
 export function CommandPalette({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [query, setQuery] = useState('')
@@ -42,6 +42,8 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
       to: n.to,
     }))
     if (q.length < 2) return pages.slice(0, 8)
+    const nq = normalizeText(q)
+    const specs: Result[] = SPECIALTIES.filter((s) => normalizeText(`${s.name} ${s.aliases.join(' ')}`).includes(nq)).slice(0, 3).map((s) => ({ key: `s-${s.id}`, kind: 'specialty', title: s.name, subtitle: 'Espacio de la especialidad', to: `/especialidades/${s.id}` }))
     const guides: Result[] = gFuse.search(q, { limit: 4 }).map(({ item }) => ({ key: `g-${item.id}`, kind: 'guide', title: item.title, subtitle: getSpecialty(item.specialty).name, to: `/guias/${item.id}` }))
     const qs: Result[] = qFuse.search(q, { limit: 6 }).map(({ item }) => ({
       key: `q-${item.id}`,
@@ -51,7 +53,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
       to: `/banco?id=${encodeURIComponent(item.id)}`,
     }))
     const cards: Result[] = cFuse.search(q, { limit: 3 }).map(({ item }) => ({ key: `c-${item.id}`, kind: 'card', title: item.front, subtitle: item.back, to: `/flashcards/${item.deck}` }))
-    return [...pages.slice(0, 4), ...guides, ...qs, ...cards]
+    return [...pages.slice(0, 4), ...specs, ...guides, ...qs, ...cards]
   }, [query, qFuse, gFuse, cFuse])
 
   useEffect(() => {
@@ -119,7 +121,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
               {results.map((r, i) => {
                 const header = r.kind !== lastKind ? KIND_LABEL[r.kind] : null
                 lastKind = r.kind
-                const IconC = r.kind === 'question' ? FileQuestion : r.kind === 'guide' ? BookOpen : r.kind === 'card' ? Layers : (ALL_NAV.find((n) => n.to === r.to)?.icon ?? Search)
+                const IconC = r.kind === 'question' ? FileQuestion : r.kind === 'guide' ? BookOpen : r.kind === 'card' ? Layers : r.kind === 'specialty' ? LayoutGrid : (ALL_NAV.find((n) => n.to === r.to)?.icon ?? Search)
                 return (
                   <div key={r.key}>
                     {header && <div className="px-3 pt-3 pb-1 text-[10px] font-bold tracking-[0.18em] text-muted uppercase">{header}</div>}

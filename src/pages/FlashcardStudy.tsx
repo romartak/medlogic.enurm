@@ -5,7 +5,8 @@ import { ArrowLeft, PartyPopper, RotateCcw, Repeat } from 'lucide-react'
 import type { Flashcard, SrsGrade } from '@/types'
 import { useProgress } from '@/store/progress'
 import { useBank } from '@/store/bank'
-import { ALL_DECK_ID, allDecks, cardsForDeck, errorCards } from '@/lib/decks'
+import { ALL_DECK_ID, allDecks, cardsForDeck, errorCards, SPECIALTY_DECK_PREFIX } from '@/lib/decks'
+import { getSpecialty } from '@/data/specialties'
 import { isDue, previewInterval } from '@/lib/srs'
 import { Button, EmptyState, ProgressBar, SpecialtyBadge } from '@/components/ui/primitives'
 import { useHotkeys } from '@/hooks/useHotkeys'
@@ -89,7 +90,7 @@ export default function FlashcardStudy() {
         <ArrowLeft className="size-4" /> Mazos
       </Link>
       <div className="min-w-0 flex-1 text-center">
-        <div className="truncate font-display font-bold">{deckId === ALL_DECK_ID ? 'Repaso general' : (deck?.name ?? 'Mazo')}</div>
+        <div className="truncate font-display font-bold">{deckId === ALL_DECK_ID ? 'Repaso general' : deckId.startsWith(SPECIALTY_DECK_PREFIX) ? getSpecialty(deckId.slice(SPECIALTY_DECK_PREFIX.length)).name : (deck?.name ?? 'Mazo')}</div>
         {cram && <div className="text-[11px] text-amber-600">Modo intensivo</div>}
       </div>
       <span className="text-sm font-semibold tabular-nums text-muted">{queue.length} restantes</span>

@@ -6,7 +6,8 @@ import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { useProgress, levelFromXp, levelTitle } from '@/store/progress'
 import { useBank } from '@/store/bank'
 import { computeStreak, dailySeries, overview, predictedScore, specialtyStats, weakest } from '@/lib/stats'
-import { Card, LinkButton, ProgressBar, Ring, SpecialtyIcon, StatCard } from '@/components/ui/primitives'
+import { Card, ProgressBar, Ring, SpecialtyIcon, StatCard } from '@/components/ui/primitives'
+import { DailyPlanCard } from '@/components/DailyPlanCard'
 import { QuestionCard } from '@/components/QuestionCard'
 import { BUILTIN_CARDS } from '@/data/flashcards'
 import { UPDATES } from '@/data/updates'
@@ -100,15 +101,14 @@ export default function Dashboard() {
         </div>
       </motion.section>
 
+      <DailyPlanCard />
+
       {source === 'sample' && (
-        <Card className="flex flex-col items-start gap-3 border-dashed p-4 sm:flex-row sm:items-center">
+        <Card className="flex items-start gap-3 border-dashed p-4 sm:items-center">
           <Sparkles className="size-5 shrink-0 text-amber-500" />
           <p className="flex-1 text-sm text-muted">
-            Estás usando el <b className="text-[var(--text)]">banco de muestra</b> ({questions.length} preguntas). Cuando cargues la base de datos de todos los años, aparecerá aquí automáticamente.
+            Estás usando <b className="text-[var(--text)]">preguntas de muestra</b> ({questions.length}). El banco completo con las preguntas de todos los años del ENURM se está preparando y aparecerá aquí automáticamente.
           </p>
-          <LinkButton to="/importar" variant="outline" size="sm">
-            Importar preguntas
-          </LinkButton>
         </Card>
       )}
 

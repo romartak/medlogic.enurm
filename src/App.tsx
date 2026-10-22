@@ -26,7 +26,11 @@ const Stats = lazy(() => import('@/pages/Stats'))
 const Planner = lazy(() => import('@/pages/Planner'))
 const Achievements = lazy(() => import('@/pages/Achievements'))
 const Bank = lazy(() => import('@/pages/Bank'))
-const Import = lazy(() => import('@/pages/Import'))
+const Onboarding = lazy(() => import('@/pages/Onboarding'))
+const Specialties = lazy(() => import('@/pages/Specialties'))
+const SpecialtyDetail = lazy(() => import('@/pages/SpecialtyDetail'))
+const Tools = lazy(() => import('@/pages/Tools'))
+const PrepGuide = lazy(() => import('@/pages/PrepGuide'))
 const Settings = lazy(() => import('@/pages/Settings'))
 
 function Splash() {
@@ -75,6 +79,7 @@ export default function App() {
         <Suspense fallback={<Splash />}>
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/bienvenida" element={<Onboarding />} />
             <Route element={<AppLayout />}>
               <Route path="/inicio" element={<Lazy><Dashboard /></Lazy>} />
               <Route path="/practica" element={<Lazy><Practice /></Lazy>} />
@@ -92,7 +97,10 @@ export default function App() {
               <Route path="/plan" element={<Lazy><Planner /></Lazy>} />
               <Route path="/logros" element={<Lazy><Achievements /></Lazy>} />
               <Route path="/banco" element={<Lazy><Bank /></Lazy>} />
-              <Route path="/importar" element={<Lazy><Import /></Lazy>} />
+              <Route path="/especialidades" element={<Lazy><Specialties /></Lazy>} />
+              <Route path="/especialidades/:id" element={<Lazy><SpecialtyDetail /></Lazy>} />
+              <Route path="/herramientas" element={<Lazy><Tools /></Lazy>} />
+              <Route path="/como-prepararte" element={<Lazy><PrepGuide /></Lazy>} />
               <Route path="/ajustes" element={<Lazy><Settings /></Lazy>} />
               <Route path="*" element={<Navigate to="/inicio" replace />} />
             </Route>

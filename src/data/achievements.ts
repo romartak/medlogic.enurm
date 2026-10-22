@@ -15,5 +15,8 @@ export const ACHIEVEMENTS: Achievement[] = [
   { id: 'game-master', title: 'Jugador clínico', description: 'Juega a los 4 juegos.', icon: 'gamepad-2', xp: 80 },
   { id: 'all-specialties', title: 'Médico integral', description: 'Responde preguntas de 10 especialidades distintas.', icon: 'stethoscope', xp: 120 },
   { id: 'guide-reader', title: 'Lector voraz', description: 'Completa 5 guías de estudio.', icon: 'book-open', xp: 100 },
+  { id: 'plan-1', title: 'Día cumplido', description: 'Completa todas las tareas de tu plan diario.', icon: 'target', xp: 50 },
+  { id: 'plan-7', title: 'Semana de plan', description: 'Completa tu plan diario 7 veces.', icon: 'medal', xp: 150 },
+  { id: 'plan-30', title: 'Método de residente', description: 'Completa tu plan diario 30 veces.', icon: 'crown', xp: 500 },
   { id: 'perfect-10', title: 'Racha perfecta', description: 'Acierta 10 preguntas seguidas.', icon: 'zap', xp: 80 },
 ]

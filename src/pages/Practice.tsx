@@ -30,7 +30,7 @@ export default function Practice() {
     specialties: params.get('specialty') ? [params.get('specialty')!] : [],
     years: params.get('year') ? [Number(params.get('year'))] : [],
     status: (params.get('status') as StatusFilter) || 'all',
-    count: 20,
+    count: Number(params.get('count')) || 20,
   }))
   const [session, setSession] = useState<Question[] | null>(null)
 

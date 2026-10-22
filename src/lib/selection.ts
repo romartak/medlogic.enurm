@@ -1,5 +1,15 @@
 import type { Question, QuestionAttempt } from '@/types'
 import { shuffle } from './utils'
+import { normalizeText } from '@/data/specialties'
+
+const STOP = new Set(['de', 'del', 'la', 'las', 'el', 'los', 'y', 'en', 'con', 'por', 'para', 'una', 'uno', 'que'])
+
+/** Palabras de búsqueda normalizadas (sin tildes ni palabras vacías). */
+export function searchTokens(term: string): string[] {
+  return normalizeText(term)
+    .split(/[^a-z0-9]+/)
+    .filter((w) => w.length >= 2 && !STOP.has(w))
+}
 
 export type StatusFilter = 'all' | 'unseen' | 'failed' | 'bookmarked'
 
@@ -13,7 +23,7 @@ export interface SelectionFilters {
 
 export function filterQuestions(questions: Question[], f: SelectionFilters, attempts: Record<string, QuestionAttempt>, bookmarks: string[]): Question[] {
   const bm = new Set(bookmarks)
-  const term = f.search?.trim().toLowerCase()
+  const tokens = f.search ? searchTokens(f.search) : []
   return questions.filter((q) => {
     if (f.specialties.length && !f.specialties.includes(q.specialty)) return false
     if (f.years.length && (q.year === undefined || !f.years.includes(q.year))) return false
@@ -22,7 +32,11 @@ export function filterQuestions(questions: Question[], f: SelectionFilters, atte
     if (f.status === 'unseen' && a) return false
     if (f.status === 'failed' && (!a || a.lastCorrect)) return false
     if (f.status === 'bookmarked' && !bm.has(q.id)) return false
-    if (term && !`${q.stem} ${q.topic ?? ''} ${q.options.join(' ')}`.toLowerCase().includes(term)) return false
+    if (tokens.length) {
+      const text = normalizeText(`${q.stem} ${q.topic ?? ''} ${q.options.join(' ')} ${q.explanation ?? ''}`)
+      // Todas las palabras deben aparecer; se toleran plurales comparando por las primeras 6 letras.
+      if (!tokens.every((t) => text.includes(t.length > 6 ? t.slice(0, 6) : t))) return false
+    }
     return true
   })
 }
