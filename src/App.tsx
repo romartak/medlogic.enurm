@@ -3,7 +3,6 @@ import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { MotionConfig } from 'motion/react'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { Toaster } from '@/components/ui/Toaster'
-import { LogoMark } from '@/components/ui/Logo'
 import { useBank } from '@/store/bank'
 import { useAnki } from '@/store/anki'
 import { seedSpecialtiesSeen, useProgress } from '@/store/progress'
@@ -12,6 +11,8 @@ import { useStudyTimer } from '@/hooks/useStudyTimer'
 import { useAuth } from '@/store/auth'
 import { startSync } from '@/lib/sync'
 import { SyncConflict } from '@/components/SyncConflict'
+import { PlanReveal } from '@/components/PlanReveal'
+import { VercelInsights } from '@/components/VercelInsights'
 const Dashboard = lazy(() => import('@/pages/Dashboard'))
 
 const Landing = lazy(() => import('@/pages/Landing'))
@@ -47,13 +48,33 @@ const Account = lazy(() => import('@/pages/Account'))
 const LingoPath = lazy(() => import('@/pages/lingo/Path'))
 const LingoLesson = lazy(() => import('@/pages/lingo/Lesson'))
 
+/** Misma pantalla de carga que index.html (sus estilos viven allí), sin repetir la entrada y con el pulso en fase. */
 function Splash() {
+  const phase = { animationDelay: `-${Math.round(performance.now() % 1800)}ms` }
+  const ring = (offset: number) => ({ animationDelay: `-${Math.round((performance.now() + offset) % 2400)}ms` })
   return (
-    <div className="grid min-h-dvh place-items-center">
-      <div className="flex flex-col items-center gap-4">
-        <LogoMark className="size-14 animate-pulse-ring rounded-2xl" />
-        <div className="h-1 w-32 overflow-hidden rounded-full surface-2">
-          <div className="skeleton h-full w-full" />
+    <div className="boot boot-cont" role="status" aria-label="Cargando MedLogic ENURM">
+      <div className="boot-in">
+        <div className="boot-mark">
+          <span className="boot-ring" style={ring(0)} />
+          <span className="boot-ring" style={ring(1600)} />
+          <span className="boot-ring" style={ring(800)} />
+          <svg viewBox="0 0 64 64" aria-hidden>
+            <defs>
+              <linearGradient id="boot-g2" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stopColor="#14b8a6" />
+                <stop offset="1" stopColor="#6366f1" />
+              </linearGradient>
+            </defs>
+            <rect width="64" height="64" rx="16" fill="url(#boot-g2)" />
+            <path d="M10 34h10l5-12 8 22 6-16 4 6h11" fill="none" stroke="#fff" strokeOpacity=".22" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path className="boot-line" style={phase} pathLength={100} d="M10 34h10l5-12 8 22 6-16 4 6h11" fill="none" stroke="#fff" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+        <div className="boot-name">MedLogic</div>
+        <div className="boot-sub">ENURM</div>
+        <div className="boot-bar">
+          <i />
         </div>
       </div>
     </div>
@@ -147,7 +168,9 @@ export default function App() {
         <NoteEditor />
       </Suspense>
       <SyncConflict />
+      <PlanReveal />
       <Toaster />
+      <VercelInsights />
     </MotionConfig>
   )
 }

@@ -3,7 +3,7 @@ import { useProgress } from '@/store/progress'
 
 const COLORS = ['#06c4b0', '#6366f1', '#ec4899', '#f59e0b', '#22c55e']
 
-function motionAllowed() {
+export function motionAllowed() {
   return !useProgress.getState().settings.reduceMotion && !matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 

@@ -11,6 +11,9 @@ export interface Snapshot {
   lingo: Record<string, unknown>
 }
 
+/** Tamaño máximo de una copia (archivo o nube). La base de datos rechaza las mayores con el mismo límite. */
+export const MAX_SNAPSHOT_BYTES = 8_000_000
+
 const plain = (o: object) => Object.fromEntries(Object.entries(o).filter(([, v]) => typeof v !== 'function'))
 
 export function takeSnapshot(): Snapshot {

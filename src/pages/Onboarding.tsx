@@ -11,7 +11,7 @@ import { Logo } from '@/components/ui/Logo'
 import { Icon } from '@/components/ui/Icon'
 import { Button, SpecialtyBadge } from '@/components/ui/primitives'
 import { addressName, cn, daysBetween, formatMinutes, tintText } from '@/lib/utils'
-import { celebrate } from '@/lib/fx'
+import { revealPlan } from '@/components/PlanReveal'
 import { useBank } from '@/store/bank'
 import { StudyEvidence } from '@/components/StudyEvidence'
 import { formatEnurmDate, upcomingEnurm } from '@/data/enurm'
@@ -112,8 +112,8 @@ export default function Onboarding() {
     const methods: StudyMethod[] = p.methods.includes('preguntas') ? p.methods : ['preguntas', ...p.methods]
     updateProfile({ ...p, methods, completed: true, skipped: false })
     updateSettings({ name: name.trim(), honorific, examDate: target.enurm?.iso ?? null, dailyGoal: questionsPerDay })
-    celebrate('big')
-    navigate('/plan', { replace: true })
+    const who = addressName({ name, honorific })
+    revealPlan(who ? `${who[0].toUpperCase()}${who.slice(1)}, tu camino al ENURM empieza hoy.` : 'Tu camino al ENURM empieza hoy.', () => navigate('/plan', { replace: true }))
   }
 
   const skip = () => {
@@ -137,7 +137,7 @@ export default function Onboarding() {
         <div className="flex gap-1.5">
           {steps.map((s, i) => (
             <div key={s.key} className="h-1.5 flex-1 overflow-hidden rounded-full surface-2">
-              <motion.div className="h-full bg-brand-gradient" initial={false} animate={{ width: i <= step ? '100%' : '0%' }} transition={{ duration: 0.4 }} />
+              <motion.div className="h-full rounded-full bg-brand-500" initial={false} animate={{ width: i <= step ? '100%' : '0%' }} transition={{ duration: 0.4 }} />
             </div>
           ))}
         </div>

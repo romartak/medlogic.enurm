@@ -8,6 +8,7 @@ import { displayName, useAuth } from '@/store/auth'
 import { Button, Card, PageHeader, Segmented } from '@/components/ui/primitives'
 import { toast } from '@/store/toasts'
 import { cn, formatDate } from '@/lib/utils'
+import { captchaEnabled, Turnstile } from '@/components/Turnstile'
 
 const field = 'mt-1.5 h-12 w-full rounded-xl border border-soft surface-2 px-4 outline-none transition-colors focus:border-brand-500'
 
@@ -26,7 +27,7 @@ function PasswordInput({ value, onChange, autoComplete, id }: { value: string; o
   const [show, setShow] = useState(false)
   return (
     <div className="relative">
-      <input id={id} type={show ? 'text' : 'password'} required minLength={8} value={value} onChange={(e) => onChange(e.target.value)} autoComplete={autoComplete} className={cn(field, 'pr-12')} />
+      <input id={id} type={show ? 'text' : 'password'} required minLength={8} maxLength={72} value={value} onChange={(e) => onChange(e.target.value)} autoComplete={autoComplete} className={cn(field, 'pr-12')} />
       <button type="button" onClick={() => setShow(!show)} className="absolute top-1.5 right-1 grid size-12 place-items-center text-muted hover:text-[var(--text)]" aria-label={show ? 'Ocultar contraseña' : 'Mostrar contraseña'}>
         {show ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
       </button>
@@ -69,28 +70,32 @@ function AuthForm() {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [sent, setSent] = useState<null | { title: string; body: string }>(null)
+  const [captchaToken, setCaptchaToken] = useState('')
+  const [captchaRound, setCaptchaRound] = useState(0)
 
   const submit = async (e: FormEvent) => {
     e.preventDefault()
     if (!supabase) return
+    if (captchaEnabled && !captchaToken) return setError('Espera a que termine la verificación anti-robots.')
+    const captcha = captchaEnabled ? { captchaToken } : {}
     setBusy(true)
     setError('')
     try {
       if (mode === 'signin') {
-        const { error } = await supabase.auth.signInWithPassword({ email, password })
+        const { error } = await supabase.auth.signInWithPassword({ email, password, options: captcha })
         if (error) throw error
         toast({ kind: 'success', title: 'Sesión iniciada' })
       } else if (mode === 'signup') {
-        const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { name: name.trim() }, emailRedirectTo: authRedirectUrl() } })
+        const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { name: name.trim().slice(0, 80) }, emailRedirectTo: authRedirectUrl(), ...captcha } })
         if (error) throw error
         if (!data.session) setSent({ title: 'Confirma tu correo', body: `Te enviamos un enlace a ${email}. Ábrelo desde este dispositivo para activar tu cuenta.` })
         else toast({ kind: 'success', title: '¡Cuenta creada!' })
       } else if (mode === 'magic') {
-        const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: authRedirectUrl() } })
+        const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: authRedirectUrl(), ...captcha } })
         if (error) throw error
         setSent({ title: 'Revisa tu correo', body: `Te enviamos un enlace de acceso a ${email}. Ábrelo desde este dispositivo.` })
       } else {
-        const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: authRedirectUrl() })
+        const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: authRedirectUrl(), ...captcha })
         if (error) throw error
         setSent({ title: 'Revisa tu correo', body: `Si existe una cuenta con ${email}, recibirás un enlace para crear una contraseña nueva.` })
       }
@@ -98,6 +103,11 @@ function AuthForm() {
       setError(authErrorMessage(err))
     } finally {
       setBusy(false)
+      // Cada token de verificación sirve una sola vez.
+      if (captchaEnabled) {
+        setCaptchaToken('')
+        setCaptchaRound((r) => r + 1)
+      }
     }
   }
 
@@ -180,12 +190,12 @@ function AuthForm() {
           {mode === 'signup' && (
             <label className="block text-sm font-medium" htmlFor="acc-name">
               ¿Cómo te llamamos?
-              <input id="acc-name" value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" placeholder="Dra. / Dr. …" className={field} />
+              <input id="acc-name" maxLength={80} value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" placeholder="Dra. / Dr. …" className={field} />
             </label>
           )}
           <label className="block text-sm font-medium" htmlFor="acc-email">
             Correo electrónico
-            <input id="acc-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" inputMode="email" className={field} />
+            <input id="acc-email" type="email" required maxLength={254} value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" inputMode="email" className={field} />
           </label>
           {(mode === 'signin' || mode === 'signup') && (
             <div>
@@ -204,6 +214,8 @@ function AuthForm() {
             </div>
           )}
 
+          <Turnstile onToken={setCaptchaToken} round={captchaRound} />
+
           {error && (
             <p role="alert" className="rounded-xl bg-rose-500/10 px-3 py-2.5 text-sm text-rose-700 dark:text-rose-300">
               {error}
@@ -215,6 +227,20 @@ function AuthForm() {
             {mode === 'signin' ? 'Entrar' : mode === 'signup' ? 'Crear cuenta' : mode === 'magic' ? 'Enviarme el enlace' : 'Enviarme el enlace'}
           </Button>
         </form>
+
+        {(mode === 'signin' || mode === 'signup') && (
+          <p className="mt-4 text-center text-xs text-muted">
+            Al continuar aceptas los{' '}
+            <a href={`${import.meta.env.BASE_URL}terminos/`} className="font-semibold underline">
+              Términos
+            </a>{' '}
+            y la{' '}
+            <a href={`${import.meta.env.BASE_URL}privacidad/`} className="font-semibold underline">
+              Política de privacidad
+            </a>
+            .
+          </p>
+        )}
 
         <div className="mt-5 text-center text-sm">
           {mode === 'signin' && (

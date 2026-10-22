@@ -101,7 +101,7 @@ function useNow(intervalMs = 1000) {
 
 function FloatingCard({ className, delay, children }: { className: string; delay: number; children: React.ReactNode }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 30, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay, type: 'spring', stiffness: 120, damping: 18 }} className={`absolute z-10 rounded-2xl border border-soft bg-[var(--surface)] p-4 shadow-lift max-sm:hidden ${className}`}>
+    <motion.div initial={{ opacity: 0, y: 30, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay, type: 'spring', stiffness: 120, damping: 18 }} className={`absolute z-10 rounded-2xl border border-soft bg-[var(--surface)] p-4 shadow-lift ring-4 ring-[var(--bg)] max-sm:hidden ${className}`}>
       <div className="animate-float" style={{ animationDelay: `${delay}s` }}>
         {children}
       </div>
@@ -379,8 +379,9 @@ export default function Landing() {
         </motion.div>
 
         {/* Ilustración interactiva */}
-        <div className="relative mx-auto w-full max-w-lg sm:h-[610px]">
-          <motion.div initial={{ opacity: 0, scale: 0.9, rotate: -2 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 90, damping: 16 }} className="card relative p-5 shadow-lift sm:absolute sm:inset-x-10 sm:top-10 sm:p-6">
+        <div className="relative mx-auto w-full max-w-lg sm:px-10 sm:pt-10 sm:pb-12">
+          <div className="relative">
+          <motion.div initial={{ opacity: 0, scale: 0.9, rotate: -2 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 90, damping: 16 }} className="card relative p-5 shadow-lift sm:p-6 sm:pb-16">
             <div className="mb-3 flex flex-wrap items-center gap-2">
               <span className="rounded-full bg-rose-500/15 px-2.5 py-0.5 text-[11px] font-semibold text-rose-700 dark:text-rose-300">Ginecología y Obstetricia</span>
               <span className="surface-2 rounded-full px-2.5 py-0.5 text-[11px] font-semibold text-muted">Pregunta 12/100</span>
@@ -405,8 +406,11 @@ export default function Landing() {
                 <b className="text-emerald-800 dark:text-emerald-300">¿Por qué?</b> El magnesio estabiliza la membrana neuronal y es el anticonvulsivo de elección en preeclampsia grave.
               </div>
             </motion.div>
+            <div className="mt-3 flex items-center justify-end gap-1.5 text-[11px] font-semibold text-muted max-sm:hidden">
+              <BookOpen className="size-3.5" /> 3 referencias · fisiopatología
+            </div>
           </motion.div>
-          <FloatingCard className="-top-2 -right-4" delay={0.7}>
+          <FloatingCard className="-top-7 -right-7" delay={0.7}>
             <div className="flex items-center gap-3">
               <span className="grid size-10 place-items-center rounded-xl bg-gradient-to-br from-orange-400 to-rose-500 text-white">
                 <Flame className="size-5" />
@@ -417,7 +421,7 @@ export default function Landing() {
               </div>
             </div>
           </FloatingCard>
-          <FloatingCard className="bottom-0 -left-6" delay={0.9}>
+          <FloatingCard className="-bottom-9 -left-9" delay={0.9}>
             <div className="text-xs text-muted">Puntaje estimado</div>
             <div className="font-display text-2xl font-bold text-brand-600 dark:text-brand-400">78%</div>
             <div className="mt-2 flex h-8 items-end gap-1">
@@ -426,6 +430,7 @@ export default function Landing() {
               ))}
             </div>
           </FloatingCard>
+          </div>
         </div>
       </section>
 
@@ -537,9 +542,17 @@ export default function Landing() {
         <div className="border-t border-soft">
           <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
             <p>Contenido educativo. No sustituye el juicio clínico ni las guías oficiales. Fechas y requisitos: Ministerio de Salud Pública y UASD.</p>
-            <a href={REPO_URL} target="_blank" rel="noreferrer" className="flex shrink-0 items-center gap-2 font-medium hover:text-[var(--text)]">
-              <GithubIcon className="size-4" /> Código en GitHub
-            </a>
+            <div className="flex shrink-0 flex-wrap items-center gap-x-5 gap-y-2">
+              <a href={`${import.meta.env.BASE_URL}privacidad/`} className="font-medium hover:text-[var(--text)]">
+                Privacidad
+              </a>
+              <a href={`${import.meta.env.BASE_URL}terminos/`} className="font-medium hover:text-[var(--text)]">
+                Términos
+              </a>
+              <a href={REPO_URL} target="_blank" rel="noreferrer" className="flex items-center gap-2 font-medium hover:text-[var(--text)]">
+                <GithubIcon className="size-4" /> Código en GitHub
+              </a>
+            </div>
           </div>
         </div>
       </footer>

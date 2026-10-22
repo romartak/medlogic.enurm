@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { dayKey } from '@/lib/utils'
+import { dayKey, pickKnown } from '@/lib/utils'
 import type { LingoExercise } from '@/lib/lingo'
 
 /** Estado de un término en el repaso espaciado de «Terminología». */
@@ -105,7 +105,7 @@ export const useLingo = create<LingoData & LingoActions>()(
 
       setVoice: (voiceURI) => set({ voiceURI }),
 
-      importBackup: (data) => set({ ...INITIAL, ...data }),
+      importBackup: (data) => set({ ...INITIAL, ...pickKnown(INITIAL, data) }),
 
       reset: () => set(INITIAL),
     }),

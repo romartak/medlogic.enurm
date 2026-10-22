@@ -1,12 +1,13 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
 /**
- * Cliente de Supabase. Se activa solo si están definidas VITE_SUPABASE_URL y VITE_SUPABASE_ANON_KEY
- * (ver .env.example y docs/DESPLIEGUE.md). Sin ellas la app funciona igual, con el progreso guardado
- * solo en el navegador.
+ * Cliente de Supabase. Se activa solo si hay URL y clave pública (ver .env.example y docs/DESPLIEGUE.md):
+ * VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY, o las NEXT_PUBLIC_SUPABASE_* que crea sola la integración
+ * de Supabase en Vercel. Sin ellas la app funciona igual, con el progreso guardado solo en el navegador.
  */
-const url = import.meta.env.VITE_SUPABASE_URL as string | undefined
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined
+const env = import.meta.env
+const url = env.VITE_SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL
+const anonKey = env.VITE_SUPABASE_ANON_KEY || env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 export const supabase: SupabaseClient | null =
   url && anonKey
@@ -42,6 +43,9 @@ export function authErrorMessage(err: unknown): string {
     [/provider is not enabled/i, 'Ese método de acceso aún no está activado.'],
     [/failed to fetch|network/i, 'Sin conexión con el servidor. Revisa tu internet.'],
     [/same password|different from the old/i, 'La nueva contraseña debe ser distinta de la anterior.'],
+    [/captcha/i, 'La verificación anti-robots falló o caducó. Inténtalo otra vez.'],
+    [/email address not authorized|error sending|smtp/i, 'Ahora mismo no podemos enviar correos. Entra con Google o inténtalo más tarde.'],
+    [/signups not allowed|signup is disabled/i, 'Los registros nuevos están pausados por el momento.'],
   ]
   return map.find(([re]) => re.test(msg))?.[1] ?? 'Algo salió mal. Inténtalo de nuevo.'
 }
