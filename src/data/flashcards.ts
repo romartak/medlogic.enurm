@@ -8,6 +8,7 @@ export const DECKS: FlashDeck[] = [
   { id: 'laboratorio', name: 'Valores de laboratorio', description: 'Valores de referencia y puntos de corte clave.', color: '#8b5cf6', icon: 'flask-conical' },
   { id: 'pediatria', name: 'Pediatría esencial', description: 'Desarrollo, neonatología y patologías frecuentes.', specialty: 'pediatria', color: '#22c55e', icon: 'baby' },
   { id: 'obstetricia', name: 'Obstetricia esencial', description: 'Control prenatal, emergencias obstétricas y conceptos clave.', specialty: 'ginecologia-obstetricia', color: '#f43f5e', icon: 'venus' },
+  { id: 'cloze', name: 'Huecos de alto rendimiento', description: 'Tarjetas cloze: completa el dato que falta, como en Anki.', color: '#ec4899', icon: 'sparkles' },
   { id: 'bioestadistica', name: 'Bioestadística y epidemiología', description: 'Fórmulas y definiciones que no puedes fallar.', specialty: 'salud-publica', color: '#0d9488', icon: 'users' },
 ]
 
@@ -114,3 +115,21 @@ export const BUILTIN_CARDS: Flashcard[] = RAW.map(([deck, front, back, specialty
   back,
   specialty: specialty ?? DECKS.find((d) => d.id === deck)?.specialty,
 }))
+
+/** Notas cloze incluidas ({{c1::…}} genera una tarjeta por hueco). */
+export const BUILTIN_CLOZES: { text: string; specialty: string }[] = [
+  { text: 'La causa más frecuente de hemorragia posparto es la {{c1::atonía uterina}}.', specialty: 'ginecologia-obstetricia' },
+  { text: 'En la preeclampsia con criterios de severidad se usa {{c1::sulfato de magnesio}}; su antídoto es el {{c2::gluconato de calcio}}.', specialty: 'ginecologia-obstetricia' },
+  { text: 'Fórmula de Parkland: {{c1::4}} mL × kg × %SCQ en 24 h; la mitad en las primeras {{c2::8}} horas.', specialty: 'cirugia' },
+  { text: 'Tríada de Beck: {{c1::hipotensión}}, {{c2::ingurgitación yugular}} y {{c3::ruidos cardíacos apagados}}.', specialty: 'cardiologia' },
+  { text: 'El agente más frecuente de la bronquiolitis es el {{c1::virus sincitial respiratorio}}.', specialty: 'pediatria' },
+  { text: 'NNT = 1 / {{c1::reducción absoluta del riesgo}}.', specialty: 'salud-publica' },
+  { text: 'En casos y controles la medida de asociación es la {{c1::odds ratio}}; en cohortes, el {{c2::riesgo relativo}}.', specialty: 'salud-publica' },
+  { text: 'Hiperkalemia con cambios en el ECG: primero {{c1::gluconato de calcio}} para {{c2::estabilizar la membrana miocárdica::efecto}}.', specialty: 'nefrologia' },
+  { text: 'La ictericia que aparece en las primeras {{c1::24 horas}} de vida es siempre {{c2::patológica}}.', specialty: 'pediatria' },
+  { text: 'Trombólisis IV en ACV isquémico: hasta {{c1::4,5}} horas desde el último momento visto bien.', specialty: 'neurologia' },
+  { text: 'Glasgow ≤ {{c1::8}}: proteger la vía aérea.', specialty: 'emergencias' },
+  { text: 'En el dengue, el mayor riesgo de choque está en la {{c1::defervescencia::fase}}.', specialty: 'infectologia' },
+  { text: 'Esquema de tuberculosis sensible: {{c1::2HRZE}} seguido de {{c2::4HR}}.', specialty: 'infectologia' },
+  { text: 'Sífilis primaria: {{c1::penicilina G benzatínica}} 2,4 MUI IM en dosis única.', specialty: 'infectologia' },
+]

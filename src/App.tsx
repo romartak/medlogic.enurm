@@ -5,6 +5,7 @@ import { AppLayout } from '@/components/layout/AppLayout'
 import { Toaster } from '@/components/ui/Toaster'
 import { LogoMark } from '@/components/ui/Logo'
 import { useBank } from '@/store/bank'
+import { useAnki } from '@/store/anki'
 import { seedSpecialtiesSeen, useProgress } from '@/store/progress'
 import { useThemeSync } from '@/hooks/useTheme'
 import { useStudyTimer } from '@/hooks/useStudyTimer'
@@ -15,8 +16,12 @@ const Practice = lazy(() => import('@/pages/Practice'))
 const Exam = lazy(() => import('@/pages/Exam'))
 const ExamResults = lazy(() => import('@/pages/Exam').then((m) => ({ default: m.ExamResults })))
 const Review = lazy(() => import('@/pages/Review'))
-const Flashcards = lazy(() => import('@/pages/Flashcards'))
-const FlashcardStudy = lazy(() => import('@/pages/FlashcardStudy'))
+const Decks = lazy(() => import('@/pages/flashcards/Decks'))
+const DeckOverview = lazy(() => import('@/pages/flashcards/Overview'))
+const Reviewer = lazy(() => import('@/pages/flashcards/Reviewer'))
+const CardBrowser = lazy(() => import('@/pages/flashcards/Browser'))
+const CardStats = lazy(() => import('@/pages/flashcards/CardStats'))
+const NoteEditor = lazy(() => import('@/components/anki/NoteEditor').then((m) => ({ default: m.NoteEditor })))
 const Guides = lazy(() => import('@/pages/Guides'))
 const GuideDetail = lazy(() => import('@/pages/Guides').then((m) => ({ default: m.GuideDetail })))
 const Updates = lazy(() => import('@/pages/Updates'))
@@ -31,6 +36,7 @@ const Specialties = lazy(() => import('@/pages/Specialties'))
 const SpecialtyDetail = lazy(() => import('@/pages/SpecialtyDetail'))
 const Tools = lazy(() => import('@/pages/Tools'))
 const PrepGuide = lazy(() => import('@/pages/PrepGuide'))
+const Roadmap = lazy(() => import('@/pages/Roadmap'))
 const Settings = lazy(() => import('@/pages/Settings'))
 
 function Splash() {
@@ -69,6 +75,9 @@ export default function App() {
 
   useEffect(() => {
     load().then(() => seedSpecialtiesSeen(useProgress.getState().attempts, useBank.getState().byId))
+    // Migra el progreso de flashcards anterior al sistema tipo Anki (una sola vez).
+    const p = useProgress.getState()
+    useAnki.getState().migrateLegacy(p.srs, p.customCards)
   }, [load])
 
   if (status === 'idle' || status === 'loading') return <Splash />
@@ -86,8 +95,11 @@ export default function App() {
               <Route path="/simulacro" element={<Lazy><Exam /></Lazy>} />
               <Route path="/simulacro/:id" element={<Lazy><ExamResults /></Lazy>} />
               <Route path="/repaso" element={<Lazy><Review /></Lazy>} />
-              <Route path="/flashcards" element={<Lazy><Flashcards /></Lazy>} />
-              <Route path="/flashcards/:deckId" element={<Lazy><FlashcardStudy /></Lazy>} />
+              <Route path="/flashcards" element={<Lazy><Decks /></Lazy>} />
+              <Route path="/flashcards/navegador" element={<Lazy><CardBrowser /></Lazy>} />
+              <Route path="/flashcards/estadisticas" element={<Lazy><CardStats /></Lazy>} />
+              <Route path="/flashcards/:deckId" element={<Lazy><DeckOverview /></Lazy>} />
+              <Route path="/flashcards/:deckId/estudiar" element={<Lazy><Reviewer /></Lazy>} />
               <Route path="/guias" element={<Lazy><Guides /></Lazy>} />
               <Route path="/guias/:id" element={<Lazy><GuideDetail /></Lazy>} />
               <Route path="/actualizaciones" element={<Lazy><Updates /></Lazy>} />
@@ -101,12 +113,16 @@ export default function App() {
               <Route path="/especialidades/:id" element={<Lazy><SpecialtyDetail /></Lazy>} />
               <Route path="/herramientas" element={<Lazy><Tools /></Lazy>} />
               <Route path="/como-prepararte" element={<Lazy><PrepGuide /></Lazy>} />
+              <Route path="/roadmap" element={<Lazy><Roadmap /></Lazy>} />
               <Route path="/ajustes" element={<Lazy><Settings /></Lazy>} />
               <Route path="*" element={<Navigate to="/inicio" replace />} />
             </Route>
           </Routes>
         </Suspense>
       </HashRouter>
+      <Suspense fallback={null}>
+        <NoteEditor />
+      </Suspense>
       <Toaster />
     </MotionConfig>
   )

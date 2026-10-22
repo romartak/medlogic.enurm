@@ -218,3 +218,52 @@
     transition-duration: 0.001ms !important;
   }
 }
+
+/* Contenido de flashcards (campos HTML estilo Anki) */
+.anki-content {
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.anki-content .cloze {
+  color: var(--color-accent-500);
+  font-weight: 700;
+}
+.dark .anki-content .cloze {
+  color: var(--color-accent-400);
+}
+.anki-content hr {
+  margin: 1rem 0;
+  border-color: var(--border);
+}
+.anki-content ul,
+.anki-content ol {
+  margin: 0.5rem 0;
+  padding-left: 1.25rem;
+  text-align: left;
+}
+.anki-content ul {
+  list-style: disc;
+}
+.anki-content ol {
+  list-style: decimal;
+}
+.anki-content img {
+  display: inline-block;
+  max-height: 16rem;
+  border-radius: 0.75rem;
+}
+.anki-content table {
+  margin: 0.5rem auto;
+  font-size: 0.875rem;
+}
+.anki-content td,
+.anki-content th {
+  border: 1px solid var(--border);
+  padding: 0.25rem 0.5rem;
+}
+.anki-content mark {
+  background: rgb(250 204 21 / 0.35);
+  color: inherit;
+  border-radius: 0.2rem;
+  padding: 0 0.15rem;
+}

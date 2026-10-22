@@ -13,7 +13,9 @@ Plataforma web para preparar el **ENURM** (Examen Nacional Único de Residencias
 | 🩺 **Espacios por especialidad** | Una página para cada una de las 23 áreas: temas de alto rendimiento, perlas, temas del banco con tu precisión, flashcards, guías, actualizaciones y tus errores. |
 | 🎯 **Práctica (modo tutor)** | Filtra por especialidad, año o estado (no vistas, falladas, marcadas). Explicación inmediata, atajos de teclado, rachas. |
 | 🎓 **Simulacros** | Completo (100 preguntas / 2 h), medio, rápido o personalizado. Reparto proporcional por especialidad, cronómetro, navegación, preguntas marcadas, examen completo por año, resultados por especialidad y revisión. |
-| 🧠 **Flashcards** | Repetición espaciada (SM-2) con 4 botones, 7 mazos incluidos, mazo automático con tus errores y tarjetas propias. |
+| 🧠 **Flashcards estilo Anki** | Notas básicas, invertidas y cloze; mazos y submazos (`::`); presets de opciones (pasos de aprendizaje, intervalos, facilidad, sanguijuelas, enterrar hermanas); cola con nuevas/aprendiendo/repasos y límites diarios; deshacer, banderas, suspender; explorador con búsqueda tipo Anki (`deck:`, `tag:`, `is:due`, `prop:ivl>=21`…); estudio personalizado y mazos filtrados; estadísticas (pronóstico, retención, intervalos, facilidad); importar y exportar en formato de texto de Anki. |
+| 🔬 **Análisis por opción** | Al responder: por qué tu opción es incorrecta, la correcta explicada, fisiopatología, análisis de cada opción, puntos clave y bibliografía con DOI. Botones para crear una flashcard o reportar un error. |
+| 🚀 **Lo que viene** | Hoja de ruta pública dentro de la app (ver [docs/ROADMAP.md](docs/ROADMAP.md)). |
 | 📚 **Guías** | Resúmenes de alto rendimiento con tablas, perlas y alertas (dengue, preeclampsia, SCA, sepsis, asma…). |
 | 📰 **Actualizaciones** | Cambios recientes en guías clínicas (ESC, GINA, GOLD, KDIGO, ADA, SSC…). |
 | 🎮 **Juegos** | Contrarreloj, supervivencia, verdadero/falso, parejas clínicas y diagnóstico en 5 pistas. |

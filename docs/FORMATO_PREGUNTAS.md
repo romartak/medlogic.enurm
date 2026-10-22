@@ -30,7 +30,11 @@ npm run import:questions -- banco.csv --base 1             # fuerza respuestas n
 | Año | | `year`, `año`, `anio`, `examen` | Se extrae el primer año de 4 dígitos (`"ENURM 2019"` → 2019). |
 | Especialidad | | `specialty`, `especialidad`, `area`, `materia`, `categoria` | Se normaliza: `Gineco`, `GO`, `Obstetricia` → Ginecología y Obstetricia. Si no se reconoce, se crea una nueva. Sin valor → Medicina Interna. |
 | Tema | | `topic`, `tema`, `subtema` | |
-| Explicación | | `explanation`, `explicacion`, `justificacion`, `comentario` | Muy recomendada: es lo que más enseña. |
+| Explicación | | `explanation`, `explicacion`, `justificacion`, `comentario` | Explicación general de la respuesta correcta. |
+| Análisis por opción | | `optionExplanations` / `explicaciones` (arreglo en el orden de las opciones) o columnas `explicacion_a`, `explicacion_b`… | Por qué cada opción es correcta o incorrecta. Se muestra al estudiante cuando elige esa opción. |
+| Fisiopatología | | `pathophysiology`, `fisiopatologia`, `mecanismo` | Procesos fisiológicos que explican la respuesta. |
+| Puntos clave | | `keyPoints`, `puntos_clave`, `perlas` | Arreglo o lista separada por saltos de línea, `;` o `\|`. |
+| Bibliografía | | `references`, `referencias`, `bibliografia` | Arreglo de textos u objetos `{ citation, doi, url, kind }`. El DOI se detecta solo y se enlaza a doi.org. |
 | Referencia | | `reference`, `referencia`, `bibliografia`, `fuente` | |
 | Dificultad | | `difficulty`, `dificultad` | `1/2/3` o `fácil/media/difícil`. |
 | Etiquetas | | `tags`, `etiquetas` | Separadas por `,` `;` o `\|`. |
@@ -62,7 +66,18 @@ Guarda el CSV en UTF-8 (en Excel: *Guardar como → CSV UTF-8*) para que las til
     "stem": "¿Agente más frecuente de la bronquiolitis?",
     "options": ["Adenovirus", "Virus sincitial respiratorio", "Rinovirus", "Mycoplasma"],
     "answer": "B",
-    "explanation": "El VSR causa la mayoría de los casos."
+    "explanation": "El VSR causa la mayoría de los casos.",
+    "optionExplanations": [
+      "Incorrecta. El adenovirus causa una minoría de bronquiolitis, a veces graves (bronquiolitis obliterante).",
+      "Correcta. El VSR causa la mayoría de los casos, con pico en menores de 6 meses.",
+      "Incorrecta. El rinovirus es el segundo agente más frecuente.",
+      "Incorrecta. Mycoplasma causa neumonía atípica en escolares, no bronquiolitis del lactante."
+    ],
+    "pathophysiology": "El virus infecta el epitelio de los bronquiolos: necrosis, edema de la submucosa y tapones de moco y detritos obstruyen la vía aérea pequeña…",
+    "keyPoints": ["Tratamiento de soporte", "No usar broncodilatadores ni corticoides de rutina"],
+    "references": [
+      { "citation": "Ralston SL, et al. Clinical Practice Guideline: The Diagnosis, Management, and Prevention of Bronchiolitis. Pediatrics. 2014;134(5):e1474-e1502.", "doi": "10.1542/peds.2014-2742" }
+    ]
   }
 ]
 ```

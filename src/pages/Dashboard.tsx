@@ -9,10 +9,9 @@ import { computeStreak, dailySeries, overview, predictedScore, specialtyStats, w
 import { Card, ProgressBar, Ring, SpecialtyIcon, StatCard } from '@/components/ui/primitives'
 import { DailyPlanCard } from '@/components/DailyPlanCard'
 import { QuestionCard } from '@/components/QuestionCard'
-import { BUILTIN_CARDS } from '@/data/flashcards'
 import { UPDATES } from '@/data/updates'
 import { getSpecialty } from '@/data/specialties'
-import { isDue } from '@/lib/srs'
+import { useCardTotals } from '@/hooks/useCollection'
 import { dayKey, daysBetween, formatDate, hashString, pct } from '@/lib/utils'
 import { playSound } from '@/lib/fx'
 
@@ -23,7 +22,8 @@ function greeting() {
 
 export default function Dashboard() {
   const navigate = useNavigate()
-  const { attempts, activity, xp, settings, srs, customCards, exams } = useProgress()
+  const { attempts, activity, xp, settings, exams } = useProgress()
+  const cardTotals = useCardTotals()
   const recordAnswer = useProgress((s) => s.recordAnswer)
   const questions = useBank((s) => s.questions)
   const source = useBank((s) => s.source)
@@ -37,9 +37,8 @@ export default function Dashboard() {
   const predicted = predictedScore(stats)
   const series = dailySeries(activity, 14)
   const failedCount = Object.entries(attempts).filter(([id, a]) => !a.lastCorrect && byId.has(id)).length
-  const allCards = [...BUILTIN_CARDS, ...customCards]
-  const dueCards = allCards.filter((c) => srs[c.id] && isDue(srs[c.id])).length
-  const newCards = allCards.filter((c) => !srs[c.id]).length
+  const dueCards = cardTotals.due
+  const newCards = cardTotals.newAvailable
   const daysLeft = settings.examDate ? daysBetween(new Date(), new Date(settings.examDate + 'T00:00:00')) : null
 
   // Pregunta del día: determinista según la fecha.

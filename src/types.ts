@@ -1,3 +1,10 @@
+export interface Reference {
+  citation: string
+  doi?: string
+  url?: string
+  kind?: 'guia' | 'articulo' | 'libro' | 'revision'
+}
+
 /** Una pregunta del banco. Este es el formato al que se normaliza cualquier base de datos importada. */
 export interface Question {
   /** Identificador único y estable (p. ej. "2019-045"). */
@@ -14,7 +21,16 @@ export interface Question {
   options: string[]
   /** Índice (0-based) de la opción correcta. */
   answer: number
+  /** Explicación general de la respuesta correcta. */
   explanation?: string
+  /** Por qué cada opción es correcta o incorrecta (mismo orden que `options`). */
+  optionExplanations?: string[]
+  /** Procesos fisiológicos / fisiopatológicos involucrados. */
+  pathophysiology?: string
+  keyPoints?: string[]
+  /** Bibliografía (guías, artículos, libros) con DOI o URL cuando existe. */
+  references?: Reference[]
+  /** Referencia breve heredada (texto libre). */
   reference?: string
   /** 1 = fácil, 2 = media, 3 = difícil. */
   difficulty?: 1 | 2 | 3

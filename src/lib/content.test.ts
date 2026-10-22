@@ -35,3 +35,15 @@ describe('integridad del contenido incluido', () => {
     for (const s of MATCH_SETS) expect(s.pairs).toHaveLength(8)
   })
 })
+
+describe('análisis de ejemplo', () => {
+  it('cada análisis corresponde a su pregunta (mismo número de opciones y explicación de la correcta)', async () => {
+    const { SAMPLE_ANALYSIS } = await import('@/data/sampleAnalysis')
+    for (const [id, a] of Object.entries(SAMPLE_ANALYSIS)) {
+      const q = SAMPLE_QUESTIONS.find((x) => x.id === id)!
+      expect(q, id).toBeDefined()
+      expect(a.optionExplanations?.length, id).toBe(q.options.length)
+      expect(a.optionExplanations?.[q.answer].startsWith('Correcta'), `${id}: ${q.stem.slice(0, 40)}`).toBe(true)
+    }
+  })
+})

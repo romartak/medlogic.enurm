@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { Download, Monitor, Moon, Settings as SettingsIcon, Sparkles, Sun, Trash2, Upload } from 'lucide-react'
 import { describeProfile } from '@/lib/plan'
 import { useProgress } from '@/store/progress'
+import { useAnki } from '@/store/anki'
 import { Button, Card, LinkButton, PageHeader, Segmented, Toggle } from '@/components/ui/primitives'
 import { Modal } from '@/components/ui/Modal'
 import { dayKey, downloadFile } from '@/lib/utils'
@@ -20,9 +21,10 @@ export default function Settings() {
   const fileRef = useRef<HTMLInputElement>(null)
 
   const exportBackup = () => {
-    const s = useProgress.getState()
-    const data = Object.fromEntries(Object.entries(s).filter(([, v]) => typeof v !== 'function'))
-    downloadFile(`medlogic-respaldo-${dayKey()}.json`, JSON.stringify({ app: 'medlogic-enurm', version: 1, data }, null, 2))
+    const plain = (o: object) => Object.fromEntries(Object.entries(o).filter(([, v]) => typeof v !== 'function'))
+    const data = plain(useProgress.getState())
+    const anki = plain(useAnki.getState())
+    downloadFile(`medlogic-respaldo-${dayKey()}.json`, JSON.stringify({ app: 'medlogic-enurm', version: 2, data, anki }, null, 2))
     toast({ kind: 'success', title: 'Respaldo descargado' })
   }
 
@@ -32,6 +34,7 @@ export default function Settings() {
       const json = JSON.parse(await f.text())
       if (json.app !== 'medlogic-enurm' || !json.data) throw new Error()
       importBackup(json.data)
+      if (json.anki) useAnki.getState().importBackup(json.anki)
       toast({ kind: 'success', title: 'Progreso restaurado' })
     } catch {
       toast({ kind: 'error', title: 'Archivo de respaldo no válido' })
@@ -137,7 +140,7 @@ export default function Settings() {
       </div>
 
       <Modal open={confirmReset} onClose={() => setConfirmReset(false)} title="¿Borrar todo tu progreso?">
-        <p className="text-sm text-muted">Se eliminarán respuestas, simulacros, flashcards, XP y logros. Tus ajustes se mantienen. Esta acción no se puede deshacer.</p>
+        <p className="text-sm text-muted">Se eliminarán respuestas, simulacros, el progreso de las flashcards (tus notas se conservan), XP y logros. Tus ajustes se mantienen. Esta acción no se puede deshacer.</p>
         <div className="mt-6 flex justify-end gap-2">
           <Button variant="ghost" onClick={() => setConfirmReset(false)}>
             Cancelar
@@ -146,6 +149,7 @@ export default function Settings() {
             variant="danger"
             onClick={() => {
               reset()
+              useAnki.getState().resetAll()
               setConfirmReset(false)
               toast({ kind: 'info', title: 'Progreso borrado' })
             }}

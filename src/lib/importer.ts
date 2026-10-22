@@ -1,5 +1,5 @@
 import Papa from 'papaparse'
-import type { Question } from '@/types'
+import type { Question, Reference } from '@/types'
 import { normalizeText, resolveSpecialtyId } from '@/data/specialties'
 import { hashString, LETTERS } from './utils'
 
@@ -42,7 +42,11 @@ const FIELD_KEYS = {
   options: ['options', 'opciones', 'choices', 'alternativas', 'respuestas'],
   answer: ['answer', 'respuesta', 'correcta', 'correct', 'respuestacorrecta', 'correctanswer', 'clave', 'solucion'],
   explanation: ['explanation', 'explicacion', 'justificacion', 'comentario', 'feedback', 'retroalimentacion', 'razonamiento'],
-  reference: ['reference', 'referencia', 'bibliografia', 'fuente', 'source'],
+  reference: ['reference', 'referencia', 'fuente', 'source'],
+  references: ['references', 'referencias', 'bibliografia', 'citas'],
+  optionExplanations: ['optionexplanations', 'explicaciones', 'analisisopciones', 'analisis', 'porque'],
+  pathophysiology: ['pathophysiology', 'fisiopatologia', 'fisiologia', 'mecanismo', 'mecanismos'],
+  keyPoints: ['keypoints', 'puntosclave', 'perlas', 'claves'],
   difficulty: ['difficulty', 'dificultad', 'nivel'],
   tags: ['tags', 'etiquetas', 'palabrasclave', 'keywords'],
   image: ['image', 'imagen', 'img', 'imageurl'],
@@ -159,6 +163,66 @@ function resolveAnswer(a: RawAnswer, options: string[], oneBased: boolean): numb
   if (a.kind === 'number') return Number(a.value) - (oneBased ? 1 : 0)
   const target = normalizeText(stripLetterPrefix(String(a.value)))
   return options.findIndex((o) => normalizeText(o) === target)
+}
+
+/** Explicaciones por opción: arreglo/objeto o columnas explicacion_a, explicacion_b… */
+function parseOptionExplanations(raw: unknown, row: Row, keyMap: Map<string, string>, n: number): string[] | undefined {
+  let list: string[] = []
+  if (Array.isArray(raw)) list = raw.map((x) => String(x ?? '').trim())
+  else if (raw && typeof raw === 'object') list = Object.values(raw as Record<string, unknown>).map((x) => String(x ?? '').trim())
+  else if (typeof raw === 'string' && raw.trim().startsWith('[')) {
+    try {
+      list = (JSON.parse(raw) as unknown[]).map((x) => String(x ?? '').trim())
+    } catch {
+      /* ignora */
+    }
+  }
+  if (!list.length) {
+    for (let i = 0; i < n; i++) {
+      const L = LETTERS[i].toLowerCase()
+      const real = [`explicacion${L}`, `explanation${L}`, `porque${L}`, `analisis${L}`].map((k) => keyMap.get(k)).find((k) => k !== undefined)
+      list.push(real ? String(row[real] ?? '').trim() : '')
+    }
+  }
+  return list.some(Boolean) ? list.slice(0, n) : undefined
+}
+
+function parseReferences(raw: unknown): Reference[] | undefined {
+  if (raw === undefined || raw === null) return undefined
+  let items: unknown[] = []
+  if (Array.isArray(raw)) items = raw
+  else if (typeof raw === 'string') {
+    const t = raw.trim()
+    if (t.startsWith('[')) {
+      try {
+        items = JSON.parse(t)
+      } catch {
+        items = t.split(/\n|;\s(?=[A-ZÁÉÍÓÚ])/)
+      }
+    } else items = t.split(/\n+/)
+  }
+  const refs = items
+    .map((it): Reference | null => {
+      if (it && typeof it === 'object') {
+        const o = it as Record<string, unknown>
+        const citation = String(o.citation ?? o.cita ?? o.texto ?? o.title ?? '').trim()
+        return citation ? { citation, doi: o.doi ? String(o.doi) : undefined, url: o.url ? String(o.url) : undefined, kind: o.kind as Reference['kind'] } : null
+      }
+      const s = String(it ?? '').trim()
+      if (!s) return null
+      const doi = /\b(10\.\d{4,9}\/[^\s"<>]+)/.exec(s)?.[1]?.replace(/[.,;]$/, '')
+      const url = /(https?:\/\/[^\s]+)/.exec(s)?.[1]
+      return { citation: s, doi, url: doi ? undefined : url }
+    })
+    .filter((r): r is Reference => !!r)
+  return refs.length ? refs : undefined
+}
+
+function parseList(raw: unknown): string[] | undefined {
+  if (raw === undefined) return undefined
+  const list = Array.isArray(raw) ? raw.map(String) : String(raw).split(/\n+|\s*\|\s*|;\s*/)
+  const out = list.map((x) => x.replace(/^[-•*]\s*/, '').trim()).filter(Boolean)
+  return out.length ? out : undefined
 }
 
 function parseYear(raw: unknown): number | undefined {
@@ -285,6 +349,10 @@ export function normalizeRows(rows: Row[], opts: ImportOptions = {}): ImportResu
       options,
       answer: idx,
       explanation: str('explanation'),
+      optionExplanations: parseOptionExplanations(pick(row, keyMap, 'optionExplanations'), row, keyMap, options.length),
+      pathophysiology: str('pathophysiology'),
+      keyPoints: parseList(pick(row, keyMap, 'keyPoints')),
+      references: parseReferences(pick(row, keyMap, 'references')),
       reference: str('reference'),
       difficulty: parseDifficulty(pick(row, keyMap, 'difficulty')),
       tags: parseTags(pick(row, keyMap, 'tags')),

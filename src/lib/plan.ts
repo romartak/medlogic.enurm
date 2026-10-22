@@ -187,7 +187,7 @@ export function buildDailyPlan(input: PlanInput): DailyPlan {
     return { ...base, restDay: true, focus: [], minutes: 0, tasks: [] }
   }
   if (daysLeft === 1) {
-    const tasks: PlanTask[] = input.dueCards ? [{ id: 'cards-light', kind: 'flashcards', title: 'Repaso ligero de flashcards', detail: 'Solo las pendientes, sin presión.', minutes: 15, target: Math.min(input.dueCards, 30), link: '/flashcards/todas', optional: true }] : []
+    const tasks: PlanTask[] = input.dueCards ? [{ id: 'cards-light', kind: 'flashcards', title: 'Repaso ligero de flashcards', detail: 'Solo las pendientes, sin presión.', minutes: 15, target: Math.min(input.dueCards, 30), link: '/flashcards/todas/estudiar', optional: true }] : []
     return { ...base, restDay: true, focus: [], minutes: 15, message: 'Mañana es el examen: descansa, prepara tus documentos y duerme temprano.', tasks }
   }
 
@@ -199,7 +199,7 @@ export function buildDailyPlan(input: PlanInput): DailyPlan {
 
   if (restDay) {
     const tasks: PlanTask[] = []
-    if (input.dueCards) tasks.push({ id: 'cards-rest', kind: 'flashcards', title: 'Flashcards pendientes', detail: 'Opcional: mantén viva la repetición espaciada.', minutes: 10, target: Math.min(input.dueCards, 25), link: '/flashcards/todas', optional: true })
+    if (input.dueCards) tasks.push({ id: 'cards-rest', kind: 'flashcards', title: 'Flashcards pendientes', detail: 'Opcional: mantén viva la repetición espaciada.', minutes: 10, target: Math.min(input.dueCards, 25), link: '/flashcards/todas/estudiar', optional: true })
     if (profile.methods.includes('juegos')) tasks.push({ id: 'game-rest', kind: 'game', title: 'Una partida de Verdadero o falso', detail: 'Aprender jugando también cuenta.', minutes: 5, target: 1, link: '/juegos/verdadero-falso', optional: true })
     return { ...base, restDay: true, focus, minutes: tasks.reduce((a, t) => a + t.minutes, 0), message: 'Día de descanso: recargar energía también es parte del plan.', tasks }
   }
@@ -231,7 +231,7 @@ export function buildDailyPlan(input: PlanInput): DailyPlan {
   const cardsAvailable = input.dueCards + Math.min(input.newCards, 20)
   if (cardsAvailable > 0 && alloc.flashcards > 0) {
     const n = Math.min(cardsAvailable, Math.max(10, Math.round(remaining * alloc.flashcards * 3)))
-    support.push({ id: 'cards', kind: 'flashcards', title: `${n} flashcards`, detail: input.dueCards ? `${input.dueCards} pendientes de repaso` : 'Tarjetas nuevas', minutes: Math.max(5, Math.round(n / 3)), target: n, link: '/flashcards/todas' })
+    support.push({ id: 'cards', kind: 'flashcards', title: `${n} flashcards`, detail: input.dueCards ? `${input.dueCards} pendientes de repaso` : 'Tarjetas nuevas', minutes: Math.max(5, Math.round(n / 3)), target: n, link: '/flashcards/todas/estudiar' })
   }
 
   if (alloc.guides > 0 && !isExamDay) {

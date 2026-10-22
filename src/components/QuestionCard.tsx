@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { Bookmark, BookmarkCheck, Check, Lightbulb, NotebookPen, X } from 'lucide-react'
+import { Bookmark, BookmarkCheck, Check, NotebookPen, X } from 'lucide-react'
+import { QuestionAnalysis } from './QuestionAnalysis'
 import type { Question } from '@/types'
 import { Badge, SpecialtyBadge } from '@/components/ui/primitives'
 import { useProgress } from '@/store/progress'
@@ -100,17 +101,7 @@ export function QuestionCard({ question: q, mode, selected, onSelect, revealed =
       </div>
 
       <AnimatePresence>
-        {showAnswer && (q.explanation || q.reference) && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.35, ease: [0.2, 0.8, 0.2, 1] }} className="overflow-hidden">
-            <div className="mt-5 rounded-xl border border-sky-500/20 bg-sky-500/[0.06] p-4">
-              <div className="mb-1.5 flex items-center gap-2 text-sm font-semibold text-sky-600 dark:text-sky-400">
-                <Lightbulb className="size-4" /> Explicación
-              </div>
-              {q.explanation && <p className="text-sm leading-relaxed whitespace-pre-line">{q.explanation}</p>}
-              {q.reference && <p className="mt-2 text-xs text-muted">Referencia: {q.reference}</p>}
-            </div>
-          </motion.div>
-        )}
+        {showAnswer && <QuestionAnalysis q={q} selected={selected} order={order} />}
       </AnimatePresence>
 
       <AnimatePresence>

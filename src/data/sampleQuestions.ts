@@ -1,4 +1,5 @@
 import type { Question } from '@/types'
+import { SAMPLE_ANALYSIS } from './sampleAnalysis'
 
 /**
  * Preguntas de MUESTRA redactadas para demostrar la plataforma.
@@ -115,6 +116,7 @@ const RAW: Q[] = [
 ]
 
 export const SAMPLE_QUESTIONS: Question[] = RAW.map(([specialty, topic, stem, options, answer, explanation, difficulty], i) => ({
+  ...SAMPLE_ANALYSIS[`muestra-${String(i + 1).padStart(3, '0')}`],
   id: `muestra-${String(i + 1).padStart(3, '0')}`,
   specialty,
   topic,

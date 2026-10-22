@@ -1,8 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { DailyPlan, DayActivity, ExamResult, Flashcard, Question, QuestionAttempt, Settings, SrsGrade, SrsState, StudyProfile } from '@/types'
+import type { DailyPlan, DayActivity, ExamResult, Flashcard, Question, QuestionAttempt, Settings, SrsState, StudyProfile } from '@/types'
 import { DEFAULT_PROFILE } from '@/lib/plan'
-import { review } from '@/lib/srs'
 import { dayKey } from '@/lib/utils'
 import { ACHIEVEMENTS } from '@/data/achievements'
 import { computeStreak } from '@/lib/stats'
@@ -17,7 +16,9 @@ interface ProgressData {
   bookmarks: string[]
   notes: Record<string, string>
   exams: ExamResult[]
+  /** Obsoleto: estado de flashcards anterior al sistema tipo Anki (se migra a store/anki.ts). */
   srs: Record<string, SrsState>
+  /** Obsoleto: tarjetas propias anteriores (se migran a notas de Anki). */
   customCards: Flashcard[]
   guidesRead: string[]
   highscores: Partial<Record<GameId, number>>
@@ -41,9 +42,8 @@ interface ProgressActions {
   toggleBookmark: (id: string) => void
   setNote: (id: string, note: string) => void
   saveExam: (r: ExamResult) => void
-  reviewCard: (id: string, grade: SrsGrade) => void
-  addCustomCard: (c: Flashcard) => void
-  deleteCustomCard: (id: string) => void
+  /** Registra un repaso de flashcard (actividad, XP y logros); la programación vive en store/anki.ts. */
+  recordCardReview: (grade: 1 | 2 | 3 | 4) => void
   markGuideRead: (id: string) => void
   recordGame: (id: GameId, score: number) => boolean
   addMinutes: (n: number) => void
@@ -214,21 +214,13 @@ export const useProgress = create<ProgressState>()(
           commit({ exams: [r, ...get().exams].slice(0, 60), xp: get().xp + 30 })
         },
 
-        reviewCard: (id, grade) => {
+        recordCardReview: (grade) => {
           const s = get()
           commit({
-            srs: { ...s.srs, [id]: review(s.srs[id], grade) },
             activity: bumpDay(s.activity, { cards: 1 }),
             totalCardsReviewed: s.totalCardsReviewed + 1,
-            xp: s.xp + (grade === 0 ? 1 : 3),
+            xp: s.xp + (grade === 1 ? 1 : 3),
           })
-        },
-
-        addCustomCard: (c) => set({ customCards: [c, ...get().customCards] }),
-        deleteCustomCard: (id) => {
-          const srs = { ...get().srs }
-          delete srs[id]
-          set({ customCards: get().customCards.filter((c) => c.id !== id), srs })
         },
 
         markGuideRead: (id) => {

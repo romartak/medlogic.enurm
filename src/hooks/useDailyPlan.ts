@@ -3,8 +3,7 @@ import { useProgress } from '@/store/progress'
 import { useBank } from '@/store/bank'
 import { buildDailyPlan, specialtyPriorities, taskProgress, type PlanInput } from '@/lib/plan'
 import { specialtyStats } from '@/lib/stats'
-import { BUILTIN_CARDS } from '@/data/flashcards'
-import { isDue } from '@/lib/srs'
+import { useCardTotals } from './useCollection'
 import { addDays, dayKey } from '@/lib/utils'
 import { celebrate, playSound } from '@/lib/fx'
 import { toast } from '@/store/toasts'
@@ -12,24 +11,24 @@ import type { DailyPlan, PlanTask } from '@/types'
 
 /** Entradas comunes del plan (prioridades, tarjetas y errores pendientes). */
 export function usePlanInputs(): Omit<PlanInput, 'date'> {
-  const { profile, attempts, srs, customCards, guidesRead, settings } = useProgress()
+  const { profile, attempts, guidesRead, settings } = useProgress()
+  const totals = useCardTotals()
   const questions = useBank((s) => s.questions)
   const byId = useBank((s) => s.byId)
   const counts = useBank((s) => s.specialtyCounts)
 
   return useMemo(() => {
     const stats = specialtyStats(attempts, questions)
-    const cards = [...BUILTIN_CARDS, ...customCards]
     return {
       profile,
       examDate: settings.examDate,
       priorities: specialtyPriorities(profile, stats, counts),
-      dueCards: cards.filter((c) => srs[c.id] && isDue(srs[c.id])).length,
-      newCards: cards.filter((c) => !srs[c.id]).length,
+      dueCards: totals.due,
+      newCards: totals.newAvailable,
       failedCount: Object.entries(attempts).filter(([id, a]) => !a.lastCorrect && byId.has(id)).length,
       guidesRead,
     }
-  }, [profile, attempts, srs, customCards, guidesRead, settings.examDate, questions, byId, counts])
+  }, [profile, attempts, totals.due, totals.newAvailable, guidesRead, settings.examDate, questions, byId, counts])
 }
 
 export interface TaskWithProgress extends PlanTask {

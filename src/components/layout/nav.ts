@@ -1,4 +1,4 @@
-import { BookOpen, Calculator, CalendarCheck, ChartColumn, Compass, Gamepad2, GraduationCap, House, Layers, LayoutGrid, Library, Newspaper, RotateCcw, Settings, Target, Trophy, type LucideIcon } from 'lucide-react'
+import { BookOpen, Calculator, Rocket, CalendarCheck, ChartColumn, Compass, Gamepad2, GraduationCap, House, Layers, LayoutGrid, Library, Newspaper, RotateCcw, Settings, Target, Trophy, type LucideIcon } from 'lucide-react'
 
 export interface NavItem {
   to: string
@@ -36,6 +36,7 @@ export const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
     items: [
       { to: '/estadisticas', label: 'Estadísticas', icon: ChartColumn, description: 'Tu rendimiento en detalle' },
       { to: '/logros', label: 'Logros', icon: Trophy, description: 'Niveles y medallas' },
+      { to: '/roadmap', label: 'Lo que viene', icon: Rocket, description: 'Hoja de ruta y próximas funciones' },
       { to: '/ajustes', label: 'Ajustes', icon: Settings, description: 'Perfil, tema y respaldo' },
     ],
   },
