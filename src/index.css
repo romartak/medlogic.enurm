@@ -1,0 +1,220 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/plus-jakarta-sans';
+@import '@fontsource-variable/inter';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Plus Jakarta Sans Variable', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+
+  --color-brand-50: #effefb;
+  --color-brand-100: #c8fff4;
+  --color-brand-200: #91feea;
+  --color-brand-300: #53f5dd;
+  --color-brand-400: #1fe0c9;
+  --color-brand-500: #06c4b0;
+  --color-brand-600: #029e91;
+  --color-brand-700: #077e75;
+  --color-brand-800: #0b635e;
+  --color-brand-900: #0e524e;
+  --color-brand-950: #003231;
+
+  --color-accent-400: #818cf8;
+  --color-accent-500: #6366f1;
+  --color-accent-600: #4f46e5;
+
+  --radius-xl: 0.875rem;
+  --radius-2xl: 1.25rem;
+  --radius-3xl: 1.75rem;
+
+  --shadow-soft: 0 1px 2px rgb(15 23 42 / 0.04), 0 8px 24px -8px rgb(15 23 42 / 0.08);
+  --shadow-lift: 0 2px 4px rgb(15 23 42 / 0.04), 0 18px 40px -12px rgb(15 23 42 / 0.18);
+  --shadow-glow: 0 10px 40px -10px rgb(6 196 176 / 0.55);
+
+  --animate-float: float 8s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.4s linear infinite;
+  --animate-pulse-ring: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(0, -18px, 0) scale(1.04);
+    }
+  }
+  @keyframes shimmer {
+    from {
+      background-position: -200% 0;
+    }
+    to {
+      background-position: 200% 0;
+    }
+  }
+  @keyframes pulse-ring {
+    0% {
+      box-shadow: 0 0 0 0 rgb(6 196 176 / 0.45);
+    }
+    70% {
+      box-shadow: 0 0 0 12px rgb(6 196 176 / 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgb(6 196 176 / 0);
+    }
+  }
+}
+
+@layer base {
+  :root {
+    --bg: #f6f8fb;
+    --surface: #ffffff;
+    --surface-2: #f1f5f9;
+    --border: rgb(15 23 42 / 0.08);
+    --text: #0f172a;
+    --muted: #64748b;
+    color-scheme: light;
+  }
+  .dark {
+    --bg: #070b14;
+    --surface: #0e1524;
+    --surface-2: #131c2e;
+    --border: rgb(148 163 184 / 0.12);
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    color-scheme: dark;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply font-sans antialiased;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100dvh;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight;
+  }
+  ::selection {
+    background: rgb(6 196 176 / 0.25);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(100 116 139 / 0.35) transparent;
+  }
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
+@layer components {
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-soft);
+  }
+  .card-hover {
+    transition:
+      transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 0.25s,
+      border-color 0.25s;
+  }
+  .card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lift);
+    border-color: rgb(6 196 176 / 0.35);
+  }
+  .glass {
+    background: color-mix(in oklab, var(--surface) 72%, transparent);
+    backdrop-filter: blur(16px) saturate(160%);
+    -webkit-backdrop-filter: blur(16px) saturate(160%);
+    border: 1px solid var(--border);
+  }
+  .surface-2 {
+    background: var(--surface-2);
+  }
+  .text-muted {
+    color: var(--muted);
+  }
+  .border-soft {
+    border-color: var(--border);
+  }
+  .text-gradient {
+    background: linear-gradient(120deg, var(--color-brand-500), var(--color-accent-500) 60%, #ec4899);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .bg-brand-gradient {
+    background: linear-gradient(135deg, var(--color-brand-500), var(--color-accent-500));
+  }
+  .bg-mesh {
+    background:
+      radial-gradient(60rem 40rem at 10% -10%, rgb(6 196 176 / 0.14), transparent 60%),
+      radial-gradient(50rem 40rem at 110% 10%, rgb(99 102 241 / 0.14), transparent 60%),
+      radial-gradient(40rem 30rem at 50% 120%, rgb(236 72 153 / 0.08), transparent 60%);
+  }
+  .skeleton {
+    background: linear-gradient(90deg, var(--surface-2) 25%, color-mix(in oklab, var(--surface-2) 60%, white) 50%, var(--surface-2) 75%);
+    background-size: 200% 100%;
+    animation: var(--animate-shimmer);
+  }
+  .grid-pattern {
+    background-image:
+      linear-gradient(to right, var(--border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  }
+  .perspective {
+    perspective: 1400px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  .kbd {
+    @apply inline-flex h-5 min-w-5 items-center justify-center rounded-md border px-1 font-sans text-[10px] font-semibold;
+    border-color: var(--border);
+    background: var(--surface-2);
+    color: var(--muted);
+  }
+  .prose-guide p {
+    @apply leading-relaxed;
+  }
+}
+
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  transition-duration: 0.001ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

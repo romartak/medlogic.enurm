@@ -1,0 +1,11 @@
+{
+  "name": "MedLogic ENURM",
+  "short_name": "MedLogic",
+  "description": "Prepárate para el ENURM: preguntas, simulacros, flashcards, guías y juegos.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#0d9488",
+  "lang": "es",
+  "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
