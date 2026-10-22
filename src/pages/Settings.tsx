@@ -4,7 +4,7 @@ import { describeProfile } from '@/lib/plan'
 import { useProgress } from '@/store/progress'
 import { useAnki } from '@/store/anki'
 import { useLingo } from '@/store/lingo'
-import { restoreSnapshot, takeSnapshot } from '@/lib/backup'
+import { MAX_SNAPSHOT_BYTES, restoreSnapshot, takeSnapshot } from '@/lib/backup'
 import { useAuth } from '@/store/auth'
 import { Button, Card, LinkButton, PageHeader, Segmented, Toggle } from '@/components/ui/primitives'
 import { Modal } from '@/components/ui/Modal'
@@ -32,6 +32,7 @@ export default function Settings() {
 
   const restore = async (f: File | undefined) => {
     if (!f) return
+    if (f.size > MAX_SNAPSHOT_BYTES) return toast({ kind: 'error', title: 'Archivo demasiado grande', body: 'Un respaldo de MedLogic pesa como mucho 8 MB.' })
     try {
       restoreSnapshot(JSON.parse(await f.text()))
       toast({ kind: 'success', title: 'Progreso restaurado' })

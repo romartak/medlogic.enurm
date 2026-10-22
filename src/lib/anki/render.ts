@@ -43,14 +43,17 @@ const ALLOWED = new Set(['b', 'strong', 'i', 'em', 'u', 'br', 'sup', 'sub', 'ul'
  */
 export function sanitizeHtml(input: string): string {
   // Solo se interpreta como HTML si contiene etiquetas conocidas; si no, se escapa (p. ej. "CD4 < 200").
+  // Cualquier «<» que no forme una etiqueta completa se escapa: así ninguna etiqueta a medio cerrar
+  // («<img src=x onerror=…» sin «>») puede unirse con el HTML que venga detrás y colar un atributo.
   return prepare(input)
-    .replace(/<\s*(script|style|iframe|object|embed)[\s\S]*?<\s*\/\s*\1\s*>/gi, '')
-    .replace(/<\s*(\/?)\s*([a-z0-9]+)([^>]*)>/gi, (_m, close: string, tag: string, attrs: string) => {
+    .replace(/<\s*(script|style|iframe|object|embed|svg|math|template|noscript|textarea|title|xmp)[\s\S]*?<\s*\/\s*\1\s*>/gi, '')
+    .replace(/<\s*(\/?)\s*([a-z0-9]+)([^<>]*)>|</gi, (_m, close: string | undefined, tag: string | undefined, attrs: string) => {
+      if (tag === undefined) return '&lt;'
       const t = tag.toLowerCase()
       if (!ALLOWED.has(t)) return ''
       if (t === 'img' && !close) {
         const src = /src\s*=\s*["']([^"']+)["']/i.exec(attrs)?.[1] ?? ''
-        return /^(https?:|data:image\/)/i.test(src) ? `<img src="${src.replace(/"/g, '')}" alt="">` : ''
+        return /^(https:|data:image\/(png|jpe?g|gif|webp);)/i.test(src) ? `<img src="${src.replace(/["<>\s]/g, '')}" alt="" loading="lazy" referrerpolicy="no-referrer">` : ''
       }
       if (t === 'span' && !close && /class\s*=\s*["']cloze/i.test(attrs)) return '<span class="cloze">'
       return `<${close}${t}>`

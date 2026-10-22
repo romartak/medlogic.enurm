@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { Activity, BookMarked, Check, ChevronDown, CircleAlert, ExternalLink, Layers, Lightbulb, ListChecks, MessageSquareWarning, Sparkles, X } from 'lucide-react'
 import type { Question } from '@/types'
 import { useNoteEditor } from '@/components/anki/common'
-import { cn, LETTERS } from '@/lib/utils'
+import { cn, LETTERS, safeUrl } from '@/lib/utils'
 import { REPO_URL } from '@/components/layout/AppLayout'
 import { PROMPTS, fillPrompt } from '@/data/prompts'
 import { openInAi } from '@/lib/clipboard'
@@ -100,7 +100,7 @@ export function QuestionAnalysis({ q, selected, order }: { q: Question; selected
           <Section icon={<BookMarked className="size-4 text-muted" />} title="Bibliografía" tone="border-soft" collapsible defaultOpen={false}>
             <ol className="list-decimal space-y-1.5 pl-5 text-xs">
               {q.references?.map((r) => {
-                const href = r.doi ? `https://doi.org/${r.doi}` : r.url
+                const href = r.doi ? `https://doi.org/${encodeURI(r.doi)}` : safeUrl(r.url)
                 return (
                   <li key={r.citation}>
                     {r.citation}

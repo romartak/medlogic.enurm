@@ -110,6 +110,16 @@ describe('notas y huecos (cloze)', () => {
     expect(sanitizeHtml('<img src="javascript:alert(1)"><i>ok</i>')).toBe('<i>ok</i>')
     expect(sanitizeHtml('CD4 < 200')).toBe('CD4 &lt; 200')
   })
+
+  it('no deja pasar etiquetas a medio cerrar ni trucos de anidado', () => {
+    // Sin «>»: antes se unía con el «<hr>» del reverso y colaba onerror.
+    const { back } = renderCard({ ord: 0, note: note({ front: 'Q', back: '<b>x</b><img src=x onerror=alert(1) ', extra: 'nota' }) })
+    expect(back).toBe('<b>x</b>&lt;img src=x onerror=alert(1) <hr>nota')
+    expect(sanitizeHtml('<b>a</b><<b>script>alert(1)<</b>/script>')).not.toMatch(/<script/i)
+    expect(sanitizeHtml('<b>a</b><svg><b onload=alert(1)>x</b></svg>')).toBe('<b>a</b>')
+    expect(sanitizeHtml('<b>a</b><img src="https://x.org/a.png" onerror="alert(1)">')).toBe('<b>a</b><img src="https://x.org/a.png" alt="" loading="lazy" referrerpolicy="no-referrer">')
+    expect(sanitizeHtml('<i>ok</i><img src="data:image/svg+xml,<svg onload=alert(1)>">')).not.toMatch(/<img|<svg/)
+  })
 })
 
 const card = (id: string, over: Partial<Note> = {}): Card => {

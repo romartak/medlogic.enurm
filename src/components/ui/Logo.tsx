@@ -1,4 +1,8 @@
+import { useId } from 'react'
+import { motion } from 'motion/react'
 import { cn } from '@/lib/utils'
+
+const PULSE = 'M10 34h10l5-12 8 22 6-16 4 6h11'
 
 export function LogoMark({ className }: { className?: string }) {
   return (
@@ -10,7 +14,35 @@ export function LogoMark({ className }: { className?: string }) {
         </linearGradient>
       </defs>
       <rect width="64" height="64" rx="16" fill="url(#logo-g)" />
-      <path d="M10 34h10l5-12 8 22 6-16 4 6h11" fill="none" stroke="#fff" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d={PULSE} fill="none" stroke="#fff" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+/** Logo con el trazo del pulso dibujándose: una vez (entrada) o en bucle (pantalla de carga). */
+export function AnimatedLogoMark({ className, loop = false, delay = 0 }: { className?: string; loop?: boolean; delay?: number }) {
+  const id = `logo-a${useId().replace(/[^a-zA-Z0-9]/g, '')}`
+  return (
+    <svg viewBox="0 0 64 64" className={cn('size-16', className)} aria-hidden>
+      <defs>
+        <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#14b8a6" />
+          <stop offset="1" stopColor="#6366f1" />
+        </linearGradient>
+      </defs>
+      <rect width="64" height="64" rx="16" fill={`url(#${id})`} />
+      <path d={PULSE} fill="none" stroke="#fff" strokeOpacity="0.22" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+      <motion.path
+        d={PULSE}
+        fill="none"
+        stroke="#fff"
+        strokeWidth="4.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={loop ? { pathLength: [0, 1, 1], opacity: [1, 1, 0] } : { pathLength: 1, opacity: 1 }}
+        transition={loop ? { duration: 1.8, times: [0, 0.55, 1], ease: 'easeInOut', repeat: Infinity, delay } : { duration: 0.9, ease: [0.65, 0, 0.35, 1], delay }}
+      />
     </svg>
   )
 }

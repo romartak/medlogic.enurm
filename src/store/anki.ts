@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { AnkiSettings, Card, CardState, Deck, DeckConfig, Grade, Note, RevlogEntry } from '@/lib/anki/types'
 import { answerCard, dayNumber, DEFAULT_CONFIG, newCardState, PRESETS } from '@/lib/anki/scheduler'
-import { uid } from '@/lib/utils'
+import { pickKnown, uid } from '@/lib/utils'
 import { useProgress } from './progress'
 
 export const CUSTOM_DECK_ID = 'mis-tarjetas'
@@ -276,9 +276,7 @@ export const useAnki = create<AnkiState>()(
       },
 
       importBackup: (data) => {
-        const clean: Partial<AnkiData> = {}
-        for (const k of Object.keys(INITIAL) as (keyof AnkiData)[]) if (data[k] !== undefined) (clean as Record<string, unknown>)[k] = data[k]
-        set({ ...clean, migrated: true })
+        set({ ...pickKnown(INITIAL, data), migrated: true })
       },
 
       resetAll: () => {

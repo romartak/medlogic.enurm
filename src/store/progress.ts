@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { DailyPlan, DayActivity, ExamResult, Flashcard, Question, QuestionAttempt, Settings, SrsState, StudyProfile } from '@/types'
 import { DEFAULT_PROFILE } from '@/lib/plan'
-import { dayKey } from '@/lib/utils'
+import { dayKey, pickKnown } from '@/lib/utils'
 import { ACHIEVEMENTS } from '@/data/achievements'
 import { computeStreak } from '@/lib/stats'
 import { useToasts } from './toasts'
@@ -269,11 +269,8 @@ export const useProgress = create<ProgressState>()(
         },
 
         importBackup: (data) => {
-          const clean: Partial<ProgressData> = {}
-          for (const k of Object.keys(INITIAL) as (keyof ProgressData)[]) {
-            if (data[k] !== undefined) (clean as Record<string, unknown>)[k] = data[k]
-          }
-          set({ ...clean, settings: { ...DEFAULT_SETTINGS, ...(data.settings ?? get().settings) }, profile: { ...DEFAULT_PROFILE, ...(data.profile ?? get().profile) }, planSnapshot: null })
+          const clean = pickKnown(INITIAL, data)
+          set({ ...clean, settings: { ...DEFAULT_SETTINGS, ...pickKnown(DEFAULT_SETTINGS, clean.settings ?? get().settings) }, profile: { ...DEFAULT_PROFILE, ...pickKnown(DEFAULT_PROFILE, clean.profile ?? get().profile) }, planSnapshot: null })
         },
       }
     },

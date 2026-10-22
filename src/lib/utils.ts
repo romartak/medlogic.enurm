@@ -147,3 +147,34 @@ export function formatMinutes(t: number): string {
   const m = Math.round(t % 60)
   return h ? `${h} h${m ? ` ${m} min` : ''}` : `${m} min`
 }
+
+/** Solo deja pasar enlaces http(s): evita «javascript:» y similares en datos importados. */
+export function safeUrl(url: string | undefined | null): string | undefined {
+  if (!url) return undefined
+  try {
+    const u = new URL(url)
+    return u.protocol === 'https:' || u.protocol === 'http:' ? u.href : undefined
+  } catch {
+    return undefined
+  }
+}
+
+/**
+ * Copia de `data` solo con las claves de `initial` y con el mismo tipo (lista, objeto, número…).
+ * Protege al importar respaldos o copias de la nube: un archivo dañado o manipulado no puede
+ * meter claves extrañas ni romper la app con tipos inesperados.
+ */
+export function pickKnown<T extends object>(initial: T, data: unknown): Partial<T> {
+  const out: Partial<T> = {}
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return out
+  const src = data as Record<string, unknown>
+  const kind = (v: unknown) => (v === null ? 'null' : Array.isArray(v) ? 'array' : typeof v)
+  for (const k of Object.keys(initial) as (keyof T & string)[]) {
+    if (!Object.prototype.hasOwnProperty.call(src, k)) continue
+    const want = kind(initial[k])
+    const got = kind(src[k])
+    // null en el estado inicial significa «vacío»: acepta null u objeto/texto/número.
+    if (got === want || (want === 'null' && got !== 'array' && got !== 'undefined')) (out as Record<string, unknown>)[k] = src[k]
+  }
+  return out
+}

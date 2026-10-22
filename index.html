@@ -5,21 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content="MedLogic ENURM: plataforma gratuita y de código abierto para preparar el Examen Nacional Único de Residencias Médicas. Banco de preguntas, simulacros, flashcards, guías y juegos." />
     <meta name="theme-color" content="#0d9488" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="manifest" href="./manifest.webmanifest" />
     <title>MedLogic ENURM</title>
-    <script>
-      // Aplica el tema antes de pintar para evitar parpadeo.
-      try {
-        var s = JSON.parse(localStorage.getItem('medlogic-progress') || '{}');
-        var t = (s.state && s.state.settings && s.state.settings.theme) || 'system';
-        var dark = t === 'dark' || (t === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
-        if (dark) document.documentElement.classList.add('dark');
-      } catch (e) {}
-    </script>
+    <script src="./theme-init.js"></script>
+    <style>
+      /* Pantalla de carga: se ve antes de que cargue la app (y la app la reutiliza). */
+      .boot{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:#f6f8fb;color:#0f172a;font-family:'Plus Jakarta Sans Variable','Inter Variable',system-ui,-apple-system,'Segoe UI',sans-serif}
+      html.dark .boot{background:#070b14;color:#e8edf5}
+      .boot::before{content:'';position:absolute;inset:0;background:radial-gradient(520px circle at 50% 40%,rgba(20,184,166,.16),transparent 62%),radial-gradient(460px circle at 58% 62%,rgba(99,102,241,.12),transparent 62%)}
+      .boot-in{position:relative;display:flex;flex-direction:column;align-items:center;animation:boot-fade .5s ease both}
+      .boot-mark{position:relative;width:84px;height:84px}
+      .boot-mark svg{position:relative;display:block;width:100%;height:100%;filter:drop-shadow(0 14px 30px rgba(13,148,136,.35));animation:boot-pop .7s cubic-bezier(.34,1.56,.64,1) both}
+      .boot-ring{position:absolute;inset:0;border-radius:26px;border:2px solid rgba(20,184,166,.55);opacity:0;animation:boot-ring 2.4s cubic-bezier(.2,.7,.3,1) infinite}
+      .boot-ring:nth-child(2){animation-delay:.8s}
+      .boot-ring:nth-child(3){animation-delay:1.6s}
+      .boot-line{stroke-dasharray:100;stroke-dashoffset:100;animation:boot-draw 1.8s ease-in-out infinite}
+      .boot-name{margin-top:26px;font-size:21px;font-weight:800;letter-spacing:-.02em;line-height:1}
+      .boot-sub{margin-top:6px;font-size:10px;font-weight:700;letter-spacing:.32em;text-indent:.32em;color:#067c71}
+      html.dark .boot-sub{color:#1fe0c9}
+      .boot-bar{position:relative;margin-top:22px;width:148px;height:4px;overflow:hidden;border-radius:99px;background:rgba(100,116,139,.18)}
+      .boot-bar i{position:absolute;inset:0 auto 0 0;width:38%;border-radius:inherit;background:#0ba595;animation:boot-bar 1.3s cubic-bezier(.65,0,.35,1) infinite}
+      .boot-cont .boot-in,.boot-cont .boot-mark svg{animation:none}
+      @keyframes boot-fade{from{opacity:0;transform:translateY(6px)}}
+      @keyframes boot-pop{from{opacity:0;transform:scale(.6) rotate(-8deg)}}
+      @keyframes boot-ring{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(2.1)}}
+      @keyframes boot-draw{0%{stroke-dashoffset:100;opacity:1}55%{stroke-dashoffset:0;opacity:1}85%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+      @keyframes boot-bar{0%{transform:translateX(-100%)}100%{transform:translateX(270%)}}
+      @media (prefers-reduced-motion:reduce){.boot *,.boot *::before{animation-duration:0s!important;animation-iteration-count:1!important}.boot-line{stroke-dashoffset:0}.boot-ring{display:none}}
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="boot" role="status" aria-label="Cargando MedLogic ENURM">
+        <div class="boot-in">
+          <div class="boot-mark">
+            <span class="boot-ring"></span><span class="boot-ring"></span><span class="boot-ring"></span>
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <defs><linearGradient id="boot-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14b8a6" /><stop offset="1" stop-color="#6366f1" /></linearGradient></defs>
+              <rect width="64" height="64" rx="16" fill="url(#boot-g)" />
+              <path d="M10 34h10l5-12 8 22 6-16 4 6h11" fill="none" stroke="#fff" stroke-opacity=".22" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path class="boot-line" pathLength="100" d="M10 34h10l5-12 8 22 6-16 4 6h11" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="boot-name">MedLogic</div>
+          <div class="boot-sub">ENURM</div>
+          <div class="boot-bar"><i></i></div>
+        </div>
+      </div>
+    </div>
+    <noscript>MedLogic ENURM necesita JavaScript activado.</noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

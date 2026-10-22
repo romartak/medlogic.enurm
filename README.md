@@ -72,7 +72,8 @@ La lógica está en `src/lib/plan.ts` y tiene pruebas en `src/lib/plan.test.ts`.
 La app es estática (Vite + React) y usa rutas con `#`, así que funciona en cualquier hosting sin configuración extra.
 
 - **GitHub Pages:** el flujo `.github/workflows/deploy.yml` publica automáticamente al hacer push a `main`. Actívalo en *Settings → Pages → Source: GitHub Actions*.
-- **Netlify / Vercel / Cloudflare Pages:** comando `npm run build`, carpeta `dist`.
+- **Vercel (recomendado):** importa el repositorio y listo; `vercel.json` trae la compilación, las cabeceras de seguridad y la caché. Para activar las cuentas conecta Supabase desde el Marketplace de Vercel: las tablas se crean solas al desplegar. Guía paso a paso en [docs/DESPLIEGUE.md](docs/DESPLIEGUE.md).
+- **Netlify / Cloudflare Pages:** comando `npm run build`, carpeta `dist`.
 - **App móvil (futuro):** al ser una web estática con base relativa, puede empaquetarse con Capacitor sin cambios en las rutas.
 
 ## Estructura

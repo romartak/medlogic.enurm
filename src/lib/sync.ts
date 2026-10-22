@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import { hasLocalProgress, onProgressChange, restoreSnapshot, takeSnapshot } from './backup'
+import { hasLocalProgress, MAX_SNAPSHOT_BYTES, onProgressChange, restoreSnapshot, takeSnapshot } from './backup'
 import { useAuth } from '@/store/auth'
 
 /**
@@ -47,9 +47,12 @@ async function pull(userId: string): Promise<{ snapshot: unknown; updatedAt: str
 async function push(userId: string): Promise<void> {
   const auth = useAuth.getState()
   if (auth.conflict) return
+  const snapshot = takeSnapshot()
+  // Mismo límite que la base de datos: evita subir copias enormes (p. ej. mazos con muchas imágenes).
+  if (new Blob([JSON.stringify(snapshot)]).size > MAX_SNAPSHOT_BYTES) return auth.setSync({ sync: 'error' })
   auth.setSync({ sync: 'syncing' })
   try {
-    const { data, error } = await supabase!.from('user_state').upsert({ user_id: userId, snapshot: takeSnapshot() }).select('updated_at').single()
+    const { data, error } = await supabase!.from('user_state').upsert({ user_id: userId, snapshot }).select('updated_at').single()
     if (error) throw error
     writeMeta({ userId, lastSyncedAt: data.updated_at as string, dirty: false })
     useAuth.getState().setSync({ sync: 'synced', lastSyncedAt: data.updated_at as string })
