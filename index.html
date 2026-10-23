@@ -28,6 +28,12 @@
       .boot-bar{position:relative;margin-top:22px;width:148px;height:4px;overflow:hidden;border-radius:99px;background:rgba(100,116,139,.18)}
       .boot-bar i{position:absolute;inset:0 auto 0 0;width:38%;border-radius:inherit;background:#0ba595;animation:boot-bar 1.3s cubic-bezier(.65,0,.35,1) infinite}
       .boot-cont .boot-in,.boot-cont .boot-mark svg{animation:none}
+      .boot-leave{pointer-events:none;animation:boot-out .6s cubic-bezier(.4,0,.2,1) forwards}
+      .boot-leave .boot-in{animation:boot-zoom .6s cubic-bezier(.4,0,.2,1) forwards}
+      .boot-leave .boot-ring,.boot-leave .boot-bar i{animation-play-state:paused}
+      .boot-leave .boot-line{animation:none;stroke-dashoffset:0}
+      @keyframes boot-out{to{opacity:0}}
+      @keyframes boot-zoom{to{transform:scale(1.08)}}
       @keyframes boot-fade{from{opacity:0;transform:translateY(6px)}}
       @keyframes boot-pop{from{opacity:0;transform:scale(.6) rotate(-8deg)}}
       @keyframes boot-ring{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(2.1)}}

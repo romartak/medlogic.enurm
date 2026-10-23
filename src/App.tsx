@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { MotionConfig } from 'motion/react'
 import { AppLayout } from '@/components/layout/AppLayout'
@@ -13,6 +13,7 @@ import { startSync } from '@/lib/sync'
 import { SyncConflict } from '@/components/SyncConflict'
 import { PlanReveal } from '@/components/PlanReveal'
 import { VercelInsights } from '@/components/VercelInsights'
+import { motionAllowed } from '@/lib/fx'
 const Dashboard = lazy(() => import('@/pages/Dashboard'))
 
 const Landing = lazy(() => import('@/pages/Landing'))
@@ -48,12 +49,26 @@ const Account = lazy(() => import('@/pages/Account'))
 const LingoPath = lazy(() => import('@/pages/lingo/Path'))
 const LingoLesson = lazy(() => import('@/pages/lingo/Lesson'))
 
+/** Tiempo mínimo de la pantalla de carga al abrir la página, para que la animación se vea completa. */
+const BOOT_MIN_MS = 2000
+
 /** Misma pantalla de carga que index.html (sus estilos viven allí), sin repetir la entrada y con el pulso en fase. */
-function Splash() {
-  const phase = { animationDelay: `-${Math.round(performance.now() % 1800)}ms` }
-  const ring = (offset: number) => ({ animationDelay: `-${Math.round((performance.now() + offset) % 2400)}ms` })
+function Splash({ onLeft }: { onLeft?: () => void }) {
+  const [t0] = useState(() => performance.now())
+  const phase = { animationDelay: `-${Math.round(t0 % 1800)}ms` }
+  const ring = (offset: number) => ({ animationDelay: `-${Math.round((t0 + offset) % 2400)}ms` })
+  useEffect(() => {
+    if (!onLeft) return
+    const t = setTimeout(onLeft, 700)
+    return () => clearTimeout(t)
+  }, [onLeft])
   return (
-    <div className="boot boot-cont" role="status" aria-label="Cargando MedLogic ENURM">
+    <div
+      className={onLeft ? 'boot boot-cont boot-leave' : 'boot boot-cont'}
+      role="status"
+      aria-label="Cargando MedLogic ENURM"
+      aria-hidden={onLeft ? true : undefined}
+    >
       <div className="boot-in">
         <div className="boot-mark">
           <span className="boot-ring" style={ring(0)} />
@@ -101,6 +116,17 @@ export default function App() {
   const status = useBank((s) => s.status)
   const load = useBank((s) => s.load)
   const reduceMotion = useProgress((s) => s.settings.reduceMotion)
+  const [bootWait, setBootWait] = useState(motionAllowed)
+  const [bootLeaving, setBootLeaving] = useState(false)
+
+  useEffect(() => {
+    if (!bootWait) return
+    const t = setTimeout(() => {
+      setBootWait(false)
+      setBootLeaving(true)
+    }, Math.max(0, BOOT_MIN_MS - performance.now()))
+    return () => clearTimeout(t)
+  }, [bootWait])
 
   useEffect(() => {
     const stopAuth = useAuth.getState().init()
@@ -118,7 +144,9 @@ export default function App() {
     useAnki.getState().migrateLegacy(p.srs, p.customCards)
   }, [load])
 
-  if (status === 'idle' || status === 'loading') return <Splash />
+  const endBoot = useCallback(() => setBootLeaving(false), [])
+
+  if (status === 'idle' || status === 'loading' || bootWait) return <Splash />
 
   return (
     <MotionConfig reducedMotion={reduceMotion ? 'always' : 'user'}>
@@ -171,6 +199,7 @@ export default function App() {
       <PlanReveal />
       <Toaster />
       <VercelInsights />
+      {bootLeaving && <Splash onLeft={endBoot} />}
     </MotionConfig>
   )
 }
