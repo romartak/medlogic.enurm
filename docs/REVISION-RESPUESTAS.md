@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **1040** de 1166 · publicadas: **971** · respuesta corregida: **153** · retiradas: **69**.
+Preguntas revisadas: **1110** de 1166 · publicadas: **1034** · respuesta corregida: **162** · retiradas: **76**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -445,6 +445,32 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **Q137_75** — En junio de 2019 la OMS/OPS emitió una alerta epidemiológica por la detección de fiebre de Mayaro en la región (Haití registró un caso en 2015; Ecuador y Perú informaron casos en 2019). ¿Qué mosquito es el vector de la fiebre de Mayaro?
   - Documento: D (Predominantemente especies desconocidas) → publicada: **A (Predominantemente especies de Haemagogus)**
   - El archivo marcaba especie desconocida. El vector principal del virus Mayaro es el mosquito selvático del género Haemagogus; Aedes podría actuar como vector urbano.
+- **Q137_80** — Hombre de 63 años llevado por su hija al centro de salud por ánimo deprimido, pérdida de interés o placer, pensamientos recurrentes de muerte y fatiga casi todos los días durante al menos dos semanas; además se despierta muy temprano por las mañanas. ¿Cómo clasificaría este episodio?
+  - Documento: — → publicada: **D (Depresivo mayor)**
+  - El archivo no traía respuesta marcada. Los síntomas cumplen los criterios de un episodio depresivo mayor.
+- **Q138_83** — En la fisiopatología de las hernias inguinales adquiridas, el factor de riesgo más importante que se asocia a su formación es:
+  - Documento: C (Factor hereditario) → publicada: **A (Debilidad de la pared abdominal (fascia transversalis y musculatura))**
+- **Q138_86** — La prueba diagnóstica más precisa para el divertículo de Meckel es:
+  - Documento: D (Tomografía de abdomen) → publicada: **B (Gammagrafía con pertecnetato de tecnecio 99m)**
+  - El archivo marcaba la tomografía. La prueba más precisa para el divertículo de Meckel es la gammagrafía con tecnecio 99m pertecnetato, que detecta la mucosa gástrica ectópica.
+- **Q139_99** — Mujer de 34 años que acude a emergencias por dolor abdominal de inicio súbito en la fosa ilíaca derecha, con náuseas y sin fiebre. Su última menstruación fue hace 3 semanas y fue normal. Tiene una presión de 130/70 mmHg. ¿Cuál es el diagnóstico probable?
+  - Documento: — → publicada: **C (Torsión del ovario derecho)**
+  - El archivo no traía respuesta marcada. El dolor súbito en una fosa ilíaca con náuseas, sin fiebre, en una mujer con ciclo normal y sin datos de embarazo ni de choque, orienta a torsión de ovario.
+- **Q204_4** — ¿De cuál de estos nervios provienen las ramas infraorbitarias?
+  - Documento: A (Oftálmico) → publicada: **B (Maxilar)**
+  - El archivo marcaba el nervio oftálmico. El nervio infraorbitario es la continuación del nervio maxilar (V2).
+- **Q205_14** — ¿Cómo se denomina el conjunto de procesos sistemáticos, críticos y empíricos que se aplican al estudio de un fenómeno o problema?
+  - Documento: A (Ciencia) → publicada: **C (Investigación científica)**
+  - El archivo marcaba «ciencia». La definición del enunciado (procesos sistemáticos, críticos y empíricos aplicados al estudio de un fenómeno) es la definición clásica de investigación (Hernández Sampieri).
+- **Q205_26** — ¿A qué edad aparece, en promedio, el primer diente?
+  - Documento: A (3 meses) → publicada: **B (6 meses)**
+  - El archivo marcaba 5 meses entre opciones separadas por medio mes (5, 5.5, 6.5 y 7) que no coinciden con la referencia. Se reformularon: la primera erupción dentaria ocurre hacia los 6 meses.
+- **Q206_37** — El cólera es una de las enfermedades que tiene mayor propensión a producir:
+  - Documento: B (Anemia) → publicada: **C (Brotes)**
+  - El archivo marcaba anemia. El cólera no causa anemia; es una de las enfermedades con mayor propensión a producir brotes y epidemias.
+- **Q207_39** — Muchas de las muertes en los pacientes con dengue hemorrágico (dengue grave) se deben a:
+  - Documento: C (Anemia) → publicada: **D (Sobrehidratación)**
+  - El archivo marcaba anemia, que no es una causa de muerte en el dengue. La OMS señala la sobrehidratación (sobrecarga de líquidos) como una causa importante de muerte en el dengue grave, junto con el reconocimiento tardío del choque.
 
 ## Retiradas
 
@@ -586,3 +612,17 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
   - Fragmento: falta el caso clínico que describe la enfermedad a clasificar.
 - **Q135_54** — De las siguientes modalidades de tratamiento, señale el que corresponde a una paciente embarazada co sífilis de más de un año de duración.
   - Repetida: mismo contenido que Q125_49 (tratamiento de la sífilis de más de un año en la embarazada).
+- **Q153_800** — Creatinina 1.1 mg/dl ¿Cuál sería el manejo clínico inicial más adecuado?
+  - Fragmento: solo se conserva un dato de laboratorio; falta el caso clínico.
+- **Q169_2** — ¿Cuál de los siguientes medicamentos tiene e mecanismo?
+  - Fragmento ilegible: el enunciado está incompleto («¿Cuál tiene el mecanismo?»).
+- **Q178_911** — Mientras le realiza el examen físico el paciente presenta signos neurológicos y una oximetría de pulso elevada. Tomando en cuenta lo hallazgos, ¿Cuál de estos diagnósticos podría estar presente en este paciente?
+  - Repetida: mismo contenido que Q129_911 (intoxicación por monóxido de carbono).
+- **Q179_3** — Urea: 60mg/dl, creatinina: 0.4mg/dl. Su diagnóstico más probable para esta paciente seria:
+  - Fragmento: falta el caso clínico; solo quedan valores de urea y creatinina.
+- **Q185_90** — Con relacion al caso anterior: ¿Cuál de los siguientes constituye el tratamiento más efectivo y seguro a largo plazo en los pacientes con acalasia?:
+  - Repetida: mismo contenido que Q128_85 (tratamiento de la acalasia).
+- **Q206_31** — La diarrea del destete ocurre:
+  - Repetida: mismo contenido que Q5_38 (diarrea del destete); además solo conserva tres opciones.
+- **Q206_36** — ¿Cuál de estos trastornos es considerado un defecto del tubo neural
+  - Repetida: mismo contenido que Q97_6 (defectos del tubo neural).
