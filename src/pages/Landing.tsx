@@ -33,6 +33,7 @@ import { buttonClass } from '@/components/ui/primitives'
 import { SPECIALTIES } from '@/data/specialties'
 import { Icon } from '@/components/ui/Icon'
 import { REPO_URL } from '@/components/layout/AppLayout'
+import { INSTAGRAM_URL, INSTAGRAM_USER, InstagramIcon } from '@/components/InstagramPrompt'
 import { ENURM_FACTS, formatEnurmDate, upcomingEnurm } from '@/data/enurm'
 import { cn, daysBetween, softHyphens, tintText } from '@/lib/utils'
 
@@ -548,6 +549,9 @@ export default function Landing() {
               </a>
               <a href={`${import.meta.env.BASE_URL}terminos/`} className="font-medium hover:text-[var(--text)]">
                 Términos
+              </a>
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 font-medium hover:text-[var(--text)]">
+                <InstagramIcon className="size-4" /> @{INSTAGRAM_USER}
               </a>
               <a href={REPO_URL} target="_blank" rel="noreferrer" className="flex items-center gap-2 font-medium hover:text-[var(--text)]">
                 <GithubIcon className="size-4" /> Código en GitHub

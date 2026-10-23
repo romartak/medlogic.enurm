@@ -12,6 +12,7 @@ import { useAuth } from '@/store/auth'
 import { startSync } from '@/lib/sync'
 import { SyncConflict } from '@/components/SyncConflict'
 import { PlanReveal } from '@/components/PlanReveal'
+import { InstagramPrompt } from '@/components/InstagramPrompt'
 import { VercelInsights } from '@/components/VercelInsights'
 import { motionAllowed } from '@/lib/fx'
 const Dashboard = lazy(() => import('@/pages/Dashboard'))
@@ -197,6 +198,7 @@ export default function App() {
       </Suspense>
       <SyncConflict />
       <PlanReveal />
+      <InstagramPrompt />
       <Toaster />
       <VercelInsights />
       {bootLeaving && <Splash onLeft={endBoot} />}
