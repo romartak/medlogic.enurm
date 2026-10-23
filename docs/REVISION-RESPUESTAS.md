@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **666** de 1166 · publicadas: **625** · respuesta corregida: **107** · retiradas: **41**.
+Preguntas revisadas: **768** de 1166 · publicadas: **712** · respuesta corregida: **119** · retiradas: **56**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -316,6 +316,41 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
   - La hipoglucemia es la complicación aguda más frecuente de la diabetes tipo 1 tratada con insulina; la cetoacidosis es la más característica y grave, pero menos frecuente.
 - **Q102_75** — ¿La causa más común de muerte en los pacientes hipertensos es?
   - Documento: — → publicada: **C (Cardiopatías (cardiopatía isquémica e insuficiencia cardíaca))**
+- **Q104_1** — Constituye la unidad básica, funcional y operativa, y la puerta de entrada al sistema nacional de salud y seguridad social:
+  - Documento: A (Hospital de primer nivel) → publicada: **B (Unidad de Atención Primaria (UNAP))**
+  - En la República Dominicana la puerta de entrada al sistema es la Unidad de Atención Primaria (UNAP), no el hospital de primer nivel.
+- **Q105_16** — El conjunto de acciones planificadas, que se emprenden con la finalidad de resolver total o parcialmente un problema científico determinado es:
+  - Documento: A (Ciencia) → publicada: **B (Investigación científica)**
+  - El conjunto de acciones planificadas para resolver un problema científico es la investigación científica; la ciencia es el cuerpo de conocimientos.
+- **Q106_24** — La siguiente triada es característica de la toxoplasmosis congénita:
+  - Documento: C (Hepatoesplenomegalia, ictericia y elevación de las enzimas hepáticas) → publicada: **A (Coriorretinitis, hidrocefalia y calcificaciones cerebrales)**
+  - La tríada de la toxoplasmosis congénita es coriorretinitis, hidrocefalia y calcificaciones intracraneales; la hepatoesplenomegalia con ictericia es inespecífica.
+- **Q106_28** — Un escolar de 7 años de edad es traido a la sala de emergencia por presentar dolor abdominal, cólico, fiebre y diarrea. A partir de las informaciones que la madre ofrece, llegamos a la conclusión de que además presenta evacuaciones con estrias de sangre y tenesmo. ¿Cuál es el microorganismo más probable causante de estas manifestaciones clínicas?
+  - Documento: — → publicada: **D (Campylobacter jejuni)**
+  - La pregunta no tenía respuesta en el documento. De las opciones, Campylobacter jejuni es la causa bacteriana típica de diarrea con sangre, fiebre, cólicos y tenesmo en escolares (Shigella no figura entre las opciones).
+- **Q106_32** — ¿En cuál de estas enfermedades se ha sugerido que la leche materna tiene un efecto protector?
+  - Documento: B (Sarampión) → publicada: **D (Diarrea)**
+  - La evidencia más sólida del efecto protector de la leche materna es contra la diarrea (y las infecciones respiratorias); se cambió la respuesta.
+- **Q107_35** — Niño de 2 años con fiebre, anorexia, síntomas respiratorios altos y gastrointestinales, letargo y petequias. Con estos hallazgos debemos pensar en:
+  - Documento: A (Meningitis Aguda) → publicada: **C (Septicemia)**
+  - Fiebre con letargo y petequias en un niño pequeño, sin signos meníngeos descritos, orienta a septicemia (por ejemplo, meningococcemia); la meningitis requeriría signos meníngeos o alteración del LCR.
+- **Q107_43** — ¿Durante cuál periodos de edad los quistes mamarios son diagnosticados con mayor frecuencia?
+  - Documento: B (25-40 años) → publicada: **C (40-50 años)**
+  - Los quistes mamarios son más frecuentes en la perimenopausia (alrededor de los 35–50 años, sobre todo después de los 40); se cambió a la franja de 40–50 años.
+- **Q108_48** — El seguimiento de la enfermedad trofoblástica del embarazo se hace con:
+  - Documento: B (Niveles de progesterona) → publicada: **D (Niveles de gonadotropina coriónica (β-hCG))**
+- **Q108_1** — Citología de cuello uterino reporta: células escamosas atípicas de significado incierto. ¿Cuál es la conducta a seguir?
+  - Documento: D (Colposcopia y biopsia) → publicada: **C (Determinar ADN-VPH)**
+  - Ante células escamosas atípicas de significado incierto (ASC-US) la conducta recomendada es la prueba de ADN del VPH (o repetir la citología); la colposcopia se indica si el VPH de alto riesgo es positivo.
+- **Q108_54** — Mujer de 42 años, casada sin hijos; acude a consulta por presentar desde hace 5 meses irregularidad en su ciclo menstrual, sofocos, sudoración nocturna y cambios de carácter. Su fecha de última menstruación fué hace 2 meses, no usa métodos anticonceptivos. La subunidad beta de la HGC: reporta negativo. ¿Cuál es el diagnóstico probable?A ) Premenopausia
+  - Documento: C (Menopausia) → publicada: **A (Perimenopausia (transición menopáusica))**
+  - Con 2 meses sin menstruación no se puede diagnosticar menopausia (requiere 12 meses de amenorrea); el cuadro corresponde a la perimenopausia (transición menopáusica).
+- **Q111_87** — Paciente masculino de 35 años de edad que viene a consulta presentando dolor en hipocondrio derecho, ictericia y coluria de 30 días de evolución, se le realizan analíticas que reportan bilirrubina total de 10 mg/dl (indirecta en 3 mg/dl y la directa en 7mg/dl) y una fosfatasa alcalina de 450 mg/dl; en qué condición debo pensar como causante de este cuadro:
+  - Documento: A (Colecistitis) → publicada: **D (Coledocolitiasis)**
+  - Ictericia con predominio de bilirrubina directa, coluria y fosfatasa alcalina muy elevada indican colestasis extrahepática, cuya causa más frecuente es la coledocolitiasis; la colecistitis no suele producir ictericia importante.
+- **Q111_99** — Es la enfermedad extrauterina que se presenta con mayor frecuencia durante el embarazo y que requiere tratamiento quirúrgico:
+  - Documento: A (Colecistitis aguda) → publicada: **C (Apendicitis aguda)**
+  - La apendicitis aguda es la urgencia quirúrgica no obstétrica más frecuente en el embarazo (≈ 1 de cada 1000 embarazos); la colecistitis es la segunda.
 
 ## Retiradas
 
@@ -401,3 +436,33 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
   - Repetida: es la misma pregunta que Q75_96 (vólvulo intestinal en el adulto mayor).
 - **Q104_91** — Es una patología congénita que por lo general se observa en el recién nacido hasta el segundo año de vida y que se debe a un desarrollo anormal del sistema linfático que le impide drenar su contenido al sistema venoso.
   - Repetida: es la misma pregunta que Q27_83 (higroma quístico por falta de drenaje linfático).
+- **Q104_3** — Son considerados la unidad elemental de la herencia y están compuestos por ADN:
+  - Repetida: es la misma pregunta que Q21_1 (el gen como unidad básica de la herencia).
+- **Q105_14** — Elemento forme de la sangre con núcleo bilobulado que se eleva en la parasitosis:
+  - Repetida: es la misma pregunta que Q97_15 (el eosinófilo en las parasitosis).
+- **Q105_18** — Las placas de Payer abundan más en:
+  - Repetida: es la misma pregunta que Q10_6 (placas de Peyer en el íleon).
+- **Q106_22** — Los signos más característicos y específicos de la deficiencia de vitamina A son:
+  - Repetida: es la misma pregunta que Q70_34 (lesiones oculares por déficit de vitamina A).
+- **Q106_23** — Al nacimiento, ¿cuál de las siguientes medidas es útil para la prevención de la enfermedad hemorrágica del recién nacido?
+  - Repetida: es la misma pregunta que Q5_41 (vitamina K al nacer).
+- **Q107_36** — La parasitosis por trichuris trichiura que habita el intestino grueso presenta en niños de manera característica una de estas manifestaciones:
+  - Repetida: es la misma pregunta que Q69_31 (tricuriasis y prolapso rectal).
+- **Q107_46** — Es un signo de certeza de embarazo:
+  - Repetida: es la misma pregunta que Q25_53 (signo de certeza del embarazo).
+- **Q109_62** — Las plaquetas se renuevan cada:
+  - Repetida: es la misma pregunta que Q8_77 (vida media de las plaquetas).
+- **Q110_74** — ¿En cuál de estos niveles de presión arterial se recomienda iniciar tratamiento farmacológico para hipertensión arterial?
+  - Repetida: es la misma pregunta que Q14_72 (umbral de 140/90 para el tratamiento antihipertensivo).
+- **Q110_80** — La corea de Sydenham (baile de San Vito) es más frecuente en mujeres entre 5 y 15 años y se relaciona a menudo con la exposición previa de una infección producida por uno de agentes causales:
+  - Repetida: es la misma pregunta que Q98_24 (estreptococo del grupo A y fiebre reumática).
+- **Q110_82** — La lesión del conducto torácico, en su trayecto intratorácico, puede dar como resultado un:
+  - Repetida: es la misma pregunta que Q96_90 (quilotórax por lesión del conducto torácico).
+- **Q111_89** — Son características clínicas de las quemaduras de tercer grado:
+  - Repetida: es la misma pregunta que Q75_100 (características de la quemadura de tercer grado).
+- **Q111_93** — Método diagnóstico que confirma la obstrucción del intestino delgado:
+  - Repetida: es la misma pregunta que Q8_82 (radiografía simple de abdomen en la obstrucción intestinal).
+- **Q111_96** — Paciente femenina de 45 años de edad que llega a emergencia a las 5:00 am con dolor abdominal, anteriormente tratada con AINES por patologías reumatoideas. Presenta al examen físico signos clínicos de irritación peritoneal; si se sospecha como diagnóstico úlcera péptica perforada; ¿cuál de estos estudios sería el ideal para confirmar el diagnóstico?
+  - Repetida: es la misma pregunta que Q103_90 (radiografía de tórax de pie en la úlcera perforada).
+- **Q112_3** — ¿Cuál es el nombre de la válvula aurícula ventricular derecha?
+  - Repetida: es la misma pregunta que Q3_10 (válvula tricúspide en el orificio auriculoventricular derecho).
