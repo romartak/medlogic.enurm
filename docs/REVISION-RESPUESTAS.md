@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **1110** de 1166 · publicadas: **1034** · respuesta corregida: **162** · retiradas: **76**.
+Preguntas revisadas: **1166** de 1166 · publicadas: **1082** · respuesta corregida: **166** · retiradas: **84**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -471,6 +471,18 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **Q207_39** — Muchas de las muertes en los pacientes con dengue hemorrágico (dengue grave) se deben a:
   - Documento: C (Anemia) → publicada: **D (Sobrehidratación)**
   - El archivo marcaba anemia, que no es una causa de muerte en el dengue. La OMS señala la sobrehidratación (sobrecarga de líquidos) como una causa importante de muerte en el dengue grave, junto con el reconocimiento tardío del choque.
+- **Q208_58** — ¿Cómo se denomina la aparición de proteinuria, después de las 20 semanas, en una embarazada con hipertensión crónica, que puede acompañarse de restricción del crecimiento fetal?
+  - Documento: A (Preeclampsia) → publicada: **D (Preeclampsia sobreañadida a hipertensión crónica)**
+  - El archivo marcaba preeclampsia. La aparición de proteinuria sobre una hipertensión crónica después de las 20 semanas define la preeclampsia sobreañadida a hipertensión crónica.
+- **Q209_64** — ¿Qué síntoma o signo típico de la isquemia arterial aguda es el último en aparecer y en consecuencia es indicador de mayor gravedad?
+  - Documento: D (Ausencia de pulso) → publicada: **C (Parálisis)**
+  - El archivo marcaba la ausencia de pulso, que es un signo precoz. La parálisis es el último signo en aparecer e indica isquemia grave, con riesgo de daño irreversible.
+- **Q210_74** — ¿Cuál de las siguientes patologías son las causas más frecuentes de hemorragia del colon en adultos jóvenes?
+  - Documento: A (Divertículos y ectasias vasculares) → publicada: **D (Colitis ulcerosa y enfermedad de Crohn)**
+  - El archivo marcaba divertículos y ectasias vasculares, que son las causas típicas en mayores de 60 a 70 años (pregunta siguiente). En adultos jóvenes, entre las opciones, la causa de sangrado propiamente colónico más frecuente es la enfermedad inflamatoria intestinal.
+- **Q212_87** — ¿Cuáles son los microorganismos patógenos que se aíslan con mayor frecuencia de los dispositivos (prótesis) colocados a un paciente?
+  - Documento: B (Estreptococo betahemolítico del grupo A) → publicada: **C (Estafilococos coagulasa negativos)**
+  - El archivo marcaba el estreptococo betahemolítico del grupo A. Los microorganismos que más se aíslan de los dispositivos y prótesis son los estafilococos coagulasa negativos (sobre todo Staphylococcus epidermidis), seguidos de S. aureus.
 
 ## Retiradas
 
@@ -604,6 +616,10 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
   - Repetida: es la misma pregunta que Q101_63 (AB Rh positivo como receptor universal).
 - **Q124_1** — Identifique la categoría a la que corresponde según la lesión.
   - Fragmento ilegible: no describe la lesión a clasificar y las opciones están mezcladas.
+- **Q128_89** — ¿Cuál es el factor etiológico desencadenante en la apendicitis?
+  - Repetida: mismo contenido que Q102_81 (obstrucción de la luz como causa de la apendicitis).
+- **Q128_90** — La presentación clínica de la apendicitis en su presentación más simple y clásica es:
+  - Repetida: mismo contenido que Q118_81 (inicio clásico de la apendicitis con anorexia y dolor periumbilical).
 - **Q130_2** — Según las características de las vías de administración de fármacos sugiere limitaciones y precauciones para cada una de ellas. ¿Cuál de las siguientes es una limitación para la administración de fármacos por vía endovenosa?
   - Pregunta inconsistente: el enunciado pide una limitación de la vía endovenosa y las opciones son ramas de la farmacología.
 - **Q134_47** — De las siguientes, la mejor opción de anticoncepción para las madres en fase de lactación es:
@@ -626,3 +642,15 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
   - Repetida: mismo contenido que Q5_38 (diarrea del destete); además solo conserva tres opciones.
 - **Q206_36** — ¿Cuál de estos trastornos es considerado un defecto del tubo neural
   - Repetida: mismo contenido que Q97_6 (defectos del tubo neural).
+- **Q207_47** — ¿Cuál de los siguientes agentes microbiológicos se asocia la coilocitosis?
+  - Repetida: mismo contenido que Q124_44 (coilocitosis y virus del papiloma humano).
+- **Q208_50** — El síndrome caracterizado por atrofia mamaria, falla en la lactancia, pérdida de vello púbico, amenorrea, insuficiencia corticoadrenal e hipotiroidismo es:
+  - Repetida: mismo contenido que Q92_46 (síndrome de Sheehan).
+- **Q211_76** — ¿Cuál de estas enfermedades es la causa más común de hemoptisis a nivel mundial?
+  - Repetida: mismo contenido que Q94_69 (tuberculosis como causa principal de hemoptisis); además sus opciones están mezcladas.
+- **Q211_84** — Paciente masculino de 32 años que llega a sala de emergencia del Hospital Dr. Ney Arias Lora con cuadro de dolor abdominal generalizado de 3 días de evolución y fiebre; refiere haber tomado diclofenac por más de 1 mes para tratar de aliviar un dolor que había iniciado en epigastrio pero que ahora se ha tornado generalizado; al examen físico presenta signo de rebote positivo y en los hallazgos radiográficos presencia de aire subdiafragmatico. ¿Cuál es su sospecha 18 diagnostica?
+  - Repetida: mismo diagnóstico y las mismas claves (AINE, peritonitis, neumoperitoneo) que Q138_81 (úlcera péptica perforada); además sus opciones están mezcladas.
+- **Q212_86** — ¿Cuál es el factor etiológico predominante en la apendicitis?
+  - Repetida: mismo contenido que Q102_81 (obstrucción de la luz como causa de la apendicitis).
+- **Q212_91** — Representan el vestigio del trayecto de descenso de la glándula tiroides desde el agujero ciego, en la base de la lengua, hacia la parte anteroinferior del cuello durante el desarrollo fetal.
+  - Repetida: mismo contenido que Q96_99 (quiste del conducto tirogloso).

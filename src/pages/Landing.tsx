@@ -86,7 +86,7 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: '¿De dónde salen las preguntas?',
-    a: <>Hoy hay un banco de muestra. Las preguntas de años anteriores se están cargando con el análisis de cada opción, la fisiopatología y referencias verificables, y aparecerán automáticamente.</>,
+    a: <>De exámenes de años anteriores recopilados, más un banco de muestra. Cada pregunta trae la explicación de todas las opciones, la fisiopatología, puntos clave y la referencia del libro. Las respuestas se revisaron una por una con la bibliografía, y se quitaron las repetidas y las incompletas.</>,
   },
 ]
 
