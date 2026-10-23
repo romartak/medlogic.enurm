@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **870** de 1166 · publicadas: **806** · respuesta corregida: **130** · retiradas: **64**.
+Preguntas revisadas: **972** de 1166 · publicadas: **906** · respuesta corregida: **137** · retiradas: **66**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -377,6 +377,27 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **Q119_1** — Sin tratamiento antirretroviral, el riesgo adicional de transmisión del VIH por la lactancia materna prolongada en mujeres con infección crónica es de aproximadamente:
   - Documento: C (Alrededor del 50 %) → publicada: **B (Alrededor del 15 % (10–20 %))**
   - Las opciones del documento se superponían (10–15 %, 9–16 %…). Con lactancia prolongada y sin tratamiento antirretroviral, el riesgo adicional de transmisión en la infección materna crónica es de alrededor del 15 % (10–20 %); se reformularon las opciones.
+- **Q121_16** — La alimentación complementaria en lactante amamantado con leche exclusiva se debe iniciar a:
+  - Documento: B (4-6 meses) → publicada: **C (6-8 meses)**
+  - El archivo marcaba 4-6 meses. La OMS, la OPS y la AAP recomiendan lactancia materna exclusiva hasta los 6 meses y comenzar la alimentación complementaria a los 6 meses, no antes.
+- **Q122_31** — Primigesta de 23 años con 30 semanas de gestación, con presiones normales en todos sus controles prenatales. En la nueva consulta tiene una presión de 140/90 mmHg, está asintomática y los estudios muestran proteinuria negativa y plaquetas normales. ¿Cuál es el diagnóstico probable?
+  - Documento: B (Eclampsia) → publicada: **C (Hipertensión gestacional)**
+  - El archivo marcaba eclampsia. Sin convulsiones no hay eclampsia: una gestante previamente normotensa con presión de 140/90 después de las 20 semanas, sin proteinuria ni signos de daño de órgano, tiene hipertensión gestacional.
+- **Q123_38** — Durante la cesárea, luego de extraer el feto, la placenta esta retenida por estar adherida anormalmente al útero, en la que las vellosidades invaden al miometrio. ¿Cuál es el diagnóstico probable?
+  - Documento: A (Hematoma retroplacentario) → publicada: **D (Placenta increta)**
+  - El archivo marcaba hematoma retroplacentario. La descripción (vellosidades que invaden el miometrio, placenta retenida por adherencia anormal) corresponde a la placenta increta.
+- **Q126_62** — El absceso pulmonar se trató con penicilina desde que estuvo disponible en la década de 1940. Sin embargo, como se relaciona con anaerobios de la boca que producen betalactamasa, ¿qué tratamiento pasó a utilizarse?
+  - Documento: — → publicada: **C (Clindamicina)**
+  - El archivo no traía respuesta marcada. Se reformuló la opción A (amoxicilina sola) para que haya una única respuesta correcta: la clindamicina.
+- **Q128_84** — Masculino de 52 años de edad quien consulta por presentar dolor torácico intermitente de larga data, pérdida de peso de 4 meses de evolución, disfagia de igual data, se indica un esofagograma que muestra un esófago dilatado y una imagen en pico de pájaro, por lo que se establece diagnóstico presuntivo de acalasia. ¿Cómo se define fisiopatológicamente este trastorno?
+  - Documento: C (Disfagia por compresión extrínseca) → publicada: **A (Relajación incompleta del esfínter esofágico inferior)**
+  - El archivo marcaba disfagia por compresión extrínseca. La acalasia se define por la relajación incompleta del esfínter esofágico inferior con falta de peristalsis.
+- **Q129_97** — Un paciente de 32 años que sufrió un traumatismo cerrado de abdomen, presenta en la TAC un hematoma retro peritoneal. Se encuentra lúcido, eupneico, con una presión arterial de 90/50 mm Hg y un hematocrito de 32%. ¿Cuál de las siguientes conductas se debe adoptar?
+  - Documento: C (Observación y ecografía de control en 3 horas) → publicada: **B (Observación y control del estado hemodinámico y del hematocrito)**
+  - El archivo marcaba observación con ecografía de control. La ecografía es poco útil para evaluar el retroperitoneo; el manejo de un hematoma retroperitoneal en un paciente que responde es la observación con control seriado del estado hemodinámico y del hematocrito.
+- **Q130_9** — El Epicardio está formado por:
+  - Documento: — → publicada: **C (Pericardio seroso visceral)**
+  - El archivo no traía respuesta marcada. El epicardio es la hoja visceral del pericardio seroso.
 
 ## Retiradas
 
@@ -508,3 +529,7 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
   - Repetida: es la misma pregunta que Q102_75 (cardiopatías como causa de muerte en hipertensos).
 - **Q118_77** — ¿Cuál de estos grupos sanguíneos es considerado como receptor universal?
   - Repetida: es la misma pregunta que Q101_63 (AB Rh positivo como receptor universal).
+- **Q124_1** — Identifique la categoría a la que corresponde según la lesión.
+  - Fragmento ilegible: no describe la lesión a clasificar y las opciones están mezcladas.
+- **Q130_2** — Según las características de las vías de administración de fármacos sugiere limitaciones y precauciones para cada una de ellas. ¿Cuál de las siguientes es una limitación para la administración de fármacos por vía endovenosa?
+  - Pregunta inconsistente: el enunciado pide una limitación de la vía endovenosa y las opciones son ramas de la farmacología.
