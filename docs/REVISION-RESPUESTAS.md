@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **768** de 1166 · publicadas: **712** · respuesta corregida: **119** · retiradas: **56**.
+Preguntas revisadas: **870** de 1166 · publicadas: **806** · respuesta corregida: **130** · retiradas: **64**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -351,6 +351,32 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **Q111_99** — Es la enfermedad extrauterina que se presenta con mayor frecuencia durante el embarazo y que requiere tratamiento quirúrgico:
   - Documento: A (Colecistitis aguda) → publicada: **C (Apendicitis aguda)**
   - La apendicitis aguda es la urgencia quirúrgica no obstétrica más frecuente en el embarazo (≈ 1 de cada 1000 embarazos); la colecistitis es la segunda.
+- **Q112_6** — Los hidratos de carbono están formados por:
+  - Documento: B (Alcohol, azúcar y ácido carbónico) → publicada: **C (Carbono, hidrógeno y oxígeno)**
+- **Q112_7** — Los fármacos que se unen a receptores fisiológicos y simulan los efectos reguladores de un compuesto de señalización endógeno, se les conoce como:
+  - Documento: C (Aceptores) → publicada: **D (Agonistas)**
+  - Los fármacos que se unen a un receptor y reproducen los efectos del ligando endógeno son agonistas.
+- **Q113_22** — ¿Cuál de las siguientes afirmaciones es correcta en relación con la leche materna?
+  - Documento: C (No contiene macrófagos) → publicada: **B (Contiene una concentración elevada de IgA secretora)**
+- **Q113_24** — De las siguientes, ¿cuál es la principal causa de muerte accidental en niños pequeños?
+  - Documento: A (Quemaduras) → publicada: **C (Ahogamiento)**
+  - De las opciones, el ahogamiento es la principal causa de muerte accidental en niños pequeños; las quemaduras causan mucha morbilidad, pero menos muertes.
+- **Q115_47** — El diámetro que corresponde a la distancia más corta entre el promontorio y la sínfisis del pubis es el:
+  - Documento: C (Conjugado diagonal) → publicada: **B (Conjugado obstétrico)**
+- **Q115_49** — ¿Cuál factor tiene mayor importancia para la regeneración del endometrio luego de la menstruación:
+  - Documento: B (Estriol) → publicada: **A (Estradiol)**
+  - La regeneración del endometrio tras la menstruación depende del estradiol de los folículos en desarrollo; el estriol es un estrógeno débil propio del embarazo.
+- **Q115_51** — Según la regla de Naegele, una embarazada con ciclos regulares cuya última menstruación fue el 5 de julio de 2017 tiene como fecha probable de parto:
+  - Documento: — → publicada: **B (12 de abril de 2018)**
+- **Q116_56** — Paciente obesa de 32 años con 26 semanas de embarazo, se le detecta glicemia en ayunas de 122mg/dl; confirmado el desbalance metabólico por curva de tolerancia a la glucosa. ¿Cuál es el próximo paso a seguir en cuanto a su manejo?
+  - Documento: — → publicada: **B (Orientación sobre nutrición y actividad física)**
+- **Q116_62** — ¿Cuál es la prueba de laboratorio que permite el diagnóstico rápido de infección por plasmodium, en la mayoría de los pacientes?
+  - Documento: — → publicada: **B (Examen microscópico de sangre periférica (gota gruesa y frotis))**
+- **Q119_100** — Se recibe femenina de 65 años vía consulta por presentar aumento del perímetro de la pierna derecha y dolor al apoyar la planta del pie derecho. La misma refiere haber estado 15 días ingresada por un proceso neumónico siendo dada de alta 4 días atrás. Al examen físico se evidencia asimetría en el perímetro entre ambos miembros inferiores y se evidencia dolor en la pantorrilla a la flexión dorsal del pie en miembro inferior derecho. ¿Cuál es su diagnóstico?
+  - Documento: B (Oclusión arterial) → publicada: **D (Trombosis venosa profunda)**
+- **Q119_1** — Sin tratamiento antirretroviral, el riesgo adicional de transmisión del VIH por la lactancia materna prolongada en mujeres con infección crónica es de aproximadamente:
+  - Documento: C (Alrededor del 50 %) → publicada: **B (Alrededor del 15 % (10–20 %))**
+  - Las opciones del documento se superponían (10–15 %, 9–16 %…). Con lactancia prolongada y sin tratamiento antirretroviral, el riesgo adicional de transmisión en la infección materna crónica es de alrededor del 15 % (10–20 %); se reformularon las opciones.
 
 ## Retiradas
 
@@ -466,3 +492,19 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
   - Repetida: es la misma pregunta que Q103_90 (radiografía de tórax de pie en la úlcera perforada).
 - **Q112_3** — ¿Cuál es el nombre de la válvula aurícula ventricular derecha?
   - Repetida: es la misma pregunta que Q3_10 (válvula tricúspide en el orificio auriculoventricular derecho).
+- **Q112_11** — Una imagen radiopaca es aquella que corresponde a tejidos que:
+  - Repetida: es la misma pregunta que Q112_2 (definición de imagen radiopaca).
+- **Q113_23** — El raquitismo es una enfermedad del hueso en crecimiento que se debe a:
+  - Repetida: es la misma pregunta que Q73_71 (raquitismo por deficiencia de vitamina D).
+- **Q114_33** — El instrumento para la valoración del crecimiento del niño es:
+  - Repetida: es la misma pregunta que Q91_34 (gráficas de crecimiento para valorar el crecimiento).
+- **Q115_42** — El periodo comprendido después de la fertilización hasta las 8 semanas de gestación es:
+  - Repetida: es la misma pregunta que Q113_18 (período embrionario de la 3.ª a la 8.ª semana).
+- **Q116_55** — La degeneración quística edematosa de las vellosidades coriales que se manifiesta con útero aumentado de tamaño en relación a la amenorrea, ausencia de signos fetales y que en la sonografía muestra imagen en panal de abejas. Se refiere a:
+  - Repetida: es la misma pregunta que Q71_57 (embarazo molar con útero grande y sin signos fetales).
+- **Q116_57** — El trastorno hipertensivo del embarazo que se inicia después de las 20 semanas de gestación pero que persiste después de las 12 semanas del parto, es característico de:
+  - Repetida: es la misma pregunta que Q100_46 (hipertensión que persiste más de 12 semanas posparto = crónica).
+- **Q117_68** — Las causas más comunes de muerte en pacientes hipertensos son las:
+  - Repetida: es la misma pregunta que Q102_75 (cardiopatías como causa de muerte en hipertensos).
+- **Q118_77** — ¿Cuál de estos grupos sanguíneos es considerado como receptor universal?
+  - Repetida: es la misma pregunta que Q101_63 (AB Rh positivo como receptor universal).
