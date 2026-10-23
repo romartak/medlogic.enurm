@@ -36,12 +36,12 @@ export interface ActiveLesson {
 export interface LingoData {
   lessons: Record<string, LessonResult>
   active: ActiveLesson | null
-  /** Voz elegida para pronunciar (voiceURI); null = la mejor disponible. */
-  voiceURI: string | null
   words: Record<string, WordState>
   /** XP ganado por día (clave yyyy-mm-dd), para la racha y la meta diaria. */
   days: Record<string, number>
   dailyGoal: number
+  /** Mejor puntaje del reto relámpago (respuestas correctas en 60 s). */
+  blitzBest: number
 }
 
 interface LingoActions {
@@ -51,12 +51,13 @@ interface LingoActions {
   finishLesson: (lessonId: string, mistakes: number, review?: boolean) => number
   setDailyGoal: (n: number) => void
   saveActive: (a: ActiveLesson | null) => void
-  setVoice: (uri: string | null) => void
+  /** Guarda el resultado del reto relámpago y devuelve el XP ganado. */
+  finishBlitz: (score: number) => number
   importBackup: (data: Partial<LingoData>) => void
   reset: () => void
 }
 
-const INITIAL: LingoData = { lessons: {}, active: null, voiceURI: null, words: {}, days: {}, dailyGoal: 30 }
+const INITIAL: LingoData = { lessons: {}, active: null, words: {}, days: {}, dailyGoal: 30, blitzBest: 0 }
 const MIN = 60_000
 const DAY = 24 * 60 * MIN
 /** Intervalos de repaso por nivel de dominio. */
@@ -103,7 +104,13 @@ export const useLingo = create<LingoData & LingoActions>()(
 
       saveActive: (active) => set({ active }),
 
-      setVoice: (voiceURI) => set({ voiceURI }),
+      finishBlitz: (score) => {
+        const xp = Math.min(20, score)
+        const k = dayKey()
+        const s = get()
+        set({ blitzBest: Math.max(s.blitzBest, score), days: { ...s.days, [k]: (s.days[k] ?? 0) + xp } })
+        return xp
+      },
 
       importBackup: (data) => set({ ...INITIAL, ...pickKnown(INITIAL, data) }),
 
@@ -112,7 +119,7 @@ export const useLingo = create<LingoData & LingoActions>()(
     {
       name: 'medlogic-lingo',
       version: 1,
-      partialize: (s) => ({ lessons: s.lessons, active: s.active, voiceURI: s.voiceURI, words: s.words, days: s.days, dailyGoal: s.dailyGoal }),
+      partialize: (s) => ({ lessons: s.lessons, active: s.active, words: s.words, days: s.days, dailyGoal: s.dailyGoal, blitzBest: s.blitzBest }),
     },
   ),
 )

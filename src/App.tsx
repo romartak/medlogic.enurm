@@ -49,6 +49,7 @@ const Settings = lazy(() => import('@/pages/Settings'))
 const Account = lazy(() => import('@/pages/Account'))
 const LingoPath = lazy(() => import('@/pages/lingo/Path'))
 const LingoLesson = lazy(() => import('@/pages/lingo/Lesson'))
+const LingoBlitz = lazy(() => import('@/pages/lingo/Blitz'))
 
 /** Tiempo mínimo de la pantalla de carga al abrir la página, para que la animación se vea completa. */
 const BOOT_MIN_MS = 2000
@@ -157,6 +158,7 @@ export default function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/bienvenida" element={<Onboarding />} />
             <Route path="/terminologia/leccion/:lessonId" element={<LingoLesson />} />
+            <Route path="/terminologia/relampago" element={<LingoBlitz />} />
             <Route element={<AppLayout />}>
               <Route path="/inicio" element={<Lazy><Dashboard /></Lazy>} />
               <Route path="/practica" element={<Lazy><Practice /></Lazy>} />
