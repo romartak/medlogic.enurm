@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **258** de 1166 · publicadas: **251** · respuesta corregida: **38** · retiradas: **7**.
+Preguntas revisadas: **360** de 1166 · publicadas: **349** · respuesta corregida: **69** · retiradas: **11**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -120,6 +120,96 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **Q20_76** — Es la forma más frecuente de infección intracraneal purulenta:
   - Documento: A (Absceso cerebral) → publicada: **B (Meningitis bacteriana)**
   - La meningitis bacteriana es la forma más frecuente de infección supurada del sistema nervioso central; el absceso cerebral es mucho menos frecuente.
+- **Q21_5** — El tubérculo genital en el embrión masculino forma:
+  - Documento: A (Escroto) → publicada: **D (Pene (glande y cuerpos cavernosos))**
+  - El tubérculo genital forma el pene (glande y cuerpos cavernosos); el escroto deriva de los pliegues labioescrotales. Se añadió la opción correcta.
+- **Q21_6** — Las porciones inferiores (caudales) de los conductos de Müller, al unirse, forman:
+  - Documento: B (La vagina) → publicada: **D (El conducto uterovaginal)**
+  - La fusión de las porciones caudales de los conductos de Müller forma el conducto uterovaginal (útero y parte superior de la vagina), no la vagina sola.
+- **Q21_7** — Son los lípidos más abundantes en la dieta:
+  - Documento: B (Quilomicrones) → publicada: **A (Triglicéridos)**
+  - Los triglicéridos son el 90–95 % de los lípidos de la dieta; los quilomicrones son lipoproteínas que los transportan, no un lípido de la dieta.
+- **Q21_10** — Con cual sangre se puede transfundir un paciente que tenga sangre tipo AB Rh negativo:
+  - Documento: — → publicada: **D (Ninguna)**
+- **Q21_11** — La primera onda negativa del electrocardiograma es la:
+  - Documento: A (Onda P) → publicada: **B (Onda Q)**
+  - La onda P es positiva; la primera deflexión negativa del ECG normal es la onda Q.
+- **Q21_13** — Célula fagocitaria del sistema nervioso:
+  - Documento: — → publicada: **C (Microglía)**
+- **Q22_3** — La siguiente hormona estimula la absorción de agua libre por los riñones y tiene efecto vasoconstrictor:
+  - Documento: D (Prolactina) → publicada: **A (Vasopresina)**
+  - La hormona que aumenta la reabsorción de agua libre en el riñón y tiene efecto vasoconstrictor es la vasopresina (ADH).
+- **Q22_4** — El tratamiento de la hipoglucemia es con:
+  - Documento: D (Ningunas) → publicada: **B (Dextrosa al 50% iv)**
+  - La hipoglucemia grave se trata con dextrosa IV (al 50 % en el adulto); la insulina la empeoraría.
+- **Q22_6** — ¿Cuál de los siguientes grupos corresponde a ácidos grasos esenciales?
+  - Documento: D (Oleico, acético y láurico) → publicada: **B (Linoleico, linolénico y araquidónico)**
+  - Las opciones estaban unidas en el documento. La opción con ácidos grasos esenciales es la de linoleico, linolénico y araquidónico (este último se considera esencial si falta el linoleico).
+- **Q22_9** — La bilirrubina proviene de la degradación de:
+  - Documento: D (El hierro) → publicada: **A (Grupo Hem)**
+  - La bilirrubina proviene de la degradación del grupo hem; la globina se degrada a aminoácidos y el hierro se recicla.
+- **Q22_12** — Los pacientes con síndrome nefrótico:
+  - Documento: D (Solo la furosemida y la dieta hiposodica resuleven el problema) → publicada: **C (La prednisona y la clorotiazida se usan en el tratamiento)**
+  - La prednisona es la base del tratamiento del síndrome nefrótico (sobre todo en niños), junto con diuréticos para el edema; las otras afirmaciones son falsas.
+- **Q22_13** — Con cuales de estos grupos de fármacos debemos tener precaución al iniciar el tratamiento antihipertensivo por el riesgo de presentar el fenómeno de la primera dosis:
+  - Documento: D (Inhibidores de la ECA) → publicada: **C (Alfabloqueadores)**
+  - El fenómeno de la primera dosis (hipotensión ortostática y síncope) es característico de los alfabloqueadores (prazosina, doxazosina).
+- **Q22_14** — La saturación de la hemoglobina por oxigeno de sangre que entra al ventrículo derecho es aproximadamente de:
+  - Documento: C (55%) → publicada: **B (75%)**
+  - La sangre venosa mixta que entra al ventrículo derecho tiene una saturación de alrededor del 75 % (PO₂ ≈ 40 mmHg).
+- **Q23_15** — La estimulación vagal del corazón tiene el siguiente resultado:
+  - Documento: D (Disminución de la conductancia al potasio en el nodo SA) → publicada: **C (Hiperpolarización en el nodo SA)**
+  - La estimulación vagal aumenta (no disminuye) la conductancia al potasio en el nodo sinusal, lo que lo hiperpolariza; la respuesta correcta es la hiperpolarización.
+- **Q23_16** — Cuanto es el consumo de oxigeno por parte del miocardio:
+  - Documento: D (5ml/min) → publicada: **B (25ml/min)**
+  - El corazón en reposo consume unos 8–10 mL de O₂ por cada 100 g por minuto; para un corazón de 300 g son ≈ 25–30 mL/min, no 5 mL/min.
+- **Q23_23** — En la deshidratación severa la mejor elección para reponer los líquidos es:
+  - Documento: B (Solución mixta al 0,9 %) → publicada: **C (Solución de lactato de Ringer o solución salina al 0,9 %)**
+  - La deshidratación grave se repone con un cristaloide isotónico (lactato de Ringer o solución salina al 0,9 %), no con soluciones mixtas hipotónicas.
+- **Q23_24** — La siguiente afirmación es correcta en relación a la fiebre reumática:
+  - Documento: C (La fiebre y las mialgias son criterios mayores) → publicada: **B (Se puede prevenir con penicilina benzatinica)**
+  - La fiebre reumática se previene con penicilina benzatínica (prevención primaria y secundaria); la fiebre y las mialgias no son criterios mayores.
+- **Q23_26** — El trastorno metabólico más frecuente en el recién nacido macrosomico es:
+  - Documento: C (Hipernatremia) → publicada: **D (Hipoglucemia)**
+  - El trastorno metabólico más frecuente del recién nacido macrosómico (hijo de madre diabética) es la hipoglucemia.
+- **Q24_33** — La siguiente afirmación es correcta en un niño de 9 meses de edad:
+  - Documento: A (Lanza objetos con intención) → publicada: **C (Gatea y camina apoyado en los muebles)**
+  - Las opciones estaban unidas en el documento. A los 9 meses lo esperado es gatear y empezar a caminar apoyado en los muebles; decir palabras con significado y subir escaleras ocurren después.
+- **Q24_43** — Cuál de las siguientes hormonas contribuye a la bajada de la leche materna en el puerperio:
+  - Documento: A (Estrógenos) → publicada: **D (Oxitocina)**
+  - La bajada (eyección) de la leche se debe a la oxitocina; los estrógenos, al contrario, inhiben la producción de leche.
+- **Q25_45** — ¿En cuál de los siguientes casos se puede producir sangrado por hipotonía uterina después del parto?
+  - Documento: — → publicada: **D (Todas)**
+- **Q25_46** — Paciente con embarazo de 18 semanas por fecha de ultima menstruación y diez semanas por altura uterina, con prueba de embarazo negativas, sin sangrado, ni dolor, ni modificaciones cervicales . El diagnóstico es:
+  - Documento: A (Amenaza de aborto) → publicada: **C (Aborto diferido)**
+  - Las opciones estaban unidas en el documento. Un útero más pequeño que la amenorrea, con prueba de embarazo negativa y sin sangrado, corresponde a un aborto diferido (retenido).
+- **Q25_48** — El medicamento para tratar la diabetes en el embarazo es:
+  - Documento: A (Guanetidina) → publicada: **D (Insulina)**
+  - La insulina es el fármaco de elección para la diabetes en el embarazo; la guanetidina y la metildopa son antihipertensivos.
+- **Q26_59** — Cuál de los siguientes es el tratamiento de una displasia severa (NIC 3) en una paciente de 35 años de edad:
+  - Documento: A (Histerectomía de inmediato) → publicada: **D (Conización (escisión con asa diatérmica o con bisturí))**
+  - El documento no tenía la opción correcta (y marcaba la histerectomía). El tratamiento de la NIC 3 en una mujer de 35 años es la escisión de la zona de transformación (conización o asa); se añadió esa opción.
+- **Q26_61** — La triada que caracteriza a la enfermedad de Parkinson es:
+  - Documento: A (Temblor rigidez y demencia) → publicada: **B (Temblor, rigidez y acinesia)**
+  - La tríada clásica del Parkinson es temblor, rigidez y acinesia (bradicinesia); la demencia no forma parte de la tríada.
+- **Q26_69** — ¿Qué cara del corazón exploran la derivación DIII (Einthoven) y la derivación aVF?
+  - Documento: B (La septal) → publicada: **D (La inferior o diafragmática (antes llamada posterior))**
+  - DIII y aVF exploran la cara inferior (diafragmática), que en textos antiguos se llamaba cara posterior; no la cara septal.
+- **Q27_72** — La tuberculosis intestinal afecta más frecuentemente:
+  - Documento: B (Yeyuno) → publicada: **C (Válvula ileocecal)**
+  - La tuberculosis intestinal afecta con más frecuencia la región ileocecal (rica en tejido linfoide y con estasis), no el yeyuno.
+- **Q27_78** — El vaso que siempre se bifurca inmediatamente sale del corazon es la:
+  - Documento: A (Aorta) → publicada: **B (Arteria pulmonar)**
+  - El vaso que se bifurca poco después de salir del corazón es el tronco pulmonar (en arterias pulmonares derecha e izquierda); la aorta forma un arco y da ramas, pero no se bifurca enseguida.
+- **Q27_81** — El neumotórax espontaneo se asocia a una de las siguientes condiciones:
+  - Documento: A (Herida penetrante de tórax) → publicada: **C (Bulla enfisematosa)**
+  - El neumotórax espontáneo se asocia a la rotura de bullas o blebs; la herida penetrante produce un neumotórax traumático.
+- **Q27_83** — Una masa quística, blanda, con transiluminacion positiva, congenita, ubicada en el triángulo cervical posterior es un:
+  - Documento: C (Quiste branquial) → publicada: **B (Higroma quístico (linfangioma))**
+  - Una masa quística blanda, transiluminable, congénita, en el triángulo cervical posterior es un higroma quístico (linfangioma), no un quiste branquial.
+- **Q27_85** — La causa más frecuente de hiperparatiroidismo primario es:
+  - Documento: A (Hiperplasia) → publicada: **B (Adenoma)**
+  - El adenoma paratiroideo único causa alrededor del 85 % de los hiperparatiroidismos primarios; la hiperplasia, un 10–15 %.
 
 ## Retiradas
 
@@ -137,3 +227,11 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
   - Repetida: es la misma pregunta que Q11_24 (VIH materno y lactancia).
 - **Q19_45** — La droga de elección para prevenir las convulsiones en la preeclamsia severa es:
   - Repetida: es la misma pregunta que Q6_55 (sulfato de magnesio en la preeclampsia grave).
+- **Q24_31** — Una prueba de PPD es positiva cuando mide:
+  - Repetida: es la misma pregunta que Q5_33 (punto de corte de la prueba de tuberculina).
+- **Q24_35** — El siguiente cuadro clínico es característico del tétanos:
+  - Repetida: es la misma pregunta que Q18_26 (rigidez y espasmos en el tétanos).
+- **Q24_41** — Cuál de los siguientes siguientes es la hormona para la prueba de embarazo:
+  - Repetida: es la misma pregunta que Q6_48 (gonadotropina coriónica como prueba de embarazo).
+- **Q26_40** — 
+  - Fragmento sin enunciado: sus opciones pertenecían a la pregunta Q26_60, que se reconstruyó con ellas.
