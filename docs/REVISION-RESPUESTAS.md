@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **462** de 1166 · publicadas: **437** · respuesta corregida: **86** · retiradas: **25**.
+Preguntas revisadas: **564** de 1166 · publicadas: **536** · respuesta corregida: **96** · retiradas: **28**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -258,6 +258,35 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **Q75_97** — La causa principal de pancreatitis es:
   - Documento: B (Alcohol) → publicada: **A (Enfermedad de las vías biliares (litiasis))**
   - La causa más frecuente de pancreatitis aguda en el mundo es la litiasis biliar (40–70 %); el alcohol es la segunda.
+- **Q82_7** — Señale cuál de los siguientes es un tubo fibro muscular que participa en la respiración, digestión y fonación:
+  - Documento: A (Laringe) → publicada: **C (Faringe)**
+  - El tubo fibromuscular que participa en la respiración, la digestión y la fonación es la faringe; la laringe no participa en la digestión.
+- **Q89_1** — Principal factor hematopoyético humano que se produce en los riñones:
+  - Documento: A (Hem) → publicada: **B (Eritropoyetina)**
+  - El principal factor hematopoyético que producen los riñones es la eritropoyetina; el hem es parte de la hemoglobina.
+- **Q89_10** — El hierro que se encuentra en los alimentos se presenta mayormente en forma de:
+  - Documento: D (Ferrosa (Fe²⁺)) → publicada: **C (Férrica (Fe³⁺))**
+  - La mayor parte del hierro de los alimentos es hierro no hemo en forma férrica (Fe³⁺); debe reducirse a ferroso para absorberse.
+- **Q90_11** — ¿Cuál de estas consideraciones sobre el paso de los medicamentos a través de la placenta es correcta?
+  - Documento: D (La placenta es, por sus características, una barrera completa) → publicada: **A (Los fármacos liposolubles atraviesan libremente la placenta)**
+  - La afirmación correcta es que los fármacos liposolubles atraviesan la placenta con facilidad; la placenta no es una barrera completa. Se ajustó la opción C, que en el documento también podía considerarse cierta.
+- **Q91_26** — Las complicaciones más comunes de la gripe en niños pequeños son:
+  - Documento: — → publicada: **C (Otitis media y neumonía)**
+- **Q91_29** — El estreñimiento verdadero en el período neonatal se debe con mayor frecuencia a:
+  - Documento: A (Lactancia materna) → publicada: **C (Enfermedad de Hirschsprung)**
+  - El estreñimiento verdadero en el neonato (sobre todo con retraso en la eliminación del meconio) debe hacer pensar en enfermedad de Hirschsprung; la lactancia materna puede espaciar las deposiciones, pero son blandas y no es estreñimiento.
+- **Q92_45** — El carcinoma del cuello uterino que se extiende fuera de él, afecta la vagina, pero no llega al 1/3 inferior y no se extiende a la pared pélvica, corresponde al estadio:
+  - Documento: C (IB2) → publicada: **D (IIA)**
+  - La extensión a los dos tercios superiores de la vagina, sin llegar al tercio inferior ni a la pared pélvica, corresponde al estadio IIA de la FIGO; el estadio IB está confinado al cuello.
+- **Q92_46** — El síndrome caracterizado por atrofia mamaria, falla en la lactancia, pérdida de vello púbico, amenorrea, insuficiencia corticoadrenal e hipotiroidismo es:
+  - Documento: C (Síndrome de Rokitansky) → publicada: **B (Síndrome de Sheehan)**
+  - El cuadro (falla de la lactancia, amenorrea, pérdida de vello, insuficiencia suprarrenal e hipotiroidismo) es el síndrome de Sheehan, necrosis hipofisaria tras una hemorragia posparto.
+- **Q95_82** — Un paciente de 25 años inicio hace 6 semanas un cuadro de diarrea con sangre y fiebre por lo que fue tratado con amoxicilina/clavulónico durante 7 días sin mejoría. Ante la persistencia de los síntomas se practica una colonoscopía que demuestra un recto normal, la presencia de aftas en el colon sigmoideo y úlceras longitudinales en el colon transverso. ¿Cúal es el diagnóstico de sospecha más probable?
+  - Documento: B (Colitis por Clostridium difficil) → publicada: **A (Enfermedad de Crohn)**
+  - Recto normal, aftas y úlceras longitudinales con afectación salteada son típicas de la enfermedad de Crohn; la colitis por C. difficile produce seudomembranas, no úlceras longitudinales salteadas.
+- **Q96_92** — Comprenden las heridas en la que se interesa una víscera hueca, como las vías respiratorias, digestivas o genitourinarias, con flora bacteriana endógena bajo circunstancias controladas sin fuga notable de contenido durante una cirugía:
+  - Documento: A (Heridas limpias) → publicada: **B (Heridas limpias-contaminadas)**
+  - La herida en que se entra a una víscera hueca (digestiva, respiratoria, genitourinaria) en condiciones controladas, sin derrame importante, es limpia-contaminada (clase II), no limpia.
 
 ## Retiradas
 
@@ -311,3 +340,9 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
   - Repetida: es la misma pregunta que Q15_88 (cuadrante superoexterno de la mama).
 - **Q74_86** — La producción de ácido gástrico ocurre en la siguiente región anatómica del estómago:
   - Repetida: es la misma pregunta que Q73_67 (producción de ácido en el fondo gástrico).
+- **Q82_6** — ¿Cuál de los siguientes es la unidad fundamental de la herencia?
+  - Repetida: es la misma pregunta que Q21_1 (el gen como unidad básica de la herencia).
+- **Q90_21** — Factor que en nuestro medio con más frecuencia desvía el crecimiento y desarrollo:
+  - Repetida: es la misma pregunta que Q12_40 (factor nutricional en el crecimiento y desarrollo).
+- **Q93_58** — Cuál de estos elementos es favorable suplir a una paciente que decida quedar embarazada dentro de los próximos 3 meses.
+  - Repetida: es la misma pregunta que Q24_42 (ácido fólico antes del embarazo).
