@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **360** de 1166 · publicadas: **349** · respuesta corregida: **69** · retiradas: **11**.
+Preguntas revisadas: **462** de 1166 · publicadas: **437** · respuesta corregida: **86** · retiradas: **25**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -210,6 +210,54 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **Q27_85** — La causa más frecuente de hiperparatiroidismo primario es:
   - Documento: A (Hiperplasia) → publicada: **B (Adenoma)**
   - El adenoma paratiroideo único causa alrededor del 85 % de los hiperparatiroidismos primarios; la hiperplasia, un 10–15 %.
+- **Q67_3** — Una droga que disminuye o anula la acción de otra droga o sustancia es un:
+  - Documento: A (Agonista) → publicada: **D (Antagonista)**
+  - Una droga que disminuye o anula la acción de otra es un antagonista; el agonista produce el efecto.
+- **Q67_9** — La prueba clínica más fidedigna e importante para determinar si hay flujo sanguíneo en una extremidad es:
+  - Documento: D (Llenado capilar) → publicada: **A (Presencia de pulsos)**
+  - La presencia de pulsos distales es el signo clínico más fiable de flujo arterial; el llenado capilar puede conservarse por circulación colateral o alterarse por el frío, y es menos fidedigno.
+- **Q67_11** — La insulina incrementa el ingreso de glucosa en:
+  - Documento: A (Todos los tejidos) → publicada: **D (El músculo esquelético)**
+  - La insulina aumenta la entrada de glucosa en el músculo esquelético y el tejido adiposo (GLUT4); en el cerebro, el riñón y los eritrocitos la captación no depende de la insulina.
+- **Q67_13** — El grupo de enfermedades que causa mayor cantidad de muertes a nivel mundial es:
+  - Documento: D (Las enfermedades infectocontagiosas, maternas, nutricionales y perinatales) → publicada: **B (Las enfermedades no transmisibles o crónicas)**
+  - Según la OMS, las enfermedades no transmisibles (cardiovasculares, cáncer, respiratorias crónicas, diabetes) causan alrededor del 74 % de las muertes en el mundo.
+- **Q68_15** — La bilis es indispensable en nuestro organismo, porque se necesita para:
+  - Documento: A (La ingestión de lípidos) → publicada: **B (La digestión y absorción de los lípidos)**
+- **Q69_26** — Masculino de 16 años, dominicano, llega a emergencia con fiebre alta, dolor de cabeza y cansancio, con leucocitos de 3200/mm³ y extendido de sangre periférica normal. ¿Cuál sería su diagnóstico de impresión?
+  - Documento: B (Malaria) → publicada: **A (Dengue)**
+  - Fiebre alta, cefalea y malestar con leucopenia y frotis de sangre periférica normal (sin plasmodios) sugieren dengue; en la malaria el frotis mostraría parásitos.
+- **Q69_27** — La insuficiencia respiratoria en el niño produce:
+  - Documento: C (Alcalosis respiratoria) → publicada: **B (Acidosis respiratoria)**
+  - La insuficiencia respiratoria establecida produce retención de CO₂ (acidosis respiratoria); la alcalosis respiratoria solo se ve al inicio, cuando el niño hiperventila.
+- **Q69_29** — La leche materna contiene gran cantidad de componentes inmunológicos que confirman su función protectora contra:
+  - Documento: A (Virus) → publicada: **D (Virus, bacterias y parásitos)**
+  - La leche materna protege contra virus, bacterias y parásitos (IgA secretora, lactoferrina, lisozima, oligosacáridos), no solo contra virus.
+- **Q70_36** — Agente infeccioso que puede infectar al feto al inicio del embarazo y producir daño en los ojos, los oídos y el sistema nervioso central, con calcificaciones intracraneales:
+  - Documento: B (Virus del sarampión) → publicada: **C (Toxoplasma gondii)**
+  - La afectación de ojos (coriorretinitis), oídos y sistema nervioso con calcificaciones intracraneales es típica de la toxoplasmosis congénita; el sarampión no produce este síndrome.
+- **Q70_38** — Niño de 10 años que llega a emergencia con fiebre de 39,5 °C, cefalea, ictericia, mialgias y orina oscura y escasa. ¿Cuál es el diagnóstico más probable?
+  - Documento: B (Meningococcemia) → publicada: **C (Leptospirosis)**
+  - Fiebre alta, cefalea, mialgias, ictericia y orina oscura y escasa (insuficiencia renal) orientan a leptospirosis grave (síndrome de Weil), no a meningococcemia.
+- **Q71_55** — La infección urinaria en la paciente embarazada puede ser causa de:
+  - Documento: A (DPPNI) → publicada: **D (Parto prematuro)**
+  - La infección urinaria en el embarazo se asocia sobre todo a parto prematuro (y bajo peso al nacer), no al desprendimiento de placenta.
+- **Q71_57** — Que patología se sospecha en una paciente en edad fértil, con embarazo de 12 semanas, útero blando, mayor altura uterina que la esperada, no movimientos fetales, muchas náuseas y vómitos:
+  - Documento: — → publicada: **C (Embarazo molar)**
+- **Q71_58** — Una paciente de 30 años con embarazo de 37 semanas, sin contracciones previas, presenta de forma súbita dolor abdominal moderado a intenso, con pulso rápido, hipotensión arterial, bradicardia fetal y útero hipertónico. ¿Cuál es su diagnóstico clínico?
+  - Documento: — → publicada: **C (Desprendimiento prematuro de placenta normoinserta)**
+- **Q73_71** — El raquitismo es producido por déficit de cuál de las siguientes vitaminas?
+  - Documento: A (Vitamina A) → publicada: **C (Vitamina D)**
+  - El raquitismo se debe a la deficiencia de vitamina D, no de vitamina A.
+- **Q74_84** — Es la hernia que se introduce por el conducto inguinal en el hombre, desciende hasta el escroto y es de origen congénito:
+  - Documento: A (Hernia inguinal directa) → publicada: **B (Hernia inguinal indirecta)**
+  - La hernia que recorre el conducto inguinal y desciende al escroto, de origen congénito, es la indirecta; la directa es adquirida y rara vez llega al escroto.
+- **Q74_91** — Es la complicación de las úlceras pépticas que produce abdomen agudo:
+  - Documento: A (Hemorragia) → publicada: **B (Perforación)**
+  - La complicación de la úlcera péptica que produce abdomen agudo es la perforación (peritonitis química); la hemorragia produce hematemesis y melena.
+- **Q75_97** — La causa principal de pancreatitis es:
+  - Documento: B (Alcohol) → publicada: **A (Enfermedad de las vías biliares (litiasis))**
+  - La causa más frecuente de pancreatitis aguda en el mundo es la litiasis biliar (40–70 %); el alcohol es la segunda.
 
 ## Retiradas
 
@@ -235,3 +283,31 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
   - Repetida: es la misma pregunta que Q6_48 (gonadotropina coriónica como prueba de embarazo).
 - **Q26_40** — 
   - Fragmento sin enunciado: sus opciones pertenecían a la pregunta Q26_60, que se reconstruyó con ellas.
+- **Q28_88** — Cuál de los siguientes signos o síntomas aparece en un paciente con bocio difuso? Tos, mareos, ronquera, dificultad para tragar y dificultad para respirar para respirar al hacer ejercicio. Hasta aquí…. 1-Cuando un problema importante para salud pública afecta simultáneamente a varios países, se denomina
+  - Texto mezclado de varias preguntas en la extracción del documento (enunciado de bocio con opciones de otra pregunta); no se puede reconstruir sin el PDF.
+- **Q29_4** — Aun cuando quede todavía algo del VIH en el cuerpo, el sistema inmunitario está lo suficientemente fuerte como para combatir las infecciones y ciertos tipos de cáncer relacionados con el VIH”. 21-Señale cuál de las siguientes parasitosis es la responsable del prolapso rectal:
+  - Texto mezclado en la extracción; la pregunta que se reconoce (parasitosis y prolapso rectal) está completa en Q69_31.
+- **Q45_7** — Omega 3(Lonolenico) omega 6 (Linoleico)” 14)- El siguiente ácido graso no esencial regula el metabolismo del colesterol:
+  - Texto mezclado en la extracción (fragmentos de tres preguntas sobre ácidos grasos y calcio); no se puede reconstruir sin el PDF.
+- **Q67_2** — El anión más abundante en el medio extracelular es el:
+  - Repetida: es la misma pregunta que Q16_96 (el cloro como anión extracelular más abundante).
+- **Q69_20** — Un niño de 2 años que presenta amigdalitis membranosa, rash cutáneo, adenomegalia y esplenomegalia sugiere el diagnóstico de:
+  - Repetida: es la misma pregunta que Q11_29 (mononucleosis infecciosa).
+- **Q69_23** — El trastorno metabólico más frecuente en el recién nacido macrosómico es:
+  - Repetida: es la misma pregunta que Q23_26 (hipoglucemia en el recién nacido macrosómico).
+- **Q69_25** — La falta de cuál de las siguientes sustancias produce colapso pulmonar en recién nacido:
+  - Repetida: es la misma pregunta que Q23_28 (déficit de surfactante en el recién nacido).
+- **Q69_30** — El siguiente cuadro clínico es característico de tétanos:
+  - Repetida: es la misma pregunta que Q18_26 (rigidez y espasmos en el tétanos).
+- **Q70_40** — El diagnóstico definitivo de la tuberculosis se hace por:
+  - Repetida: es la misma pregunta que Q14_69 (el cultivo como diagnóstico definitivo de tuberculosis).
+- **Q71_47** — Cuál de los siguientes medicamentos se administra a la madre para acelerar la maduración pulmonar de feto?
+  - Repetida: es la misma pregunta que Q6_52 (corticoides para la madurez pulmonar fetal).
+- **Q71_48** — Cuál de las siguientes hormonas tiene mayor importancia para el diagnóstico de embarazo?
+  - Repetida: es la misma pregunta que Q6_48 (gonadotropina coriónica en el diagnóstico de embarazo).
+- **Q74_80** — Cuál de las siguientes es la enzima sérica más específica en la lesión del miocardio?
+  - Repetida: es la misma pregunta que Q15_80 (CK-MB como enzima más específica de daño miocárdico).
+- **Q74_81** — Las lesions de mama afectan más frecuentemente el cuadrante:
+  - Repetida: es la misma pregunta que Q15_88 (cuadrante superoexterno de la mama).
+- **Q74_86** — La producción de ácido gástrico ocurre en la siguiente región anatómica del estómago:
+  - Repetida: es la misma pregunta que Q73_67 (producción de ácido en el fondo gástrico).
