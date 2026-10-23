@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
-import { Check, Crown, Heart, HeartCrack, Sparkles, Star, Target, Volume2, X, Zap } from 'lucide-react'
+import { Check, Crown, Heart, HeartCrack, Sparkles, Star, Target, X, Zap } from 'lucide-react'
 import { KIND_LABEL, LINGO_BY_ID, lessonById, type LingoItem } from '@/data/lingo'
-import { buildLesson, canSpeak, correctAnswerText, dueItems, isBuildCorrect, reviewSession, speak, type LingoExercise } from '@/lib/lingo'
+import { buildLesson, correctAnswerText, dueItems, isBuildCorrect, reviewSession, type LingoExercise } from '@/lib/lingo'
 import { starsFor, useLingo } from '@/store/lingo'
 import { useProgress } from '@/store/progress'
 import { celebrate, playLesson } from '@/lib/fx'
@@ -11,15 +11,6 @@ import { cn } from '@/lib/utils'
 import { toast } from '@/store/toasts'
 
 const HEARTS = 5
-
-function SpeakButton({ text, className }: { text: string; className?: string }) {
-  if (!canSpeak) return null
-  return (
-    <button type="button" onClick={() => speak(text, useLingo.getState().voiceURI)} className={cn('grid size-10 shrink-0 place-items-center rounded-xl bg-sky-500/15 text-sky-700 transition-transform active:scale-90 dark:text-sky-300', className)} aria-label={`Escuchar «${text}»`}>
-      <Volume2 className="size-5" />
-    </button>
-  )
-}
 
 /** Desglose «hepato = hígado · megalia = agrandamiento» o el ejemplo de un prefijo/sufijo. */
 function Breakdown({ item }: { item: LingoItem }) {
@@ -159,7 +150,6 @@ export default function LingoLesson() {
   const [answered, setAnswered] = useState(saved?.answered ?? 0)
   const [confirmExit, setConfirmExit] = useState(false)
   const saveActive = useLingo((s) => s.saveActive)
-  const voiceURI = useLingo((s) => s.voiceURI)
 
   useEffect(() => {
     if (saved) toast({ kind: 'info', title: 'Continuamos donde lo dejaste' })
@@ -245,7 +235,7 @@ export default function LingoLesson() {
         e.preventDefault()
         if (phase === 'answer') check()
         else if (phase === 'feedback') next()
-      } else if (phase === 'answer' && ex && (ex.kind === 'meaning' || ex.kind === 'term' || ex.kind === 'part')) {
+      } else if (phase === 'answer' && ex && 'options' in ex) {
         const n = Number(e.key)
         if (n >= 1 && n <= ex.options.length) setSelected(n - 1)
       }
@@ -253,11 +243,6 @@ export default function LingoLesson() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   })
-
-  // Pronuncia los términos nuevos al presentarlos.
-  useEffect(() => {
-    if (phase === 'answer' && ex?.kind === 'meaning' && ex.intro && useProgress.getState().settings.sound) speak(ex.item.term, voiceURI)
-  }, [ex, phase, voiceURI])
 
   if (!review && !lesson)
     return (
@@ -339,8 +324,18 @@ export default function LingoLesson() {
   if (!ex) return null
 
   /* ---------- Ejercicio ---------- */
-  const title =
-    ex.kind === 'meaning' ? '¿Qué significa?' : ex.kind === 'term' ? '¿Cuál es el término?' : ex.kind === 'part' ? '¿Qué significa esta parte?' : ex.kind === 'build' ? 'Construye el término' : 'Une cada término con su significado'
+  const TITLES: Record<LingoExercise['kind'], string> = {
+    meaning: '¿Qué significa?',
+    term: ex.kind === 'term' && ex.item.kind === 'sigla' ? '¿Cuál es la sigla?' : '¿Cuál es el término?',
+    part: '¿Qué significa esta parte?',
+    build: 'Construye el término',
+    match: 'Une cada término con su significado',
+    truefalse: '¿Verdadero o falso?',
+    context: 'Completa el caso clínico',
+    opposite: '¿Cuál es lo contrario?',
+    find: '¿Qué palabra lo contiene?',
+  }
+  const title = TITLES[ex.kind]
   const feedbackItem = ex.kind === 'match' ? null : ex.item
 
   return (
@@ -378,7 +373,6 @@ export default function LingoLesson() {
               {ex.kind === 'meaning' && (
                 <>
                   <div className="mb-6 flex items-center gap-3">
-                    <SpeakButton text={ex.item.term} />
                     <div className="min-w-0">
                       <div className="text-xs font-semibold text-muted uppercase">{KIND_LABEL[ex.item.kind]}</div>
                       <div className="font-display text-3xl font-extrabold break-words">{ex.item.term}</div>
@@ -404,6 +398,56 @@ export default function LingoLesson() {
                 <>
                   <p className="mb-6 text-lg">
                     En <b className="font-display">{ex.item.term}</b>, ¿qué significa <mark className="rounded-md bg-sky-500/20 px-1.5 py-0.5 font-bold text-sky-800 dark:text-sky-200">{ex.part.text}</mark>?
+                  </p>
+                  <OptionList options={ex.options} selected={selected} onSelect={setSelected} disabled={phase !== 'answer'} answer={ex.answer} revealed={phase === 'feedback'} />
+                </>
+              )}
+
+              {ex.kind === 'truefalse' && (
+                <>
+                  <div className="mb-6 rounded-2xl border-2 border-soft bg-[var(--surface)] p-4">
+                    <div className="text-xs font-semibold text-muted uppercase">{KIND_LABEL[ex.item.kind]}</div>
+                    <div className="font-display text-2xl font-extrabold break-words">{ex.item.term}</div>
+                    <p className="mt-2 text-lg">
+                      significa <b>«{ex.statement}»</b>
+                    </p>
+                  </div>
+                  <OptionList options={ex.options} selected={selected} onSelect={setSelected} disabled={phase !== 'answer'} answer={ex.answer} revealed={phase === 'feedback'} />
+                </>
+              )}
+
+              {ex.kind === 'context' && (
+                <>
+                  <p className="mb-6 rounded-2xl border-2 border-soft bg-[var(--surface)] p-4 text-lg leading-relaxed font-medium">
+                    {ex.item.context!.split('___').map((chunk, i, all) => (
+                      <span key={i}>
+                        {chunk}
+                        {i < all.length - 1 && (
+                          <span className={cn('mx-0.5 inline-block min-w-16 rounded-md border-b-2 px-1.5 text-center font-bold', phase === 'feedback' ? 'border-emerald-500 bg-emerald-500/10' : 'border-sky-500 bg-sky-500/10 text-sky-800 dark:text-sky-200')}>
+                            {phase === 'feedback' ? ex.item.term : selected !== null ? ex.options[selected] : '\u00a0'}
+                          </span>
+                        )}
+                      </span>
+                    ))}
+                  </p>
+                  <OptionList options={ex.options} selected={selected} onSelect={setSelected} disabled={phase !== 'answer'} answer={ex.answer} revealed={phase === 'feedback'} />
+                </>
+              )}
+
+              {ex.kind === 'opposite' && (
+                <>
+                  <div className="mb-6 rounded-2xl border-2 border-soft bg-[var(--surface)] p-4">
+                    <div className="font-display text-2xl font-extrabold break-words">{ex.item.term}</div>
+                    <p className="mt-1 text-sm text-muted">{ex.item.meaning}</p>
+                  </div>
+                  <OptionList options={ex.options} selected={selected} onSelect={setSelected} disabled={phase !== 'answer'} answer={ex.answer} revealed={phase === 'feedback'} />
+                </>
+              )}
+
+              {ex.kind === 'find' && (
+                <>
+                  <p className="mb-6 text-lg">
+                    ¿Cuál de estas palabras tiene una parte que significa <mark className="rounded-md bg-sky-500/20 px-1.5 py-0.5 font-bold text-sky-800 dark:text-sky-200">{ex.part.meaning}</mark>?
                   </p>
                   <OptionList options={ex.options} selected={selected} onSelect={setSelected} disabled={phase !== 'answer'} answer={ex.answer} revealed={phase === 'feedback'} />
                 </>

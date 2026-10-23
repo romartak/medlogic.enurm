@@ -1,6 +1,6 @@
 import {
-  ArrowLeftToLine, ArrowRightToLine, Activity, Award, Baby, Bone, BookOpen, Brain, BrainCircuit, Bug, Crown, Droplet, Droplets, Eye, FlaskConical, Flame,
-  Footprints, Gamepad2, GraduationCap, Hand, HeartPulse, Layers, Medal, Microscope, Pill, Rocket, Scale, Scissors, Siren,
+  ArrowLeftToLine, ArrowRightToLine, Activity, Award, Baby, Bone, BookOpen, Brain, BrainCircuit, Bug, ClipboardList, Crown, Droplet, Droplets, Eye, FlaskConical, Flame,
+  Footprints, Gamepad2, GraduationCap, Hand, HeartPulse, Layers, Medal, Microscope, Move, Pill, Rocket, Scale, Scissors, Siren,
   Sparkles, Stethoscope, Target, Users, Venus, Wind, Zap, type LucideIcon,
 } from 'lucide-react'
 
@@ -15,6 +15,7 @@ const ICONS: Record<string, LucideIcon> = {
   brain: Brain,
   'brain-circuit': BrainCircuit,
   bug: Bug,
+  'clipboard-list': ClipboardList,
   crown: Crown,
   droplet: Droplet,
   droplets: Droplets,
@@ -29,6 +30,7 @@ const ICONS: Record<string, LucideIcon> = {
   layers: Layers,
   medal: Medal,
   microscope: Microscope,
+  move: Move,
   pill: Pill,
   rocket: Rocket,
   scale: Scale,

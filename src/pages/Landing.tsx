@@ -266,7 +266,7 @@ function Features() {
             ))}
           </div>
         </Tile>
-        <Tile to="/terminologia" className="lg:col-span-3" icon={Languages} color="#16a34a" title="Terminología, como en Duolingo" body="Aprende los términos médicos por partes: prefijos, raíces y sufijos en lecciones cortas, con vidas, racha y repaso." delay={0.04}>
+        <Tile to="/terminologia" className="lg:col-span-3" icon={Languages} color="#16a34a" title="Terminología, como en Duolingo" body="Más de 400 términos y siglas por partes: prefijos, raíces, sufijos y casos clínicos en lecciones cortas, con vidas, racha, repaso y reto relámpago." delay={0.04}>
           <div className="flex flex-wrap items-center gap-1.5 font-display text-lg font-bold">
             <span className="rounded-xl border-2 border-b-4 border-soft px-3 py-1">hepato</span>
             <span className="text-muted">+</span>

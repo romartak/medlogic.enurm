@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { BookA, Check, Crown, Flame, Languages, Lock, RotateCcw, Search, Star, Volume2, Zap } from 'lucide-react'
-import { KIND_LABEL, LINGO_ITEMS, LINGO_LESSONS, LINGO_UNITS, type LingoKind } from '@/data/lingo'
-import { canSpeak, dueItems, spanishVoices, speak, TOTAL_LESSONS } from '@/lib/lingo'
+import { ArrowLeftRight, BookA, Check, Crown, Flame, Languages, Lock, RotateCcw, Search, Star, Timer, Trophy, Zap } from 'lucide-react'
+import { KIND_LABEL, LINGO_BY_ID, LINGO_ITEMS, LINGO_LESSONS, LINGO_UNITS, type LingoKind } from '@/data/lingo'
+import { dueItems, TOTAL_LESSONS } from '@/lib/lingo'
 import { lingoStreak, useLingo } from '@/store/lingo'
 import { Card, PageHeader, Ring, Segmented } from '@/components/ui/primitives'
 import { Icon } from '@/components/ui/Icon'
@@ -90,8 +90,8 @@ function PathView() {
   )
 }
 
-const KINDS: (LingoKind | 'todos')[] = ['todos', 'prefijo', 'sufijo', 'raíz', 'término']
-const PLURAL: Record<LingoKind, string> = { prefijo: 'Prefijos', sufijo: 'Sufijos', raíz: 'Raíces', término: 'Términos' }
+const KINDS: (LingoKind | 'todos')[] = ['todos', 'prefijo', 'sufijo', 'raíz', 'término', 'sigla']
+const PLURAL: Record<LingoKind, string> = { prefijo: 'Prefijos', sufijo: 'Sufijos', raíz: 'Raíces', término: 'Términos', sigla: 'Siglas' }
 
 function Dictionary() {
   const words = useLingo((s) => s.words)
@@ -134,17 +134,27 @@ function Dictionary() {
                   </p>
                 )}
                 {i.example && <p className="mt-1 text-xs text-muted">Ej.: {i.example}</p>}
+                {i.opposite && (
+                  <p className="mt-1 flex items-center gap-1 text-xs text-muted">
+                    <ArrowLeftRight className="size-3.5" /> Contrario: <b className="font-semibold text-[var(--text)]">{LINGO_BY_ID.get(i.opposite)?.term}</b>
+                  </p>
+                )}
+                {i.context && (
+                  <p className="mt-1.5 rounded-lg surface-2 px-2.5 py-1.5 text-xs leading-relaxed">
+                    {i.context.split('___').map((chunk, n, all) => (
+                      <span key={n}>
+                        {chunk}
+                        {n < all.length - 1 && <b>{i.term}</b>}
+                      </span>
+                    ))}
+                  </p>
+                )}
                 <div className="mt-2 flex gap-1" aria-label={w ? `Dominio ${w.strength} de 5` : 'Aún no practicada'}>
                   {[1, 2, 3, 4, 5].map((n) => (
                     <span key={n} className={cn('h-1.5 w-5 rounded-full', w && n <= w.strength ? 'bg-emerald-500' : 'surface-2')} />
                   ))}
                 </div>
               </div>
-              {canSpeak && (
-                <button onClick={() => speak(i.term, useLingo.getState().voiceURI)} className="grid size-10 shrink-0 place-items-center rounded-xl text-muted hover:bg-slate-900/[0.04] hover:text-[var(--text)] dark:hover:bg-white/[0.05]" aria-label={`Escuchar «${i.term}»`}>
-                  <Volume2 className="size-5" />
-                </button>
-              )}
             </li>
           )
         })}
@@ -175,39 +185,28 @@ function ContinueBanner() {
   )
 }
 
-/** Elegir la voz de pronunciación entre las voces en español del dispositivo. */
-function VoicePicker() {
-  const voiceURI = useLingo((s) => s.voiceURI)
-  const setVoice = useLingo((s) => s.setVoice)
-  const [voices, setVoices] = useState(() => spanishVoices())
-  useEffect(() => {
-    const synth = typeof window !== 'undefined' ? window.speechSynthesis : undefined
-    if (!synth) return
-    const update = () => setVoices(spanishVoices())
-    update()
-    synth.addEventListener?.('voiceschanged', update)
-    return () => synth.removeEventListener?.('voiceschanged', update)
-  }, [])
-  if (!canSpeak) return null
+/** Reto relámpago: 60 segundos para responder todo lo que puedas. */
+function BlitzCard({ className }: { className?: string }) {
+  const best = useLingo((s) => s.blitzBest)
   return (
-    <Card className="p-5">
-      <label htmlFor="lingo-voice" className="text-sm font-semibold">
-        Voz de pronunciación
-      </label>
-      <div className="mt-2 flex gap-2">
-        <select id="lingo-voice" value={voiceURI ?? ''} onChange={(e) => setVoice(e.target.value || null)} className="h-11 min-w-0 flex-1 rounded-xl border border-soft surface-2 px-3 text-sm outline-none focus:border-brand-500">
-          <option value="">La más natural disponible</option>
-          {voices.map((v) => (
-            <option key={v.voiceURI} value={v.voiceURI}>
-              {v.name} ({v.lang})
-            </option>
-          ))}
-        </select>
-        <button onClick={() => speak('hepatomegalia', voiceURI)} className="grid size-11 shrink-0 place-items-center rounded-xl bg-sky-500/15 text-sky-700 dark:text-sky-300" aria-label="Probar la voz">
-          <Volume2 className="size-5" />
-        </button>
+    <Card className={cn('p-5', className)}>
+      <div className="flex items-center gap-3">
+        <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-amber-500/15 text-amber-700 dark:text-amber-300">
+          <Timer className="size-5" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="font-semibold">Reto relámpago</div>
+          <div className="text-sm text-muted">60 segundos: responde todas las que puedas.</div>
+        </div>
       </div>
-      <p className="mt-2 text-xs text-muted">{voices.length ? 'Usa las voces de tu teléfono o computadora. En iPhone, las voces «mejoradas» se descargan en Ajustes → Accesibilidad → Contenido leído → Voces.' : 'Este navegador no tiene voces en español instaladas.'}</p>
+      {best > 0 && (
+        <div className="mt-3 flex items-center gap-1.5 text-sm">
+          <Trophy className="size-4 text-amber-500" /> Tu récord: <b>{best}</b>
+        </div>
+      )}
+      <Link to="/terminologia/relampago" className="mt-4 flex h-11 items-center justify-center rounded-xl border-b-4 border-black/20 bg-amber-500 text-sm font-bold tracking-wide text-white uppercase">
+        Jugar
+      </Link>
     </Card>
   )
 }
@@ -240,9 +239,6 @@ export default function LingoPath() {
             ]}
           />
           {tab === 'ruta' ? <PathView /> : <Dictionary />}
-          <div className="mt-10 lg:hidden">
-            <VoicePicker />
-          </div>
         </div>
 
         <aside className="space-y-4 max-lg:order-first lg:sticky lg:top-24 lg:h-fit">
@@ -292,9 +288,8 @@ export default function LingoPath() {
             )}
           </Card>
 
-          <div className="max-lg:hidden">
-            <VoicePicker />
-          </div>
+          {/* En el teléfono aparece cuando ya hay alguna lección hecha, para no tapar la ruta al empezar. */}
+          <BlitzCard className={doneLessons ? undefined : 'max-lg:hidden'} />
 
           <Card className="p-5 max-lg:hidden">
             <div className="text-sm font-semibold">Tu avance</div>
@@ -305,7 +300,7 @@ export default function LingoPath() {
             <div className="mt-3 h-2 overflow-hidden rounded-full surface-2">
               <div className="h-full rounded-full bg-emerald-500" style={{ width: `${(doneLessons / TOTAL_LESSONS) * 100}%` }} />
             </div>
-            <p className="mt-4 text-xs text-muted">Consejo: 1 o 2 lecciones al día y el repaso cuando toque. Escucha cada palabra con el botón del altavoz.</p>
+            <p className="mt-4 text-xs text-muted">Consejo: 1 o 2 lecciones al día, el repaso cuando toque y un reto relámpago para ganar velocidad.</p>
           </Card>
         </aside>
       </div>
