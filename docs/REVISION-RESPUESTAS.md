@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **564** de 1166 · publicadas: **536** · respuesta corregida: **96** · retiradas: **28**.
+Preguntas revisadas: **666** de 1166 · publicadas: **625** · respuesta corregida: **107** · retiradas: **41**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -287,6 +287,35 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **Q96_92** — Comprenden las heridas en la que se interesa una víscera hueca, como las vías respiratorias, digestivas o genitourinarias, con flora bacteriana endógena bajo circunstancias controladas sin fuga notable de contenido durante una cirugía:
   - Documento: A (Heridas limpias) → publicada: **B (Heridas limpias-contaminadas)**
   - La herida en que se entra a una víscera hueca (digestiva, respiratoria, genitourinaria) en condiciones controladas, sin derrame importante, es limpia-contaminada (clase II), no limpia.
+- **Q98_22** — ¿Cuál de las siguientes patologías afecta sobre todo a prematuros siendo su principal causa el déficit del agente tensoactivo?
+  - Documento: B (Taquipnea transitoria del recién nacido) → publicada: **C (Enfermedad de membrana hialina)**
+- **Q98_23** — Recién nacido de 10 días, nacido a las 33 semanas, que ingresa por distensión abdominal, deposiciones con sangre y shock séptico. En la radiografía se aprecia neumatosis intestinal. El diagnóstico más probable es:
+  - Documento: B (Hipertrofia congénita del píloro) → publicada: **C (Enterocolitis necrosante)**
+  - Prematuro con distensión abdominal, sangre en heces, sepsis y neumatosis intestinal tiene enterocolitis necrosante; la hipertrofia del píloro produce vómitos no biliosos sin sangrado.
+- **Q99_31** — A los 10 meses, en cuanto al lenguaje, lo esperado es que el niño:
+  - Documento: — → publicada: **C (Diga sílabas consonánticas repetidas («papá», «mamá»))**
+  - Las opciones estaban mezcladas en el documento y la pregunta no tenía respuesta; se reconstruyeron.
+- **Q99_38** — El mayor vehículo de transmisión de infecciones por giardia lamblia es:
+  - Documento: — → publicada: **C (Agua contaminada)**
+- **Q100_54** — Cuando sus cifras séricas maternas alcanzan su máximo, la gonadotropina coriónica humana (hCG) se produce casi por completo en:
+  - Documento: B (El hipotálamo) → publicada: **C (El sincitiotrofoblasto)**
+  - El enunciado y las opciones estaban cortados y faltaba la respuesta correcta; la hCG se produce casi por completo en el sincitiotrofoblasto.
+- **Q101_60** — ¿Alrededor de qué edad se presenta con más frecuencia el cáncer epitelial de ovario?
+  - Documento: D (undefined) → publicada: **C (60–70 años)**
+- **Q101_66** — Hombre de 22 años, ebanista, acude a emergencia con fiebre, cefalea, poliartralgias y cansancio. Orina ámbar clara y extendido de sangre periférica negativo. ¿Cuál es su diagnóstico de impresión?
+  - Documento: A (Cólera) → publicada: **B (Chikungunya)**
+  - Fiebre, cefalea, poliartralgias intensas y cansancio con frotis sanguíneo negativo orientan a chikungunya; el cólera produce diarrea acuosa masiva.
+- **Q102_69** — Una femenina de 68 años acude a la consulta refiriendo dolor epigástrico agudo irradiado a la espalda de varias horas de evolución. Tiene como antecedentes colelitiasis y consumo habitual de alcohol; en los resultados de laboratorio se destaca: leucocitosis, aumento de amilasa y lipasa en suero. ¿Cúal debe ser su primera sospecha diagnóstica?
+  - Documento: B (Pielonefritis aguda) → publicada: **D (Pancreatitis aguda)**
+  - Dolor epigástrico irradiado a la espalda con amilasa y lipasa elevadas en una paciente con colelitiasis y alcohol es pancreatitis aguda, no pielonefritis.
+- **Q102_70** — En el tratamiento de una crisis asmática aguda y grave, además del β2-agonista inhalado, se utiliza:
+  - Documento: D (Β2-agonista endovenoso) → publicada: **C (Corticoide sistémico (prednisona oral))**
+  - En la crisis asmática grave se usan β2-agonistas inhalados (nebulizados) y corticoides sistémicos; los β2 por vía intravenosa no son de rutina y la aminofilina ya no se recomienda.
+- **Q102_74** — ¿La complicación aguda más frecuente de los pacientes diabéticos tipo 1 es?
+  - Documento: A (Cetoacidosis Diabética) → publicada: **D (Hipoglicemia)**
+  - La hipoglucemia es la complicación aguda más frecuente de la diabetes tipo 1 tratada con insulina; la cetoacidosis es la más característica y grave, pero menos frecuente.
+- **Q102_75** — ¿La causa más común de muerte en los pacientes hipertensos es?
+  - Documento: — → publicada: **C (Cardiopatías (cardiopatía isquémica e insuficiencia cardíaca))**
 
 ## Retiradas
 
@@ -346,3 +375,29 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
   - Repetida: es la misma pregunta que Q12_40 (factor nutricional en el crecimiento y desarrollo).
 - **Q93_58** — Cuál de estos elementos es favorable suplir a una paciente que decida quedar embarazada dentro de los próximos 3 meses.
   - Repetida: es la misma pregunta que Q24_42 (ácido fólico antes del embarazo).
+- **Q96_100** — ¿De estos nervios, cuál es lesionado con más frecuencia en una cirugía de glándula tiroides?
+  - Repetida: es la misma pregunta que Q27_82 (lesión del nervio laríngeo recurrente en la cirugía de tiroides).
+- **Q98_21** — Característica que identifica al cefalohematoma:
+  - Repetida: es la misma pregunta que Q69_24 (cefalohematoma subperióstico limitado por las suturas).
+- **Q99_30** — Masculino de 16 años de edad viene a emergencia presentando: temperatura oral de 39.5 °C, cefalea, ictericia, mialgia. Además presenta orina oscura y escasa. ¿Cúal es el diagnóstico más probable?
+  - Repetida: es la misma pregunta que Q70_38 (leptospirosis con ictericia y oliguria).
+- **Q99_36** — El diagnóstico de meningitis piógena aguda en niños se confirma mediante:
+  - Repetida: es la misma pregunta que Q73_78 (punción lumbar para confirmar la meningitis bacteriana).
+- **Q100_47** — Fármaco de elección utilizado para prevenir y detener las convulsiones durante la gestación.
+  - Repetida: es la misma pregunta que Q6_55 (sulfato de magnesio para las convulsiones en el embarazo).
+- **Q100_48** — Es la parte más voluminosa del feto que toma contacto con el estrecho superior de la pelvis ocupándolo e gran parte, y que puede evolucionar por si misma dando lugar al mecanismo de parto.
+  - Repetida: es la misma pregunta que Q71_49 (definición de presentación fetal).
+- **Q101_59** — El microorganismo que produce con frecuencia lesión inflamatoria de la mucosa de las trompas de Falopio en la enfermedad inflamatoria pélvica es:
+  - Repetida: es la misma pregunta que Q71_50 (gonococo y lesión de la mucosa tubárica).
+- **Q101_62** — ¿Qué técnica proporciona el diagnóstico definitivo de la infección por Mycobacterium tuberculosis?
+  - Repetida: es la misma pregunta que Q14_69 (cultivo como diagnóstico definitivo de tuberculosis).
+- **Q101_64** — Causa más frecuente de hemorragia digestiva alta:
+  - Repetida: es la misma pregunta que Q20_78 (úlcera péptica como causa más frecuente de hemorragia digestiva alta).
+- **Q102_72** — Para diferenciar un evento cerebro vascular trombótico agudo de uno hemorrágico. ¿Cuál procedimiento de imágenes sería el más utilizado?
+  - Repetida: es la misma pregunta que Q14_63 (TAC para diferenciar el ictus isquémico del hemorrágico).
+- **Q103_84** — ¿Cuál de las siguientes afirmaciones es correcta acerca de la tiroiditis de Hashimoto?
+  - Repetida: es la misma pregunta que Q74_89 (tiroiditis de Hashimoto autoinmune con hipotiroidismo).
+- **Q103_87** — Masculino de 72 años presenta dolor abdominal tipo cólico, constipación de 4 días de evolución y distensión abdominal asimétrica. Nunca ha sido operado, presenta imagen radiográfica con niveles hidroaéreos en escalera. Diga su diagnóstico.
+  - Repetida: es la misma pregunta que Q75_96 (vólvulo intestinal en el adulto mayor).
+- **Q104_91** — Es una patología congénita que por lo general se observa en el recién nacido hasta el segundo año de vida y que se debe a un desarrollo anormal del sistema linfático que le impide drenar su contenido al sistema venoso.
+  - Repetida: es la misma pregunta que Q27_83 (higroma quístico por falta de drenaje linfático).
