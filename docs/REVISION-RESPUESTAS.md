@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **124** de 1166 · publicadas: **124** · respuesta corregida: **22** · retiradas: **0**.
+Preguntas revisadas: **258** de 1166 · publicadas: **251** · respuesta corregida: **38** · retiradas: **7**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -73,7 +73,67 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **Q11_23** — Las siguientes son características del dengue clásico (dengue sin signos de alarma), excepto:
   - Documento: C (Puede o no acompañarse de trombocitopenia) → publicada: **A (Es más frecuente en lactantes)**
   - Las opciones estaban mezcladas en el documento; se reconstruyeron. La afirmación falsa es que el dengue clásico sea más frecuente en lactantes: es más frecuente en niños mayores y adultos.
+- **Q12_33** — Los signos de peligro para un niño de 7 meses de edad con historia de tos son:
+  - Documento: D (Convulsiones, vomita todo, letárgico, inconsciente y tiraje subcostal) → publicada: **C (Letárgico e inconsciente, vomita todo no puede beber y convulsiona)**
+  - Los cuatro signos generales de peligro del AIEPI son: no puede beber o tomar el pecho, vomita todo, convulsiones y letárgico o inconsciente. El tiraje subcostal no es un signo general de peligro, sino un signo de neumonía grave.
+- **Q12_34** — Julio es un niño de 5 meses, 5 kg y una temperatura de 38°C. La madre lo consulta por presentar tos de 5 dias. El personal de salud observo 52 respiraciónes por minuto y no presenta tiraje ni estridor. Su diagnóstico es:
+  - Documento: C (Tos o resfriado) → publicada: **D (Neumonía)**
+  - En un lactante de 2 a 11 meses, 50 o más respiraciones por minuto es respiración rápida: con tos y sin tiraje ni estridor se clasifica como neumonía, no como tos o resfriado.
+- **Q12_42** — El llamado útero de Couvelaire puede aparecer en caso de:
+  - Documento: C (Mola) → publicada: **D (Desprendimiento prematuro de placenta normoinserta)**
+  - El útero de Couvelaire es propio del desprendimiento prematuro de placenta normoinserta, no de la mola.
+- **Q12_43** — En el parto en presentación de vértice, la cabeza fetal suele desprenderse en:
+  - Documento: C (Occipito ilíaca anterior) → publicada: **A (Occipito púbica)**
+  - La presentación suele encajarse en occipito ilíaca (izquierda anterior), pero tras la rotación interna la cabeza se desprende en occipito púbica.
+- **Q14_62** — La mayor parte de los accidentes isquémicos transitorios se deben a:
+  - Documento: B (Trombos) → publicada: **A (Émbolos)**
+  - La mayoría de los AIT son embólicos (de una placa carotídea o del corazón); la trombosis in situ es menos frecuente.
+- **Q14_71** — En una paciente femenina de 48 años con niveles tensionales de 140/90 en clasificación de riesgo B la conducta es:
+  - Documento: C (Tratamiento farmacológico) → publicada: **A (Cambio en el estilo de vida por 6 meses)**
+  - Con la clasificación del JNC 6, la hipertensión estadio 1 en el grupo de riesgo B se maneja con cambios en el estilo de vida hasta 6 meses; el tratamiento farmacológico inicial corresponde al grupo C.
+- **Q14_75** — Los pacientes con infarto agudo del miocardio con killip 3 deben obligatoriamente recibir:
+  - Documento: C (Alfabloqueadores) → publicada: **D (Inotrópicos positivos)**
+  - De las opciones, la única adecuada para el Killip III (edema agudo de pulmón) es el soporte inotrópico si hay hipoperfusión o hipotensión; los alfabloqueadores no tienen indicación y los betabloqueadores están contraindicados en la fase aguda.
+- **Q15_78** — ¿Cuál de las siguientes dermatopatías es frecuente en el sida?
+  - Documento: B (Herpes zóster) → publicada: **D (Todas)**
+- **Q15_89** — Cuál de estas patologías producen abdomen agudo:
+  - Documento: A (Colecistitis aguda) → publicada: **D (Todas)**
+  - Las tres opciones (colecistitis aguda, úlcera perforada y apendicitis) son causas de abdomen agudo; la respuesta es «todas».
+- **Q16_91** — En un paciente de 80 años con dolor abdominal tipo cólico, se palpa una masa en fosa iliaca izquierda que se deja deprimir a la presión de los dedos el diagnóstico es:
+  - Documento: B (Colecistitis) → publicada: **C (Fecaloma)**
+  - Una masa en la fosa ilíaca izquierda que se deja deprimir con los dedos en un anciano con dolor cólico sugiere fecaloma (signo de Gersuny); la colecistitis se localiza en el hipocondrio derecho.
+- **Q16_98** — La herida quirúrgica de una apendicitis aguda perforada se clasifica como:
+  - Documento: A (Limpia) → publicada: **D (Sucia)**
+  - Una apendicitis perforada (con pus o contenido intestinal libre) es una herida sucia (clase IV), no limpia.
+- **Q16_1** — Un hemofílico solo transmite la enfermedad a sus hijos:
+  - Documento: A (Varones) → publicada: **B (Hembras)**
+  - La hemofilia es recesiva ligada al X: el padre hemofílico da su X a todas sus hijas (que serán portadoras) y el Y a sus hijos (que serán sanos).
+- **Q17_22** — Un paciente que está ingresado en sala de rehidratacion oral , de repente presenta dificultad respiratoria usted pensaría en:
+  - Documento: C (Insuficiencia renal) → publicada: **D (Broncoaspiracion)**
+  - La dificultad respiratoria súbita en un niño que está recibiendo rehidratación oral (y suele vomitar) sugiere broncoaspiración; la insuficiencia renal no produce disnea súbita.
+- **Q18_29** — La causa que con más frecuencia afecta la talla de nuestros niños es:
+  - Documento: C (Metabólica) → publicada: **D (Socioeconómica)**
+  - La causa más frecuente de talla baja en nuestro medio son los factores socioeconómicos (desnutrición e infecciones repetidas), no las causas metabólicas, que son raras.
+- **Q18_32** — Todas las siguientes son causas de hipopotasemia, excepto:
+  - Documento: — → publicada: **D (Insuficiencia renal)**
+  - La pregunta no tenía respuesta en el documento y las opciones son causas, no manifestaciones; se ajustó el enunciado. La insuficiencia renal produce hiperpotasemia, no hipopotasemia.
+- **Q20_76** — Es la forma más frecuente de infección intracraneal purulenta:
+  - Documento: A (Absceso cerebral) → publicada: **B (Meningitis bacteriana)**
+  - La meningitis bacteriana es la forma más frecuente de infección supurada del sistema nervioso central; el absceso cerebral es mucho menos frecuente.
 
 ## Retiradas
 
-Ninguna.
+- **Q14_90** — 
+  - Fragmento sin enunciado: sus opciones pertenecían a la pregunta anterior (Q14_72), que se reconstruyó con ellas.
+- **Q16_101** — Concentración a nivel extracelular es el:
+  - Repetida e incompleta: es la misma pregunta que Q16_96 (anión de mayor concentración extracelular).
+- **Q16_2** — La catarata congénita, la sordera, cardiopatía y retardo mental son producidas por:
+  - Repetida: es la misma pregunta que Q10_4 (rubéola congénita).
+- **Q17_9** — La unidad funcional del riñón es:
+  - Repetida: es la misma pregunta que Q3_7 (la nefrona como unidad funcional del riñón).
+- **Q17_17** — El vector biológico que transmite los plasmodios, agentes etiológicos de la malaria o paludismo es:
+  - Repetida: es la misma pregunta que Q12_35 (Anopheles como vector de la malaria).
+- **Q18_23** — En cuál de las siguientes situaciones de la madre aconsejaría la supresión de la lactancia materna:
+  - Repetida: es la misma pregunta que Q11_24 (VIH materno y lactancia).
+- **Q19_45** — La droga de elección para prevenir las convulsiones en la preeclamsia severa es:
+  - Repetida: es la misma pregunta que Q6_55 (sulfato de magnesio en la preeclampsia grave).
