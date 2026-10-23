@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **972** de 1166 · publicadas: **906** · respuesta corregida: **137** · retiradas: **66**.
+Preguntas revisadas: **1040** de 1166 · publicadas: **971** · respuesta corregida: **153** · retiradas: **69**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -398,6 +398,53 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **Q130_9** — El Epicardio está formado por:
   - Documento: — → publicada: **C (Pericardio seroso visceral)**
   - El archivo no traía respuesta marcada. El epicardio es la hoja visceral del pericardio seroso.
+- **Q130_12** — El origen embrionario de las estructuras oculares individuales varía. ¿Cuál de las siguientes estructuras deriva del ectodermo de revestimiento?
+  - Documento: A (Nervio óptico) → publicada: **D (Cristalino)**
+  - El archivo marcaba el nervio óptico, que deriva del neuroectodermo. Del ectodermo de revestimiento (superficial) derivan el cristalino y el epitelio de la córnea.
+- **Q130_13** — En el círculo arterial del cerebro, ¿Cuál de las siguientes arterias penetra en la cavidad craneal a la altura del extremo anterior del seno cavernoso, medialmente a las apófisis clinoides anterior?
+  - Documento: D (Arteria cerebral anterior) → publicada: **C (Arterias carótida internas)**
+  - El archivo marcaba la arteria cerebral anterior, que nace dentro del cráneo. La que entra a la cavidad craneal junto al extremo anterior del seno cavernoso, medial a la apófisis clinoides anterior, es la carótida interna.
+- **Q131_22** — El tratamiento de la hiperbilirrubinemia con independencia de la etiología está encaminado a prevenir la neurotoxicidad. ¿Cuál es el tratamiento más efectivo?
+  - Documento: D (Uso de antibióticos) → publicada: **A (Fototerapia y exanguinotransfusión)**
+  - El archivo marcaba el uso de antibióticos. El tratamiento que previene la neurotoxicidad de la bilirrubina, sea cual sea la causa, es la fototerapia y, si fracasa o la bilirrubina es muy alta, la exanguinotransfusión.
+- **Q131_26** — ¿Cuál es una contraindicación general para la aplicación de todas las vacunas?
+  - Documento: A (Edad) → publicada: **D (Reacción anafiláctica)**
+  - El archivo marcaba la edad. La única contraindicación general para todas las vacunas es la reacción anafiláctica a una dosis previa o a un componente de la vacuna.
+- **Q132_30** — Niño de 8 años de edad es atendido en emergencia por presentar fiebre de 5 días de evolución inflamació faríngea, rinitis y tos leve, refiere dolor frontal o retro orbitario, dolor de espalda, se ve un exantema macular generalizado, mialgias y artralgias. ¿Cuál es el diagnóstico probable?
+  - Documento: D (Fiebre hemorrágica dengue) → publicada: **C (Fiebre dengue)**
+  - El archivo marcaba fiebre hemorrágica por dengue. El caso no describe sangrado, fuga plasmática ni trombocitopenia grave; es un dengue (fiebre por dengue) sin signos de alarma.
+- **Q132_32** — ¿Qué caracteriza al dengue hemorrágico y al síndrome de choque por dengue?
+  - Documento: D (Fiebre alta y deshidratación) → publicada: **A (Hipovolemia, hemoconcentración y trombocitopenia)**
+  - El archivo marcaba fiebre alta y deshidratación, que no definen la gravedad. El dengue hemorrágico y el síndrome de choque por dengue se caracterizan por fuga plasmática (hemoconcentración), hipovolemia y trombocitopenia.
+- **Q132_34** — ¿Cuál es la discapacidad específica del desarrollo más frecuente entre los niños de 3 a 17 años?
+  - Documento: C (Autismo) → publicada: **B (Trastorno por déficit de atención con hiperactividad)**
+  - El archivo marcaba el autismo. Los datos poblacionales de niños de 3 a 17 años (encuestas de los CDC) muestran que el TDAH es la discapacidad del desarrollo más frecuente (cerca del 9 %), por delante de los trastornos del aprendizaje y del autismo (cerca del 2.5 %).
+- **Q132_38** — Carlitos, de 6 años, que asiste a una guardería, es llevado a emergencias por malestar general, dolor de garganta, náuseas, dolor abdominal y mialgias de 8 días. Al examen tiene adenopatías cervicales y submandibulares, esplenomegalia y algunas petequias en el paladar blando y duro. ¿Cuál es su impresión diagnóstica?
+  - Documento: A (Primoinfección por citomegalovirus) → publicada: **C (Primoinfección por virus de Epstein-Barr)**
+  - El archivo marcaba citomegalovirus. Faringitis, adenopatías cervicales, esplenomegalia y petequias en el paladar son el cuadro clásico de la mononucleosis por virus de Epstein-Barr; el citomegalovirus da un cuadro similar pero casi sin faringitis ni adenopatías marcadas.
+- **Q134_41** — Femenina de 25 años, cursando embarazo a término en labor de parto inicial, es llevada a emergencia po familiares; al ser evaluada se determina que la relación entre el eje longitudinal del feto y el de la madre es transversa, razón por la cual se decide realizar operación cesárea. De los siguientes factores identificados a continuación. ¿Cuál predispone la situación transversa?
+  - Documento: — → publicada: **D (Multiparidad)**
+  - El archivo no traía respuesta marcada. La multiparidad, por la laxitud de la pared abdominal y del útero, es el factor que más predispone a la situación transversa.
+- **Q134_44** — En relación con el aborto inducido, ¿cómo se define el índice (razón) de aborto?
+  - Documento: D (Número de abortos por cada 1 000 000 de nacidos vivos) → publicada: **A (Número de abortos por cada 1000 nacidos vivos)**
+  - El archivo marcaba por cada millón de nacidos vivos. El índice (razón) de aborto se define como el número de abortos por cada 1000 nacidos vivos.
+- **Q134_45** — Paciente en su tercera semana de posparto, con historia de dificultad para amamantar, acude a la emergencia por presentar inflamación en la mama izquierda y síntomas generales fiebre, escalofríos y taquicardia. La evaluación clínica y los estudios complementarios determinan el diagnóstico de mastitis. ¿Cuál es el microorganismo etiológico más frecuente?
+  - Documento: — → publicada: **D (Staphylococcus aureus)**
+  - El archivo no traía respuesta marcada. El germen más frecuente de la mastitis puerperal es Staphylococcus aureus.
+- **Q135_55** — ¿Cuál de los siguientes es el factor pronóstico más importante en el éxito de fertilización asistida?
+  - Documento: C (El sitio de la transferencia embrionaria) → publicada: **D (La edad de la mujer)**
+  - El archivo marcaba el sitio de la transferencia embrionaria. El factor pronóstico más importante en el éxito de la fertilización asistida es la edad de la mujer.
+- **Q135_56** — De los siguientes tipos de degeneración, macroscópica y microscópica que podrían acontecer en los miomas uterinos. Identifique la que ocurre con mayor frecuencia.
+  - Documento: A (Quística) → publicada: **B (Hialina)**
+  - El archivo marcaba la degeneración quística. La degeneración más frecuente de los miomas uterinos es la hialina (alrededor del 60 %); la quística suele ser una evolución de la hialina.
+- **Q136_71** — La bradicardia sinusal se trata cuando causa deterioro hemodinámico. La atropina es el fármaco de primera línea. ¿Cuál es la dosis inicial según las guías actuales?
+  - Documento: A (0.5 mg intravenosos) → publicada: **D (1 mg intravenoso)**
+  - El archivo marcaba 0.5 mg, la dosis de guías anteriores. Las guías de soporte vital avanzado de la AHA (2020 y 2023) recomiendan 1 mg intravenoso cada 3 a 5 minutos, hasta un máximo de 3 mg.
+- **Q137_74** — Mujer de 65 años con pirosis, regurgitación, dolor torácico, disfagia y, en ocasiones, tos crónica. Al examen tiene obesidad abdominal y refiere comer en exceso. ¿Qué patología considera que tiene?
+  - Documento: A (Dispepsia) → publicada: **C (Enfermedad por reflujo gastroesofágico)**
+- **Q137_75** — En junio de 2019 la OMS/OPS emitió una alerta epidemiológica por la detección de fiebre de Mayaro en la región (Haití registró un caso en 2015; Ecuador y Perú informaron casos en 2019). ¿Qué mosquito es el vector de la fiebre de Mayaro?
+  - Documento: D (Predominantemente especies desconocidas) → publicada: **A (Predominantemente especies de Haemagogus)**
+  - El archivo marcaba especie desconocida. El vector principal del virus Mayaro es el mosquito selvático del género Haemagogus; Aedes podría actuar como vector urbano.
 
 ## Retiradas
 
@@ -533,3 +580,9 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
   - Fragmento ilegible: no describe la lesión a clasificar y las opciones están mezcladas.
 - **Q130_2** — Según las características de las vías de administración de fármacos sugiere limitaciones y precauciones para cada una de ellas. ¿Cuál de las siguientes es una limitación para la administración de fármacos por vía endovenosa?
   - Pregunta inconsistente: el enunciado pide una limitación de la vía endovenosa y las opciones son ramas de la farmacología.
+- **Q134_47** — De las siguientes, la mejor opción de anticoncepción para las madres en fase de lactación es:
+  - Repetida: pregunta la misma anticoncepción en la lactancia que Q122_30. Su contexto se integró en la pregunta siguiente.
+- **Q135_32** — Identifique la etapa a la que corresponde la enfermedad:
+  - Fragmento: falta el caso clínico que describe la enfermedad a clasificar.
+- **Q135_54** — De las siguientes modalidades de tratamiento, señale el que corresponde a una paciente embarazada co sífilis de más de un año de duración.
+  - Repetida: mismo contenido que Q125_49 (tratamiento de la sífilis de más de un año en la embarazada).
