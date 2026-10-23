@@ -30,7 +30,8 @@
       .boot-cont .boot-in,.boot-cont .boot-mark svg{animation:none}
       .boot-leave{pointer-events:none;animation:boot-out .6s cubic-bezier(.4,0,.2,1) forwards}
       .boot-leave .boot-in{animation:boot-zoom .6s cubic-bezier(.4,0,.2,1) forwards}
-      .boot-leave .boot-ring,.boot-leave .boot-line,.boot-leave .boot-bar i{animation-play-state:paused}
+      .boot-leave .boot-ring,.boot-leave .boot-bar i{animation-play-state:paused}
+      .boot-leave .boot-line{animation:none;stroke-dashoffset:0}
       @keyframes boot-out{to{opacity:0}}
       @keyframes boot-zoom{to{transform:scale(1.08)}}
       @keyframes boot-fade{from{opacity:0;transform:translateY(6px)}}

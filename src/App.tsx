@@ -50,7 +50,7 @@ const LingoPath = lazy(() => import('@/pages/lingo/Path'))
 const LingoLesson = lazy(() => import('@/pages/lingo/Lesson'))
 
 /** Tiempo mínimo de la pantalla de carga al abrir la página, para que la animación se vea completa. */
-const BOOT_MIN_MS = 3000
+const BOOT_MIN_MS = 2000
 
 /** Misma pantalla de carga que index.html (sus estilos viven allí), sin repetir la entrada y con el pulso en fase. */
 function Splash({ onLeft }: { onLeft?: () => void }) {
