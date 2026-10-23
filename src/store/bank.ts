@@ -17,8 +17,8 @@ interface BankState {
 }
 
 /**
- * Carga el banco oficial publicado con la web (public/data/questions.json, generado con
- * `npm run import:questions`). Si aún no existe, se usan las preguntas de muestra.
+ * Carga el banco publicado con la web (public/data/questions.json, generado con
+ * `node scripts/build-bank.mjs`). Las preguntas de muestra se conservan siempre junto a él.
  */
 async function fetchBundled(): Promise<Question[]> {
   try {
@@ -54,7 +54,8 @@ export const useBank = create<BankState>((set, get) => ({
     if (get().status === 'loading' || get().status === 'ready') return
     set({ status: 'loading' })
     const official = await fetchBundled()
-    const questions = official.length ? official : SAMPLE_QUESTIONS
+    const officialIds = new Set(official.map((q) => q.id))
+    const questions = [...official, ...SAMPLE_QUESTIONS.filter((q) => !officialIds.has(q.id))]
     set({ status: 'ready', questions, source: official.length ? 'official' : 'sample', ...derive(questions) })
   },
 }))

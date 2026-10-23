@@ -1,0 +1,656 @@
+# Revisión de respuestas del banco recopilado
+
+Preguntas revisadas: **1166** de 1166 · publicadas: **1082** · respuesta corregida: **166** · retiradas: **84**.
+
+En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
+Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
+
+## Respuestas corregidas
+
+- **Q3_1** — La molécula inorgánica más abundante del organismo:
+  - Documento: C (Carbohidratos) → publicada: **D (Agua)**
+  - El agua es una molécula inorgánica y la más abundante del cuerpo (≈60 % del peso en el adulto); los carbohidratos son orgánicos.
+- **Q3_2** — La principal fuente inmediata de energía en el hombre es:
+  - Documento: C (Agua) → publicada: **B (Carbohidratos)**
+  - La fuente inmediata de energía son los carbohidratos (glucosa); el agua no aporta energía.
+- **Q3_3** — La necesidad de aumentar la dosis de un fármaco para que siga teniendo un efecto igual al inicial, se denomina:
+  - Documento: A (Taquifilaxia) → publicada: **C (Tolerancia)**
+  - Necesitar dosis crecientes para el mismo efecto es tolerancia; la taquifilaxia es una tolerancia aguda que aparece tras pocas dosis.
+- **Q3_13** — Cuál de los siguientes ácidos grasos debe ser ingerido por los humanos en la dieta:
+  - Documento: A (Oleico) → publicada: **B (Linoleico)**
+  - El ácido linoleico (omega-6) es esencial; el oleico lo sintetiza el organismo.
+- **Q4_14** — Cuál de las siguientes drogas tiene efecto simpaticomimético de acción indirecta:
+  - Documento: A (Epinefrina) → publicada: **C (Efedrina)**
+  - La efedrina actúa sobre todo de forma indirecta (libera noradrenalina); la epinefrina es de acción directa.
+- **Q4_15** — El quiste es la etapa infectante de todos los siguientes microorganismos excepto:
+  - Documento: C (Balantidium coli) → publicada: **D (Trichomonas vaginalis)**
+  - Trichomonas vaginalis no forma quiste: se transmite como trofozoíto. Balantidium coli sí se transmite por quiste.
+- **Q4_16** — Todos los siguientes protozoarios se reproducen por fisión binaria longitudinal, excepto:
+  - Documento: C (Trichomonas vaginalis) → publicada: **D (Balantidium coli)**
+  - Balantidium coli (ciliado) se divide por fisión binaria transversal; Giardia y Trichomonas (flagelados), por fisión binaria longitudinal.
+- **Q4_17** — Se presenta placenta previa al implantarse el blastocito en:
+  - Documento: A (Vagina) → publicada: **B (Segmento inferior del útero)**
+  - La placenta previa es la implantación en el segmento uterino inferior, sobre el orificio cervical interno o cerca de él.
+- **Q4_25** — ¿Cuál de las siguientes es la causa materna más frecuente de restricción del crecimiento intrauterino?
+  - Documento: B (Drogadicción) → publicada: **A (Preeclamsia)**
+  - Todas las opciones son causas maternas de RCIU; la más frecuente (y la que se espera como respuesta única) es la preeclampsia y los trastornos hipertensivos.
+- **Q5_31** — En el tratamiento del asma bronquial, la teofilina (o aminofilina) NO se administra por vía:
+  - Documento: C (Rectal) → publicada: **D (Intramuscular)**
+  - El enunciado original no correspondía a las opciones; se reformuló según las opciones. La teofilina no se administra por vía intramuscular (inyección dolorosa y absorción errática).
+- **Q5_33** — Las características que debe presentar una prueba de tuberculina para ser considerado positiva es:
+  - Documento: A (Induracion de 5 mm de diámetro) → publicada: **D (Induración de 10mm o más)**
+  - El criterio general de positividad es una induración de 10 mm o más; 5 mm solo se considera positivo en grupos de alto riesgo (VIH, contactos, inmunosupresión). El eritema no se mide.
+- **Q5_35** — Una niña de 4 años de edad no vacunada con. BCG, que presenta un un ppd positivo la conducta a seguir es:
+  - Documento: D (Administrar isoniacida por 3 meses) → publicada: **C (Administrar isoniacida por un año)**
+  - El tratamiento de la infección tuberculosa latente con isoniazida sola dura 6 a 9 meses (el esquema clásico de los exámenes es 1 año); 3 meses de isoniazida sola no es un esquema válido (el de 3 meses combina isoniazida y rifapentina).
+- **Q6_48** — Cuál de las siguientes hormonas, es el marcador de mayor importancia para el diagnóstico temprano de embarazo:
+  - Documento: B (Gonadotropina) → publicada: **D (Gonadotropina coriónica)**
+  - La respuesta precisa es la gonadotropina coriónica humana (hCG); «gonadotropina» sin más incluye la FSH y la LH hipofisarias.
+- **Q7_57** — El agente etiológico de procedencia exógena mas frecuente en la infeccion puerperal es:
+  - Documento: B (Anaerobios) → publicada: **A (Estreptococo β-hemolítico)**
+  - La pregunta pide el agente de procedencia exógena: es el estreptococo β-hemolítico del grupo A, introducido desde fuera (manos, instrumental). Los anaerobios son la causa endógena más frecuente (flora vaginal).
+- **Q7_63** — La transmisión de la hepatitis C, se produce a través de:
+  - Documento: D (Todas) → publicada: **A (Sangre)**
+  - La hepatitis C se transmite sobre todo por sangre; la vía sexual es poco eficiente y la saliva no es una vía reconocida, por lo que «todas» no es correcta.
+- **Q9_91** — El síndrome carcinoide es más frecuente en tumores carcinoides de:
+  - Documento: B (Colon) → publicada: **D (Intestino delgado)**
+  - El síndrome carcinoide se asocia sobre todo a tumores del intestino delgado (íleon) con metástasis hepáticas; los del colon rara vez lo producen.
+- **Q9_99** — La variedad histológica más frecuente de tumor maligno de la cavidad oral es:
+  - Documento: A (Adenocarcinoma) → publicada: **C (Carcinoma de células escamosas)**
+  - Más del 90 % de los cánceres orales son carcinomas de células escamosas (epidermoides); el adenocarcinoma es raro.
+- **Q10_12** — Cuál de las siguientes condiciones puede agravar los efectos tóxicos de los digitalicos:
+  - Documento: A (Hipocalcemia) → publicada: **D (Hipopotasemia)**
+  - La hipopotasemia (no la hipocalcemia) aumenta la toxicidad de la digoxina; la hipercalcemia y la hipomagnesemia también la agravan.
+- **Q10_13** — El dióxido de carbono es transportado a través de diversos mecanismos. Cuál de los siguientes es el método más importante de transportar el CO2:
+  - Documento: A (Unido a la hemoglobina (carbaminohemoglobina)) → publicada: **D (Como bicarbonato en el plasma)**
+  - La mayor parte del CO₂ (≈70 %) se transporta como bicarbonato en el plasma; la carboxihemoglobina es la unión con el monóxido de carbono, no con el CO₂.
+- **Q11_21** — En la diarrea infecciosa, todos son cambios que ocurren en el intestino, excepto:
+  - Documento: C (Mala absorción de la lactosa y la sacarosa) → publicada: **B (Aumento del transporte activo intestinal)**
+  - En la diarrea infecciosa disminuye la absorción (transporte activo); la malabsorción secundaria de lactosa y sacarosa sí ocurre por daño de las vellosidades.
+- **Q11_22** — Los antibióticos en la diarrea deben usarse en caso de:
+  - Documento: C (Presencia de bacterias) → publicada: **B (Presencia de sangre en las heces)**
+  - La indicación principal de antibióticos en la diarrea es la disentería (sangre en las heces); la «presencia de bacterias» en el coprocultivo no basta, porque muchas diarreas bacterianas son autolimitadas.
+- **Q11_23** — Las siguientes son características del dengue clásico (dengue sin signos de alarma), excepto:
+  - Documento: C (Puede o no acompañarse de trombocitopenia) → publicada: **A (Es más frecuente en lactantes)**
+  - Las opciones estaban mezcladas en el documento; se reconstruyeron. La afirmación falsa es que el dengue clásico sea más frecuente en lactantes: es más frecuente en niños mayores y adultos.
+- **Q12_33** — Los signos de peligro para un niño de 7 meses de edad con historia de tos son:
+  - Documento: D (Convulsiones, vomita todo, letárgico, inconsciente y tiraje subcostal) → publicada: **C (Letárgico e inconsciente, vomita todo no puede beber y convulsiona)**
+  - Los cuatro signos generales de peligro del AIEPI son: no puede beber o tomar el pecho, vomita todo, convulsiones y letárgico o inconsciente. El tiraje subcostal no es un signo general de peligro, sino un signo de neumonía grave.
+- **Q12_34** — Julio es un niño de 5 meses, 5 kg y una temperatura de 38°C. La madre lo consulta por presentar tos de 5 dias. El personal de salud observo 52 respiraciónes por minuto y no presenta tiraje ni estridor. Su diagnóstico es:
+  - Documento: C (Tos o resfriado) → publicada: **D (Neumonía)**
+  - En un lactante de 2 a 11 meses, 50 o más respiraciones por minuto es respiración rápida: con tos y sin tiraje ni estridor se clasifica como neumonía, no como tos o resfriado.
+- **Q12_42** — El llamado útero de Couvelaire puede aparecer en caso de:
+  - Documento: C (Mola) → publicada: **D (Desprendimiento prematuro de placenta normoinserta)**
+  - El útero de Couvelaire es propio del desprendimiento prematuro de placenta normoinserta, no de la mola.
+- **Q12_43** — En el parto en presentación de vértice, la cabeza fetal suele desprenderse en:
+  - Documento: C (Occipito ilíaca anterior) → publicada: **A (Occipito púbica)**
+  - La presentación suele encajarse en occipito ilíaca (izquierda anterior), pero tras la rotación interna la cabeza se desprende en occipito púbica.
+- **Q14_62** — La mayor parte de los accidentes isquémicos transitorios se deben a:
+  - Documento: B (Trombos) → publicada: **A (Émbolos)**
+  - La mayoría de los AIT son embólicos (de una placa carotídea o del corazón); la trombosis in situ es menos frecuente.
+- **Q14_71** — En una paciente femenina de 48 años con niveles tensionales de 140/90 en clasificación de riesgo B la conducta es:
+  - Documento: C (Tratamiento farmacológico) → publicada: **A (Cambio en el estilo de vida por 6 meses)**
+  - Con la clasificación del JNC 6, la hipertensión estadio 1 en el grupo de riesgo B se maneja con cambios en el estilo de vida hasta 6 meses; el tratamiento farmacológico inicial corresponde al grupo C.
+- **Q14_75** — Los pacientes con infarto agudo del miocardio con killip 3 deben obligatoriamente recibir:
+  - Documento: C (Alfabloqueadores) → publicada: **D (Inotrópicos positivos)**
+  - De las opciones, la única adecuada para el Killip III (edema agudo de pulmón) es el soporte inotrópico si hay hipoperfusión o hipotensión; los alfabloqueadores no tienen indicación y los betabloqueadores están contraindicados en la fase aguda.
+- **Q15_78** — ¿Cuál de las siguientes dermatopatías es frecuente en el sida?
+  - Documento: B (Herpes zóster) → publicada: **D (Todas)**
+- **Q15_89** — Cuál de estas patologías producen abdomen agudo:
+  - Documento: A (Colecistitis aguda) → publicada: **D (Todas)**
+  - Las tres opciones (colecistitis aguda, úlcera perforada y apendicitis) son causas de abdomen agudo; la respuesta es «todas».
+- **Q16_91** — En un paciente de 80 años con dolor abdominal tipo cólico, se palpa una masa en fosa iliaca izquierda que se deja deprimir a la presión de los dedos el diagnóstico es:
+  - Documento: B (Colecistitis) → publicada: **C (Fecaloma)**
+  - Una masa en la fosa ilíaca izquierda que se deja deprimir con los dedos en un anciano con dolor cólico sugiere fecaloma (signo de Gersuny); la colecistitis se localiza en el hipocondrio derecho.
+- **Q16_98** — La herida quirúrgica de una apendicitis aguda perforada se clasifica como:
+  - Documento: A (Limpia) → publicada: **D (Sucia)**
+  - Una apendicitis perforada (con pus o contenido intestinal libre) es una herida sucia (clase IV), no limpia.
+- **Q16_1** — Un hemofílico solo transmite la enfermedad a sus hijos:
+  - Documento: A (Varones) → publicada: **B (Hembras)**
+  - La hemofilia es recesiva ligada al X: el padre hemofílico da su X a todas sus hijas (que serán portadoras) y el Y a sus hijos (que serán sanos).
+- **Q17_22** — Un paciente que está ingresado en sala de rehidratacion oral , de repente presenta dificultad respiratoria usted pensaría en:
+  - Documento: C (Insuficiencia renal) → publicada: **D (Broncoaspiracion)**
+  - La dificultad respiratoria súbita en un niño que está recibiendo rehidratación oral (y suele vomitar) sugiere broncoaspiración; la insuficiencia renal no produce disnea súbita.
+- **Q18_29** — La causa que con más frecuencia afecta la talla de nuestros niños es:
+  - Documento: C (Metabólica) → publicada: **D (Socioeconómica)**
+  - La causa más frecuente de talla baja en nuestro medio son los factores socioeconómicos (desnutrición e infecciones repetidas), no las causas metabólicas, que son raras.
+- **Q18_32** — Todas las siguientes son causas de hipopotasemia, excepto:
+  - Documento: — → publicada: **D (Insuficiencia renal)**
+  - La pregunta no tenía respuesta en el documento y las opciones son causas, no manifestaciones; se ajustó el enunciado. La insuficiencia renal produce hiperpotasemia, no hipopotasemia.
+- **Q20_76** — Es la forma más frecuente de infección intracraneal purulenta:
+  - Documento: A (Absceso cerebral) → publicada: **B (Meningitis bacteriana)**
+  - La meningitis bacteriana es la forma más frecuente de infección supurada del sistema nervioso central; el absceso cerebral es mucho menos frecuente.
+- **Q21_5** — El tubérculo genital en el embrión masculino forma:
+  - Documento: A (Escroto) → publicada: **D (Pene (glande y cuerpos cavernosos))**
+  - El tubérculo genital forma el pene (glande y cuerpos cavernosos); el escroto deriva de los pliegues labioescrotales. Se añadió la opción correcta.
+- **Q21_6** — Las porciones inferiores (caudales) de los conductos de Müller, al unirse, forman:
+  - Documento: B (La vagina) → publicada: **D (El conducto uterovaginal)**
+  - La fusión de las porciones caudales de los conductos de Müller forma el conducto uterovaginal (útero y parte superior de la vagina), no la vagina sola.
+- **Q21_7** — Son los lípidos más abundantes en la dieta:
+  - Documento: B (Quilomicrones) → publicada: **A (Triglicéridos)**
+  - Los triglicéridos son el 90–95 % de los lípidos de la dieta; los quilomicrones son lipoproteínas que los transportan, no un lípido de la dieta.
+- **Q21_10** — Con cual sangre se puede transfundir un paciente que tenga sangre tipo AB Rh negativo:
+  - Documento: — → publicada: **D (Ninguna)**
+- **Q21_11** — La primera onda negativa del electrocardiograma es la:
+  - Documento: A (Onda P) → publicada: **B (Onda Q)**
+  - La onda P es positiva; la primera deflexión negativa del ECG normal es la onda Q.
+- **Q21_13** — Célula fagocitaria del sistema nervioso:
+  - Documento: — → publicada: **C (Microglía)**
+- **Q22_3** — La siguiente hormona estimula la absorción de agua libre por los riñones y tiene efecto vasoconstrictor:
+  - Documento: D (Prolactina) → publicada: **A (Vasopresina)**
+  - La hormona que aumenta la reabsorción de agua libre en el riñón y tiene efecto vasoconstrictor es la vasopresina (ADH).
+- **Q22_4** — El tratamiento de la hipoglucemia es con:
+  - Documento: D (Ningunas) → publicada: **B (Dextrosa al 50% iv)**
+  - La hipoglucemia grave se trata con dextrosa IV (al 50 % en el adulto); la insulina la empeoraría.
+- **Q22_6** — ¿Cuál de los siguientes grupos corresponde a ácidos grasos esenciales?
+  - Documento: D (Oleico, acético y láurico) → publicada: **B (Linoleico, linolénico y araquidónico)**
+  - Las opciones estaban unidas en el documento. La opción con ácidos grasos esenciales es la de linoleico, linolénico y araquidónico (este último se considera esencial si falta el linoleico).
+- **Q22_9** — La bilirrubina proviene de la degradación de:
+  - Documento: D (El hierro) → publicada: **A (Grupo Hem)**
+  - La bilirrubina proviene de la degradación del grupo hem; la globina se degrada a aminoácidos y el hierro se recicla.
+- **Q22_12** — Los pacientes con síndrome nefrótico:
+  - Documento: D (Solo la furosemida y la dieta hiposodica resuleven el problema) → publicada: **C (La prednisona y la clorotiazida se usan en el tratamiento)**
+  - La prednisona es la base del tratamiento del síndrome nefrótico (sobre todo en niños), junto con diuréticos para el edema; las otras afirmaciones son falsas.
+- **Q22_13** — Con cuales de estos grupos de fármacos debemos tener precaución al iniciar el tratamiento antihipertensivo por el riesgo de presentar el fenómeno de la primera dosis:
+  - Documento: D (Inhibidores de la ECA) → publicada: **C (Alfabloqueadores)**
+  - El fenómeno de la primera dosis (hipotensión ortostática y síncope) es característico de los alfabloqueadores (prazosina, doxazosina).
+- **Q22_14** — La saturación de la hemoglobina por oxigeno de sangre que entra al ventrículo derecho es aproximadamente de:
+  - Documento: C (55%) → publicada: **B (75%)**
+  - La sangre venosa mixta que entra al ventrículo derecho tiene una saturación de alrededor del 75 % (PO₂ ≈ 40 mmHg).
+- **Q23_15** — La estimulación vagal del corazón tiene el siguiente resultado:
+  - Documento: D (Disminución de la conductancia al potasio en el nodo SA) → publicada: **C (Hiperpolarización en el nodo SA)**
+  - La estimulación vagal aumenta (no disminuye) la conductancia al potasio en el nodo sinusal, lo que lo hiperpolariza; la respuesta correcta es la hiperpolarización.
+- **Q23_16** — Cuanto es el consumo de oxigeno por parte del miocardio:
+  - Documento: D (5ml/min) → publicada: **B (25ml/min)**
+  - El corazón en reposo consume unos 8–10 mL de O₂ por cada 100 g por minuto; para un corazón de 300 g son ≈ 25–30 mL/min, no 5 mL/min.
+- **Q23_23** — En la deshidratación severa la mejor elección para reponer los líquidos es:
+  - Documento: B (Solución mixta al 0,9 %) → publicada: **C (Solución de lactato de Ringer o solución salina al 0,9 %)**
+  - La deshidratación grave se repone con un cristaloide isotónico (lactato de Ringer o solución salina al 0,9 %), no con soluciones mixtas hipotónicas.
+- **Q23_24** — La siguiente afirmación es correcta en relación a la fiebre reumática:
+  - Documento: C (La fiebre y las mialgias son criterios mayores) → publicada: **B (Se puede prevenir con penicilina benzatinica)**
+  - La fiebre reumática se previene con penicilina benzatínica (prevención primaria y secundaria); la fiebre y las mialgias no son criterios mayores.
+- **Q23_26** — El trastorno metabólico más frecuente en el recién nacido macrosomico es:
+  - Documento: C (Hipernatremia) → publicada: **D (Hipoglucemia)**
+  - El trastorno metabólico más frecuente del recién nacido macrosómico (hijo de madre diabética) es la hipoglucemia.
+- **Q24_33** — La siguiente afirmación es correcta en un niño de 9 meses de edad:
+  - Documento: A (Lanza objetos con intención) → publicada: **C (Gatea y camina apoyado en los muebles)**
+  - Las opciones estaban unidas en el documento. A los 9 meses lo esperado es gatear y empezar a caminar apoyado en los muebles; decir palabras con significado y subir escaleras ocurren después.
+- **Q24_43** — Cuál de las siguientes hormonas contribuye a la bajada de la leche materna en el puerperio:
+  - Documento: A (Estrógenos) → publicada: **D (Oxitocina)**
+  - La bajada (eyección) de la leche se debe a la oxitocina; los estrógenos, al contrario, inhiben la producción de leche.
+- **Q25_45** — ¿En cuál de los siguientes casos se puede producir sangrado por hipotonía uterina después del parto?
+  - Documento: — → publicada: **D (Todas)**
+- **Q25_46** — Paciente con embarazo de 18 semanas por fecha de ultima menstruación y diez semanas por altura uterina, con prueba de embarazo negativas, sin sangrado, ni dolor, ni modificaciones cervicales . El diagnóstico es:
+  - Documento: A (Amenaza de aborto) → publicada: **C (Aborto diferido)**
+  - Las opciones estaban unidas en el documento. Un útero más pequeño que la amenorrea, con prueba de embarazo negativa y sin sangrado, corresponde a un aborto diferido (retenido).
+- **Q25_48** — El medicamento para tratar la diabetes en el embarazo es:
+  - Documento: A (Guanetidina) → publicada: **D (Insulina)**
+  - La insulina es el fármaco de elección para la diabetes en el embarazo; la guanetidina y la metildopa son antihipertensivos.
+- **Q26_59** — Cuál de los siguientes es el tratamiento de una displasia severa (NIC 3) en una paciente de 35 años de edad:
+  - Documento: A (Histerectomía de inmediato) → publicada: **D (Conización (escisión con asa diatérmica o con bisturí))**
+  - El documento no tenía la opción correcta (y marcaba la histerectomía). El tratamiento de la NIC 3 en una mujer de 35 años es la escisión de la zona de transformación (conización o asa); se añadió esa opción.
+- **Q26_61** — La triada que caracteriza a la enfermedad de Parkinson es:
+  - Documento: A (Temblor rigidez y demencia) → publicada: **B (Temblor, rigidez y acinesia)**
+  - La tríada clásica del Parkinson es temblor, rigidez y acinesia (bradicinesia); la demencia no forma parte de la tríada.
+- **Q26_69** — ¿Qué cara del corazón exploran la derivación DIII (Einthoven) y la derivación aVF?
+  - Documento: B (La septal) → publicada: **D (La inferior o diafragmática (antes llamada posterior))**
+  - DIII y aVF exploran la cara inferior (diafragmática), que en textos antiguos se llamaba cara posterior; no la cara septal.
+- **Q27_72** — La tuberculosis intestinal afecta más frecuentemente:
+  - Documento: B (Yeyuno) → publicada: **C (Válvula ileocecal)**
+  - La tuberculosis intestinal afecta con más frecuencia la región ileocecal (rica en tejido linfoide y con estasis), no el yeyuno.
+- **Q27_78** — El vaso que siempre se bifurca inmediatamente sale del corazon es la:
+  - Documento: A (Aorta) → publicada: **B (Arteria pulmonar)**
+  - El vaso que se bifurca poco después de salir del corazón es el tronco pulmonar (en arterias pulmonares derecha e izquierda); la aorta forma un arco y da ramas, pero no se bifurca enseguida.
+- **Q27_81** — El neumotórax espontaneo se asocia a una de las siguientes condiciones:
+  - Documento: A (Herida penetrante de tórax) → publicada: **C (Bulla enfisematosa)**
+  - El neumotórax espontáneo se asocia a la rotura de bullas o blebs; la herida penetrante produce un neumotórax traumático.
+- **Q27_83** — Una masa quística, blanda, con transiluminacion positiva, congenita, ubicada en el triángulo cervical posterior es un:
+  - Documento: C (Quiste branquial) → publicada: **B (Higroma quístico (linfangioma))**
+  - Una masa quística blanda, transiluminable, congénita, en el triángulo cervical posterior es un higroma quístico (linfangioma), no un quiste branquial.
+- **Q27_85** — La causa más frecuente de hiperparatiroidismo primario es:
+  - Documento: A (Hiperplasia) → publicada: **B (Adenoma)**
+  - El adenoma paratiroideo único causa alrededor del 85 % de los hiperparatiroidismos primarios; la hiperplasia, un 10–15 %.
+- **Q67_3** — Una droga que disminuye o anula la acción de otra droga o sustancia es un:
+  - Documento: A (Agonista) → publicada: **D (Antagonista)**
+  - Una droga que disminuye o anula la acción de otra es un antagonista; el agonista produce el efecto.
+- **Q67_9** — La prueba clínica más fidedigna e importante para determinar si hay flujo sanguíneo en una extremidad es:
+  - Documento: D (Llenado capilar) → publicada: **A (Presencia de pulsos)**
+  - La presencia de pulsos distales es el signo clínico más fiable de flujo arterial; el llenado capilar puede conservarse por circulación colateral o alterarse por el frío, y es menos fidedigno.
+- **Q67_11** — La insulina incrementa el ingreso de glucosa en:
+  - Documento: A (Todos los tejidos) → publicada: **D (El músculo esquelético)**
+  - La insulina aumenta la entrada de glucosa en el músculo esquelético y el tejido adiposo (GLUT4); en el cerebro, el riñón y los eritrocitos la captación no depende de la insulina.
+- **Q67_13** — El grupo de enfermedades que causa mayor cantidad de muertes a nivel mundial es:
+  - Documento: D (Las enfermedades infectocontagiosas, maternas, nutricionales y perinatales) → publicada: **B (Las enfermedades no transmisibles o crónicas)**
+  - Según la OMS, las enfermedades no transmisibles (cardiovasculares, cáncer, respiratorias crónicas, diabetes) causan alrededor del 74 % de las muertes en el mundo.
+- **Q68_15** — La bilis es indispensable en nuestro organismo, porque se necesita para:
+  - Documento: A (La ingestión de lípidos) → publicada: **B (La digestión y absorción de los lípidos)**
+- **Q69_26** — Masculino de 16 años, dominicano, llega a emergencia con fiebre alta, dolor de cabeza y cansancio, con leucocitos de 3200/mm³ y extendido de sangre periférica normal. ¿Cuál sería su diagnóstico de impresión?
+  - Documento: B (Malaria) → publicada: **A (Dengue)**
+  - Fiebre alta, cefalea y malestar con leucopenia y frotis de sangre periférica normal (sin plasmodios) sugieren dengue; en la malaria el frotis mostraría parásitos.
+- **Q69_27** — La insuficiencia respiratoria en el niño produce:
+  - Documento: C (Alcalosis respiratoria) → publicada: **B (Acidosis respiratoria)**
+  - La insuficiencia respiratoria establecida produce retención de CO₂ (acidosis respiratoria); la alcalosis respiratoria solo se ve al inicio, cuando el niño hiperventila.
+- **Q69_29** — La leche materna contiene gran cantidad de componentes inmunológicos que confirman su función protectora contra:
+  - Documento: A (Virus) → publicada: **D (Virus, bacterias y parásitos)**
+  - La leche materna protege contra virus, bacterias y parásitos (IgA secretora, lactoferrina, lisozima, oligosacáridos), no solo contra virus.
+- **Q70_36** — Agente infeccioso que puede infectar al feto al inicio del embarazo y producir daño en los ojos, los oídos y el sistema nervioso central, con calcificaciones intracraneales:
+  - Documento: B (Virus del sarampión) → publicada: **C (Toxoplasma gondii)**
+  - La afectación de ojos (coriorretinitis), oídos y sistema nervioso con calcificaciones intracraneales es típica de la toxoplasmosis congénita; el sarampión no produce este síndrome.
+- **Q70_38** — Niño de 10 años que llega a emergencia con fiebre de 39,5 °C, cefalea, ictericia, mialgias y orina oscura y escasa. ¿Cuál es el diagnóstico más probable?
+  - Documento: B (Meningococcemia) → publicada: **C (Leptospirosis)**
+  - Fiebre alta, cefalea, mialgias, ictericia y orina oscura y escasa (insuficiencia renal) orientan a leptospirosis grave (síndrome de Weil), no a meningococcemia.
+- **Q71_55** — La infección urinaria en la paciente embarazada puede ser causa de:
+  - Documento: A (DPPNI) → publicada: **D (Parto prematuro)**
+  - La infección urinaria en el embarazo se asocia sobre todo a parto prematuro (y bajo peso al nacer), no al desprendimiento de placenta.
+- **Q71_57** — Que patología se sospecha en una paciente en edad fértil, con embarazo de 12 semanas, útero blando, mayor altura uterina que la esperada, no movimientos fetales, muchas náuseas y vómitos:
+  - Documento: — → publicada: **C (Embarazo molar)**
+- **Q71_58** — Una paciente de 30 años con embarazo de 37 semanas, sin contracciones previas, presenta de forma súbita dolor abdominal moderado a intenso, con pulso rápido, hipotensión arterial, bradicardia fetal y útero hipertónico. ¿Cuál es su diagnóstico clínico?
+  - Documento: — → publicada: **C (Desprendimiento prematuro de placenta normoinserta)**
+- **Q73_71** — El raquitismo es producido por déficit de cuál de las siguientes vitaminas?
+  - Documento: A (Vitamina A) → publicada: **C (Vitamina D)**
+  - El raquitismo se debe a la deficiencia de vitamina D, no de vitamina A.
+- **Q74_84** — Es la hernia que se introduce por el conducto inguinal en el hombre, desciende hasta el escroto y es de origen congénito:
+  - Documento: A (Hernia inguinal directa) → publicada: **B (Hernia inguinal indirecta)**
+  - La hernia que recorre el conducto inguinal y desciende al escroto, de origen congénito, es la indirecta; la directa es adquirida y rara vez llega al escroto.
+- **Q74_91** — Es la complicación de las úlceras pépticas que produce abdomen agudo:
+  - Documento: A (Hemorragia) → publicada: **B (Perforación)**
+  - La complicación de la úlcera péptica que produce abdomen agudo es la perforación (peritonitis química); la hemorragia produce hematemesis y melena.
+- **Q75_97** — La causa principal de pancreatitis es:
+  - Documento: B (Alcohol) → publicada: **A (Enfermedad de las vías biliares (litiasis))**
+  - La causa más frecuente de pancreatitis aguda en el mundo es la litiasis biliar (40–70 %); el alcohol es la segunda.
+- **Q82_7** — Señale cuál de los siguientes es un tubo fibro muscular que participa en la respiración, digestión y fonación:
+  - Documento: A (Laringe) → publicada: **C (Faringe)**
+  - El tubo fibromuscular que participa en la respiración, la digestión y la fonación es la faringe; la laringe no participa en la digestión.
+- **Q89_1** — Principal factor hematopoyético humano que se produce en los riñones:
+  - Documento: A (Hem) → publicada: **B (Eritropoyetina)**
+  - El principal factor hematopoyético que producen los riñones es la eritropoyetina; el hem es parte de la hemoglobina.
+- **Q89_10** — El hierro que se encuentra en los alimentos se presenta mayormente en forma de:
+  - Documento: D (Ferrosa (Fe²⁺)) → publicada: **C (Férrica (Fe³⁺))**
+  - La mayor parte del hierro de los alimentos es hierro no hemo en forma férrica (Fe³⁺); debe reducirse a ferroso para absorberse.
+- **Q90_11** — ¿Cuál de estas consideraciones sobre el paso de los medicamentos a través de la placenta es correcta?
+  - Documento: D (La placenta es, por sus características, una barrera completa) → publicada: **A (Los fármacos liposolubles atraviesan libremente la placenta)**
+  - La afirmación correcta es que los fármacos liposolubles atraviesan la placenta con facilidad; la placenta no es una barrera completa. Se ajustó la opción C, que en el documento también podía considerarse cierta.
+- **Q91_26** — Las complicaciones más comunes de la gripe en niños pequeños son:
+  - Documento: — → publicada: **C (Otitis media y neumonía)**
+- **Q91_29** — El estreñimiento verdadero en el período neonatal se debe con mayor frecuencia a:
+  - Documento: A (Lactancia materna) → publicada: **C (Enfermedad de Hirschsprung)**
+  - El estreñimiento verdadero en el neonato (sobre todo con retraso en la eliminación del meconio) debe hacer pensar en enfermedad de Hirschsprung; la lactancia materna puede espaciar las deposiciones, pero son blandas y no es estreñimiento.
+- **Q92_45** — El carcinoma del cuello uterino que se extiende fuera de él, afecta la vagina, pero no llega al 1/3 inferior y no se extiende a la pared pélvica, corresponde al estadio:
+  - Documento: C (IB2) → publicada: **D (IIA)**
+  - La extensión a los dos tercios superiores de la vagina, sin llegar al tercio inferior ni a la pared pélvica, corresponde al estadio IIA de la FIGO; el estadio IB está confinado al cuello.
+- **Q92_46** — El síndrome caracterizado por atrofia mamaria, falla en la lactancia, pérdida de vello púbico, amenorrea, insuficiencia corticoadrenal e hipotiroidismo es:
+  - Documento: C (Síndrome de Rokitansky) → publicada: **B (Síndrome de Sheehan)**
+  - El cuadro (falla de la lactancia, amenorrea, pérdida de vello, insuficiencia suprarrenal e hipotiroidismo) es el síndrome de Sheehan, necrosis hipofisaria tras una hemorragia posparto.
+- **Q95_82** — Un paciente de 25 años inicio hace 6 semanas un cuadro de diarrea con sangre y fiebre por lo que fue tratado con amoxicilina/clavulónico durante 7 días sin mejoría. Ante la persistencia de los síntomas se practica una colonoscopía que demuestra un recto normal, la presencia de aftas en el colon sigmoideo y úlceras longitudinales en el colon transverso. ¿Cúal es el diagnóstico de sospecha más probable?
+  - Documento: B (Colitis por Clostridium difficil) → publicada: **A (Enfermedad de Crohn)**
+  - Recto normal, aftas y úlceras longitudinales con afectación salteada son típicas de la enfermedad de Crohn; la colitis por C. difficile produce seudomembranas, no úlceras longitudinales salteadas.
+- **Q96_92** — Comprenden las heridas en la que se interesa una víscera hueca, como las vías respiratorias, digestivas o genitourinarias, con flora bacteriana endógena bajo circunstancias controladas sin fuga notable de contenido durante una cirugía:
+  - Documento: A (Heridas limpias) → publicada: **B (Heridas limpias-contaminadas)**
+  - La herida en que se entra a una víscera hueca (digestiva, respiratoria, genitourinaria) en condiciones controladas, sin derrame importante, es limpia-contaminada (clase II), no limpia.
+- **Q98_22** — ¿Cuál de las siguientes patologías afecta sobre todo a prematuros siendo su principal causa el déficit del agente tensoactivo?
+  - Documento: B (Taquipnea transitoria del recién nacido) → publicada: **C (Enfermedad de membrana hialina)**
+- **Q98_23** — Recién nacido de 10 días, nacido a las 33 semanas, que ingresa por distensión abdominal, deposiciones con sangre y shock séptico. En la radiografía se aprecia neumatosis intestinal. El diagnóstico más probable es:
+  - Documento: B (Hipertrofia congénita del píloro) → publicada: **C (Enterocolitis necrosante)**
+  - Prematuro con distensión abdominal, sangre en heces, sepsis y neumatosis intestinal tiene enterocolitis necrosante; la hipertrofia del píloro produce vómitos no biliosos sin sangrado.
+- **Q99_31** — A los 10 meses, en cuanto al lenguaje, lo esperado es que el niño:
+  - Documento: — → publicada: **C (Diga sílabas consonánticas repetidas («papá», «mamá»))**
+  - Las opciones estaban mezcladas en el documento y la pregunta no tenía respuesta; se reconstruyeron.
+- **Q99_38** — El mayor vehículo de transmisión de infecciones por giardia lamblia es:
+  - Documento: — → publicada: **C (Agua contaminada)**
+- **Q100_54** — Cuando sus cifras séricas maternas alcanzan su máximo, la gonadotropina coriónica humana (hCG) se produce casi por completo en:
+  - Documento: B (El hipotálamo) → publicada: **C (El sincitiotrofoblasto)**
+  - El enunciado y las opciones estaban cortados y faltaba la respuesta correcta; la hCG se produce casi por completo en el sincitiotrofoblasto.
+- **Q101_60** — ¿Alrededor de qué edad se presenta con más frecuencia el cáncer epitelial de ovario?
+  - Documento: D (undefined) → publicada: **C (60–70 años)**
+- **Q101_66** — Hombre de 22 años, ebanista, acude a emergencia con fiebre, cefalea, poliartralgias y cansancio. Orina ámbar clara y extendido de sangre periférica negativo. ¿Cuál es su diagnóstico de impresión?
+  - Documento: A (Cólera) → publicada: **B (Chikungunya)**
+  - Fiebre, cefalea, poliartralgias intensas y cansancio con frotis sanguíneo negativo orientan a chikungunya; el cólera produce diarrea acuosa masiva.
+- **Q102_69** — Una femenina de 68 años acude a la consulta refiriendo dolor epigástrico agudo irradiado a la espalda de varias horas de evolución. Tiene como antecedentes colelitiasis y consumo habitual de alcohol; en los resultados de laboratorio se destaca: leucocitosis, aumento de amilasa y lipasa en suero. ¿Cúal debe ser su primera sospecha diagnóstica?
+  - Documento: B (Pielonefritis aguda) → publicada: **D (Pancreatitis aguda)**
+  - Dolor epigástrico irradiado a la espalda con amilasa y lipasa elevadas en una paciente con colelitiasis y alcohol es pancreatitis aguda, no pielonefritis.
+- **Q102_70** — En el tratamiento de una crisis asmática aguda y grave, además del β2-agonista inhalado, se utiliza:
+  - Documento: D (Β2-agonista endovenoso) → publicada: **C (Corticoide sistémico (prednisona oral))**
+  - En la crisis asmática grave se usan β2-agonistas inhalados (nebulizados) y corticoides sistémicos; los β2 por vía intravenosa no son de rutina y la aminofilina ya no se recomienda.
+- **Q102_74** — ¿La complicación aguda más frecuente de los pacientes diabéticos tipo 1 es?
+  - Documento: A (Cetoacidosis Diabética) → publicada: **D (Hipoglicemia)**
+  - La hipoglucemia es la complicación aguda más frecuente de la diabetes tipo 1 tratada con insulina; la cetoacidosis es la más característica y grave, pero menos frecuente.
+- **Q102_75** — ¿La causa más común de muerte en los pacientes hipertensos es?
+  - Documento: — → publicada: **C (Cardiopatías (cardiopatía isquémica e insuficiencia cardíaca))**
+- **Q104_1** — Constituye la unidad básica, funcional y operativa, y la puerta de entrada al sistema nacional de salud y seguridad social:
+  - Documento: A (Hospital de primer nivel) → publicada: **B (Unidad de Atención Primaria (UNAP))**
+  - En la República Dominicana la puerta de entrada al sistema es la Unidad de Atención Primaria (UNAP), no el hospital de primer nivel.
+- **Q105_16** — El conjunto de acciones planificadas, que se emprenden con la finalidad de resolver total o parcialmente un problema científico determinado es:
+  - Documento: A (Ciencia) → publicada: **B (Investigación científica)**
+  - El conjunto de acciones planificadas para resolver un problema científico es la investigación científica; la ciencia es el cuerpo de conocimientos.
+- **Q106_24** — La siguiente triada es característica de la toxoplasmosis congénita:
+  - Documento: C (Hepatoesplenomegalia, ictericia y elevación de las enzimas hepáticas) → publicada: **A (Coriorretinitis, hidrocefalia y calcificaciones cerebrales)**
+  - La tríada de la toxoplasmosis congénita es coriorretinitis, hidrocefalia y calcificaciones intracraneales; la hepatoesplenomegalia con ictericia es inespecífica.
+- **Q106_28** — Un escolar de 7 años de edad es traido a la sala de emergencia por presentar dolor abdominal, cólico, fiebre y diarrea. A partir de las informaciones que la madre ofrece, llegamos a la conclusión de que además presenta evacuaciones con estrias de sangre y tenesmo. ¿Cuál es el microorganismo más probable causante de estas manifestaciones clínicas?
+  - Documento: — → publicada: **D (Campylobacter jejuni)**
+  - La pregunta no tenía respuesta en el documento. De las opciones, Campylobacter jejuni es la causa bacteriana típica de diarrea con sangre, fiebre, cólicos y tenesmo en escolares (Shigella no figura entre las opciones).
+- **Q106_32** — ¿En cuál de estas enfermedades se ha sugerido que la leche materna tiene un efecto protector?
+  - Documento: B (Sarampión) → publicada: **D (Diarrea)**
+  - La evidencia más sólida del efecto protector de la leche materna es contra la diarrea (y las infecciones respiratorias); se cambió la respuesta.
+- **Q107_35** — Niño de 2 años con fiebre, anorexia, síntomas respiratorios altos y gastrointestinales, letargo y petequias. Con estos hallazgos debemos pensar en:
+  - Documento: A (Meningitis Aguda) → publicada: **C (Septicemia)**
+  - Fiebre con letargo y petequias en un niño pequeño, sin signos meníngeos descritos, orienta a septicemia (por ejemplo, meningococcemia); la meningitis requeriría signos meníngeos o alteración del LCR.
+- **Q107_43** — ¿Durante cuál periodos de edad los quistes mamarios son diagnosticados con mayor frecuencia?
+  - Documento: B (25-40 años) → publicada: **C (40-50 años)**
+  - Los quistes mamarios son más frecuentes en la perimenopausia (alrededor de los 35–50 años, sobre todo después de los 40); se cambió a la franja de 40–50 años.
+- **Q108_48** — El seguimiento de la enfermedad trofoblástica del embarazo se hace con:
+  - Documento: B (Niveles de progesterona) → publicada: **D (Niveles de gonadotropina coriónica (β-hCG))**
+- **Q108_1** — Citología de cuello uterino reporta: células escamosas atípicas de significado incierto. ¿Cuál es la conducta a seguir?
+  - Documento: D (Colposcopia y biopsia) → publicada: **C (Determinar ADN-VPH)**
+  - Ante células escamosas atípicas de significado incierto (ASC-US) la conducta recomendada es la prueba de ADN del VPH (o repetir la citología); la colposcopia se indica si el VPH de alto riesgo es positivo.
+- **Q108_54** — Mujer de 42 años, casada sin hijos; acude a consulta por presentar desde hace 5 meses irregularidad en su ciclo menstrual, sofocos, sudoración nocturna y cambios de carácter. Su fecha de última menstruación fué hace 2 meses, no usa métodos anticonceptivos. La subunidad beta de la HGC: reporta negativo. ¿Cuál es el diagnóstico probable?A ) Premenopausia
+  - Documento: C (Menopausia) → publicada: **A (Perimenopausia (transición menopáusica))**
+  - Con 2 meses sin menstruación no se puede diagnosticar menopausia (requiere 12 meses de amenorrea); el cuadro corresponde a la perimenopausia (transición menopáusica).
+- **Q111_87** — Paciente masculino de 35 años de edad que viene a consulta presentando dolor en hipocondrio derecho, ictericia y coluria de 30 días de evolución, se le realizan analíticas que reportan bilirrubina total de 10 mg/dl (indirecta en 3 mg/dl y la directa en 7mg/dl) y una fosfatasa alcalina de 450 mg/dl; en qué condición debo pensar como causante de este cuadro:
+  - Documento: A (Colecistitis) → publicada: **D (Coledocolitiasis)**
+  - Ictericia con predominio de bilirrubina directa, coluria y fosfatasa alcalina muy elevada indican colestasis extrahepática, cuya causa más frecuente es la coledocolitiasis; la colecistitis no suele producir ictericia importante.
+- **Q111_99** — Es la enfermedad extrauterina que se presenta con mayor frecuencia durante el embarazo y que requiere tratamiento quirúrgico:
+  - Documento: A (Colecistitis aguda) → publicada: **C (Apendicitis aguda)**
+  - La apendicitis aguda es la urgencia quirúrgica no obstétrica más frecuente en el embarazo (≈ 1 de cada 1000 embarazos); la colecistitis es la segunda.
+- **Q112_6** — Los hidratos de carbono están formados por:
+  - Documento: B (Alcohol, azúcar y ácido carbónico) → publicada: **C (Carbono, hidrógeno y oxígeno)**
+- **Q112_7** — Los fármacos que se unen a receptores fisiológicos y simulan los efectos reguladores de un compuesto de señalización endógeno, se les conoce como:
+  - Documento: C (Aceptores) → publicada: **D (Agonistas)**
+  - Los fármacos que se unen a un receptor y reproducen los efectos del ligando endógeno son agonistas.
+- **Q113_22** — ¿Cuál de las siguientes afirmaciones es correcta en relación con la leche materna?
+  - Documento: C (No contiene macrófagos) → publicada: **B (Contiene una concentración elevada de IgA secretora)**
+- **Q113_24** — De las siguientes, ¿cuál es la principal causa de muerte accidental en niños pequeños?
+  - Documento: A (Quemaduras) → publicada: **C (Ahogamiento)**
+  - De las opciones, el ahogamiento es la principal causa de muerte accidental en niños pequeños; las quemaduras causan mucha morbilidad, pero menos muertes.
+- **Q115_47** — El diámetro que corresponde a la distancia más corta entre el promontorio y la sínfisis del pubis es el:
+  - Documento: C (Conjugado diagonal) → publicada: **B (Conjugado obstétrico)**
+- **Q115_49** — ¿Cuál factor tiene mayor importancia para la regeneración del endometrio luego de la menstruación:
+  - Documento: B (Estriol) → publicada: **A (Estradiol)**
+  - La regeneración del endometrio tras la menstruación depende del estradiol de los folículos en desarrollo; el estriol es un estrógeno débil propio del embarazo.
+- **Q115_51** — Según la regla de Naegele, una embarazada con ciclos regulares cuya última menstruación fue el 5 de julio de 2017 tiene como fecha probable de parto:
+  - Documento: — → publicada: **B (12 de abril de 2018)**
+- **Q116_56** — Paciente obesa de 32 años con 26 semanas de embarazo, se le detecta glicemia en ayunas de 122mg/dl; confirmado el desbalance metabólico por curva de tolerancia a la glucosa. ¿Cuál es el próximo paso a seguir en cuanto a su manejo?
+  - Documento: — → publicada: **B (Orientación sobre nutrición y actividad física)**
+- **Q116_62** — ¿Cuál es la prueba de laboratorio que permite el diagnóstico rápido de infección por plasmodium, en la mayoría de los pacientes?
+  - Documento: — → publicada: **B (Examen microscópico de sangre periférica (gota gruesa y frotis))**
+- **Q119_100** — Se recibe femenina de 65 años vía consulta por presentar aumento del perímetro de la pierna derecha y dolor al apoyar la planta del pie derecho. La misma refiere haber estado 15 días ingresada por un proceso neumónico siendo dada de alta 4 días atrás. Al examen físico se evidencia asimetría en el perímetro entre ambos miembros inferiores y se evidencia dolor en la pantorrilla a la flexión dorsal del pie en miembro inferior derecho. ¿Cuál es su diagnóstico?
+  - Documento: B (Oclusión arterial) → publicada: **D (Trombosis venosa profunda)**
+- **Q119_1** — Sin tratamiento antirretroviral, el riesgo adicional de transmisión del VIH por la lactancia materna prolongada en mujeres con infección crónica es de aproximadamente:
+  - Documento: C (Alrededor del 50 %) → publicada: **B (Alrededor del 15 % (10–20 %))**
+  - Las opciones del documento se superponían (10–15 %, 9–16 %…). Con lactancia prolongada y sin tratamiento antirretroviral, el riesgo adicional de transmisión en la infección materna crónica es de alrededor del 15 % (10–20 %); se reformularon las opciones.
+- **Q121_16** — La alimentación complementaria en lactante amamantado con leche exclusiva se debe iniciar a:
+  - Documento: B (4-6 meses) → publicada: **C (6-8 meses)**
+  - El archivo marcaba 4-6 meses. La OMS, la OPS y la AAP recomiendan lactancia materna exclusiva hasta los 6 meses y comenzar la alimentación complementaria a los 6 meses, no antes.
+- **Q122_31** — Primigesta de 23 años con 30 semanas de gestación, con presiones normales en todos sus controles prenatales. En la nueva consulta tiene una presión de 140/90 mmHg, está asintomática y los estudios muestran proteinuria negativa y plaquetas normales. ¿Cuál es el diagnóstico probable?
+  - Documento: B (Eclampsia) → publicada: **C (Hipertensión gestacional)**
+  - El archivo marcaba eclampsia. Sin convulsiones no hay eclampsia: una gestante previamente normotensa con presión de 140/90 después de las 20 semanas, sin proteinuria ni signos de daño de órgano, tiene hipertensión gestacional.
+- **Q123_38** — Durante la cesárea, luego de extraer el feto, la placenta esta retenida por estar adherida anormalmente al útero, en la que las vellosidades invaden al miometrio. ¿Cuál es el diagnóstico probable?
+  - Documento: A (Hematoma retroplacentario) → publicada: **D (Placenta increta)**
+  - El archivo marcaba hematoma retroplacentario. La descripción (vellosidades que invaden el miometrio, placenta retenida por adherencia anormal) corresponde a la placenta increta.
+- **Q126_62** — El absceso pulmonar se trató con penicilina desde que estuvo disponible en la década de 1940. Sin embargo, como se relaciona con anaerobios de la boca que producen betalactamasa, ¿qué tratamiento pasó a utilizarse?
+  - Documento: — → publicada: **C (Clindamicina)**
+  - El archivo no traía respuesta marcada. Se reformuló la opción A (amoxicilina sola) para que haya una única respuesta correcta: la clindamicina.
+- **Q128_84** — Masculino de 52 años de edad quien consulta por presentar dolor torácico intermitente de larga data, pérdida de peso de 4 meses de evolución, disfagia de igual data, se indica un esofagograma que muestra un esófago dilatado y una imagen en pico de pájaro, por lo que se establece diagnóstico presuntivo de acalasia. ¿Cómo se define fisiopatológicamente este trastorno?
+  - Documento: C (Disfagia por compresión extrínseca) → publicada: **A (Relajación incompleta del esfínter esofágico inferior)**
+  - El archivo marcaba disfagia por compresión extrínseca. La acalasia se define por la relajación incompleta del esfínter esofágico inferior con falta de peristalsis.
+- **Q129_97** — Un paciente de 32 años que sufrió un traumatismo cerrado de abdomen, presenta en la TAC un hematoma retro peritoneal. Se encuentra lúcido, eupneico, con una presión arterial de 90/50 mm Hg y un hematocrito de 32%. ¿Cuál de las siguientes conductas se debe adoptar?
+  - Documento: C (Observación y ecografía de control en 3 horas) → publicada: **B (Observación y control del estado hemodinámico y del hematocrito)**
+  - El archivo marcaba observación con ecografía de control. La ecografía es poco útil para evaluar el retroperitoneo; el manejo de un hematoma retroperitoneal en un paciente que responde es la observación con control seriado del estado hemodinámico y del hematocrito.
+- **Q130_9** — El Epicardio está formado por:
+  - Documento: — → publicada: **C (Pericardio seroso visceral)**
+  - El archivo no traía respuesta marcada. El epicardio es la hoja visceral del pericardio seroso.
+- **Q130_12** — El origen embrionario de las estructuras oculares individuales varía. ¿Cuál de las siguientes estructuras deriva del ectodermo de revestimiento?
+  - Documento: A (Nervio óptico) → publicada: **D (Cristalino)**
+  - El archivo marcaba el nervio óptico, que deriva del neuroectodermo. Del ectodermo de revestimiento (superficial) derivan el cristalino y el epitelio de la córnea.
+- **Q130_13** — En el círculo arterial del cerebro, ¿Cuál de las siguientes arterias penetra en la cavidad craneal a la altura del extremo anterior del seno cavernoso, medialmente a las apófisis clinoides anterior?
+  - Documento: D (Arteria cerebral anterior) → publicada: **C (Arterias carótida internas)**
+  - El archivo marcaba la arteria cerebral anterior, que nace dentro del cráneo. La que entra a la cavidad craneal junto al extremo anterior del seno cavernoso, medial a la apófisis clinoides anterior, es la carótida interna.
+- **Q131_22** — El tratamiento de la hiperbilirrubinemia con independencia de la etiología está encaminado a prevenir la neurotoxicidad. ¿Cuál es el tratamiento más efectivo?
+  - Documento: D (Uso de antibióticos) → publicada: **A (Fototerapia y exanguinotransfusión)**
+  - El archivo marcaba el uso de antibióticos. El tratamiento que previene la neurotoxicidad de la bilirrubina, sea cual sea la causa, es la fototerapia y, si fracasa o la bilirrubina es muy alta, la exanguinotransfusión.
+- **Q131_26** — ¿Cuál es una contraindicación general para la aplicación de todas las vacunas?
+  - Documento: A (Edad) → publicada: **D (Reacción anafiláctica)**
+  - El archivo marcaba la edad. La única contraindicación general para todas las vacunas es la reacción anafiláctica a una dosis previa o a un componente de la vacuna.
+- **Q132_30** — Niño de 8 años de edad es atendido en emergencia por presentar fiebre de 5 días de evolución inflamació faríngea, rinitis y tos leve, refiere dolor frontal o retro orbitario, dolor de espalda, se ve un exantema macular generalizado, mialgias y artralgias. ¿Cuál es el diagnóstico probable?
+  - Documento: D (Fiebre hemorrágica dengue) → publicada: **C (Fiebre dengue)**
+  - El archivo marcaba fiebre hemorrágica por dengue. El caso no describe sangrado, fuga plasmática ni trombocitopenia grave; es un dengue (fiebre por dengue) sin signos de alarma.
+- **Q132_32** — ¿Qué caracteriza al dengue hemorrágico y al síndrome de choque por dengue?
+  - Documento: D (Fiebre alta y deshidratación) → publicada: **A (Hipovolemia, hemoconcentración y trombocitopenia)**
+  - El archivo marcaba fiebre alta y deshidratación, que no definen la gravedad. El dengue hemorrágico y el síndrome de choque por dengue se caracterizan por fuga plasmática (hemoconcentración), hipovolemia y trombocitopenia.
+- **Q132_34** — ¿Cuál es la discapacidad específica del desarrollo más frecuente entre los niños de 3 a 17 años?
+  - Documento: C (Autismo) → publicada: **B (Trastorno por déficit de atención con hiperactividad)**
+  - El archivo marcaba el autismo. Los datos poblacionales de niños de 3 a 17 años (encuestas de los CDC) muestran que el TDAH es la discapacidad del desarrollo más frecuente (cerca del 9 %), por delante de los trastornos del aprendizaje y del autismo (cerca del 2.5 %).
+- **Q132_38** — Carlitos, de 6 años, que asiste a una guardería, es llevado a emergencias por malestar general, dolor de garganta, náuseas, dolor abdominal y mialgias de 8 días. Al examen tiene adenopatías cervicales y submandibulares, esplenomegalia y algunas petequias en el paladar blando y duro. ¿Cuál es su impresión diagnóstica?
+  - Documento: A (Primoinfección por citomegalovirus) → publicada: **C (Primoinfección por virus de Epstein-Barr)**
+  - El archivo marcaba citomegalovirus. Faringitis, adenopatías cervicales, esplenomegalia y petequias en el paladar son el cuadro clásico de la mononucleosis por virus de Epstein-Barr; el citomegalovirus da un cuadro similar pero casi sin faringitis ni adenopatías marcadas.
+- **Q134_41** — Femenina de 25 años, cursando embarazo a término en labor de parto inicial, es llevada a emergencia po familiares; al ser evaluada se determina que la relación entre el eje longitudinal del feto y el de la madre es transversa, razón por la cual se decide realizar operación cesárea. De los siguientes factores identificados a continuación. ¿Cuál predispone la situación transversa?
+  - Documento: — → publicada: **D (Multiparidad)**
+  - El archivo no traía respuesta marcada. La multiparidad, por la laxitud de la pared abdominal y del útero, es el factor que más predispone a la situación transversa.
+- **Q134_44** — En relación con el aborto inducido, ¿cómo se define el índice (razón) de aborto?
+  - Documento: D (Número de abortos por cada 1 000 000 de nacidos vivos) → publicada: **A (Número de abortos por cada 1000 nacidos vivos)**
+  - El archivo marcaba por cada millón de nacidos vivos. El índice (razón) de aborto se define como el número de abortos por cada 1000 nacidos vivos.
+- **Q134_45** — Paciente en su tercera semana de posparto, con historia de dificultad para amamantar, acude a la emergencia por presentar inflamación en la mama izquierda y síntomas generales fiebre, escalofríos y taquicardia. La evaluación clínica y los estudios complementarios determinan el diagnóstico de mastitis. ¿Cuál es el microorganismo etiológico más frecuente?
+  - Documento: — → publicada: **D (Staphylococcus aureus)**
+  - El archivo no traía respuesta marcada. El germen más frecuente de la mastitis puerperal es Staphylococcus aureus.
+- **Q135_55** — ¿Cuál de los siguientes es el factor pronóstico más importante en el éxito de fertilización asistida?
+  - Documento: C (El sitio de la transferencia embrionaria) → publicada: **D (La edad de la mujer)**
+  - El archivo marcaba el sitio de la transferencia embrionaria. El factor pronóstico más importante en el éxito de la fertilización asistida es la edad de la mujer.
+- **Q135_56** — De los siguientes tipos de degeneración, macroscópica y microscópica que podrían acontecer en los miomas uterinos. Identifique la que ocurre con mayor frecuencia.
+  - Documento: A (Quística) → publicada: **B (Hialina)**
+  - El archivo marcaba la degeneración quística. La degeneración más frecuente de los miomas uterinos es la hialina (alrededor del 60 %); la quística suele ser una evolución de la hialina.
+- **Q136_71** — La bradicardia sinusal se trata cuando causa deterioro hemodinámico. La atropina es el fármaco de primera línea. ¿Cuál es la dosis inicial según las guías actuales?
+  - Documento: A (0.5 mg intravenosos) → publicada: **D (1 mg intravenoso)**
+  - El archivo marcaba 0.5 mg, la dosis de guías anteriores. Las guías de soporte vital avanzado de la AHA (2020 y 2023) recomiendan 1 mg intravenoso cada 3 a 5 minutos, hasta un máximo de 3 mg.
+- **Q137_74** — Mujer de 65 años con pirosis, regurgitación, dolor torácico, disfagia y, en ocasiones, tos crónica. Al examen tiene obesidad abdominal y refiere comer en exceso. ¿Qué patología considera que tiene?
+  - Documento: A (Dispepsia) → publicada: **C (Enfermedad por reflujo gastroesofágico)**
+- **Q137_75** — En junio de 2019 la OMS/OPS emitió una alerta epidemiológica por la detección de fiebre de Mayaro en la región (Haití registró un caso en 2015; Ecuador y Perú informaron casos en 2019). ¿Qué mosquito es el vector de la fiebre de Mayaro?
+  - Documento: D (Predominantemente especies desconocidas) → publicada: **A (Predominantemente especies de Haemagogus)**
+  - El archivo marcaba especie desconocida. El vector principal del virus Mayaro es el mosquito selvático del género Haemagogus; Aedes podría actuar como vector urbano.
+- **Q137_80** — Hombre de 63 años llevado por su hija al centro de salud por ánimo deprimido, pérdida de interés o placer, pensamientos recurrentes de muerte y fatiga casi todos los días durante al menos dos semanas; además se despierta muy temprano por las mañanas. ¿Cómo clasificaría este episodio?
+  - Documento: — → publicada: **D (Depresivo mayor)**
+  - El archivo no traía respuesta marcada. Los síntomas cumplen los criterios de un episodio depresivo mayor.
+- **Q138_83** — En la fisiopatología de las hernias inguinales adquiridas, el factor de riesgo más importante que se asocia a su formación es:
+  - Documento: C (Factor hereditario) → publicada: **A (Debilidad de la pared abdominal (fascia transversalis y musculatura))**
+- **Q138_86** — La prueba diagnóstica más precisa para el divertículo de Meckel es:
+  - Documento: D (Tomografía de abdomen) → publicada: **B (Gammagrafía con pertecnetato de tecnecio 99m)**
+  - El archivo marcaba la tomografía. La prueba más precisa para el divertículo de Meckel es la gammagrafía con tecnecio 99m pertecnetato, que detecta la mucosa gástrica ectópica.
+- **Q139_99** — Mujer de 34 años que acude a emergencias por dolor abdominal de inicio súbito en la fosa ilíaca derecha, con náuseas y sin fiebre. Su última menstruación fue hace 3 semanas y fue normal. Tiene una presión de 130/70 mmHg. ¿Cuál es el diagnóstico probable?
+  - Documento: — → publicada: **C (Torsión del ovario derecho)**
+  - El archivo no traía respuesta marcada. El dolor súbito en una fosa ilíaca con náuseas, sin fiebre, en una mujer con ciclo normal y sin datos de embarazo ni de choque, orienta a torsión de ovario.
+- **Q204_4** — ¿De cuál de estos nervios provienen las ramas infraorbitarias?
+  - Documento: A (Oftálmico) → publicada: **B (Maxilar)**
+  - El archivo marcaba el nervio oftálmico. El nervio infraorbitario es la continuación del nervio maxilar (V2).
+- **Q205_14** — ¿Cómo se denomina el conjunto de procesos sistemáticos, críticos y empíricos que se aplican al estudio de un fenómeno o problema?
+  - Documento: A (Ciencia) → publicada: **C (Investigación científica)**
+  - El archivo marcaba «ciencia». La definición del enunciado (procesos sistemáticos, críticos y empíricos aplicados al estudio de un fenómeno) es la definición clásica de investigación (Hernández Sampieri).
+- **Q205_26** — ¿A qué edad aparece, en promedio, el primer diente?
+  - Documento: A (3 meses) → publicada: **B (6 meses)**
+  - El archivo marcaba 5 meses entre opciones separadas por medio mes (5, 5.5, 6.5 y 7) que no coinciden con la referencia. Se reformularon: la primera erupción dentaria ocurre hacia los 6 meses.
+- **Q206_37** — El cólera es una de las enfermedades que tiene mayor propensión a producir:
+  - Documento: B (Anemia) → publicada: **C (Brotes)**
+  - El archivo marcaba anemia. El cólera no causa anemia; es una de las enfermedades con mayor propensión a producir brotes y epidemias.
+- **Q207_39** — Muchas de las muertes en los pacientes con dengue hemorrágico (dengue grave) se deben a:
+  - Documento: C (Anemia) → publicada: **D (Sobrehidratación)**
+  - El archivo marcaba anemia, que no es una causa de muerte en el dengue. La OMS señala la sobrehidratación (sobrecarga de líquidos) como una causa importante de muerte en el dengue grave, junto con el reconocimiento tardío del choque.
+- **Q208_58** — ¿Cómo se denomina la aparición de proteinuria, después de las 20 semanas, en una embarazada con hipertensión crónica, que puede acompañarse de restricción del crecimiento fetal?
+  - Documento: A (Preeclampsia) → publicada: **D (Preeclampsia sobreañadida a hipertensión crónica)**
+  - El archivo marcaba preeclampsia. La aparición de proteinuria sobre una hipertensión crónica después de las 20 semanas define la preeclampsia sobreañadida a hipertensión crónica.
+- **Q209_64** — ¿Qué síntoma o signo típico de la isquemia arterial aguda es el último en aparecer y en consecuencia es indicador de mayor gravedad?
+  - Documento: D (Ausencia de pulso) → publicada: **C (Parálisis)**
+  - El archivo marcaba la ausencia de pulso, que es un signo precoz. La parálisis es el último signo en aparecer e indica isquemia grave, con riesgo de daño irreversible.
+- **Q210_74** — ¿Cuál de las siguientes patologías son las causas más frecuentes de hemorragia del colon en adultos jóvenes?
+  - Documento: A (Divertículos y ectasias vasculares) → publicada: **D (Colitis ulcerosa y enfermedad de Crohn)**
+  - El archivo marcaba divertículos y ectasias vasculares, que son las causas típicas en mayores de 60 a 70 años (pregunta siguiente). En adultos jóvenes, entre las opciones, la causa de sangrado propiamente colónico más frecuente es la enfermedad inflamatoria intestinal.
+- **Q212_87** — ¿Cuáles son los microorganismos patógenos que se aíslan con mayor frecuencia de los dispositivos (prótesis) colocados a un paciente?
+  - Documento: B (Estreptococo betahemolítico del grupo A) → publicada: **C (Estafilococos coagulasa negativos)**
+  - El archivo marcaba el estreptococo betahemolítico del grupo A. Los microorganismos que más se aíslan de los dispositivos y prótesis son los estafilococos coagulasa negativos (sobre todo Staphylococcus epidermidis), seguidos de S. aureus.
+
+## Retiradas
+
+- **Q14_90** — 
+  - Fragmento sin enunciado: sus opciones pertenecían a la pregunta anterior (Q14_72), que se reconstruyó con ellas.
+- **Q16_101** — Concentración a nivel extracelular es el:
+  - Repetida e incompleta: es la misma pregunta que Q16_96 (anión de mayor concentración extracelular).
+- **Q16_2** — La catarata congénita, la sordera, cardiopatía y retardo mental son producidas por:
+  - Repetida: es la misma pregunta que Q10_4 (rubéola congénita).
+- **Q17_9** — La unidad funcional del riñón es:
+  - Repetida: es la misma pregunta que Q3_7 (la nefrona como unidad funcional del riñón).
+- **Q17_17** — El vector biológico que transmite los plasmodios, agentes etiológicos de la malaria o paludismo es:
+  - Repetida: es la misma pregunta que Q12_35 (Anopheles como vector de la malaria).
+- **Q18_23** — En cuál de las siguientes situaciones de la madre aconsejaría la supresión de la lactancia materna:
+  - Repetida: es la misma pregunta que Q11_24 (VIH materno y lactancia).
+- **Q19_45** — La droga de elección para prevenir las convulsiones en la preeclamsia severa es:
+  - Repetida: es la misma pregunta que Q6_55 (sulfato de magnesio en la preeclampsia grave).
+- **Q24_31** — Una prueba de PPD es positiva cuando mide:
+  - Repetida: es la misma pregunta que Q5_33 (punto de corte de la prueba de tuberculina).
+- **Q24_35** — El siguiente cuadro clínico es característico del tétanos:
+  - Repetida: es la misma pregunta que Q18_26 (rigidez y espasmos en el tétanos).
+- **Q24_41** — Cuál de los siguientes siguientes es la hormona para la prueba de embarazo:
+  - Repetida: es la misma pregunta que Q6_48 (gonadotropina coriónica como prueba de embarazo).
+- **Q26_40** — 
+  - Fragmento sin enunciado: sus opciones pertenecían a la pregunta Q26_60, que se reconstruyó con ellas.
+- **Q28_88** — Cuál de los siguientes signos o síntomas aparece en un paciente con bocio difuso? Tos, mareos, ronquera, dificultad para tragar y dificultad para respirar para respirar al hacer ejercicio. Hasta aquí…. 1-Cuando un problema importante para salud pública afecta simultáneamente a varios países, se denomina
+  - Texto mezclado de varias preguntas en la extracción del documento (enunciado de bocio con opciones de otra pregunta); no se puede reconstruir sin el PDF.
+- **Q29_4** — Aun cuando quede todavía algo del VIH en el cuerpo, el sistema inmunitario está lo suficientemente fuerte como para combatir las infecciones y ciertos tipos de cáncer relacionados con el VIH”. 21-Señale cuál de las siguientes parasitosis es la responsable del prolapso rectal:
+  - Texto mezclado en la extracción; la pregunta que se reconoce (parasitosis y prolapso rectal) está completa en Q69_31.
+- **Q45_7** — Omega 3(Lonolenico) omega 6 (Linoleico)” 14)- El siguiente ácido graso no esencial regula el metabolismo del colesterol:
+  - Texto mezclado en la extracción (fragmentos de tres preguntas sobre ácidos grasos y calcio); no se puede reconstruir sin el PDF.
+- **Q67_2** — El anión más abundante en el medio extracelular es el:
+  - Repetida: es la misma pregunta que Q16_96 (el cloro como anión extracelular más abundante).
+- **Q69_20** — Un niño de 2 años que presenta amigdalitis membranosa, rash cutáneo, adenomegalia y esplenomegalia sugiere el diagnóstico de:
+  - Repetida: es la misma pregunta que Q11_29 (mononucleosis infecciosa).
+- **Q69_23** — El trastorno metabólico más frecuente en el recién nacido macrosómico es:
+  - Repetida: es la misma pregunta que Q23_26 (hipoglucemia en el recién nacido macrosómico).
+- **Q69_25** — La falta de cuál de las siguientes sustancias produce colapso pulmonar en recién nacido:
+  - Repetida: es la misma pregunta que Q23_28 (déficit de surfactante en el recién nacido).
+- **Q69_30** — El siguiente cuadro clínico es característico de tétanos:
+  - Repetida: es la misma pregunta que Q18_26 (rigidez y espasmos en el tétanos).
+- **Q70_40** — El diagnóstico definitivo de la tuberculosis se hace por:
+  - Repetida: es la misma pregunta que Q14_69 (el cultivo como diagnóstico definitivo de tuberculosis).
+- **Q71_47** — Cuál de los siguientes medicamentos se administra a la madre para acelerar la maduración pulmonar de feto?
+  - Repetida: es la misma pregunta que Q6_52 (corticoides para la madurez pulmonar fetal).
+- **Q71_48** — Cuál de las siguientes hormonas tiene mayor importancia para el diagnóstico de embarazo?
+  - Repetida: es la misma pregunta que Q6_48 (gonadotropina coriónica en el diagnóstico de embarazo).
+- **Q74_80** — Cuál de las siguientes es la enzima sérica más específica en la lesión del miocardio?
+  - Repetida: es la misma pregunta que Q15_80 (CK-MB como enzima más específica de daño miocárdico).
+- **Q74_81** — Las lesions de mama afectan más frecuentemente el cuadrante:
+  - Repetida: es la misma pregunta que Q15_88 (cuadrante superoexterno de la mama).
+- **Q74_86** — La producción de ácido gástrico ocurre en la siguiente región anatómica del estómago:
+  - Repetida: es la misma pregunta que Q73_67 (producción de ácido en el fondo gástrico).
+- **Q82_6** — ¿Cuál de los siguientes es la unidad fundamental de la herencia?
+  - Repetida: es la misma pregunta que Q21_1 (el gen como unidad básica de la herencia).
+- **Q90_21** — Factor que en nuestro medio con más frecuencia desvía el crecimiento y desarrollo:
+  - Repetida: es la misma pregunta que Q12_40 (factor nutricional en el crecimiento y desarrollo).
+- **Q93_58** — Cuál de estos elementos es favorable suplir a una paciente que decida quedar embarazada dentro de los próximos 3 meses.
+  - Repetida: es la misma pregunta que Q24_42 (ácido fólico antes del embarazo).
+- **Q96_100** — ¿De estos nervios, cuál es lesionado con más frecuencia en una cirugía de glándula tiroides?
+  - Repetida: es la misma pregunta que Q27_82 (lesión del nervio laríngeo recurrente en la cirugía de tiroides).
+- **Q98_21** — Característica que identifica al cefalohematoma:
+  - Repetida: es la misma pregunta que Q69_24 (cefalohematoma subperióstico limitado por las suturas).
+- **Q99_30** — Masculino de 16 años de edad viene a emergencia presentando: temperatura oral de 39.5 °C, cefalea, ictericia, mialgia. Además presenta orina oscura y escasa. ¿Cúal es el diagnóstico más probable?
+  - Repetida: es la misma pregunta que Q70_38 (leptospirosis con ictericia y oliguria).
+- **Q99_36** — El diagnóstico de meningitis piógena aguda en niños se confirma mediante:
+  - Repetida: es la misma pregunta que Q73_78 (punción lumbar para confirmar la meningitis bacteriana).
+- **Q100_47** — Fármaco de elección utilizado para prevenir y detener las convulsiones durante la gestación.
+  - Repetida: es la misma pregunta que Q6_55 (sulfato de magnesio para las convulsiones en el embarazo).
+- **Q100_48** — Es la parte más voluminosa del feto que toma contacto con el estrecho superior de la pelvis ocupándolo e gran parte, y que puede evolucionar por si misma dando lugar al mecanismo de parto.
+  - Repetida: es la misma pregunta que Q71_49 (definición de presentación fetal).
+- **Q101_59** — El microorganismo que produce con frecuencia lesión inflamatoria de la mucosa de las trompas de Falopio en la enfermedad inflamatoria pélvica es:
+  - Repetida: es la misma pregunta que Q71_50 (gonococo y lesión de la mucosa tubárica).
+- **Q101_62** — ¿Qué técnica proporciona el diagnóstico definitivo de la infección por Mycobacterium tuberculosis?
+  - Repetida: es la misma pregunta que Q14_69 (cultivo como diagnóstico definitivo de tuberculosis).
+- **Q101_64** — Causa más frecuente de hemorragia digestiva alta:
+  - Repetida: es la misma pregunta que Q20_78 (úlcera péptica como causa más frecuente de hemorragia digestiva alta).
+- **Q102_72** — Para diferenciar un evento cerebro vascular trombótico agudo de uno hemorrágico. ¿Cuál procedimiento de imágenes sería el más utilizado?
+  - Repetida: es la misma pregunta que Q14_63 (TAC para diferenciar el ictus isquémico del hemorrágico).
+- **Q103_84** — ¿Cuál de las siguientes afirmaciones es correcta acerca de la tiroiditis de Hashimoto?
+  - Repetida: es la misma pregunta que Q74_89 (tiroiditis de Hashimoto autoinmune con hipotiroidismo).
+- **Q103_87** — Masculino de 72 años presenta dolor abdominal tipo cólico, constipación de 4 días de evolución y distensión abdominal asimétrica. Nunca ha sido operado, presenta imagen radiográfica con niveles hidroaéreos en escalera. Diga su diagnóstico.
+  - Repetida: es la misma pregunta que Q75_96 (vólvulo intestinal en el adulto mayor).
+- **Q104_91** — Es una patología congénita que por lo general se observa en el recién nacido hasta el segundo año de vida y que se debe a un desarrollo anormal del sistema linfático que le impide drenar su contenido al sistema venoso.
+  - Repetida: es la misma pregunta que Q27_83 (higroma quístico por falta de drenaje linfático).
+- **Q104_3** — Son considerados la unidad elemental de la herencia y están compuestos por ADN:
+  - Repetida: es la misma pregunta que Q21_1 (el gen como unidad básica de la herencia).
+- **Q105_14** — Elemento forme de la sangre con núcleo bilobulado que se eleva en la parasitosis:
+  - Repetida: es la misma pregunta que Q97_15 (el eosinófilo en las parasitosis).
+- **Q105_18** — Las placas de Payer abundan más en:
+  - Repetida: es la misma pregunta que Q10_6 (placas de Peyer en el íleon).
+- **Q106_22** — Los signos más característicos y específicos de la deficiencia de vitamina A son:
+  - Repetida: es la misma pregunta que Q70_34 (lesiones oculares por déficit de vitamina A).
+- **Q106_23** — Al nacimiento, ¿cuál de las siguientes medidas es útil para la prevención de la enfermedad hemorrágica del recién nacido?
+  - Repetida: es la misma pregunta que Q5_41 (vitamina K al nacer).
+- **Q107_36** — La parasitosis por trichuris trichiura que habita el intestino grueso presenta en niños de manera característica una de estas manifestaciones:
+  - Repetida: es la misma pregunta que Q69_31 (tricuriasis y prolapso rectal).
+- **Q107_46** — Es un signo de certeza de embarazo:
+  - Repetida: es la misma pregunta que Q25_53 (signo de certeza del embarazo).
+- **Q109_62** — Las plaquetas se renuevan cada:
+  - Repetida: es la misma pregunta que Q8_77 (vida media de las plaquetas).
+- **Q110_74** — ¿En cuál de estos niveles de presión arterial se recomienda iniciar tratamiento farmacológico para hipertensión arterial?
+  - Repetida: es la misma pregunta que Q14_72 (umbral de 140/90 para el tratamiento antihipertensivo).
+- **Q110_80** — La corea de Sydenham (baile de San Vito) es más frecuente en mujeres entre 5 y 15 años y se relaciona a menudo con la exposición previa de una infección producida por uno de agentes causales:
+  - Repetida: es la misma pregunta que Q98_24 (estreptococo del grupo A y fiebre reumática).
+- **Q110_82** — La lesión del conducto torácico, en su trayecto intratorácico, puede dar como resultado un:
+  - Repetida: es la misma pregunta que Q96_90 (quilotórax por lesión del conducto torácico).
+- **Q111_89** — Son características clínicas de las quemaduras de tercer grado:
+  - Repetida: es la misma pregunta que Q75_100 (características de la quemadura de tercer grado).
+- **Q111_93** — Método diagnóstico que confirma la obstrucción del intestino delgado:
+  - Repetida: es la misma pregunta que Q8_82 (radiografía simple de abdomen en la obstrucción intestinal).
+- **Q111_96** — Paciente femenina de 45 años de edad que llega a emergencia a las 5:00 am con dolor abdominal, anteriormente tratada con AINES por patologías reumatoideas. Presenta al examen físico signos clínicos de irritación peritoneal; si se sospecha como diagnóstico úlcera péptica perforada; ¿cuál de estos estudios sería el ideal para confirmar el diagnóstico?
+  - Repetida: es la misma pregunta que Q103_90 (radiografía de tórax de pie en la úlcera perforada).
+- **Q112_3** — ¿Cuál es el nombre de la válvula aurícula ventricular derecha?
+  - Repetida: es la misma pregunta que Q3_10 (válvula tricúspide en el orificio auriculoventricular derecho).
+- **Q112_11** — Una imagen radiopaca es aquella que corresponde a tejidos que:
+  - Repetida: es la misma pregunta que Q112_2 (definición de imagen radiopaca).
+- **Q113_23** — El raquitismo es una enfermedad del hueso en crecimiento que se debe a:
+  - Repetida: es la misma pregunta que Q73_71 (raquitismo por deficiencia de vitamina D).
+- **Q114_33** — El instrumento para la valoración del crecimiento del niño es:
+  - Repetida: es la misma pregunta que Q91_34 (gráficas de crecimiento para valorar el crecimiento).
+- **Q115_42** — El periodo comprendido después de la fertilización hasta las 8 semanas de gestación es:
+  - Repetida: es la misma pregunta que Q113_18 (período embrionario de la 3.ª a la 8.ª semana).
+- **Q116_55** — La degeneración quística edematosa de las vellosidades coriales que se manifiesta con útero aumentado de tamaño en relación a la amenorrea, ausencia de signos fetales y que en la sonografía muestra imagen en panal de abejas. Se refiere a:
+  - Repetida: es la misma pregunta que Q71_57 (embarazo molar con útero grande y sin signos fetales).
+- **Q116_57** — El trastorno hipertensivo del embarazo que se inicia después de las 20 semanas de gestación pero que persiste después de las 12 semanas del parto, es característico de:
+  - Repetida: es la misma pregunta que Q100_46 (hipertensión que persiste más de 12 semanas posparto = crónica).
+- **Q117_68** — Las causas más comunes de muerte en pacientes hipertensos son las:
+  - Repetida: es la misma pregunta que Q102_75 (cardiopatías como causa de muerte en hipertensos).
+- **Q118_77** — ¿Cuál de estos grupos sanguíneos es considerado como receptor universal?
+  - Repetida: es la misma pregunta que Q101_63 (AB Rh positivo como receptor universal).
+- **Q124_1** — Identifique la categoría a la que corresponde según la lesión.
+  - Fragmento ilegible: no describe la lesión a clasificar y las opciones están mezcladas.
+- **Q128_89** — ¿Cuál es el factor etiológico desencadenante en la apendicitis?
+  - Repetida: mismo contenido que Q102_81 (obstrucción de la luz como causa de la apendicitis).
+- **Q128_90** — La presentación clínica de la apendicitis en su presentación más simple y clásica es:
+  - Repetida: mismo contenido que Q118_81 (inicio clásico de la apendicitis con anorexia y dolor periumbilical).
+- **Q130_2** — Según las características de las vías de administración de fármacos sugiere limitaciones y precauciones para cada una de ellas. ¿Cuál de las siguientes es una limitación para la administración de fármacos por vía endovenosa?
+  - Pregunta inconsistente: el enunciado pide una limitación de la vía endovenosa y las opciones son ramas de la farmacología.
+- **Q134_47** — De las siguientes, la mejor opción de anticoncepción para las madres en fase de lactación es:
+  - Repetida: pregunta la misma anticoncepción en la lactancia que Q122_30. Su contexto se integró en la pregunta siguiente.
+- **Q135_32** — Identifique la etapa a la que corresponde la enfermedad:
+  - Fragmento: falta el caso clínico que describe la enfermedad a clasificar.
+- **Q135_54** — De las siguientes modalidades de tratamiento, señale el que corresponde a una paciente embarazada co sífilis de más de un año de duración.
+  - Repetida: mismo contenido que Q125_49 (tratamiento de la sífilis de más de un año en la embarazada).
+- **Q153_800** — Creatinina 1.1 mg/dl ¿Cuál sería el manejo clínico inicial más adecuado?
+  - Fragmento: solo se conserva un dato de laboratorio; falta el caso clínico.
+- **Q169_2** — ¿Cuál de los siguientes medicamentos tiene e mecanismo?
+  - Fragmento ilegible: el enunciado está incompleto («¿Cuál tiene el mecanismo?»).
+- **Q178_911** — Mientras le realiza el examen físico el paciente presenta signos neurológicos y una oximetría de pulso elevada. Tomando en cuenta lo hallazgos, ¿Cuál de estos diagnósticos podría estar presente en este paciente?
+  - Repetida: mismo contenido que Q129_911 (intoxicación por monóxido de carbono).
+- **Q179_3** — Urea: 60mg/dl, creatinina: 0.4mg/dl. Su diagnóstico más probable para esta paciente seria:
+  - Fragmento: falta el caso clínico; solo quedan valores de urea y creatinina.
+- **Q185_90** — Con relacion al caso anterior: ¿Cuál de los siguientes constituye el tratamiento más efectivo y seguro a largo plazo en los pacientes con acalasia?:
+  - Repetida: mismo contenido que Q128_85 (tratamiento de la acalasia).
+- **Q206_31** — La diarrea del destete ocurre:
+  - Repetida: mismo contenido que Q5_38 (diarrea del destete); además solo conserva tres opciones.
+- **Q206_36** — ¿Cuál de estos trastornos es considerado un defecto del tubo neural
+  - Repetida: mismo contenido que Q97_6 (defectos del tubo neural).
+- **Q207_47** — ¿Cuál de los siguientes agentes microbiológicos se asocia la coilocitosis?
+  - Repetida: mismo contenido que Q124_44 (coilocitosis y virus del papiloma humano).
+- **Q208_50** — El síndrome caracterizado por atrofia mamaria, falla en la lactancia, pérdida de vello púbico, amenorrea, insuficiencia corticoadrenal e hipotiroidismo es:
+  - Repetida: mismo contenido que Q92_46 (síndrome de Sheehan).
+- **Q211_76** — ¿Cuál de estas enfermedades es la causa más común de hemoptisis a nivel mundial?
+  - Repetida: mismo contenido que Q94_69 (tuberculosis como causa principal de hemoptisis); además sus opciones están mezcladas.
+- **Q211_84** — Paciente masculino de 32 años que llega a sala de emergencia del Hospital Dr. Ney Arias Lora con cuadro de dolor abdominal generalizado de 3 días de evolución y fiebre; refiere haber tomado diclofenac por más de 1 mes para tratar de aliviar un dolor que había iniciado en epigastrio pero que ahora se ha tornado generalizado; al examen físico presenta signo de rebote positivo y en los hallazgos radiográficos presencia de aire subdiafragmatico. ¿Cuál es su sospecha 18 diagnostica?
+  - Repetida: mismo diagnóstico y las mismas claves (AINE, peritonitis, neumoperitoneo) que Q138_81 (úlcera péptica perforada); además sus opciones están mezcladas.
+- **Q212_86** — ¿Cuál es el factor etiológico predominante en la apendicitis?
+  - Repetida: mismo contenido que Q102_81 (obstrucción de la luz como causa de la apendicitis).
+- **Q212_91** — Representan el vestigio del trayecto de descenso de la glándula tiroides desde el agujero ciego, en la base de la lengua, hacia la parte anteroinferior del cuello durante el desarrollo fetal.
+  - Repetida: mismo contenido que Q96_99 (quiste del conducto tirogloso).
