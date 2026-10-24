@@ -44,9 +44,11 @@ const WEEKDAYS = [
 
 const TIMES = [30, 60, 90, 120, 180, 240]
 const HONORIFICS: { id: Honorific; label: string }[] = [
-  { id: 'dr', label: 'Doctor' },
-  { id: 'dra', label: 'Doctora' },
-  { id: 'none', label: 'Prefiero no decirlo' },
+  { id: 'dr', label: 'Dr.' },
+  { id: 'dra', label: 'Dra.' },
+  { id: 'lic', label: 'Lic.' },
+  { id: 'est', label: 'Est.' },
+  { id: 'none', label: 'N/A' },
 ]
 const CONF_LABELS = { 1: 'Me cuesta', 2: 'Regular', 3: 'Lo domino' } as const
 
@@ -227,7 +229,7 @@ export default function Onboarding() {
                   </motion.div>
                   <div className="max-w-md">
                     <div className="text-sm font-medium" id="trato">¿Cómo quieres que te llamemos?</div>
-                    <div className="mt-2 grid grid-cols-3 gap-2" role="radiogroup" aria-labelledby="trato">
+                    <div className="mt-2 grid grid-cols-5 gap-2" role="radiogroup" aria-labelledby="trato">
                       {HONORIFICS.map((h) => (
                         <OptionCard key={h.id} active={honorific === h.id} onClick={() => setHonorific(h.id)} check={false} className="flex min-h-14 items-center justify-center px-2 py-3 text-center">
                           <span className="text-center text-sm font-semibold leading-tight">{h.label}</span>

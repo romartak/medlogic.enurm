@@ -211,7 +211,7 @@ export interface Achievement {
 
 export type Theme = 'light' | 'dark' | 'system'
 
-export type Honorific = 'dr' | 'dra' | 'none'
+export type Honorific = 'dr' | 'dra' | 'lic' | 'est' | 'none'
 
 export interface Settings {
   /** Nombre o apellido opcional. */

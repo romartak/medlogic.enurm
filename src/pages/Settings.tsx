@@ -67,11 +67,13 @@ export default function Settings() {
             <Segmented
               value={settings.honorific ?? 'none'}
               onChange={(h) => update({ honorific: h })}
-              className="mt-1.5 grid w-full grid-cols-3"
+              className="mt-1.5 grid w-full grid-cols-5"
               options={[
-                { value: 'dr', label: 'Doctor' },
-                { value: 'dra', label: 'Doctora' },
-                { value: 'none', label: 'No decirlo' },
+                { value: 'dr', label: 'Dr.' },
+                { value: 'dra', label: 'Dra.' },
+                { value: 'lic', label: 'Lic.' },
+                { value: 'est', label: 'Est.' },
+                { value: 'none', label: 'N/A' },
               ]}
             />
           </div>
@@ -159,7 +161,7 @@ export default function Settings() {
 
         <Card className="p-5 sm:p-6">
           <h2 className="font-semibold">Tus datos</h2>
-          <p className="mt-1 text-sm text-muted">Tu progreso se guarda solo en este dispositivo. Descarga un respaldo para moverlo a otro navegador o teléfono.</p>
+          <p className="mt-1 text-sm text-muted">Tu progreso se guarda en este dispositivo y en tu cuenta. Puedes descargar un respaldo cuando quieras.</p>
           <div className="mt-4 flex flex-wrap gap-2">
             <Button variant="outline" onClick={exportBackup}>
               <Download className="size-4" /> Exportar respaldo

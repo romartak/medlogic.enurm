@@ -79,7 +79,7 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: '¿De verdad es gratis?',
-    a: <>Sí, ahora y siempre. Es un proyecto de código abierto, sin anuncios y sin registro. Nadie vende tus datos porque no los recogemos.</>,
+    a: <>Sí, ahora y siempre. Es un proyecto de código abierto y sin anuncios. Solo necesitas una cuenta gratis con tu correo para guardar tu progreso, y nadie vende tus datos.</>,
   },
   {
     q: '¿Dónde se guarda mi progreso?',
@@ -367,8 +367,8 @@ export default function Landing() {
             {[
               [HeartHandshake, 'Gratis para siempre'],
               [ListChecks, 'Más de 1,000 preguntas explicadas · meta: 12,000'],
-              [ShieldCheck, 'Sin registro ni anuncios'],
-              [Check, 'Tu progreso queda en tu dispositivo'],
+              [ShieldCheck, 'Sin anuncios y sin costo'],
+              [Check, 'Tu progreso te sigue a cualquier dispositivo'],
             ].map(([I, t]) => {
               const C = I as typeof Check
               return (

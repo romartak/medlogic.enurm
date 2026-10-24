@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
-import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { HashRouter, Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom'
 import { MotionConfig } from 'motion/react'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { Toaster } from '@/components/ui/Toaster'
@@ -103,6 +103,28 @@ function Splash({ onLeft }: { onLeft?: () => void }) {
   )
 }
 
+/**
+ * Para usar la plataforma hay que iniciar sesión (la portada, el cuestionario del plan y la cuenta son públicos).
+ * Sin Supabase configurado no hay cuentas y todo queda abierto. Sin conexión se deja pasar a quien ya había entrado.
+ */
+function hadSessionOffline(): boolean {
+  try {
+    return navigator.onLine === false && localStorage.getItem('medlogic-auth') !== null
+  } catch {
+    return false
+  }
+}
+
+function AuthGate() {
+  const status = useAuth((s) => s.status)
+  const location = useLocation()
+  if (status === 'loading') return <Splash />
+  if (status === 'signed-out' && location.pathname !== '/cuenta' && !hadSessionOffline()) {
+    return <Navigate to="/cuenta" replace state={{ from: `${location.pathname}${location.search}` }} />
+  }
+  return <Outlet />
+}
+
 function PageFallback() {
   return (
     <div className="space-y-4">
@@ -162,6 +184,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/bienvenida" element={<Onboarding />} />
+            <Route element={<AuthGate />}>
             <Route path="/terminologia/leccion/:lessonId" element={<LingoLesson />} />
             <Route path="/terminologia/relampago" element={<LingoBlitz />} />
             <Route element={<AppLayout />}>
@@ -204,6 +227,7 @@ export default function App() {
               <Route path="/cuenta" element={<Lazy><Account /></Lazy>} />
               <Route path="/terminologia" element={<Lazy><LingoPath /></Lazy>} />
               <Route path="*" element={<Navigate to="/inicio" replace />} />
+            </Route>
             </Route>
           </Routes>
         </Suspense>

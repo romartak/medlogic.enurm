@@ -1,28 +1,34 @@
-import { useState, type FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useState, type FormEvent } from 'react'
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { CloudOff, Cloud, Eye, EyeOff, KeyRound, Laptop, LogOut, Mail, RefreshCw, ShieldCheck, Smartphone, UserRound } from 'lucide-react'
+import { CloudOff, Cloud, Eye, EyeOff, KeyRound, Laptop, LogOut, Mail, RefreshCw, Settings as SettingsIcon, ShieldCheck, Smartphone, Trash2, UserRound } from 'lucide-react'
 import { authErrorMessage, authRedirectUrl, isSupabaseConfigured, supabase } from '@/lib/supabase'
 import { syncNow } from '@/lib/sync'
 import { displayName, useAuth } from '@/store/auth'
-import { Button, Card, PageHeader, Segmented } from '@/components/ui/primitives'
+import { Button, buttonClass, Card, PageHeader, Segmented } from '@/components/ui/primitives'
+import { Modal } from '@/components/ui/Modal'
+import { Avatar, AVATARS, isAvatarId } from '@/components/ui/Avatar'
+import { deleteMyAccount, hadAccount, markHadAccount, setAvatar } from '@/lib/account'
+import { useProgress } from '@/store/progress'
+import type { Honorific } from '@/types'
 import { toast } from '@/store/toasts'
-import { cn, formatDate } from '@/lib/utils'
+import { addressName, cn, formatDate } from '@/lib/utils'
 import { captchaEnabled, Turnstile } from '@/components/Turnstile'
 
 const CONTACT_EMAIL = 'medlogic.care@gmail.com'
 const RECOVERY_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Olvidé mi contraseña de MedLogic ENURM')}&body=${encodeURIComponent('Hola, olvidé mi contraseña. Mi cuenta es este correo.')}`
 
-/** Cómo prefiere que lo llamen quien se registra: lo que se muestra y el tratamiento que antecede al nombre. */
-const TREATMENTS = [
-  { value: 'doctor', label: 'Dr.', prefix: 'Dr.' },
-  { value: 'doctora', label: 'Dra.', prefix: 'Dra.' },
-  { value: 'licenciado', label: 'Lic.', prefix: 'Lic.' },
-  { value: 'estudiante', label: 'Est.', prefix: 'Est.' },
-  { value: 'na', label: 'N/A', prefix: '' },
-  { value: 'ninguno', label: 'Prefiero no decirlo', prefix: '' },
-] as const
-type Treatment = (typeof TREATMENTS)[number]['value']
+/** Tratamientos del cuestionario. Al registrarse solo se preguntan si la persona no los puso allí. */
+const TREATMENTS: { value: Honorific; label: string }[] = [
+  { value: 'dr', label: 'Dr.' },
+  { value: 'dra', label: 'Dra.' },
+  { value: 'lic', label: 'Lic.' },
+  { value: 'est', label: 'Est.' },
+  { value: 'none', label: 'N/A' },
+]
+
+/** El acceso con Google se activa cuando ya esté listo en Google Cloud y Supabase; hasta entonces solo correo y contraseña. */
+const GOOGLE_LOGIN_ENABLED = false
 
 const field = 'mt-1.5 h-12 w-full rounded-xl border border-soft surface-2 px-4 outline-none transition-colors focus:border-brand-500'
 
@@ -76,9 +82,15 @@ function NotConfigured() {
 
 type Mode = 'signin' | 'signup'
 
-function AuthForm() {
-  const [mode, setMode] = useState<Mode>('signin')
-  const [treatment, setTreatment] = useState<Treatment>('ninguno')
+function AuthForm({ from }: { from?: string }) {
+  // Quien llega por primera vez desde el cuestionario del plan abre «Crear cuenta»; quien ya tuvo cuenta, «Iniciar sesión».
+  const [mode, setMode] = useState<Mode>(from && !hadAccount() ? 'signup' : 'signin')
+  const [nudge, setNudge] = useState(!!from)
+  const settings = useProgress((s) => s.settings)
+  const updateSettings = useProgress((s) => s.updateSettings)
+  // Lo que ya respondió en el cuestionario no se vuelve a preguntar.
+  const answered = settings.honorific !== null || settings.name.trim() !== ''
+  const [treatment, setTreatment] = useState<Honorific>('none')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -103,14 +115,15 @@ function AuthForm() {
         if (error) throw error
         toast({ kind: 'success', title: 'Sesión iniciada' })
       } else if (mode === 'signup') {
-        const callName = name.trim().slice(0, 60)
-        const prefix = TREATMENTS.find((t) => t.value === treatment)?.prefix ?? ''
+        const honorific = answered ? settings.honorific : treatment
+        const callName = (answered ? settings.name : name).trim().slice(0, 60)
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
-          options: { data: { name: [prefix, callName].filter(Boolean).join(' '), call_name: callName, treatment }, emailRedirectTo: authRedirectUrl(), ...captcha },
+          options: { data: { name: addressName({ name: callName, honorific }), call_name: callName, treatment: honorific }, emailRedirectTo: authRedirectUrl(), ...captcha },
         })
         if (error) throw error
+        if (!answered) updateSettings({ name: callName, honorific })
         if (!data.session) setSent({ title: 'Confirma tu correo', body: `Te enviamos un enlace a ${email}. Ábrelo desde este dispositivo para activar tu cuenta.` })
         else toast({ kind: 'success', title: '¡Cuenta creada!' })
       }
@@ -151,9 +164,25 @@ function AuthForm() {
 
   return (
     <div className="mx-auto grid max-w-5xl items-start gap-8 lg:grid-cols-[1fr_440px]">
+      <Modal open={nudge && !busy} onClose={() => setNudge(false)} title="Guarda tu plan y tu progreso" className="sm:max-w-md">
+        <div className="-mt-1 space-y-4">
+          <div className="grid size-14 place-items-center rounded-2xl bg-brand-500/10 text-brand-700 dark:text-brand-300">
+            <Cloud className="size-7" />
+          </div>
+          <p className="text-sm text-muted">Crea tu cuenta gratis con tu correo. Así tu plan y todo lo que respondas se guardan en la nube desde el primer momento y no se pierden, aunque cambies de teléfono.</p>
+          <div className="flex flex-col gap-2 sm:flex-row-reverse">
+            <Button size="lg" className="sm:flex-1" onClick={() => (setMode('signup'), setNudge(false))}>
+              Crear mi cuenta
+            </Button>
+            <Button size="lg" variant="outline" className="sm:flex-1" onClick={() => (setMode('signin'), setNudge(false))}>
+              Ya tengo cuenta
+            </Button>
+          </div>
+        </div>
+      </Modal>
       <div className="order-last lg:order-first lg:pt-6">
         <h2 className="font-display text-2xl font-bold">Tu progreso, en todos tus dispositivos</h2>
-        <p className="mt-2 text-muted">La cuenta es gratis y opcional: sin ella todo sigue funcionando en este navegador.</p>
+        <p className="mt-2 text-muted">La cuenta es gratis y la necesitas para estudiar en MedLogic. Con ella tu progreso se guarda en la nube y te sigue a cualquier dispositivo.</p>
         <ul className="mt-6 space-y-4">
           {[
             [Smartphone, 'Empieza en el teléfono, sigue en la computadora', 'Preguntas, flashcards, plan y terminología se sincronizan solos.'],
@@ -188,15 +217,24 @@ function AuthForm() {
         />
         <h2 className="font-display text-xl font-bold">{titles[mode]}</h2>
 
-        <Button variant="outline" size="lg" className="mt-5 w-full" onClick={google}>
-          <GoogleIcon className="size-5" /> Continuar con Google
-        </Button>
-        <div className="my-5 flex items-center gap-3 text-xs text-muted">
-          <span className="h-px flex-1 bg-[var(--border)]" /> o con tu correo <span className="h-px flex-1 bg-[var(--border)]" />
-        </div>
+        {GOOGLE_LOGIN_ENABLED && (
+          <>
+            <Button variant="outline" size="lg" className="mt-5 w-full" onClick={google}>
+              <GoogleIcon className="size-5" /> Continuar con Google
+            </Button>
+            <div className="my-5 flex items-center gap-3 text-xs text-muted">
+              <span className="h-px flex-1 bg-[var(--border)]" /> o con tu correo <span className="h-px flex-1 bg-[var(--border)]" />
+            </div>
+          </>
+        )}
 
-        <form onSubmit={submit} className="space-y-4">
-          {mode === 'signup' && (
+        <form onSubmit={submit} className={cn('space-y-4', !GOOGLE_LOGIN_ENABLED && 'mt-5')}>
+          {mode === 'signup' && answered && (
+            <p className="rounded-xl bg-brand-500/10 px-4 py-3 text-sm">
+              Crearás tu cuenta como <b>{addressName(settings) || 'tu perfil del cuestionario'}</b>. Guardaremos tu plan y tu progreso.
+            </p>
+          )}
+          {mode === 'signup' && !answered && (
             <>
               <fieldset>
                 <legend className="text-sm font-medium">¿Cómo prefieres que te llamemos?</legend>
@@ -219,9 +257,9 @@ function AuthForm() {
                 </div>
               </fieldset>
               <label className="block text-sm font-medium" htmlFor="acc-apodo">
-                Tu nombre o apellido
+                Tu nombre o apellido <span className="font-normal text-muted">(opcional)</span>
                 {/* Sin «name» en id/name y con autocomplete="off": así el iPhone no ofrece tarjetas ni contactos aquí. */}
-                <input id="acc-apodo" name="apodo" required maxLength={60} value={name} onChange={(e) => setName(e.target.value)} autoComplete="off" autoCorrect="off" autoCapitalize="words" spellCheck={false} enterKeyHint="next" data-form-type="other" data-lpignore="true" placeholder="Escribe tu nombre o tu apellido" className={field} />
+                <input id="acc-apodo" name="apodo" maxLength={60} value={name} onChange={(e) => setName(e.target.value)} autoComplete="off" autoCorrect="off" autoCapitalize="words" spellCheck={false} enterKeyHint="next" data-form-type="other" data-lpignore="true" placeholder="Escribe tu nombre o tu apellido" className={field} />
               </label>
             </>
           )}
@@ -341,13 +379,59 @@ function Profile() {
   const navigate = useNavigate()
   const { user, sync, lastSyncedAt, signOut } = useAuth()
   const name = displayName(user)
-  const callName = (user?.user_metadata as { call_name?: string } | undefined)?.call_name
-  const initial = (callName || name).charAt(0).toUpperCase()
+  const meta = user?.user_metadata as { call_name?: string; avatar?: string } | undefined
+  const initial = (meta?.call_name || name).charAt(0).toUpperCase()
+  const avatar = isAvatarId(meta?.avatar) ? meta.avatar : null
   const provider = (user?.app_metadata as { provider?: string } | undefined)?.provider
+  const [savingAvatar, setSavingAvatar] = useState<string | null>(null)
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [typed, setTyped] = useState('')
+  const [deleting, setDeleting] = useState(false)
+  const [deleteError, setDeleteError] = useState('')
+  const CONFIRM_WORD = 'ELIMINAR'
+
+  const pickAvatar = async (id: string | null) => {
+    if (id === avatar || savingAvatar !== null) return
+    setSavingAvatar(id ?? 'inicial')
+    try {
+      await setAvatar(id)
+      toast({ kind: 'success', title: 'Foto de perfil actualizada' })
+    } catch (err) {
+      toast({ kind: 'error', title: 'No se pudo cambiar la foto', body: authErrorMessage(err) })
+    } finally {
+      setSavingAvatar(null)
+    }
+  }
+
+  const closeDelete = () => {
+    if (deleting) return
+    setConfirmDelete(false)
+    setTyped('')
+    setDeleteError('')
+  }
+
+  const doDelete = async () => {
+    if (typed.trim().toUpperCase() !== CONFIRM_WORD) return
+    setDeleting(true)
+    setDeleteError('')
+    try {
+      await deleteMyAccount()
+      setConfirmDelete(false)
+      toast({ kind: 'info', title: 'Tu cuenta fue eliminada', body: 'Borramos tu cuenta y tu progreso en la nube. Gracias por haber estudiado con MedLogic.' })
+      navigate('/')
+    } catch {
+      setDeleteError('No pudimos eliminar la cuenta. Revisa tu conexión e inténtalo de nuevo; si sigue fallando, escríbenos a ' + CONTACT_EMAIL + '.')
+    } finally {
+      setDeleting(false)
+    }
+  }
+
   return (
     <div className="mx-auto max-w-2xl space-y-4">
       <Card className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center">
-        <span className="grid size-16 shrink-0 place-items-center rounded-2xl bg-brand-gradient font-display text-2xl font-extrabold text-white">{initial || <UserRound className="size-7" />}</span>
+        <Avatar avatar={avatar} initial={initial} className="size-16 shrink-0 text-2xl">
+          <UserRound className="size-7" />
+        </Avatar>
         <div className="min-w-0 flex-1">
           <div className="font-display text-xl font-bold">{name}</div>
           <div className="truncate text-sm text-muted">{user?.email}</div>
@@ -364,18 +448,105 @@ function Profile() {
           <LogOut className="size-4" /> Cerrar sesión
         </Button>
       </Card>
-      <Card className="flex flex-wrap items-center gap-4 p-6">
-        <span className={cn('grid size-12 shrink-0 place-items-center rounded-2xl', sync === 'error' || sync === 'offline' ? 'bg-amber-500/15 text-amber-700 dark:text-amber-300' : 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300')}>
-          {sync === 'offline' ? <CloudOff className="size-6" /> : <Cloud className="size-6" />}
-        </span>
-        <div className="min-w-0 flex-1">
-          <div className="font-semibold">Sincronización: {SYNC_LABEL[sync]}</div>
-          <div className="text-sm text-muted">{lastSyncedAt ? `Última copia: ${formatDate(new Date(lastSyncedAt).getTime(), { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}` : 'Tu progreso se guarda en la nube automáticamente.'}</div>
+
+      <Card className="p-6">
+        <h2 className="font-semibold">Foto de perfil</h2>
+        <p className="mt-1 text-sm text-muted">Elige el diseño que más te guste.</p>
+        <div role="radiogroup" aria-label="Foto de perfil" className="mt-4 grid grid-cols-4 gap-3 sm:grid-cols-5">
+          <button
+            type="button"
+            role="radio"
+            aria-checked={avatar === null}
+            aria-label="Usar mi inicial"
+            onClick={() => void pickAvatar(null)}
+            className={cn('group relative grid aspect-square place-items-center rounded-2xl p-1 transition-transform active:scale-95', avatar === null ? 'ring-2 ring-brand-500 ring-offset-2 ring-offset-[var(--surface)]' : 'hover:scale-105')}
+          >
+            <Avatar initial={initial} className="size-full text-xl">
+              <UserRound className="size-6" />
+            </Avatar>
+          </button>
+          {AVATARS.map((a) => (
+            <button
+              key={a.id}
+              type="button"
+              role="radio"
+              aria-checked={avatar === a.id}
+              aria-label={a.label}
+              title={a.label}
+              onClick={() => void pickAvatar(a.id)}
+              className={cn('relative grid aspect-square place-items-center rounded-2xl p-1 transition-transform active:scale-95', avatar === a.id ? 'ring-2 ring-brand-500 ring-offset-2 ring-offset-[var(--surface)]' : 'hover:scale-105', savingAvatar === a.id && 'opacity-60')}
+            >
+              <Avatar avatar={a.id} className="size-full" />
+            </button>
+          ))}
         </div>
-        <Button variant="secondary" onClick={() => void syncNow()} disabled={sync === 'syncing'}>
+      </Card>
+
+      <Card className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center">
+        <div className="flex min-w-0 flex-1 items-center gap-4">
+          <span className={cn('grid size-12 shrink-0 place-items-center rounded-2xl', sync === 'error' || sync === 'offline' ? 'bg-amber-500/15 text-amber-700 dark:text-amber-300' : 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300')}>
+            {sync === 'offline' ? <CloudOff className="size-6" /> : <Cloud className="size-6" />}
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="font-semibold">Sincronización: {SYNC_LABEL[sync]}</div>
+            <div className="text-sm text-muted">{lastSyncedAt ? `Última copia: ${formatDate(new Date(lastSyncedAt).getTime(), { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}` : 'Tu progreso se guarda en la nube automáticamente.'}</div>
+          </div>
+        </div>
+        <Button variant="secondary" className="w-full sm:w-auto" onClick={() => void syncNow()} disabled={sync === 'syncing'}>
           <RefreshCw className={cn('size-4', sync === 'syncing' && 'animate-spin')} /> Sincronizar ahora
         </Button>
       </Card>
+
+      <Card className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center">
+        <div className="flex min-w-0 flex-1 items-center gap-4">
+          <span className="grid size-12 shrink-0 place-items-center rounded-2xl surface-2 text-muted">
+            <SettingsIcon className="size-6" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="font-semibold">Tu nombre, tu trato y tus datos</div>
+            <div className="text-sm text-muted">Cambia cómo te llamamos, descarga un respaldo o borra tu progreso desde Ajustes.</div>
+          </div>
+        </div>
+        <Link to="/ajustes" className={buttonClass('outline', 'md', 'w-full sm:w-auto')}>
+          Ir a Ajustes
+        </Link>
+      </Card>
+
+      <Card className="border-rose-500/30 p-6">
+        <h2 className="font-semibold text-rose-600 dark:text-rose-400">Eliminar mi cuenta</h2>
+        <p className="mt-1 text-sm text-muted">Borra tu cuenta y todo lo que está en la nube: tu perfil, tu progreso, tu lugar en el ranking y tus simulacros. No se puede deshacer.</p>
+        <Button variant="danger" className="mt-4" onClick={() => setConfirmDelete(true)}>
+          <Trash2 className="size-4" /> Eliminar mi cuenta
+        </Button>
+      </Card>
+
+      <Modal open={confirmDelete} onClose={closeDelete} title="¿Eliminar tu cuenta para siempre?">
+        <div className="space-y-4 text-sm">
+          <ul className="list-disc space-y-1 pl-5 text-muted">
+            <li>Se borra tu cuenta y tu correo de nuestros servidores.</li>
+            <li>Se borra tu progreso en la nube, tu ranking y tus simulacros.</li>
+            <li>Se borra el progreso guardado en este dispositivo.</li>
+            <li>Para volver a estudiar tendrás que crear una cuenta nueva.</li>
+          </ul>
+          <label className="block font-medium" htmlFor="del-confirm">
+            Para confirmar, escribe <b className="text-rose-600 dark:text-rose-400">{CONFIRM_WORD}</b>
+            <input id="del-confirm" name="confirmar" value={typed} onChange={(e) => setTyped(e.target.value)} autoComplete="off" autoCapitalize="characters" spellCheck={false} className={field} />
+          </label>
+          {deleteError && (
+            <p role="alert" className="rounded-xl bg-rose-500/10 px-3 py-2.5 text-rose-700 dark:text-rose-300">
+              {deleteError}
+            </p>
+          )}
+          <div className="flex justify-end gap-2">
+            <Button variant="ghost" onClick={closeDelete} disabled={deleting}>
+              Cancelar
+            </Button>
+            <Button variant="danger" onClick={() => void doDelete()} disabled={deleting || typed.trim().toUpperCase() !== CONFIRM_WORD}>
+              {deleting && <RefreshCw className="size-4 animate-spin" />} Eliminar para siempre
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }
@@ -383,12 +554,18 @@ function Profile() {
 export default function Account() {
   const { status, recovering } = useAuth()
   const ready = status !== 'loading'
+  // Quien llegó aquí porque la página pide iniciar sesión vuelve a donde iba al entrar.
+  const from = (useLocation().state as { from?: string } | null)?.from
+  useEffect(() => {
+    if (status === 'signed-in') markHadAccount()
+  }, [status])
+  if (status === 'signed-in' && !recovering && from && from !== '/cuenta') return <Navigate to={from} replace />
 
   return (
     <div>
-      <PageHeader icon={<UserRound className="size-6" />} title={status === 'signed-in' ? 'Mi cuenta' : 'Tu cuenta'} subtitle={status === 'signed-in' ? 'Tu perfil y la sincronización de tu progreso.' : 'Guarda tu progreso en la nube y estudia desde cualquier dispositivo.'} />
+      <PageHeader icon={<UserRound className="size-6" />} title={status === 'signed-in' ? 'Mi cuenta' : 'Tu cuenta'} subtitle={status === 'signed-in' ? 'Tu perfil y la sincronización de tu progreso.' : 'Crea tu cuenta gratis o inicia sesión para estudiar y guardar tu progreso.'} />
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-        {!isSupabaseConfigured ? <NotConfigured /> : !ready ? <div className="skeleton mx-auto h-80 max-w-md rounded-2xl" /> : recovering ? <NewPassword /> : status === 'signed-in' ? <Profile /> : <AuthForm />}
+        {!isSupabaseConfigured ? <NotConfigured /> : !ready ? <div className="skeleton mx-auto h-80 max-w-md rounded-2xl" /> : recovering ? <NewPassword /> : status === 'signed-in' ? <Profile /> : <AuthForm from={from} />}
       </motion.div>
     </div>
   )
