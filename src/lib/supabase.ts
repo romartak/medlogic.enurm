@@ -38,6 +38,7 @@ export function authErrorMessage(err: unknown): string {
     [/email not confirmed/i, 'Confirma tu correo: te enviamos un enlace al registrarte.'],
     [/user already registered/i, 'Ya existe una cuenta con ese correo. Inicia sesión.'],
     [/password should be at least/i, 'La contraseña debe tener al menos 8 caracteres.'],
+    [/password should contain|weak password/i, 'Esa contraseña es muy fácil de adivinar. Usa más caracteres y mezcla letras y números.'],
     [/rate limit|too many requests/i, 'Demasiados intentos. Espera unos minutos y vuelve a intentarlo.'],
     [/unable to validate email|invalid email/i, 'Escribe un correo válido.'],
     [/provider is not enabled/i, 'Ese método de acceso aún no está activado.'],
