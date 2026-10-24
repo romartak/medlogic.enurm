@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { CloudOff, Cloud, Eye, EyeOff, KeyRound, Laptop, LogOut, Mail, RefreshCw, Settings as SettingsIcon, ShieldCheck, Smartphone, Trash2, UserRound } from 'lucide-react'
 import { authErrorMessage, authRedirectUrl, isSupabaseConfigured, supabase } from '@/lib/supabase'
@@ -8,7 +8,8 @@ import { displayName, useAuth } from '@/store/auth'
 import { Button, buttonClass, Card, PageHeader, Segmented } from '@/components/ui/primitives'
 import { Modal } from '@/components/ui/Modal'
 import { Avatar, AVATARS, isAvatarId } from '@/components/ui/Avatar'
-import { deleteMyAccount, hadAccount, markHadAccount, setAvatar } from '@/lib/account'
+import { deleteMyAccount, hadAccount, logout, markHadAccount, setAvatar, takeNotice } from '@/lib/account'
+import { flushPending } from '@/lib/sync'
 import { useProgress } from '@/store/progress'
 import type { Honorific } from '@/types'
 import { toast } from '@/store/toasts'
@@ -86,6 +87,8 @@ function AuthForm({ from }: { from?: string }) {
   // Quien llega por primera vez desde el cuestionario del plan abre «Crear cuenta»; quien ya tuvo cuenta, «Iniciar sesión».
   const [mode, setMode] = useState<Mode>(from && !hadAccount() ? 'signup' : 'signin')
   const [nudge, setNudge] = useState(!!from)
+  // Mensaje de una sola vez tras cerrar sesión o borrar la cuenta (no se abre el aviso de «crear cuenta»).
+  const [notice] = useState(takeNotice)
   const settings = useProgress((s) => s.settings)
   const updateSettings = useProgress((s) => s.updateSettings)
   // Lo que ya respondió en el cuestionario no se vuelve a preguntar.
@@ -215,6 +218,11 @@ function AuthForm({ from }: { from?: string }) {
             { value: 'signup', label: 'Crear cuenta' },
           ]}
         />
+        {notice && (
+          <p role="status" className="mb-4 rounded-xl bg-brand-500/10 px-4 py-3 text-sm">
+            {notice === 'deleted' ? 'Tu cuenta fue eliminada. Gracias por haber estudiado con MedLogic.' : 'Cerraste sesión. Tu progreso quedó guardado en tu cuenta y este dispositivo quedó limpio.'}
+          </p>
+        )}
         <h2 className="font-display text-xl font-bold">{titles[mode]}</h2>
 
         {GOOGLE_LOGIN_ENABLED && (
@@ -376,8 +384,7 @@ const SYNC_LABEL = {
 } as const
 
 function Profile() {
-  const navigate = useNavigate()
-  const { user, sync, lastSyncedAt, signOut } = useAuth()
+  const { user, sync, lastSyncedAt } = useAuth()
   const name = displayName(user)
   const meta = user?.user_metadata as { call_name?: string; avatar?: string } | undefined
   const initial = (meta?.call_name || name).charAt(0).toUpperCase()
@@ -388,7 +395,25 @@ function Profile() {
   const [typed, setTyped] = useState('')
   const [deleting, setDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState('')
+  const [leaving, setLeaving] = useState(false)
+  const [confirmLeave, setConfirmLeave] = useState(false)
   const CONFIRM_WORD = 'ELIMINAR'
+
+  /** Sube lo pendiente y cierra la sesión. Si no se pudo subir, avisa antes de borrar este dispositivo. */
+  const leave = async () => {
+    setLeaving(true)
+    if (!(await flushPending())) {
+      setLeaving(false)
+      setConfirmLeave(true)
+      return
+    }
+    await logout()
+  }
+  const leaveAnyway = async () => {
+    setConfirmLeave(false)
+    setLeaving(true)
+    await logout()
+  }
 
   const pickAvatar = async (id: string | null) => {
     if (id === avatar || savingAvatar !== null) return
@@ -415,10 +440,8 @@ function Profile() {
     setDeleting(true)
     setDeleteError('')
     try {
+      // Si sale bien, la página se recarga en la pantalla de entrar.
       await deleteMyAccount()
-      setConfirmDelete(false)
-      toast({ kind: 'info', title: 'Tu cuenta fue eliminada', body: 'Borramos tu cuenta y tu progreso en la nube. Gracias por haber estudiado con MedLogic.' })
-      navigate('/')
     } catch {
       setDeleteError('No pudimos eliminar la cuenta. Revisa tu conexión e inténtalo de nuevo; si sigue fallando, escríbenos a ' + CONTACT_EMAIL + '.')
     } finally {
@@ -437,15 +460,8 @@ function Profile() {
           <div className="truncate text-sm text-muted">{user?.email}</div>
           <div className="mt-1 text-xs text-muted">Acceso con {provider === 'google' ? 'Google' : 'correo'}</div>
         </div>
-        <Button
-          variant="outline"
-          onClick={async () => {
-            await signOut()
-            toast({ kind: 'info', title: 'Sesión cerrada', body: 'Tu progreso sigue guardado en este dispositivo y en tu cuenta.' })
-            navigate('/inicio')
-          }}
-        >
-          <LogOut className="size-4" /> Cerrar sesión
+        <Button variant="outline" onClick={() => void leave()} disabled={leaving}>
+          {leaving ? <RefreshCw className="size-4 animate-spin" /> : <LogOut className="size-4" />} Cerrar sesión
         </Button>
       </Card>
 
@@ -519,6 +535,19 @@ function Profile() {
           <Trash2 className="size-4" /> Eliminar mi cuenta
         </Button>
       </Card>
+
+      <Modal open={confirmLeave} onClose={() => setConfirmLeave(false)} title="No se pudo guardar tu último progreso">
+        <div className="space-y-4 text-sm">
+          <p className="text-muted">Tu progreso más reciente todavía no está guardado en la nube (¿sin conexión?). Si cierras sesión ahora, ese progreso se perderá de este dispositivo.</p>
+          <p className="text-muted">Lo mejor es esperar a tener conexión, pulsar «Sincronizar ahora» y cerrar sesión después.</p>
+          <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <Button variant="danger" onClick={() => void leaveAnyway()}>
+              Cerrar sesión y perderlo
+            </Button>
+            <Button onClick={() => setConfirmLeave(false)}>Me quedo</Button>
+          </div>
+        </div>
+      </Modal>
 
       <Modal open={confirmDelete} onClose={closeDelete} title="¿Eliminar tu cuenta para siempre?">
         <div className="space-y-4 text-sm">
