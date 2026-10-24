@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Download, Monitor, Moon, Settings as SettingsIcon, Sparkles, Sun, Trash2, Upload, Cloud } from 'lucide-react'
 import { describeProfile } from '@/lib/plan'
 import { useProgress } from '@/store/progress'
@@ -8,13 +8,16 @@ import { MAX_SNAPSHOT_BYTES, restoreSnapshot, takeSnapshot } from '@/lib/backup'
 import { useAuth } from '@/store/auth'
 import { Button, Card, LinkButton, PageHeader, Segmented, Toggle } from '@/components/ui/primitives'
 import { Modal } from '@/components/ui/Modal'
-import { cn, dayKey, downloadFile, splitName } from '@/lib/utils'
+import { cn, dayKey, downloadFile } from '@/lib/utils'
 import { formatEnurmDate, upcomingEnurm } from '@/data/enurm'
 import { toast } from '@/store/toasts'
 import { REPO_URL } from '@/components/layout/AppLayout'
 import { GithubIcon } from '@/components/ui/Logo'
-import type { Theme } from '@/types'
+import type { Honorific, Theme } from '@/types'
 import { ReminderCard } from '@/components/ReminderCard'
+import { UniversityPicker } from '@/components/UniversityPicker'
+import { UNIVERSITY_NEEDS_NAME, universityLabel } from '@/data/universities'
+import { saveProfile, type ProfileEdit } from '@/lib/account'
 
 export default function Settings() {
   const settings = useProgress((s) => s.settings)
@@ -25,6 +28,28 @@ export default function Settings() {
   const reset = useProgress((s) => s.resetProgress)
   const [confirmReset, setConfirmReset] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
+
+  // Los cambios del perfil se editan en un borrador y se aplican de golpe con «Guardar cambios».
+  const fromStore = (): ProfileEdit => ({ name: settings.name, honorific: settings.honorific ?? 'none', university: profile.university, universityOther: profile.universityOther })
+  const [draft, setDraft] = useState<ProfileEdit>(fromStore)
+  const [picking, setPicking] = useState(false)
+  const [saving, setSaving] = useState(false)
+  // Si lo guardado cambia por otro lado (p. ej. se baja el progreso de la nube), el borrador lo sigue.
+  useEffect(() => setDraft({ name: settings.name, honorific: settings.honorific ?? 'none', university: profile.university, universityOther: profile.universityOther }), [settings.name, settings.honorific, profile.university, profile.universityOther])
+  const dirty = draft.name !== settings.name || draft.honorific !== (settings.honorific ?? 'none') || draft.university !== profile.university || draft.universityOther !== profile.universityOther
+  const canSave = !draft.university || !UNIVERSITY_NEEDS_NAME.has(draft.university) || draft.universityOther.trim().length > 1
+
+  const save = async () => {
+    if (!dirty || !canSave || saving) return
+    setSaving(true)
+    try {
+      const ok = await saveProfile(draft)
+      if (ok) toast({ kind: 'success', title: 'Cambios guardados', body: authStatus === 'signed-in' ? 'Ya se actualizaron en tu cuenta y en el ranking.' : 'Se aplicaron en toda la página.' })
+      else toast({ kind: 'error', title: 'Guardado en este dispositivo', body: 'No pudimos actualizar la nube ahora mismo. Vuelve a tocar «Guardar cambios» cuando tengas conexión.' })
+    } finally {
+      setSaving(false)
+    }
+  }
 
   const exportBackup = () => {
     downloadFile(`medlogic-respaldo-${dayKey()}.json`, JSON.stringify(takeSnapshot(), null, 2))
@@ -62,28 +87,64 @@ export default function Settings() {
 
         <Card className="p-5 sm:p-6">
           <h2 className="font-semibold">Perfil</h2>
-          <div className="mt-4">
-            <span className="text-sm text-muted">¿Cómo quieres que te llamemos?</span>
-            <Segmented
-              value={settings.honorific ?? 'none'}
-              onChange={(h) => update({ honorific: h })}
-              className="mt-1.5 grid w-full grid-cols-5"
-              options={[
-                { value: 'dr', label: 'Dr.' },
-                { value: 'dra', label: 'Dra.' },
-                { value: 'lic', label: 'Lic.' },
-                { value: 'est', label: 'Est.' },
-                { value: 'none', label: 'N/A' },
-              ]}
-            />
-          </div>
-          <label className="mt-4 block">
-            <span className="text-sm text-muted">Nombre o apellido (opcional)</span>
-            <input value={settings.name} onChange={(e) => update({ name: e.target.value })} onBlur={() => {
-                const { title, name } = splitName(settings.name)
-                update({ name, honorific: settings.honorific && settings.honorific !== 'none' ? settings.honorific : (title ?? settings.honorific) })
-              }} placeholder="Ej.: Pichardo" className="mt-1.5 h-11 w-full rounded-xl border border-soft surface-2 px-3 text-sm outline-none focus:border-brand-500" />
-          </label>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              void save()
+            }}
+          >
+            <div className="mt-4">
+              <span className="text-sm text-muted">¿Cómo quieres que te llamemos?</span>
+              <Segmented<Honorific>
+                value={draft.honorific ?? 'none'}
+                onChange={(honorific) => setDraft({ ...draft, honorific })}
+                className="mt-1.5 grid w-full grid-cols-5"
+                options={[
+                  { value: 'dr', label: 'Dr.' },
+                  { value: 'dra', label: 'Dra.' },
+                  { value: 'lic', label: 'Lic.' },
+                  { value: 'est', label: 'Est.' },
+                  { value: 'none', label: 'N/A' },
+                ]}
+              />
+            </div>
+            <label className="mt-4 block">
+              <span className="text-sm text-muted">Nombre o apellido (opcional)</span>
+              <input
+                value={draft.name}
+                maxLength={60}
+                onChange={(e) => setDraft({ ...draft, name: e.target.value })}
+                placeholder="Ej.: Pichardo"
+                autoComplete="off"
+                className="mt-1.5 h-11 w-full rounded-xl border border-soft surface-2 px-3 text-sm capitalize outline-none focus:border-brand-500"
+              />
+            </label>
+            <div className="mt-4">
+              <span className="text-sm text-muted">Universidad</span>
+              <button type="button" onClick={() => setPicking(true)} className="mt-1.5 flex h-11 w-full items-center justify-between gap-3 rounded-xl border border-soft surface-2 px-3 text-left text-sm hover:border-brand-500/40">
+                <span className="truncate font-medium">{draft.university ? universityLabel(draft.university, draft.universityOther) : 'Sin elegir'}</span>
+                <span className="shrink-0 font-semibold text-brand-700 dark:text-brand-400">Cambiar</span>
+              </button>
+              <p className="mt-1.5 text-xs text-muted">Define en qué ranking de universidad apareces.</p>
+            </div>
+            <div className="mt-5 flex flex-wrap items-center gap-3">
+              <Button type="submit" disabled={!dirty || !canSave || saving}>
+                {saving ? 'Guardando…' : 'Guardar cambios'}
+              </Button>
+              {dirty && !saving && (
+                <button type="button" onClick={() => setDraft(fromStore())} className="text-sm font-semibold text-muted hover:text-[var(--text)]">
+                  Descartar
+                </button>
+              )}
+              {!dirty && <span className="text-xs text-muted">{authStatus === 'signed-in' ? 'Se aplica en toda la página, tu cuenta y el ranking.' : 'Se aplica en toda la página.'}</span>}
+            </div>
+          </form>
+          <Modal open={picking} onClose={() => setPicking(false)} title="Tu universidad" className="sm:max-w-xl">
+            <UniversityPicker value={draft.university} other={draft.universityOther} onChange={(university, universityOther) => setDraft({ ...draft, university, universityOther })} />
+            <Button className="mt-4 w-full" disabled={!canSave} onClick={() => setPicking(false)}>
+              Listo
+            </Button>
+          </Modal>
           <div className="mt-4">
             <span className="text-sm text-muted">Convocatoria del ENURM</span>
             <div className="mt-1.5 grid gap-2 sm:grid-cols-3">

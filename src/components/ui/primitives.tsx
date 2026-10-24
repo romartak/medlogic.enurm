@@ -184,6 +184,7 @@ export function Segmented<T extends string | number>({ value, onChange, options,
         return (
           <button
             key={String(o.value)}
+            type="button"
             role="radio"
             aria-checked={active}
             onClick={() => onChange(o.value)}

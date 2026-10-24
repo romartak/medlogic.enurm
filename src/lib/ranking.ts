@@ -2,7 +2,7 @@ import { supabase } from './supabase'
 import { overview, computeStreak } from './stats'
 import { useProgress } from '@/store/progress'
 import { useAuth, displayName } from '@/store/auth'
-import { splitName } from './utils'
+import { addressName, splitName } from './utils'
 
 /**
  * Ranking de estudiantes (Supabase: tabla public.leaderboard y funciones ranking_*, ver
@@ -55,7 +55,7 @@ export function myPublicStats() {
   const p = useProgress.getState()
   const ov = overview(p.attempts, p.activity, 0)
   const user = useAuth.getState().user
-  const name = shortName(p.settings.name || displayName(user))
+  const name = shortName(addressName(p.settings) || displayName(user))
   return {
     display_name: name || null,
     show_name: p.settings.rankingShowName,

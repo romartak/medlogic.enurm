@@ -1,5 +1,9 @@
 import { supabase } from './supabase'
-import { pauseSync } from './sync'
+import { flushPending, pauseSync } from './sync'
+import { publishStats } from './ranking'
+import { useAuth } from '@/store/auth'
+import { addressName, splitName } from './utils'
+import type { Honorific } from '@/types'
 import { useProgress } from '@/store/progress'
 import { useAnki } from '@/store/anki'
 import { useLingo } from '@/store/lingo'
@@ -112,4 +116,38 @@ export async function deleteMyAccount(): Promise<void> {
   const { error } = await supabase.rpc('delete_own_account')
   if (error) throw error
   await endSession('deleted')
+}
+
+export interface ProfileEdit {
+  name: string
+  honorific: Honorific | null
+  university: string | null
+  universityOther: string
+}
+
+/**
+ * Guarda los cambios del perfil y los lleva a todas partes de una vez: la página (al instante), los datos
+ * de la cuenta, el perfil, el progreso en la nube y el ranking. Devuelve false si lo de la nube no se pudo
+ * completar (en ese caso queda guardado en este dispositivo y el progreso se reintenta solo).
+ */
+export async function saveProfile(edit: ProfileEdit): Promise<boolean> {
+  const typed = splitName(edit.name)
+  const honorific = edit.honorific && edit.honorific !== 'none' ? edit.honorific : (typed.title ?? edit.honorific)
+  const name = typed.name.slice(0, 60)
+  const progress = useProgress.getState()
+  progress.updateSettings({ name, honorific })
+  progress.updateProfile({ university: edit.university, universityOther: edit.universityOther.trim().slice(0, 80) })
+
+  const user = useAuth.getState().user
+  if (!supabase || !user) return true
+  let ok = true
+  const { error } = await supabase.auth.updateUser({ data: { name: addressName({ name, honorific }), call_name: name, treatment: honorific } })
+  if (error) ok = false
+  // El nombre del perfil de la cuenta (tabla profiles) acompaña al de los datos de la cuenta.
+  const { error: perfil } = await supabase.from('profiles').update({ display_name: (addressName({ name, honorific }) || null)?.slice(0, 80) ?? null }).eq('id', user.id)
+  if (perfil) ok = false
+  // Sube ya el progreso (incluye nombre y universidad) y actualiza el ranking.
+  if (!(await flushPending())) ok = false
+  if (!(await publishStats(true))) ok = false
+  return ok
 }
