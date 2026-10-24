@@ -13,7 +13,7 @@ import { flushPending } from '@/lib/sync'
 import { useProgress } from '@/store/progress'
 import type { Honorific } from '@/types'
 import { toast } from '@/store/toasts'
-import { addressName, cn, formatDate } from '@/lib/utils'
+import { addressName, cleanName, cn, formatDate, splitName } from '@/lib/utils'
 import { captchaEnabled, Turnstile } from '@/components/Turnstile'
 
 const CONTACT_EMAIL = 'medlogic.care@gmail.com'
@@ -118,8 +118,10 @@ function AuthForm({ from }: { from?: string }) {
         if (error) throw error
         toast({ kind: 'success', title: 'Sesión iniciada' })
       } else if (mode === 'signup') {
-        const honorific = answered ? settings.honorific : treatment
-        const callName = (answered ? settings.name : name).trim().slice(0, 60)
+        const typed = splitName(answered ? settings.name : name)
+        const chosen = answered ? settings.honorific : treatment
+        const honorific = chosen && chosen !== 'none' ? chosen : (typed.title ?? chosen)
+        const callName = typed.name.slice(0, 60)
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
@@ -238,9 +240,13 @@ function AuthForm({ from }: { from?: string }) {
 
         <form onSubmit={submit} className={cn('space-y-4', !GOOGLE_LOGIN_ENABLED && 'mt-5')}>
           {mode === 'signup' && answered && (
-            <p className="rounded-xl bg-brand-500/10 px-4 py-3 text-sm">
-              Crearás tu cuenta como <b>{addressName(settings) || 'tu perfil del cuestionario'}</b>. Guardaremos tu plan y tu progreso.
-            </p>
+            <div className="flex items-center gap-3 rounded-2xl border border-brand-500/25 bg-brand-500/10 px-4 py-3">
+              <span className="grid size-10 shrink-0 place-items-center rounded-full bg-brand-gradient font-display font-bold text-white">{(cleanName(settings.name) || addressName(settings) || '·').charAt(0).toUpperCase()}</span>
+              <div className="min-w-0 text-sm">
+                <div className="truncate font-display text-base font-bold">{addressName(settings) || 'Tu perfil del cuestionario'}</div>
+                <div className="text-muted">Guardaremos tu plan y tu progreso.</div>
+              </div>
+            </div>
           )}
           {mode === 'signup' && !answered && (
             <>
@@ -267,7 +273,11 @@ function AuthForm({ from }: { from?: string }) {
               <label className="block text-sm font-medium" htmlFor="acc-apodo">
                 Tu nombre o apellido <span className="font-normal text-muted">(opcional)</span>
                 {/* Sin «name» en id/name y con autocomplete="off": así el iPhone no ofrece tarjetas ni contactos aquí. */}
-                <input id="acc-apodo" name="apodo" maxLength={60} value={name} onChange={(e) => setName(e.target.value)} autoComplete="off" autoCorrect="off" autoCapitalize="words" spellCheck={false} enterKeyHint="next" data-form-type="other" data-lpignore="true" placeholder="Escribe tu nombre o tu apellido" className={field} />
+                <input id="acc-apodo" name="apodo" maxLength={60} value={name} onChange={(e) => setName(e.target.value)} onBlur={() => {
+                    const t = splitName(name)
+                    setName(t.name)
+                    if (t.title && treatment === 'none') setTreatment(t.title)
+                  }} autoComplete="off" autoCorrect="off" autoCapitalize="words" spellCheck={false} enterKeyHint="next" data-form-type="other" data-lpignore="true" placeholder="Escribe tu nombre o tu apellido" className={field} />
               </label>
             </>
           )}

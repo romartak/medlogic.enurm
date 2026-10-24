@@ -2,6 +2,7 @@ import { supabase } from './supabase'
 import { overview, computeStreak } from './stats'
 import { useProgress } from '@/store/progress'
 import { useAuth, displayName } from '@/store/auth'
+import { splitName } from './utils'
 
 /**
  * Ranking de estudiantes (Supabase: tabla public.leaderboard y funciones ranking_*, ver
@@ -39,10 +40,12 @@ export interface UniversityRow {
 
 /** «Robinson Santos» → «Robinson S.»: suficiente para reconocerse sin exponer el nombre completo. */
 export function shortName(full: string): string {
-  const parts = full.trim().split(/\s+/).filter(Boolean)
-  if (!parts.length) return ''
+  const { title, name } = splitName(full)
+  const parts = name.split(' ').filter(Boolean)
+  const label = title ? { dr: 'Dr.', dra: 'Dra.', lic: 'Lic.', est: 'Est.' }[title] : ''
   // Con título («Dra. Genao», «Dr. Pérez Gómez») se conserva el apellido: «Dra. Genao».
-  if (/^dra?\.?$/i.test(parts[0]) && parts[1]) return `${parts[0]} ${parts[1].slice(0, 20)}`
+  if (label) return parts[0] ? `${label} ${parts[0].slice(0, 20)}` : label.replace('.', '')
+  if (!parts.length) return ''
   const first = parts[0].slice(0, 20)
   return parts[1] ? `${first} ${parts[1][0].toUpperCase()}.` : first
 }

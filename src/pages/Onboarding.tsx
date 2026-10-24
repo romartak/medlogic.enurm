@@ -10,7 +10,7 @@ import { getSpecialty } from '@/data/specialties'
 import { Logo } from '@/components/ui/Logo'
 import { Icon } from '@/components/ui/Icon'
 import { Button, SpecialtyBadge } from '@/components/ui/primitives'
-import { addressName, cn, daysBetween, formatMinutes, tintText } from '@/lib/utils'
+import { addressName, cn, splitName, daysBetween, formatMinutes, tintText } from '@/lib/utils'
 import { revealPlan } from '@/components/PlanReveal'
 import { useBank } from '@/store/bank'
 import { StudyEvidence } from '@/components/StudyEvidence'
@@ -177,11 +177,22 @@ export default function Onboarding() {
     setStep((s) => Math.max(0, Math.min(steps.length - 1, s + delta)))
   }
 
+  /** Limpia lo escrito: sin título repetido (si lo escribió y no eligió trato, se usa ese) y con mayúscula inicial. */
+  const tidy = () => {
+    const { title, name: clean } = splitName(name)
+    return { name: clean, honorific: honorific && honorific !== 'none' ? honorific : (title ?? honorific) }
+  }
+  const tidyName = () => {
+    const t = tidy()
+    setName(t.name)
+    setHonorific(t.honorific)
+  }
+
   const finish = () => {
     const methods: StudyMethod[] = p.methods.includes('preguntas') ? p.methods : ['preguntas', ...p.methods]
     updateProfile({ ...p, methods, completed: true, skipped: false })
-    updateSettings({ name: name.trim(), honorific, examDate: target.enurm?.iso ?? null, dailyGoal: questionsPerDay })
-    const who = addressName({ name, honorific })
+    updateSettings({ ...tidy(), examDate: target.enurm?.iso ?? null, dailyGoal: questionsPerDay })
+    const who = addressName(tidy())
     revealPlan(who ? `${who[0].toUpperCase()}${who.slice(1)}, tu camino al ENURM empieza hoy.` : 'Tu camino al ENURM empieza hoy.', () => navigate('/plan', { replace: true }))
   }
 
@@ -240,7 +251,7 @@ export default function Onboarding() {
                       <span className="text-sm font-medium">
                         Tu nombre o apellido <span className="font-normal text-muted">(opcional)</span>
                       </span>
-                      <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ej.: Pichardo" autoComplete="family-name" className="mt-2 h-12 w-full rounded-xl border border-soft bg-[var(--surface)] px-4 outline-none focus:border-brand-500" />
+                      <input value={name} onChange={(e) => setName(e.target.value)} onBlur={tidyName} placeholder="Ej.: Pichardo" autoComplete="family-name" className="mt-2 capitalize h-12 w-full rounded-xl border border-soft bg-[var(--surface)] px-4 outline-none focus:border-brand-500" />
                     </label>
                     {(honorific || name.trim()) && (
                       <p className="mt-3 text-sm text-muted">

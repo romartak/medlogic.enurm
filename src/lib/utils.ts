@@ -1,3 +1,4 @@
+import type { Honorific } from '@/types'
 /** Texto con el color de una categoría, mezclado con el color de texto para que se lea en ambos temas. */
 export function tintText(color: string): { color: string } {
   return { color: `color-mix(in oklab, ${color} 55%, var(--text))` }
@@ -149,13 +150,60 @@ export function softHyphens(text: string, minLength = 9): string {
   })
 }
 
-/** «Dra. Pérez», «doctor», «Lic. Ana», «Est. Ana», «Ana» o '' según el trato elegido y el nombre opcional. */
-export function addressName(s: { name: string; honorific?: 'dr' | 'dra' | 'lic' | 'est' | 'none' | null }): string {
-  const name = s.name.trim()
-  if (s.honorific === 'dr') return name ? `Dr. ${name}` : 'doctor'
-  if (s.honorific === 'dra') return name ? `Dra. ${name}` : 'doctora'
-  if (s.honorific === 'lic') return name ? `Lic. ${name}` : ''
-  if (s.honorific === 'est') return name ? `Est. ${name}` : ''
+type Title = 'dr' | 'dra' | 'lic' | 'est'
+const TITLE_LABEL: Record<Title, string> = { dr: 'Dr.', dra: 'Dra.', lic: 'Lic.', est: 'Est.' }
+const TITLE_WORDS: [RegExp, Title][] = [
+  [/^(dr|doctor)$/i, 'dr'],
+  [/^(dra|doctora)$/i, 'dra'],
+  [/^(lic|licda|licenciado|licenciada)$/i, 'lic'],
+  [/^(est|estudiante)$/i, 'est'],
+]
+const PARTICLES = new Set(['de', 'del', 'la', 'las', 'los', 'y', 'e'])
+
+/** Primera letra en mayúscula en cada palabra («pérez gómez» → «Pérez Gómez»); «de», «del», «y»… quedan en minúscula. */
+function capitalizeName(name: string): string {
+  return name
+    .split(' ')
+    .map((word, i) => {
+      if (!word) return word
+      if (i > 0 && PARTICLES.has(word.toLowerCase())) return word.toLowerCase()
+      // Todo en mayúsculas («PÉREZ») se normaliza; si hay mezcla («McDonald») se respeta.
+      const rest = word.length > 1 && word === word.toUpperCase() ? word.slice(1).toLowerCase() : word.slice(1)
+      return word.charAt(0).toLocaleUpperCase('es') + rest
+    })
+    .join(' ')
+}
+
+/**
+ * Separa el título que alguien escribió dentro del nombre («Dr. Sánchez», «doctora ana») del nombre en sí,
+ * y deja el nombre limpio: sin espacios de más y con mayúscula inicial en cada palabra.
+ */
+export function splitName(raw: string): { title: Title | null; name: string } {
+  let rest = raw.replace(/\s+/g, ' ').trim()
+  let title: Title | null = null
+  // Se repite por si escribió el título más de una vez («Dr. Dr. Sánchez»).
+  for (;;) {
+    const m = /^([a-záéíóúñ]+)(\.\s*|\s+)/i.exec(rest)
+    const found = m && TITLE_WORDS.find(([re]) => re.test(m[1]))
+    if (!m || !found) break
+    title ??= found[1]
+    rest = rest.slice(m[0].length).trim()
+  }
+  return { title, name: capitalizeName(rest) }
+}
+
+/** El nombre ya limpio (sin título repetido y con mayúsculas). */
+export function cleanName(raw: string): string {
+  return splitName(raw).name
+}
+
+/** «Dra. Pérez», «doctor», «Lic. Ana», «Est. Ana», «Ana» o '' según el trato elegido y el nombre opcional. Nunca repite el título. */
+export function addressName(s: { name: string; honorific?: Honorific | null }): string {
+  const { title: typed, name } = splitName(s.name)
+  const chosen = s.honorific && s.honorific !== 'none' ? s.honorific : typed
+  if (chosen === 'dr') return name ? `${TITLE_LABEL.dr} ${name}` : 'doctor'
+  if (chosen === 'dra') return name ? `${TITLE_LABEL.dra} ${name}` : 'doctora'
+  if (chosen === 'lic' || chosen === 'est') return name ? `${TITLE_LABEL[chosen]} ${name}` : ''
   return name
 }
 
