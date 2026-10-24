@@ -13,6 +13,8 @@ export const DEFAULT_PROFILE: StudyProfile = {
   examYear: null,
   examMonth: null,
   residency: null,
+  university: null,
+  universityOther: '',
   studyDays: [1, 2, 3, 4, 5, 6],
   minutesPerDay: 90,
   confidence: {},

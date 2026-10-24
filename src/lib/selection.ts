@@ -1,5 +1,5 @@
 import type { Question, QuestionAttempt } from '@/types'
-import { shuffle } from './utils'
+import { seededRandom, shuffle } from './utils'
 import { normalizeText } from '@/data/specialties'
 
 const STOP = new Set(['de', 'del', 'la', 'las', 'el', 'los', 'y', 'en', 'con', 'por', 'para', 'una', 'uno', 'que'])
@@ -45,10 +45,10 @@ export function filterQuestions(questions: Question[], f: SelectionFilters, atte
  * Selección proporcional por especialidad (como en un examen real): reparte `count`
  * según el peso de cada especialidad en el conjunto filtrado.
  */
-export function proportionalPick(pool: Question[], count: number): Question[] {
-  if (pool.length <= count) return shuffle(pool)
+export function proportionalPick(pool: Question[], count: number, rng: () => number = Math.random): Question[] {
+  if (pool.length <= count) return shuffle(pool, rng)
   const groups = new Map<string, Question[]>()
-  for (const q of shuffle(pool)) {
+  for (const q of shuffle(pool, rng)) {
     const g = groups.get(q.specialty) ?? []
     g.push(q)
     groups.set(q.specialty, g)
@@ -64,7 +64,16 @@ export function proportionalPick(pool: Question[], count: number): Question[] {
     if (g.qs.length) picked.push(g.qs.shift()!)
     i++
   }
-  return shuffle(picked)
+  return shuffle(picked, rng)
+}
+
+/**
+ * La misma selección para todos los que usen la misma semilla (simulacro nacional, duelos):
+ * se ordena el banco por id antes de mezclar para que no dependa del orden de carga.
+ */
+export function seededPick(pool: Question[], count: number, seed: string): Question[] {
+  const sorted = [...pool].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
+  return proportionalPick(sorted, count, seededRandom(seed))
 }
 
 /** Orden aleatorio de opciones para una pregunta (order[pos] = índice original). */

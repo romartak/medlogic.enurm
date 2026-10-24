@@ -14,6 +14,7 @@ import { toast } from '@/store/toasts'
 import { REPO_URL } from '@/components/layout/AppLayout'
 import { GithubIcon } from '@/components/ui/Logo'
 import type { Theme } from '@/types'
+import { ReminderCard } from '@/components/ReminderCard'
 
 export default function Settings() {
   const settings = useProgress((s) => s.settings)
@@ -153,6 +154,8 @@ export default function Settings() {
             <input type="range" min={10} max={200} step={5} value={settings.dailyGoal} onChange={(e) => update({ dailyGoal: +e.target.value })} className="mt-3 w-full accent-[var(--color-brand-500)]" />
           </label>
         </Card>
+
+        <ReminderCard />
 
         <Card className="p-5 sm:p-6">
           <h2 className="font-semibold">Tus datos</h2>

@@ -46,6 +46,11 @@ const Roadmap = lazy(() => import('@/pages/Roadmap'))
 const Prompts = lazy(() => import('@/pages/Prompts'))
 const AiGuide = lazy(() => import('@/pages/AiGuide'))
 const Settings = lazy(() => import('@/pages/Settings'))
+const Ranking = lazy(() => import('@/pages/Ranking'))
+const NationalExam = lazy(() => import('@/pages/NationalExam'))
+const Duel = lazy(() => import('@/pages/Duel'))
+const Cases = lazy(() => import('@/pages/Cases'))
+const EcgGame = lazy(() => import('@/pages/EcgGame'))
 const Account = lazy(() => import('@/pages/Account'))
 const LingoPath = lazy(() => import('@/pages/lingo/Path'))
 const LingoLesson = lazy(() => import('@/pages/lingo/Lesson'))
@@ -164,6 +169,12 @@ export default function App() {
               <Route path="/practica" element={<Lazy><Practice /></Lazy>} />
               <Route path="/simulacro" element={<Lazy><Exam /></Lazy>} />
               <Route path="/simulacro/:id" element={<Lazy><ExamResults /></Lazy>} />
+              <Route path="/simulacro-nacional" element={<Lazy><NationalExam /></Lazy>} />
+              <Route path="/duelo" element={<Lazy><Duel /></Lazy>} />
+              <Route path="/duelo/:code" element={<Lazy><Duel /></Lazy>} />
+              <Route path="/casos" element={<Lazy><Cases /></Lazy>} />
+              <Route path="/casos/:id" element={<Lazy><Cases /></Lazy>} />
+              <Route path="/ecg" element={<Lazy><EcgGame /></Lazy>} />
               <Route path="/repaso" element={<Lazy><Review /></Lazy>} />
               <Route path="/flashcards" element={<Lazy><Decks /></Lazy>} />
               <Route path="/flashcards/navegador" element={<Lazy><CardBrowser /></Lazy>} />
@@ -178,6 +189,7 @@ export default function App() {
               <Route path="/estadisticas" element={<Lazy><Stats /></Lazy>} />
               <Route path="/plan" element={<Lazy><Planner /></Lazy>} />
               <Route path="/logros" element={<Lazy><Achievements /></Lazy>} />
+              <Route path="/ranking" element={<Lazy><Ranking /></Lazy>} />
               <Route path="/banco" element={<Lazy><Bank /></Lazy>} />
               <Route path="/especialidades" element={<Lazy><Specialties /></Lazy>} />
               <Route path="/especialidades/:id" element={<Lazy><SpecialtyDetail /></Lazy>} />
