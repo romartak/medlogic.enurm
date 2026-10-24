@@ -13,6 +13,17 @@ import { captchaEnabled, Turnstile } from '@/components/Turnstile'
 const CONTACT_EMAIL = 'medlogic.care@gmail.com'
 const RECOVERY_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Olvidé mi contraseña de MedLogic ENURM')}&body=${encodeURIComponent('Hola, olvidé mi contraseña. Mi cuenta es este correo.')}`
 
+/** Cómo prefiere que lo llamen quien se registra: lo que se muestra y el tratamiento que antecede al nombre. */
+const TREATMENTS = [
+  { value: 'doctor', label: 'Doctor', prefix: 'Dr.' },
+  { value: 'doctora', label: 'Doctora', prefix: 'Dra.' },
+  { value: 'enfermero', label: 'Enfermero', prefix: 'Enfermero' },
+  { value: 'enfermera', label: 'Enfermera', prefix: 'Enfermera' },
+  { value: 'estudiante', label: 'Estudiante', prefix: '' },
+  { value: 'ninguno', label: 'Prefiero no decirlo', prefix: '' },
+] as const
+type Treatment = (typeof TREATMENTS)[number]['value']
+
 const field = 'mt-1.5 h-12 w-full rounded-xl border border-soft surface-2 px-4 outline-none transition-colors focus:border-brand-500'
 
 function GoogleIcon({ className }: { className?: string }) {
@@ -67,9 +78,11 @@ type Mode = 'signin' | 'signup'
 
 function AuthForm() {
   const [mode, setMode] = useState<Mode>('signin')
+  const [treatment, setTreatment] = useState<Treatment>('ninguno')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [password2, setPassword2] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [sent, setSent] = useState<null | { title: string; body: string }>(null)
@@ -79,6 +92,7 @@ function AuthForm() {
   const submit = async (e: FormEvent) => {
     e.preventDefault()
     if (!supabase) return
+    if (mode === 'signup' && password !== password2) return setError('Las contraseñas no coinciden.')
     if (captchaEnabled && !captchaToken) return setError('Espera a que termine la verificación anti-robots.')
     const captcha = captchaEnabled ? { captchaToken } : {}
     setBusy(true)
@@ -89,7 +103,13 @@ function AuthForm() {
         if (error) throw error
         toast({ kind: 'success', title: 'Sesión iniciada' })
       } else if (mode === 'signup') {
-        const { data, error } = await supabase.auth.signUp({ email, password, options: { data: { name: name.trim().slice(0, 80) }, emailRedirectTo: authRedirectUrl(), ...captcha } })
+        const callName = name.trim().slice(0, 60)
+        const prefix = TREATMENTS.find((t) => t.value === treatment)?.prefix ?? ''
+        const { data, error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: { data: { name: [prefix, callName].filter(Boolean).join(' '), call_name: callName, treatment }, emailRedirectTo: authRedirectUrl(), ...captcha },
+        })
         if (error) throw error
         if (!data.session) setSent({ title: 'Confirma tu correo', body: `Te enviamos un enlace a ${email}. Ábrelo desde este dispositivo para activar tu cuenta.` })
         else toast({ kind: 'success', title: '¡Cuenta creada!' })
@@ -177,10 +197,32 @@ function AuthForm() {
 
         <form onSubmit={submit} className="space-y-4">
           {mode === 'signup' && (
-            <label className="block text-sm font-medium" htmlFor="acc-name">
-              ¿Cómo te llamamos?
-              <input id="acc-name" name="nickname" maxLength={80} value={name} onChange={(e) => setName(e.target.value)} autoComplete="nickname" autoCapitalize="words" placeholder="Dra. / Dr. …" className={field} />
-            </label>
+            <>
+              <fieldset>
+                <legend className="text-sm font-medium">¿Cómo prefieres que te llamemos?</legend>
+                <div role="radiogroup" className="mt-2 flex flex-wrap gap-2">
+                  {TREATMENTS.map((t) => (
+                    <button
+                      key={t.value}
+                      type="button"
+                      role="radio"
+                      aria-checked={treatment === t.value}
+                      onClick={() => setTreatment(t.value)}
+                      className={cn(
+                        'h-10 rounded-full border px-4 text-sm font-medium transition-colors',
+                        treatment === t.value ? 'border-brand-500 bg-brand-500/10 text-brand-700 dark:text-brand-300' : 'border-soft surface-2 text-muted hover:text-[var(--text)]',
+                      )}
+                    >
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
+              <label className="block text-sm font-medium" htmlFor="acc-name">
+                Tu nombre o apellido
+                <input id="acc-name" name="nickname" required maxLength={60} value={name} onChange={(e) => setName(e.target.value)} autoComplete="nickname" autoCapitalize="words" placeholder="Escribe tu nombre o tu apellido" className={field} />
+              </label>
+            </>
           )}
           <label className="block text-sm font-medium" htmlFor="acc-email">
             Correo electrónico
@@ -193,6 +235,14 @@ function AuthForm() {
             <PasswordInput id="acc-pass" name="password" value={password} onChange={setPassword} autoComplete={mode === 'signup' ? 'new-password' : 'current-password'} />
             {mode === 'signup' && <p className="mt-1.5 text-xs text-muted">Mínimo 8 caracteres.</p>}
           </div>
+          {mode === 'signup' && (
+            <div>
+              <label htmlFor="acc-pass2" className="text-sm font-medium">
+                Repite la contraseña
+              </label>
+              <PasswordInput id="acc-pass2" name="password-confirm" value={password2} onChange={setPassword2} autoComplete="new-password" />
+            </div>
+          )}
 
           <Turnstile onToken={setCaptchaToken} round={captchaRound} />
 
@@ -290,11 +340,13 @@ function Profile() {
   const navigate = useNavigate()
   const { user, sync, lastSyncedAt, signOut } = useAuth()
   const name = displayName(user)
+  const callName = (user?.user_metadata as { call_name?: string } | undefined)?.call_name
+  const initial = (callName || name).charAt(0).toUpperCase()
   const provider = (user?.app_metadata as { provider?: string } | undefined)?.provider
   return (
     <div className="mx-auto max-w-2xl space-y-4">
       <Card className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center">
-        <span className="grid size-16 shrink-0 place-items-center rounded-2xl bg-brand-gradient font-display text-2xl font-extrabold text-white">{name.charAt(0).toUpperCase() || <UserRound className="size-7" />}</span>
+        <span className="grid size-16 shrink-0 place-items-center rounded-2xl bg-brand-gradient font-display text-2xl font-extrabold text-white">{initial || <UserRound className="size-7" />}</span>
         <div className="min-w-0 flex-1">
           <div className="font-display text-xl font-bold">{name}</div>
           <div className="truncate text-sm text-muted">{user?.email}</div>
