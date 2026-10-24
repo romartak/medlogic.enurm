@@ -1,6 +1,6 @@
 # Publicar MedLogic ENURM en Vercel (con cuentas)
 
-La página funciona sin servidor: sin cuentas, todo se guarda en el navegador de cada persona. Con Supabase se activan las cuentas (Google, correo y contraseña o enlace por correo) y el progreso se sincroniza entre dispositivos.
+La página funciona sin servidor: sin cuentas, todo se guarda en el navegador de cada persona. Con Supabase se activan las cuentas (Google, o correo y contraseña; quien olvide su contraseña escribe a medlogic.care@gmail.com) y el progreso se sincroniza entre dispositivos.
 
 ## Camino corto (recomendado, unos 10 minutos)
 

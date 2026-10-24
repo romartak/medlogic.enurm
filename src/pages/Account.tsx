@@ -10,6 +10,9 @@ import { toast } from '@/store/toasts'
 import { cn, formatDate } from '@/lib/utils'
 import { captchaEnabled, Turnstile } from '@/components/Turnstile'
 
+const CONTACT_EMAIL = 'medlogic.care@gmail.com'
+const RECOVERY_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Olvidé mi contraseña de MedLogic ENURM')}&body=${encodeURIComponent('Hola, olvidé mi contraseña. Mi cuenta es este correo.')}`
+
 const field = 'mt-1.5 h-12 w-full rounded-xl border border-soft surface-2 px-4 outline-none transition-colors focus:border-brand-500'
 
 function GoogleIcon({ className }: { className?: string }) {
@@ -23,11 +26,11 @@ function GoogleIcon({ className }: { className?: string }) {
   )
 }
 
-function PasswordInput({ value, onChange, autoComplete, id }: { value: string; onChange: (v: string) => void; autoComplete: string; id: string }) {
+function PasswordInput({ value, onChange, autoComplete, id, name }: { value: string; onChange: (v: string) => void; autoComplete: string; id: string; name: string }) {
   const [show, setShow] = useState(false)
   return (
     <div className="relative">
-      <input id={id} type={show ? 'text' : 'password'} required minLength={8} maxLength={72} value={value} onChange={(e) => onChange(e.target.value)} autoComplete={autoComplete} className={cn(field, 'pr-12')} />
+      <input id={id} name={name} type={show ? 'text' : 'password'} required minLength={8} maxLength={72} value={value} onChange={(e) => onChange(e.target.value)} autoComplete={autoComplete} className={cn(field, 'pr-12')} />
       <button type="button" onClick={() => setShow(!show)} className="absolute top-1.5 right-1 grid size-12 place-items-center text-muted hover:text-[var(--text)]" aria-label={show ? 'Ocultar contraseña' : 'Mostrar contraseña'}>
         {show ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
       </button>
@@ -60,7 +63,7 @@ function NotConfigured() {
 
 /* ---------- Acceso ---------- */
 
-type Mode = 'signin' | 'signup' | 'reset' | 'magic'
+type Mode = 'signin' | 'signup'
 
 function AuthForm() {
   const [mode, setMode] = useState<Mode>('signin')
@@ -90,14 +93,6 @@ function AuthForm() {
         if (error) throw error
         if (!data.session) setSent({ title: 'Confirma tu correo', body: `Te enviamos un enlace a ${email}. Ábrelo desde este dispositivo para activar tu cuenta.` })
         else toast({ kind: 'success', title: '¡Cuenta creada!' })
-      } else if (mode === 'magic') {
-        const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: authRedirectUrl(), ...captcha } })
-        if (error) throw error
-        setSent({ title: 'Revisa tu correo', body: `Te enviamos un enlace de acceso a ${email}. Ábrelo desde este dispositivo.` })
-      } else {
-        const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: authRedirectUrl(), ...captcha })
-        if (error) throw error
-        setSent({ title: 'Revisa tu correo', body: `Si existe una cuenta con ${email}, recibirás un enlace para crear una contraseña nueva.` })
       }
     } catch (err) {
       setError(authErrorMessage(err))
@@ -132,7 +127,7 @@ function AuthForm() {
       </Card>
     )
 
-  const titles: Record<Mode, string> = { signin: 'Inicia sesión', signup: 'Crea tu cuenta gratis', reset: 'Recupera tu contraseña', magic: 'Entra con un enlace' }
+  const titles: Record<Mode, string> = { signin: 'Inicia sesión', signup: 'Crea tu cuenta gratis' }
 
   return (
     <div className="mx-auto grid max-w-5xl items-start gap-8 lg:grid-cols-[1fr_440px]">
@@ -162,57 +157,42 @@ function AuthForm() {
       </div>
 
       <Card className="p-6 sm:p-8">
-        {(mode === 'signin' || mode === 'signup') && (
-          <Segmented
-            value={mode}
-            onChange={(m) => (setMode(m), setError(''))}
-            className="mb-6 grid w-full grid-cols-2"
-            options={[
-              { value: 'signin', label: 'Iniciar sesión' },
-              { value: 'signup', label: 'Crear cuenta' },
-            ]}
-          />
-        )}
+        <Segmented
+          value={mode}
+          onChange={(m) => (setMode(m), setError(''))}
+          className="mb-6 grid w-full grid-cols-2"
+          options={[
+            { value: 'signin', label: 'Iniciar sesión' },
+            { value: 'signup', label: 'Crear cuenta' },
+          ]}
+        />
         <h2 className="font-display text-xl font-bold">{titles[mode]}</h2>
 
-        {(mode === 'signin' || mode === 'signup') && (
-          <>
-            <Button variant="outline" size="lg" className="mt-5 w-full" onClick={google}>
-              <GoogleIcon className="size-5" /> Continuar con Google
-            </Button>
-            <div className="my-5 flex items-center gap-3 text-xs text-muted">
-              <span className="h-px flex-1 bg-[var(--border)]" /> o con tu correo <span className="h-px flex-1 bg-[var(--border)]" />
-            </div>
-          </>
-        )}
+        <Button variant="outline" size="lg" className="mt-5 w-full" onClick={google}>
+          <GoogleIcon className="size-5" /> Continuar con Google
+        </Button>
+        <div className="my-5 flex items-center gap-3 text-xs text-muted">
+          <span className="h-px flex-1 bg-[var(--border)]" /> o con tu correo <span className="h-px flex-1 bg-[var(--border)]" />
+        </div>
 
-        <form onSubmit={submit} className={cn('space-y-4', (mode === 'reset' || mode === 'magic') && 'mt-5')}>
+        <form onSubmit={submit} className="space-y-4">
           {mode === 'signup' && (
             <label className="block text-sm font-medium" htmlFor="acc-name">
               ¿Cómo te llamamos?
-              <input id="acc-name" maxLength={80} value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" placeholder="Dra. / Dr. …" className={field} />
+              <input id="acc-name" name="name" maxLength={80} value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" placeholder="Dra. / Dr. …" className={field} />
             </label>
           )}
           <label className="block text-sm font-medium" htmlFor="acc-email">
             Correo electrónico
-            <input id="acc-email" type="email" required maxLength={254} value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" inputMode="email" className={field} />
+            <input id="acc-email" name="email" type="email" required maxLength={254} value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" inputMode="email" className={field} />
           </label>
-          {(mode === 'signin' || mode === 'signup') && (
-            <div>
-              <div className="flex items-center justify-between">
-                <label htmlFor="acc-pass" className="text-sm font-medium">
-                  Contraseña
-                </label>
-                {mode === 'signin' && (
-                  <button type="button" onClick={() => (setMode('reset'), setError(''))} className="text-xs font-semibold text-brand-700 hover:underline dark:text-brand-400">
-                    ¿La olvidaste?
-                  </button>
-                )}
-              </div>
-              <PasswordInput id="acc-pass" value={password} onChange={setPassword} autoComplete={mode === 'signup' ? 'new-password' : 'current-password'} />
-              {mode === 'signup' && <p className="mt-1.5 text-xs text-muted">Mínimo 8 caracteres.</p>}
-            </div>
-          )}
+          <div>
+            <label htmlFor="acc-pass" className="text-sm font-medium">
+              Contraseña
+            </label>
+            <PasswordInput id="acc-pass" name="password" value={password} onChange={setPassword} autoComplete={mode === 'signup' ? 'new-password' : 'current-password'} />
+            {mode === 'signup' && <p className="mt-1.5 text-xs text-muted">Mínimo 8 caracteres.</p>}
+          </div>
 
           <Turnstile onToken={setCaptchaToken} round={captchaRound} />
 
@@ -224,36 +204,31 @@ function AuthForm() {
 
           <Button type="submit" size="lg" className="w-full" disabled={busy}>
             {busy && <RefreshCw className="size-4 animate-spin" />}
-            {mode === 'signin' ? 'Entrar' : mode === 'signup' ? 'Crear cuenta' : mode === 'magic' ? 'Enviarme el enlace' : 'Enviarme el enlace'}
+            {mode === 'signin' ? 'Entrar' : 'Crear cuenta'}
           </Button>
         </form>
 
-        {(mode === 'signin' || mode === 'signup') && (
-          <p className="mt-4 text-center text-xs text-muted">
-            Al continuar aceptas los{' '}
-            <a href={`${import.meta.env.BASE_URL}terminos/`} className="font-semibold underline">
-              Términos
+        <p className="mt-4 text-center text-xs text-muted">
+          Al continuar aceptas los{' '}
+          <a href={`${import.meta.env.BASE_URL}terminos/`} className="font-semibold underline">
+            Términos
+          </a>{' '}
+          y la{' '}
+          <a href={`${import.meta.env.BASE_URL}privacidad/`} className="font-semibold underline">
+            Política de privacidad
+          </a>
+          .
+        </p>
+
+        {mode === 'signin' && (
+          <p className="mt-5 text-center text-sm text-muted">
+            ¿Olvidaste tu contraseña?{' '}
+            <a href={RECOVERY_MAILTO} className="font-semibold text-brand-700 hover:underline dark:text-brand-400">
+              Escríbenos a {CONTACT_EMAIL}
             </a>{' '}
-            y la{' '}
-            <a href={`${import.meta.env.BASE_URL}privacidad/`} className="font-semibold underline">
-              Política de privacidad
-            </a>
-            .
+            desde el correo de tu cuenta y te ayudamos.
           </p>
         )}
-
-        <div className="mt-5 text-center text-sm">
-          {mode === 'signin' && (
-            <button onClick={() => (setMode('magic'), setError(''))} className="font-medium text-muted hover:text-[var(--text)]">
-              Prefiero recibir un enlace de acceso por correo
-            </button>
-          )}
-          {(mode === 'reset' || mode === 'magic') && (
-            <button onClick={() => (setMode('signin'), setError(''))} className="font-medium text-muted hover:text-[var(--text)]">
-              ← Volver a iniciar sesión
-            </button>
-          )}
-        </div>
       </Card>
     </div>
   )
@@ -286,7 +261,7 @@ function NewPassword() {
         <label htmlFor="new-pass" className="block text-sm font-medium">
           Contraseña nueva
         </label>
-        <PasswordInput id="new-pass" value={password} onChange={setPassword} autoComplete="new-password" />
+        <PasswordInput id="new-pass" name="password" value={password} onChange={setPassword} autoComplete="new-password" />
         {error && (
           <p role="alert" className="rounded-xl bg-rose-500/10 px-3 py-2.5 text-sm text-rose-700 dark:text-rose-300">
             {error}
