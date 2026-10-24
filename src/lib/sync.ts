@@ -38,7 +38,16 @@ function writeMeta(meta: SyncMeta | null) {
 }
 
 let applying = false
+/** Tras cerrar sesión o borrar la cuenta no se sube ni se baja nada más (el dispositivo se está limpiando). */
+let paused = false
 let timer: ReturnType<typeof setTimeout> | null = null
+
+/** Detiene la sincronización para siempre en esta carga de la página (se usa justo antes de limpiar el dispositivo). */
+export function pauseSync(): void {
+  paused = true
+  if (timer) clearTimeout(timer)
+  timer = null
+}
 
 async function pull(userId: string): Promise<{ snapshot: unknown; updatedAt: string } | null> {
   const { data, error } = await supabase!.from('user_state').select('snapshot, updated_at').eq('user_id', userId).maybeSingle()
@@ -48,7 +57,7 @@ async function pull(userId: string): Promise<{ snapshot: unknown; updatedAt: str
 
 async function push(userId: string): Promise<void> {
   const auth = useAuth.getState()
-  if (auth.conflict) return
+  if (paused || auth.conflict) return
   const snapshot = takeSnapshot()
   // Mismo límite que la base de datos: evita subir copias enormes (p. ej. mazos con muchas imágenes).
   if (new Blob([JSON.stringify(snapshot)]).size > MAX_SNAPSHOT_BYTES) return auth.setSync({ sync: 'error' })
@@ -78,6 +87,7 @@ function apply(userId: string, remote: { snapshot: unknown; updatedAt: string })
 
 /** Compara la copia local con la de la nube y decide qué hacer. */
 export async function reconcile(userId: string): Promise<void> {
+  if (paused) return
   const auth = useAuth.getState()
   auth.setSync({ sync: 'syncing' })
   try {
@@ -106,6 +116,22 @@ export async function resolveConflict(keep: 'cloud' | 'device'): Promise<void> {
   await push(user.id)
 }
 
+/**
+ * Sube lo que esté pendiente y dice si ya no queda nada sin guardar en la nube.
+ * Se usa antes de cerrar sesión: si devuelve false, cerrar sesión borraría progreso que solo está en este dispositivo.
+ */
+export async function flushPending(): Promise<boolean> {
+  const { user } = useAuth.getState()
+  if (!supabase || !user) return true
+  if (timer) clearTimeout(timer)
+  timer = null
+  // Si justo se está subiendo, espera a que termine (máximo unos segundos).
+  for (let i = 0; i < 60 && useAuth.getState().sync === 'syncing'; i++) await new Promise((r) => setTimeout(r, 100))
+  if (useAuth.getState().conflict) return false
+  if (readMeta()?.dirty) await push(user.id)
+  return !readMeta()?.dirty && !useAuth.getState().conflict
+}
+
 export function syncNow(): Promise<void> {
   const user = useAuth.getState().user
   return user ? reconcile(user.id) : Promise.resolve()
@@ -125,7 +151,7 @@ export function startSync(): () => void {
   })
 
   const unsubProgress = onProgressChange(() => {
-    if (applying || !current) return
+    if (applying || paused || !current) return
     const meta = readMeta()
     writeMeta({ userId: current, lastSyncedAt: meta?.userId === current ? meta.lastSyncedAt : null, dirty: true })
     if (timer) clearTimeout(timer)
@@ -135,7 +161,7 @@ export function startSync(): () => void {
 
   /** Sube ya lo que esté pendiente (sin esperar al temporizador). */
   const flush = () => {
-    if (!current) return
+    if (!current || paused) return
     if (timer && readMeta()?.dirty) {
       clearTimeout(timer)
       timer = null
@@ -144,7 +170,7 @@ export function startSync(): () => void {
   }
 
   const onVisible = () => {
-    if (!current) return
+    if (!current || paused) return
     if (document.visibilityState === 'hidden') flush()
     else if (!readMeta()?.dirty) void reconcile(current)
   }
