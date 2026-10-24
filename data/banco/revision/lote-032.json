@@ -51,7 +51,7 @@
 "fix":{"options":["Radiografía simple de abdomen","Gammagrafía con pertecnetato de tecnecio 99m","Sonografía de abdomen","Tomografía de abdomen"]},
 "ex":"La gammagrafía con pertecnetato de tecnecio 99m (gammagrafía de Meckel) es la prueba más precisa para el divertículo de Meckel, sobre todo en niños con sangrado digestivo bajo indoloro. El pertecnetato es captado por las células de la mucosa gástrica ectópica presente en el divertículo. Su sensibilidad es de alrededor del 85 al 90 % en niños.",
 "oe":["Incorrecta: la radiografía simple solo muestra signos de obstrucción o perforación.","Correcta: la gammagrafía con pertecnetato detecta la mucosa gástrica ectópica del divertículo.","Incorrecta: la ecografía rara vez identifica el divertículo.","Incorrecta: la tomografía detecta complicaciones (diverticulitis, obstrucción), pero rara vez el divertículo no complicado."],
-"pf":"El divertículo de Meckel es un resto del conducto onfalomesentérico; puede contener mucosa gástrica que secreta ácido y ulcera la mucosa del íleon vecino, causando sangrado.",
+"pf":"El divertículo de Meckel es un resto del conducto onfalomesentérico; puede contener mucosa gástrica que secreta ácido y úlcera la mucosa del íleon vecino, causando sangrado.",
 "kp":["Regla de los 2: 2 % de la población, a 2 pies (60 cm) de la válvula ileocecal, 2 pulgadas de largo, síntomas antes de los 2 años, 2 tipos de tejido ectópico (gástrico y pancreático)."],
 "ref":["schwartz|Intestino delgado","nelson|Divertículo de Meckel"]},
 {"id":"Q138_87","a":3,"sp":"cirugia","t":"Apendicitis aguda en la mujer joven","d":2,

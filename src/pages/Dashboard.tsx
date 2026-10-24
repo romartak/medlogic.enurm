@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { ArrowRight, Languages, BookOpen, CalendarDays, Check, ChartColumn, Flame, GraduationCap, Layers, Newspaper, RotateCcw, Sparkles, Target, Trophy, Zap } from 'lucide-react'
+import { ArrowRight, Languages, BookOpen, CalendarDays, Check, ChartColumn, Flame, GraduationCap, Layers, Newspaper, RotateCcw, Share2, Sparkles, Target, Timer, Trophy, Zap } from 'lucide-react'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { useProgress, levelFromXp, levelTitle } from '@/store/progress'
 import { resolveExamDate } from '@/lib/plan'
@@ -17,30 +17,69 @@ import { addressName, cn, dayKey, daysBetween, formatDate, hashString, pct } fro
 import { playSound } from '@/lib/fx'
 import { LINGO_LESSONS } from '@/data/lingo'
 import { lingoStreak, useLingo } from '@/store/lingo'
+import { dueItems } from '@/lib/lingo'
+import { shareProgress, type ShareStats } from '@/lib/shareCard'
+import { toast } from '@/store/toasts'
 
 function greeting() {
   const h = new Date().getHours()
   return h < 12 ? 'Buenos días' : h < 19 ? 'Buenas tardes' : 'Buenas noches'
 }
 
-/** Acceso a Terminología: siguiente lección y racha. */
+/** Acceso a Terminología: siguiente lección, palabras para repasar hoy y reto relámpago. */
 function LingoCard() {
   const lessons = useLingo((s) => s.lessons)
   const days = useLingo((s) => s.days)
+  const words = useLingo((s) => s.words)
   const next = LINGO_LESSONS.find((l) => !lessons[l.id])
   const streak = lingoStreak(days)
+  const due = dueItems(words, 50).length
   return (
-    <Link to={next ? `/terminologia/leccion/${next.id}` : '/terminologia'} className="card card-hover group flex items-center gap-4 p-5">
-      <span className="grid size-12 shrink-0 place-items-center rounded-2xl border-b-4 border-emerald-800 bg-emerald-600 text-white">
-        <Languages className="size-6" />
-      </span>
-      <div className="min-w-0 flex-1">
-        <div className="text-xs font-semibold text-muted">Terminología{streak ? ` · ${streak} ${streak === 1 ? 'día' : 'días'} de racha` : ''}</div>
-        <div className="font-display font-bold">{next ? `Siguiente: ${next.title}` : 'Ruta completada'}</div>
-        <div className="truncate text-xs text-muted">{next ? next.unit.title : 'Sigue con el repaso diario'}</div>
+    <div className="card p-5">
+      <Link to={next ? `/terminologia/leccion/${next.id}` : '/terminologia'} className="group flex items-center gap-4">
+        <span className="grid size-12 shrink-0 place-items-center rounded-2xl border-b-4 border-emerald-800 bg-emerald-600 text-white">
+          <Languages className="size-6" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="text-xs font-semibold text-muted">Terminología{streak ? ` · ${streak} ${streak === 1 ? 'día' : 'días'} de racha` : ''}</div>
+          <div className="font-display font-bold">{next ? `Siguiente: ${next.title}` : 'Ruta completada'}</div>
+          <div className="truncate text-xs text-muted">{next ? next.unit.title : 'Sigue con el repaso diario'}</div>
+        </div>
+        <ArrowRight className="size-4 shrink-0 text-muted transition-transform group-hover:translate-x-1" />
+      </Link>
+      <div className="mt-4 grid grid-cols-2 gap-2">
+        <Link
+          to={due ? '/terminologia/leccion/repaso' : '/terminologia'}
+          className={cn('flex h-11 items-center justify-center gap-2 rounded-xl px-3 text-sm font-semibold', due ? 'bg-sky-500/15 text-sky-700 dark:text-sky-300' : 'surface-2 text-muted')}
+        >
+          <RotateCcw className="size-4 shrink-0" /> {due ? `Repasar ${due} ${due === 1 ? 'palabra' : 'palabras'}` : 'Sin repaso hoy'}
+        </Link>
+        <Link to="/terminologia/relampago" className="flex h-11 items-center justify-center gap-2 rounded-xl bg-amber-500/15 px-3 text-sm font-semibold text-amber-700 dark:text-amber-300">
+          <Timer className="size-4 shrink-0" /> Reto relámpago
+        </Link>
       </div>
-      <ArrowRight className="size-4 shrink-0 text-muted transition-transform group-hover:translate-x-1" />
-    </Link>
+    </div>
+  )
+}
+
+/** Genera la imagen del progreso y la comparte (o la descarga). */
+function ShareButton({ stats, className }: { stats: ShareStats; className?: string }) {
+  const [busy, setBusy] = useState(false)
+  const go = async () => {
+    setBusy(true)
+    try {
+      const r = await shareProgress(stats)
+      if (r === 'downloaded') toast({ kind: 'success', title: 'Imagen guardada', body: 'Súbela a tus historias de Instagram o envíala por WhatsApp.' })
+    } catch {
+      toast({ kind: 'error', title: 'No se pudo crear la imagen' })
+    } finally {
+      setBusy(false)
+    }
+  }
+  return (
+    <button onClick={go} disabled={busy} className={cn('inline-flex h-11 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold transition-colors disabled:opacity-60', className)}>
+      <Share2 className="size-4 shrink-0" /> {busy ? 'Creando…' : 'Compartir progreso'}
+    </button>
   )
 }
 
@@ -73,6 +112,8 @@ export default function Dashboard() {
     return questions[idx]
   }, [questions])
   const [qotdChoice, setQotdChoice] = useState<number | null>(null)
+
+  const shareStats: ShareStats = { predicted, streak, accuracy: ov.accuracy, answered: ov.answered, level: lvl.level, levelTitle: levelTitle(lvl.level), daysLeft }
 
   const goalProgress = Math.min(1, ov.todayAnswered / Math.max(1, settings.dailyGoal))
   const isNew = ov.answered === 0 && exams.length === 0
@@ -130,6 +171,7 @@ export default function Dashboard() {
               <Link to="/simulacro" className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-white/15 px-4 text-sm font-semibold whitespace-nowrap backdrop-blur transition-colors hover:bg-white/25">
                 <GraduationCap className="size-4" /> Simulacro
               </Link>
+              {!isNew && <ShareButton stats={shareStats} className="bg-white/15 whitespace-nowrap backdrop-blur hover:bg-white/25" />}
             </div>
           </div>
         </div>

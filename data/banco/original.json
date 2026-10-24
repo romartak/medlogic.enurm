@@ -78,7 +78,7 @@
     "id": "Q3_6",
     "number": 6,
     "page": 3,
-    "question": "De las siguientes enterocolitis, seleccione la más frencuente en niños:",
+    "question": "De las siguientes enterocolitis, seleccione la más frecuente en niños:",
     "options": {
       "A": "Enterocolitis por salmonela",
       "B": "enterocolitis por shiguella",
@@ -288,7 +288,7 @@
     "id": "Q4_21",
     "number": 21,
     "page": 4,
-    "question": "La enfermedad parasitaria que mas frecuentemente casusa diarrea crónica y mala absorción es:",
+    "question": "La enfermedad parasitaria que mas frecuentemente causa diarrea crónica y mala absorción es:",
     "options": {
       "A": "uncinaria",
       "B": "teniasis",
@@ -333,7 +333,7 @@
     "id": "Q4_24",
     "number": 24,
     "page": 4,
-    "question": "Complicaciones del recien nacido prematuro:",
+    "question": "Complicaciones del recién nacido prematuro:",
     "options": {
       "A": "síndrome de distress respiratorio",
       "B": "hipoglucemia hipocalcemia",
@@ -572,7 +572,7 @@
     "id": "Q5_40",
     "number": 40,
     "page": 5,
-    "question": "Cuál sería el manejo ambulatorio de un lactante con diarrea aguda sin vomitos:",
+    "question": "Cuál sería el manejo ambulatorio de un lactante con diarrea aguda sin vómitos:",
     "options": {
       "A": "reposo gástrico y administración de agua y electrolitos",
       "B": "administrar un antidiarreico",
@@ -826,7 +826,7 @@
     "id": "Q7_57",
     "number": 57,
     "page": 7,
-    "question": "El agente etiológico de procedencia exógena mas frecuente en la infeccion puerperal es:",
+    "question": "El agente etiológico de procedencia exógena mas frecuente en la infección puerperal es:",
     "options": {
       "A": "Estreptococo beta hemolítico",
       "B": "anaerobio",
@@ -990,7 +990,7 @@
     "id": "Q7_69",
     "number": 69,
     "page": 7,
-    "question": "La presencia de pulsos intensos en las arterias radiales y débiles o ausentes en las femorales y pedía sugiere:",
+    "question": "La presencia de pulsos intensos en las arterias radiales y débiles o ausentes en las femorales y pedia sugiere:",
     "options": {
       "A": "Síndrome de marfan",
       "B": "comunicación interauricular",
@@ -1200,7 +1200,7 @@
     "id": "Q8_83",
     "number": 83,
     "page": 8,
-    "question": "De las afirmaciones cuál es la falsa en relación a la ulcera péptica duodenal:",
+    "question": "De las afirmaciones cuál es la falsa en relación a la úlcera péptica duodenal:",
     "options": {
       "A": "Cursa con aclorhidria",
       "B": "es crónica",
@@ -1305,7 +1305,7 @@
     "id": "Q9_90",
     "number": 90,
     "page": 9,
-    "question": "La glándula salival más frencuentemente afectada por cáncer es:",
+    "question": "La glándula salival más frecuentemente afectada por cáncer es:",
     "options": {
       "A": "parótida",
       "B": "submaxilar",
@@ -1773,7 +1773,7 @@
     "question": "Las siguientes son todas características de dengue clásico, excepto:",
     "options": {
       "A": "es más frecuente en lactantes y niños mayores",
-      "B": "es la variante clínica más frencuente",
+      "B": "es la variante clínica más frecuente",
       "C": "puede o no acompañarse de trombocitopeDn)i aa usencia de hemoconcentracion"
     },
     "correct_answer": "C",
@@ -2637,7 +2637,7 @@
     "page": 15,
     "question": "Una mujer de 40 años es llevada a la sala de emergencia tras sufrir un accidente automovilístico en el que tuvo un trauma directo con el volante. La paciente presenta contusión en tórax anterior, distensión de las venas del cuello y ruidos cardiacos apagados. Su diagnóstico es:",
     "options": {
-      "A": "pneumotorax a tensión",
+      "A": "neumotórax a tensión",
       "B": "taponamiento cardiaco",
       "C": "aneurisma aorticotraumatico",
       "D": "tórax flácido"
@@ -2653,12 +2653,12 @@
     "question": "En cual día del postquirurgico es más frecuente la flebitis como causa de fiebre:",
     "options": {
       "A": "Primer día",
-      "B": "segúndo día",
+      "B": "segundo día",
       "C": "tercer dia",
       "D": "cuarto día"
     },
     "correct_answer": "B",
-    "correct_text": "segúndo día",
+    "correct_text": "segundo día",
     "options_count": 4
   },
   {
@@ -2680,7 +2680,7 @@
     "id": "Q15_87",
     "number": 87,
     "page": 15,
-    "question": "En la ulcera péptida perforada, el hallazgo más significativo en la radiografía de abdomen simple de pie es:",
+    "question": "En la úlcera péptica perforada, el hallazgo más significativo en la radiografía de abdomen simple de pie es:",
     "options": {
       "A": "Niveles hidroaereos",
       "B": "neumoperitonio",
@@ -2713,7 +2713,7 @@
     "question": "Cuál de estas patologías producen abdomen agudo:",
     "options": {
       "A": "Colecistitis aguda",
-      "B": "úlcera peptida perforada",
+      "B": "úlcera péptica perforada",
       "C": "apendicitis aguda",
       "D": "todas"
     },
@@ -2757,7 +2757,7 @@
     "page": 16,
     "question": "El signo de murphy se encuentra en la:",
     "options": {
-      "A": "Ulcera peptida perforada",
+      "A": "Úlcera péptica perforada",
       "B": "pancreatitis aguda",
       "C": "colecistitis aguda",
       "D": "oclusión intestinal"
@@ -2800,9 +2800,9 @@
     "id": "Q16_95",
     "number": 95,
     "page": 16,
-    "question": "Paciente masculino de 25 años con historia de dolor abdominal epigástrico que luego se traslada a fosa iliaca derecha con nauseas, vómitos y anorexia. Su primera impresión diagnostica seria:",
+    "question": "Paciente masculino de 25 años con historia de dolor abdominal epigástrico que luego se traslada a fosa iliaca derecha con náuseas, vómitos y anorexia. Su primera impresión diagnostica seria:",
     "options": {
-      "A": "Ulcera peptica perforada",
+      "A": "Úlcera peptica perforada",
       "B": "pancreatitis crónica",
       "C": "apendicitis aguda",
       "D": "colecistitis aguda"
@@ -3145,7 +3145,7 @@
     "id": "Q17_19",
     "number": 19,
     "page": 17,
-    "question": "Son gram negativos con cápsulas polisacárido que producen neumonia , infección urinaria, y septicemia:",
+    "question": "Son gram negativos con cápsulas polisacárido que producen neumonía , infección urinaria, y septicemia:",
     "options": {
       "A": "shiguella disenteriae",
       "B": "salmón ella enteritidis",
@@ -3265,7 +3265,7 @@
     "id": "Q18_28",
     "number": 28,
     "page": 18,
-    "question": "Cuadro clinico caracterizado por edema generalizado, tensión arterial normal, albuminuria e hipoalbuminemia sugiere:",
+    "question": "Cuadro clínico caracterizado por edema generalizado, tensión arterial normal, albuminuria e hipoalbuminemia sugiere:",
     "options": {
       "A": "Nefritis",
       "B": "nefrosis",
@@ -3299,7 +3299,7 @@
     "options": {
       "A": "se inicia más rápido en los varones",
       "B": "es fundamentalmente mediada por las hormonas sexuales",
-      "C": "implica grandes cambios fisicos y psíquicos",
+      "C": "implica grandes cambios físicos y psíquicos",
       "D": "b y c son correcta"
     },
     "correct_answer": "D",
@@ -3731,13 +3731,13 @@
     "page": 20,
     "question": "Cual es la causa de sangrado gastrointestinal alto:",
     "options": {
-      "A": "ulcera peptica.",
+      "A": "úlcera peptica.",
       "B": "gastritis erosiva",
       "C": "varices esofágicas",
       "D": "síndrome de mallory-weiss"
     },
     "correct_answer": "A",
-    "correct_text": "ulcera peptica.",
+    "correct_text": "úlcera peptica.",
     "options_count": 4
   },
   {
@@ -3789,7 +3789,7 @@
     "id": "Q20_82",
     "number": 82,
     "page": 20,
-    "question": "Paciente femenina de 48 años con ulceras en miembros inferiores, la causa mas probable es:",
+    "question": "Paciente femenina de 48 años con úlceras en miembros inferiores, la causa mas probable es:",
     "options": {
       "A": "Insuficiencia venosa profunda",
       "B": "quemadura de tercer grado",
@@ -4074,7 +4074,7 @@
     "id": "Q22_1",
     "number": 1,
     "page": 22,
-    "question": "Si usted tiene un paciente con historia de ulcera peptica y necesita un analgésico, cual de estos seleccionaría usted?",
+    "question": "Si usted tiene un paciente con historia de úlcera peptica y necesita un analgésico, cual de estos seleccionaría usted?",
     "options": {
       "A": "Aspirina",
       "B": "Indometacina",
@@ -4163,7 +4163,7 @@
     "id": "Q22_7",
     "number": 7,
     "page": 22,
-    "question": "La arteria pedía es continuación de:",
+    "question": "La arteria pedia es continuación de:",
     "options": {
       "A": "Tibial anterior.",
       "B": "Tibial posterior",
@@ -4282,7 +4282,7 @@
     "id": "Q23_15",
     "number": 15,
     "page": 23,
-    "question": "La estimulación vagaldel corazon tiene el siguiente resultado:",
+    "question": "La estimulación vagaldel corazón tiene el siguiente resultado:",
     "options": {
       "A": "Disminución del intervalo PR",
       "B": "Incremento de la de la fase 4 de la polarización del nodo SA",
@@ -4419,7 +4419,7 @@
     "question": "La siguiente afirmación es correcta en relación a la fiebre reumática:",
     "options": {
       "A": "Es de etiología desconocida",
-      "B": "Se puede prevenir con penicilina benzatinica.",
+      "B": "Se puede prevenir con penicilina benzatínica.",
       "C": "La fiebre y las mialgias son criterios mayores",
       "D": "Las cefalosporina de 4 generaciones resuelven el problema"
     },
@@ -4504,9 +4504,9 @@
     "id": "Q24_30",
     "number": 30,
     "page": 24,
-    "question": "Un niño con estridor laríngeo, dificultad respiratoria subita sugiere diagnóstico de:",
+    "question": "Un niño con estridor laríngeo, dificultad respiratoria súbita sugiere diagnóstico de:",
     "options": {
-      "A": "Neumonia",
+      "A": "Neumonía",
       "B": "Derrame pleural",
       "C": "Laringotraqueitis aguda."
     },
@@ -4533,7 +4533,7 @@
     "id": "Q24_32",
     "number": 32,
     "page": 24,
-    "question": "Con respecto a las neumonias, la siguiente afirmación es correcta:",
+    "question": "Con respecto a las neumonías, la siguiente afirmación es correcta:",
     "options": {
       "A": "Son causadas por una gran variedad de agentes etiologícos",
       "B": "Los agentes etiologícos pueden cambiar con la edad",
@@ -4686,11 +4686,11 @@
     "options": {
       "A": "Vit. B12",
       "B": "Vit. A",
-      "C": "Acido fólico.",
+      "C": "Ácido fólico.",
       "D": "Hierro"
     },
     "correct_answer": "C",
-    "correct_text": "Acido fólico.",
+    "correct_text": "Ácido fólico.",
     "options_count": 4
   },
   {
@@ -4715,7 +4715,7 @@
     "question": "Cuál es el germen más frecuente en las infecciones del aparato urinario en las embarazadas:",
     "options": {
       "A": "E. Coli.",
-      "B": "Estreptococo beta hemolitico",
+      "B": "Estreptococo beta hemolítico",
       "C": "Estafilococo aureus",
       "D": "Proteus"
     },
@@ -5034,7 +5034,7 @@
     "id": "Q26_65",
     "number": 65,
     "page": 26,
-    "question": "De los siguientes medicamentos inotrópicos, cuál de ellos posee como propiedades fundamentales bradicardia y aumento de la contractibilidad del musculo cardiaco:",
+    "question": "De los siguientes medicamentos inotrópicos, cuál de ellos posee como propiedades fundamentales bradicardia y aumento de la contractibilidad del músculo cardiaco:",
     "options": {
       "A": "Adrenalina",
       "B": "Digoxina.",
@@ -5124,7 +5124,7 @@
     "id": "Q27_71",
     "number": 71,
     "page": 27,
-    "question": "Actualmente se considera como criterio de obesidad, un indice corporal de más de:",
+    "question": "Actualmente se considera como criterio de obesidad, un índice corporal de más de:",
     "options": {
       "A": "20kg/m2",
       "B": "23kg/m2",
@@ -5228,7 +5228,7 @@
     "id": "Q27_78",
     "number": 78,
     "page": 27,
-    "question": "El vaso que siempre se bifurca inmediatamente sale del corazon es la:",
+    "question": "El vaso que siempre se bifurca inmediatamente sale del corazón es la:",
     "options": {
       "A": "Aorta",
       "B": "Arteria pulmonar.",
@@ -5245,7 +5245,7 @@
     "page": 27,
     "question": "El aparato valvular es característico para válvulas:",
     "options": {
-      "A": "Sigmoidea aortica",
+      "A": "Sigmoidea aórtica",
       "B": "Sigmoidea pulmonar",
       "C": "Auriculo-Ventriculares.",
       "D": "Del cuarto ventrículo"
@@ -5277,7 +5277,7 @@
     "options": {
       "A": "Herida penetrante de tórax",
       "B": "Perforación esofágica",
-      "C": "Bulla enfisematosa.D) Neumonia"
+      "C": "Bulla enfisematosa.D) Neumonía"
     },
     "correct_answer": "A",
     "correct_text": "Herida penetrante de tórax",
@@ -5287,7 +5287,7 @@
     "id": "Q27_82",
     "number": 82,
     "page": 27,
-    "question": "La disfonía se relaciona con lesión del nervio recurrente en la cirugia de:",
+    "question": "La disfonía se relaciona con lesión del nervio recurrente en la cirugía de:",
     "options": {
       "A": "Tiroides.",
       "B": "Quiste tirogloso",
@@ -5302,7 +5302,7 @@
     "id": "Q27_83",
     "number": 83,
     "page": 27,
-    "question": "Una masa quística, blanda, con transiluminacion positiva, congenita, ubicada en el triángulo cervical posterior es un:",
+    "question": "Una masa quística, blanda, con transiluminacion positiva, congénita, ubicada en el triángulo cervical posterior es un:",
     "options": {
       "A": "Quiste torogloso B Higroma quistico.",
       "C": "Quiste branquial",
@@ -5559,7 +5559,7 @@
     "options": {
       "A": "Todos los niveles",
       "B": "Las células de los túbulos renales",
-      "C": "La mayor parte de las neuronas cerebraleDs) El musculo esquelético"
+      "C": "La mayor parte de las neuronas cerebraleDs) El músculo esquelético"
     },
     "correct_answer": "A",
     "correct_text": "Todos los niveles",
@@ -5705,13 +5705,13 @@
     "page": 69,
     "question": "La confirmación del diagnóstico de septicemia se hace mediante:",
     "options": {
-      "A": "Cultivo de sangre/liquido céfalo raquídeo",
+      "A": "Cultivo de sangre/líquido céfalo raquídeo",
       "B": "Examen de orina",
       "C": "Hemograma",
       "D": "Coprocultivo"
     },
     "correct_answer": "A",
-    "correct_text": "Cultivo de sangre/liquido céfalo raquídeo",
+    "correct_text": "Cultivo de sangre/líquido céfalo raquídeo",
     "options_count": 4
   },
   {
@@ -6091,7 +6091,7 @@
     "question": "Cuál de los siguientes medicamentos se administra a la madre para acelerar la maduración pulmonar de feto?",
     "options": {
       "A": "Corticosteroides",
-      "B": "Acido fólico",
+      "B": "Ácido fólico",
       "C": "Fosfolípidos"
     },
     "correct_answer": "A",
@@ -6253,7 +6253,7 @@
     "options": {
       "A": "Rotura uterina",
       "B": "Dehiscencia de cesárea anteriorC ) DPPNI",
-      "D": "Sindrome de hipotensión supina"
+      "D": "Síndrome de hipotensión supina"
     },
     "correct_answer": null,
     "correct_text": null,
@@ -6951,7 +6951,7 @@
     "page": 82,
     "question": "Cuál de las siguientes afirmaciones es cierta con relación al metabolismo del glucógeno?",
     "options": {
-      "A": "El glucógeno se almacena durante el ayuno, principalmente en el hígado y en el musculo",
+      "A": "El glucógeno se almacena durante el ayuno, principalmente en el hígado y en el músculo",
       "B": "El glucógeno muscular participa en el mantenimiento de la glicemia en el ayuno temprano",
       "C": "La glucogenolisis es estimulada por el glucagón y la glucogénesis por la insulina",
       "D": "La glucógenos fosforilasa regula la glucogénesis y la glucógeno sintetasa regula la glucogenolisis"
@@ -7024,7 +7024,7 @@
     "id": "Q89_3",
     "number": 3,
     "page": 89,
-    "question": "Femenina de 62 años de edad que acude a consulta porque últimamente ha presentado pérdida de la visió en la mitad de sus ojos acompañado de episodios de expulsión involuntaria de leche por sus pezones. El médico sospecha de un tumor de hipófisis por lo que indica una tomografia axial computada de cabeza, las imágenes muestran agrandamiento de la glándula hipófisis sobre la silla turca. ¿Sobre cuál de estas estructuras se localiza el tumor?",
+    "question": "Femenina de 62 años de edad que acude a consulta porque últimamente ha presentado pérdida de la visió en la mitad de sus ojos acompañado de episodios de expulsión involuntaria de leche por sus pezones. El médico sospecha de un tumor de hipófisis por lo que indica una tomografía axial computada de cabeza, las imágenes muestran agrandamiento de la glándula hipófisis sobre la silla turca. ¿Sobre cuál de estas estructuras se localiza el tumor?",
     "options": {
       "A": "Seno maxilar",
       "B": "Seno frontal",
@@ -7829,7 +7829,7 @@
     "id": "Q93_57",
     "number": 57,
     "page": 93,
-    "question": "Ulcera vulvar dolorosa, supurativa, con adenopatía inguinal, es causada por:",
+    "question": "Úlcera vulvar dolorosa, supurativa, con adenopatía inguinal, es causada por:",
     "options": {
       "A": "Herpes genital 2",
       "B": "Chlamydia trachomatis",
@@ -7906,10 +7906,10 @@
     "page": 93,
     "question": "¿La causa más frecuente de sangrado gastrointestinal bajo en jóvenes menores de 40 años es?",
     "options": {
-      "A": "Ulcera péptica",
+      "A": "Úlcera péptica",
       "B": "Hemorroides",
       "C": "Fisura anal",
-      "D": "Ulcera solitara"
+      "D": "Úlcera solitara"
     },
     "correct_answer": "B",
     "correct_text": "Hemorroides",
@@ -8148,7 +8148,7 @@
       "A": "Tomografía de tórax",
       "B": "Eletrocardiograma",
       "C": "Ecocardiograma",
-      "D": "Radiografia de tórax"
+      "D": "Radiografía de tórax"
     },
     "correct_answer": "C",
     "correct_text": "Ecocardiograma",
@@ -8190,13 +8190,13 @@
     "page": 95,
     "question": "¿Cuál sería el método diagnóstico más específicos en pacientes adultos con apendicitis agudas?",
     "options": {
-      "A": "Radiografia simple de abdomen",
+      "A": "Radiografía simple de abdomen",
       "B": "Sonografía abdominal",
-      "C": "Tomografia axial computarizada",
+      "C": "Tomografía axial computarizada",
       "D": "Resonancia magnética"
     },
     "correct_answer": "C",
-    "correct_text": "Tomografia axial computarizada",
+    "correct_text": "Tomografía axial computarizada",
     "options_count": 4
   },
   {
@@ -8409,7 +8409,7 @@
     "id": "Q96_96",
     "number": 96,
     "page": 96,
-    "question": "Complejo sintomático que sucede a los 20 y 30 minutos caracterizado por nausea y vómitos, sensació de plenitud epigástrica, eructos, retortijones abdominales después de la ingestión de una comida después de haber extirpado parte del estómago o alterado el mecanismo normal del esfínter pilórico:",
+    "question": "Complejo sintomático que sucede a los 20 y 30 minutos caracterizado por náusea y vómitos, sensació de plenitud epigástrica, eructos, retortijones abdominales después de la ingestión de una comida después de haber extirpado parte del estómago o alterado el mecanismo normal del esfínter pilórico:",
     "options": {
       "A": "Síndrome vaciamiento rápido",
       "B": "Asa aferente",
@@ -8812,7 +8812,7 @@
     "id": "Q98_23",
     "number": 23,
     "page": 98,
-    "question": "Recién nacido de 10 días con antecedentes de parto pretérmino (33 semanas) que ingresa por distensión abdominal, deposiciones hemorrágicas y shock séptico. En la radiografia se aprecia neumatosis intestinal. Con mayor probabilidad el paciente presenta:",
+    "question": "Recién nacido de 10 días con antecedentes de parto pretérmino (33 semanas) que ingresa por distensión abdominal, deposiciones hemorrágicas y shock séptico. En la radiografía se aprecia neumatosis intestinal. Con mayor probabilidad el paciente presenta:",
     "options": {
       "A": "Invaginación intestinal",
       "B": "Hipertrofia congénita del píloro",
@@ -8918,7 +8918,7 @@
     "page": 99,
     "question": "Masculino de 16 años de edad viene a emergencia presentando: temperatura oral de 39.5 °C, cefalea, ictericia, mialgia. Además presenta orina oscura y escasa. ¿Cúal es el diagnóstico más probable?",
     "options": {
-      "A": "Sindrome de Reyes",
+      "A": "Síndrome de Reyes",
       "B": "Mononucleosis infecciosa",
       "C": "Leptospirosis",
       "D": "Meningococcemia"
@@ -9078,7 +9078,7 @@
     "id": "Q99_41",
     "number": 41,
     "page": 99,
-    "question": "Femenina de 27 años de edad con 8 semanas de amenorrea. La altura uterina está por encima de la cicatriz umbilical; los niveles de hormona gonadotropina coriónica en sangre están elevados. Tensión arteria 130/80 mmHg, FC 88 latidos por minutos. ¿Cuál es el diagnóstico más problable?",
+    "question": "Femenina de 27 años de edad con 8 semanas de amenorrea. La altura uterina está por encima de la cicatriz umbilical; los niveles de hormona gonadotropina coriónica en sangre están elevados. Tensión arteria 130/80 mmHg, FC 88 latidos por minutos. ¿Cuál es el diagnóstico más probable?",
     "options": {
       "A": "Hipertensión gestacional",
       "B": "Pseudociesis",
@@ -9127,7 +9127,7 @@
     "options": {
       "A": "Enfermedad inflamatoria pélvica",
       "B": "Quiste retorcido de ovario",
-      "C": "Sindrome de Mittelschmertz",
+      "C": "Síndrome de Mittelschmertz",
       "D": "Endometriosis ."
     },
     "correct_answer": "A",
@@ -9213,7 +9213,7 @@
     "id": "Q100_50",
     "number": 50,
     "page": 100,
-    "question": "De los subtipos de alto riesgo del virus del papiloma humano, ¿cuáles de estos estan más relacionados co el cáncer invasivo del cuello uterino?A ) 18 y 35",
+    "question": "De los subtipos de alto riesgo del virus del papiloma humano, ¿cuáles de estos están más relacionados co el cáncer invasivo del cuello uterino?A ) 18 y 35",
     "options": {
       "B": "16 y 18",
       "C": "11 y 15",
@@ -9242,7 +9242,7 @@
     "id": "Q100_52",
     "number": 52,
     "page": 100,
-    "question": "Mujer de 18 años que consulta por oligomenorrea primaria. Presenta un desarrollo femenino normal. Los niveles de andrógenos estan elevados. En la exploración se aprecia hirsutismo y obesidad y esterilidad anovulatoria. En la sonografía se encuentran ovarios aumentados de volumen con numerosos folículos periféricos. El diagnóstico a considerar es:",
+    "question": "Mujer de 18 años que consulta por oligomenorrea primaria. Presenta un desarrollo femenino normal. Los niveles de andrógenos están elevados. En la exploración se aprecia hirsutismo y obesidad y esterilidad anovulatoria. En la sonografía se encuentran ovarios aumentados de volumen con numerosos folículos periféricos. El diagnóstico a considerar es:",
     "options": {
       "A": "Quiste de cuerpo lúteo",
       "B": "Síndrome de ovario poliquístico",
@@ -9423,11 +9423,11 @@
     "options": {
       "A": "Reflujo gastroesofágico",
       "B": "Varices esofágicas",
-      "C": "Ulcera péptica",
+      "C": "Úlcera péptica",
       "D": "Desgarros de Mallory Weiss"
     },
     "correct_answer": "C",
-    "correct_text": "Ulcera péptica",
+    "correct_text": "Úlcera péptica",
     "options_count": 4
   },
   {
@@ -9479,7 +9479,7 @@
     "id": "Q102_68",
     "number": 68,
     "page": 102,
-    "question": "El deficit de tiamina, es frecuente en:",
+    "question": "El déficit de tiamina, es frecuente en:",
     "options": {
       "A": "Hepatopatías crónicas",
       "B": "Insuficiencia renal",
@@ -9498,7 +9498,7 @@
     "options": {
       "A": "Hepatitis aguda",
       "B": "Pielonefritis aguda",
-      "C": "Ulcera péptica",
+      "C": "Úlcera péptica",
       "D": "Pancreatitis aguda"
     },
     "correct_answer": "B",
@@ -9672,7 +9672,7 @@
     "id": "Q103_83",
     "number": 83,
     "page": 103,
-    "question": "Cuando en una hernia se compromete la vascularidad del orgáno que protruye, se denomina:",
+    "question": "Cuando en una hernia se compromete la vascularidad del órgano que protruye, se denomina:",
     "options": {
       "A": "Estrangulada",
       "B": "Encarcelada",
@@ -9702,7 +9702,7 @@
     "id": "Q103_85",
     "number": 85,
     "page": 103,
-    "question": "Procedimiento de elección para mantener la vía aérea permeable que usted recomendaría para manejar un paciente de 31 años de edad, quien nos llega a emergencia luego de un accidente de motocicleta. Present un Glasgow de 13/15, fracturas múltiples de cara y manifiesta dificultad respiratoria:",
+    "question": "Procedimiento de elección para mantener la vía aérea permeable que usted recomendaría para manejar un paciente de 31 años de edad, quien nos llega a emergencia luego de un accidente de motocicleta. Presentó un Glasgow de 13/15, fracturas múltiples de cara y manifiesta dificultad respiratoria:",
     "options": {
       "A": "Cricotiroidotomía",
       "B": "Intubación endotraqueal",
@@ -9719,7 +9719,7 @@
     "page": 103,
     "question": "Paciente femenina de 28 años de edad, quien visita la emergencia por dolor brusco de inicio en flanco derecho, temperatura 39.4 °C, signo de puño percusión (+), peristalsis presente; Tensión arterial de 125/70 mmHg; frecuencia cardíaca de 94 latidos por minuto. ¿Cuál de éstos es su diagnóstico?",
     "options": {
-      "A": "Ulcera péptica perforada",
+      "A": "Úlcera péptica perforada",
       "B": "Pielonefritis aguda",
       "C": "Colecistitis aguda",
       "D": "Enfermedad pélvica inflamatoria."
@@ -9747,10 +9747,10 @@
     "id": "Q103_88",
     "number": 88,
     "page": 103,
-    "question": "Femenina de 60 años, cardiópata conocida en tratamiento por fibrilación auricular crónica, acude a emergencia refiriendo dolor periumbilical intenso y contínuo irradiado a epigastrio y de comienzo brusco hace unas 2 horas. A la exploración la paciente está estable y con sensación de mucho dolor abdominal aunque el abdomen aparece blando, depresible y sin signos de irritación peritoneal. ¿Cuál es el diagnóstico más probable para esta paciente?",
+    "question": "Femenina de 60 años, cardiópata conocida en tratamiento por fibrilación auricular crónica, acude a emergencia refiriendo dolor periumbilical intenso y continuo irradiado a epigastrio y de comienzo brusco hace unas 2 horas. A la exploración la paciente está estable y con sensación de mucho dolor abdominal aunque el abdomen aparece blando, depresible y sin signos de irritación peritoneal. ¿Cuál es el diagnóstico más probable para esta paciente?",
     "options": {
       "A": "Embolia mesentérica",
-      "B": "Ulcera péptica perforada",
+      "B": "Úlcera péptica perforada",
       "C": "Diverticulitis aguda",
       "D": "Infarto agudo al miocardio con afección de cara inferior"
     },
@@ -9767,7 +9767,7 @@
       "A": "La cirugía es innecesaria",
       "B": "Se manifiesta través de la fascia transversalis",
       "C": "Desciende al escroto",
-      "D": "Es la hernia más común del recien nacido"
+      "D": "Es la hernia más común del recién nacido"
     },
     "correct_answer": "B",
     "correct_text": "Se manifiesta través de la fascia transversalis",
@@ -9810,7 +9810,7 @@
     "question": "Es el antibiótico tópico ideal para el manejo del paciente quemado en las primeras horas de las quemaduras, el cual posee una acción terapéutica de entre 12 a 24 horas.",
     "options": {
       "A": "Nitrofurazona",
-      "B": "Acido fusídico",
+      "B": "Ácido fusídico",
       "C": "Bacitracina",
       "D": "Sulfadiacina argéntica"
     },
@@ -10104,7 +10104,7 @@
     "id": "Q105_13",
     "number": 13,
     "page": 105,
-    "question": "Son los encargados de producir la codificación de las proteinas o del ácido ribonucleico:",
+    "question": "Son los encargados de producir la codificación de las proteínas o del ácido ribonucleico:",
     "options": {
       "A": "Alelos",
       "B": "Genes estructurales",
@@ -10164,7 +10164,7 @@
     "id": "Q105_17",
     "number": 17,
     "page": 105,
-    "question": "El estudio de los efectos bioquímicos y fisiológicos de los fármacos y sus mecanismos de acción, se defin como:",
+    "question": "El estudio de los efectos bioquímicos y fisiológicos de los fármacos y sus mecanismos de acción, se define como:",
     "options": {
       "A": "Farmacocinética",
       "B": "Farmacometría",
@@ -10194,7 +10194,7 @@
     "id": "Q105_19",
     "number": 19,
     "page": 105,
-    "question": "Los cuerpos geniculados mediales (internos) estan relacionados con funciones:",
+    "question": "Los cuerpos geniculados mediales (internos) están relacionados con funciones:",
     "options": {
       "A": "VisBu)a les Gustativas",
       "C": "Auditivas",
@@ -10895,7 +10895,7 @@
       "A": "Fracción indirecta, insoluble en agua y que se une a la albúmina en sangre",
       "B": "Fracción indirecta, soluble en agua y que se une a la albúmina en sangre",
       "C": "Fracción indirecta, insoluble en agua y que no se une a la albúmina en sangre",
-      "D": "Fracción directa, hidrosoluble y que se elimina por el riñon"
+      "D": "Fracción directa, hidrosoluble y que se elimina por el riñón"
     },
     "correct_answer": "A",
     "correct_text": "Fracción indirecta, insoluble en agua y que se une a la albúmina en sangre",
@@ -10953,8 +10953,8 @@
     "question": "El primer ruido cardiaco (S1) engloba el choque del cierre de dos válvulas que son:",
     "options": {
       "A": "Mitral y tricúspide",
-      "B": "Aortica y Pulmonar",
-      "C": "Mitral y Aortica",
+      "B": "Aórtica y Pulmonar",
+      "C": "Mitral y Aórtica",
       "D": "Pulmonar y Tricúspide"
     },
     "correct_answer": "A",
@@ -11009,7 +11009,7 @@
     "id": "Q110_75",
     "number": 75,
     "page": 110,
-    "question": "¿En qué lugar son más frecuentes las ulceras duodenales?",
+    "question": "¿En qué lugar son más frecuentes las úlceras duodenales?",
     "options": {
       "A": "1ra porción del duodeno",
       "B": "2da porción del duodenCo) 3ra porción del duodeno",
@@ -11073,7 +11073,7 @@
       "A": "Heces",
       "B": "Sudor",
       "C": "Orina",
-      "D": "Vomito"
+      "D": "Vómito"
     },
     "correct_answer": "C",
     "correct_text": "Orina",
@@ -11251,7 +11251,7 @@
       "A": "Invaginación",
       "B": "Vólvulo",
       "C": "Obstrucción",
-      "D": "Diverticulo"
+      "D": "Divertículo"
     },
     "correct_answer": "A",
     "correct_text": "Invaginación",
@@ -11338,12 +11338,12 @@
     "question": "Diverticulosis se refiere a:",
     "options": {
       "A": "Diverticulitis múltiples",
-      "B": "Diverticulos sin inflamación",
+      "B": "Divertículos sin inflamación",
       "C": "Enfermedad diverticular maligna",
-      "D": "Diverticulos inflamados"
+      "D": "Divertículos inflamados"
     },
     "correct_answer": "B",
-    "correct_text": "Diverticulos sin inflamación",
+    "correct_text": "Divertículos sin inflamación",
     "options_count": 4
   },
   {
@@ -12409,12 +12409,12 @@
     "question": "El dolor epigástrico quemante, exacerbado por el ayuno y que mejora con la alimentación; es un complejo sintomático que caracteriza a la:",
     "options": {
       "A": "Gastritis aguda",
-      "B": "Ulcera péptica",
+      "B": "Úlcera péptica",
       "C": "Gastritis hemorrágica",
       "D": "Pancreatitis"
     },
     "correct_answer": "B",
-    "correct_text": "Ulcera péptica",
+    "correct_text": "Úlcera péptica",
     "options_count": 4
   },
   {
@@ -12858,7 +12858,7 @@
     "options": {
       "A": "Varices esofágicas sangrantes",
       "B": "Síndrome de Boerhaave",
-      "C": "Ulcera duodenal",
+      "C": "Úlcera duodenal",
       "D": "Cáncer gástrico"
     },
     "correct_answer": "A",
@@ -12917,9 +12917,9 @@
     "question": "La enfermedad producida por la entamoeba histolytica con invasión a la mucosa intestinal por el parasito, produce:",
     "options": {
       "A": "Diarrea",
-      "B": "Ulcera gástrica",
+      "B": "Úlcera gástrica",
       "C": "Colitis amebiana",
-      "D": "Ulcera duodenal"
+      "D": "Úlcera duodenal"
     },
     "correct_answer": "C",
     "correct_text": "Colitis amebiana",
@@ -13719,7 +13719,7 @@
     "id": "Q126_58",
     "number": 58,
     "page": 126,
-    "question": "Adolfo se sintió mal, en pocas horas. El día anterior presentó tos y resfriado, con historia de fiebres durante varios días, acompañado de dolor de cabeza. Al examen físico se encontró rigidez de nuca. Vomito en la emergencia. No hay historia de trauma craneal ¿Cuál es el diagnostico clínico?",
+    "question": "Adolfo se sintió mal, en pocas horas. El día anterior presentó tos y resfriado, con historia de fiebres durante varios días, acompañado de dolor de cabeza. Al examen físico se encontró rigidez de nuca. Vómito en la emergencia. No hay historia de trauma craneal ¿Cuál es el diagnostico clínico?",
     "options": {
       "A": "Proceso viral",
       "B": "Meningitis bacteriana",
@@ -13783,7 +13783,7 @@
     "options": {
       "A": "Amoxicilina y clavulanico",
       "B": "Azitromicina por alergia a la penicilinaC ) Clindamicina",
-      "D": "Penicilina Benzatinica"
+      "D": "Penicilina Benzatínica"
     },
     "correct_answer": null,
     "correct_text": null,
@@ -13991,7 +13991,7 @@
     "options": {
       "A": "Hernia hiatal",
       "B": "Varices esofágicas",
-      "C": "Ulcera péptica perforada",
+      "C": "Úlcera péptica perforada",
       "D": "Adenocarcinoma gástrico"
     },
     "correct_answer": "D",
@@ -14061,7 +14061,7 @@
     "id": "Q127_81",
     "number": 81,
     "page": 127,
-    "question": "Femenina de 48 años de edad con historia previa de colelitiasis, quien acude a urgencias por nausea y vómito, febrícula de 2 días de evolución, y dolor abdominal en cuadrante superior derecho irradiado a espalda de 3 días de evolución, se observa ligera ictericia. Las pruebas de laboratorio muestran leucocitosis con desviación izquierda, elevación de transaminasas hepáticas, lipasa sérica en 85 U/L e hiperbilirrubinemia a expensas de la fracción directa. ¿Cuál es el diagnóstico más probable?",
+    "question": "Femenina de 48 años de edad con historia previa de colelitiasis, quien acude a urgencias por náusea y vómito, febrícula de 2 días de evolución, y dolor abdominal en cuadrante superior derecho irradiado a espalda de 3 días de evolución, se observa ligera ictericia. Las pruebas de laboratorio muestran leucocitosis con desviación izquierda, elevación de transaminasas hepáticas, lipasa sérica en 85 U/L e hiperbilirrubinemia a expensas de la fracción directa. ¿Cuál es el diagnóstico más probable?",
     "options": {
       "A": "Hepatitis viral",
       "B": "Obstrucción colédoco",
@@ -14372,7 +14372,7 @@
     "id": "Q130_3",
     "number": 3,
     "page": 130,
-    "question": "Manuel es un estudiante de medicina de nuestro país y estuvo de vacaciones en una playa del este del país se queja de nauseas acompañado de vómitos, cólicos abdominales, rash en todo el cuerpo y prurito, cuadro que se ha exacerbado en horas, se observa con edema en ambos ojos. ¿Qué condición de salud tiene Manuel?",
+    "question": "Manuel es un estudiante de medicina de nuestro país y estuvo de vacaciones en una playa del este del país se queja de náuseas acompañado de vómitos, cólicos abdominales, rash en todo el cuerpo y prurito, cuadro que se ha exacerbado en horas, se observa con edema en ambos ojos. ¿Qué condición de salud tiene Manuel?",
     "options": {
       "A": "Gastroenteritis",
       "B": "Anafilaxia",
@@ -14760,7 +14760,7 @@
     "id": "Q132_30",
     "number": 30,
     "page": 132,
-    "question": "Niño de 8 años de edad es atendido en emergencia por presentar fiebre de 5 días de evolución inflamació faríngea, rinitis y tos leve, refiere dolor frontal o retro orbitario, dolor de espalda, se ve un exantema macular generalizado, mialgias y artralgias. ¿Cuál es el diagnóstico probable?",
+    "question": "Niño de 8 años de edad es atendido en emergencia por presentar fiebre de 5 días de evolución inflamación faríngea, rinitis y tos leve, refiere dolor frontal o retro orbitario, dolor de espalda, se ve un exantema macular generalizado, mialgias y artralgias. ¿Cuál es el diagnóstico probable?",
     "options": {
       "A": "Faringoamigdalitis",
       "B": "Paludismo",
@@ -15516,11 +15516,11 @@
     "options": {
       "A": "Apendicitis aguda",
       "B": "Pancreatitis aguda",
-      "C": "Ulcera péptica perforada",
+      "C": "Úlcera péptica perforada",
       "D": "Divertículo de Colon perforado"
     },
     "correct_answer": "C",
-    "correct_text": "Ulcera péptica perforada",
+    "correct_text": "Úlcera péptica perforada",
     "options_count": 4
   },
   {
@@ -15761,7 +15761,7 @@
     "id": "Q139_99",
     "number": 99,
     "page": 139,
-    "question": "Una femenina de 34 años de edad acude a emergencia por dolor abdominal de aparición repentina en fosa iliaca derecha, asociada a nauseas, sin fiebre. Su última menstruación se produjo hace 3 semanas, normal. Su presión arterial en 130/70 mmHg. ¿Su diagnóstico probable?",
+    "question": "Una femenina de 34 años de edad acude a emergencia por dolor abdominal de aparición repentina en fosa iliaca derecha, asociada a náuseas, sin fiebre. Su última menstruación se produjo hace 3 semanas, normal. Su presión arterial en 130/70 mmHg. ¿Su diagnóstico probable?",
     "options": {
       "A": "Síndrome de Mittelschmerz",
       "B": "Apendicitis AgudaC ) Torsión ovario derecho",
@@ -16044,7 +16044,7 @@
     "id": "Q204_12",
     "number": 12,
     "page": 204,
-    "question": "A un agricultor se le derramo encima una lata conteniendo insecticida y posterior a eso se queja de apretamiento de pecho, visión borrosa, al examen físico en el hospital se le encontraron las pupilas puntiformes y salivación profusa, por lo que se presume que estuvo expuesto a anticolinesterásicos. ¿Cuál d los siguientes sería el tratamiento más apropiado?",
+    "question": "A un agricultor se le derramó encima una lata conteniendo insecticida y posterior a eso se queja de apretamiento de pecho, visión borrosa, al examen físico en el hospital se le encontraron las pupilas puntiformes y salivación profusa, por lo que se presume que estuvo expuesto a anticolinesterásicos. ¿Cuál d los siguientes sería el tratamiento más apropiado?",
     "options": {
       "A": "Atropina y adrenalina",
       "B": "Atropina y fisostigmina",
@@ -17107,11 +17107,11 @@
     "question": "Paciente masculino de 32 años que llega a sala de emergencia del Hospital Dr. Ney Arias Lora con cuadro de dolor abdominal generalizado de 3 días de evolución y fiebre; refiere haber tomado diclofenac por más de 1 mes para tratar de aliviar un dolor que había iniciado en epigastrio pero que ahora se ha tornado generalizado; al examen físico presenta signo de rebote positivo y en los hallazgos radiográficos presencia de aire subdiafragmatico. ¿Cuál es su sospecha 18 diagnostica?",
     "options": {
       "A": "Apendicitis aguda",
-      "B": "Torsión testicularC) Ulcera péptica perforada",
+      "B": "Torsión testicularC) Úlcera péptica perforada",
       "D": "IAM"
     },
     "correct_answer": "B",
-    "correct_text": "Torsión testicularC) Ulcera péptica perforada",
+    "correct_text": "Torsión testicularC) Úlcera péptica perforada",
     "options_count": 3
   },
   {

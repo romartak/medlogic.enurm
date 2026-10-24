@@ -46,7 +46,7 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **Q6_48** — Cuál de las siguientes hormonas, es el marcador de mayor importancia para el diagnóstico temprano de embarazo:
   - Documento: B (Gonadotropina) → publicada: **D (Gonadotropina coriónica)**
   - La respuesta precisa es la gonadotropina coriónica humana (hCG); «gonadotropina» sin más incluye la FSH y la LH hipofisarias.
-- **Q7_57** — El agente etiológico de procedencia exógena mas frecuente en la infeccion puerperal es:
+- **Q7_57** — El agente etiológico de procedencia exógena mas frecuente en la infección puerperal es:
   - Documento: B (Anaerobios) → publicada: **A (Estreptococo β-hemolítico)**
   - La pregunta pide el agente de procedencia exógena: es el estreptococo β-hemolítico del grupo A, introducido desde fuera (manos, instrumental). Los anaerobios son la causa endógena más frecuente (flora vaginal).
 - **Q7_63** — La transmisión de la hepatitis C, se produce a través de:
@@ -167,7 +167,7 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
   - Documento: B (Solución mixta al 0,9 %) → publicada: **C (Solución de lactato de Ringer o solución salina al 0,9 %)**
   - La deshidratación grave se repone con un cristaloide isotónico (lactato de Ringer o solución salina al 0,9 %), no con soluciones mixtas hipotónicas.
 - **Q23_24** — La siguiente afirmación es correcta en relación a la fiebre reumática:
-  - Documento: C (La fiebre y las mialgias son criterios mayores) → publicada: **B (Se puede prevenir con penicilina benzatinica)**
+  - Documento: C (La fiebre y las mialgias son criterios mayores) → publicada: **B (Se puede prevenir con penicilina benzatínica)**
   - La fiebre reumática se previene con penicilina benzatínica (prevención primaria y secundaria); la fiebre y las mialgias no son criterios mayores.
 - **Q23_26** — El trastorno metabólico más frecuente en el recién nacido macrosomico es:
   - Documento: C (Hipernatremia) → publicada: **D (Hipoglucemia)**
@@ -198,13 +198,13 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **Q27_72** — La tuberculosis intestinal afecta más frecuentemente:
   - Documento: B (Yeyuno) → publicada: **C (Válvula ileocecal)**
   - La tuberculosis intestinal afecta con más frecuencia la región ileocecal (rica en tejido linfoide y con estasis), no el yeyuno.
-- **Q27_78** — El vaso que siempre se bifurca inmediatamente sale del corazon es la:
+- **Q27_78** — El vaso que siempre se bifurca inmediatamente sale del corazón es la:
   - Documento: A (Aorta) → publicada: **B (Arteria pulmonar)**
   - El vaso que se bifurca poco después de salir del corazón es el tronco pulmonar (en arterias pulmonares derecha e izquierda); la aorta forma un arco y da ramas, pero no se bifurca enseguida.
 - **Q27_81** — El neumotórax espontaneo se asocia a una de las siguientes condiciones:
   - Documento: A (Herida penetrante de tórax) → publicada: **C (Bulla enfisematosa)**
   - El neumotórax espontáneo se asocia a la rotura de bullas o blebs; la herida penetrante produce un neumotórax traumático.
-- **Q27_83** — Una masa quística, blanda, con transiluminacion positiva, congenita, ubicada en el triángulo cervical posterior es un:
+- **Q27_83** — Una masa quística, blanda, con transiluminacion positiva, congénita, ubicada en el triángulo cervical posterior es un:
   - Documento: C (Quiste branquial) → publicada: **B (Higroma quístico (linfangioma))**
   - Una masa quística blanda, transiluminable, congénita, en el triángulo cervical posterior es un higroma quístico (linfangioma), no un quiste branquial.
 - **Q27_85** — La causa más frecuente de hiperparatiroidismo primario es:
@@ -410,7 +410,7 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **Q131_26** — ¿Cuál es una contraindicación general para la aplicación de todas las vacunas?
   - Documento: A (Edad) → publicada: **D (Reacción anafiláctica)**
   - El archivo marcaba la edad. La única contraindicación general para todas las vacunas es la reacción anafiláctica a una dosis previa o a un componente de la vacuna.
-- **Q132_30** — Niño de 8 años de edad es atendido en emergencia por presentar fiebre de 5 días de evolución inflamació faríngea, rinitis y tos leve, refiere dolor frontal o retro orbitario, dolor de espalda, se ve un exantema macular generalizado, mialgias y artralgias. ¿Cuál es el diagnóstico probable?
+- **Q132_30** — Niño de 8 años de edad es atendido en emergencia por presentar fiebre de 5 días de evolución inflamación faríngea, rinitis y tos leve, refiere dolor frontal o retro orbitario, dolor de espalda, se ve un exantema macular generalizado, mialgias y artralgias. ¿Cuál es el diagnóstico probable?
   - Documento: D (Fiebre hemorrágica dengue) → publicada: **C (Fiebre dengue)**
   - El archivo marcaba fiebre hemorrágica por dengue. El caso no describe sangrado, fuga plasmática ni trombocitopenia grave; es un dengue (fiebre por dengue) sin signos de alarma.
 - **Q132_32** — ¿Qué caracteriza al dengue hemorrágico y al síndrome de choque por dengue?
