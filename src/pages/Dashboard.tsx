@@ -22,6 +22,7 @@ import { shareProgress, type ShareStats } from '@/lib/shareCard'
 import { toast } from '@/store/toasts'
 import { currentEdition, daysLeftInEdition, editionLabel, useNational } from '@/lib/national'
 import { duelTally, useDuels } from '@/lib/duel'
+import { ALL_NAV } from '@/components/layout/nav'
 import { hasReminder, ReminderCard } from '@/components/ReminderCard'
 
 function greeting() {
@@ -156,6 +157,8 @@ export default function Dashboard() {
     { done: exams.length > 0, icon: GraduationCap, title: 'Haz un mini simulacro', body: 'Mide tu punto de partida con 20 preguntas.', to: '/simulacro' },
   ]
   const stepsDone = firstSteps.filter((f) => f.done).length
+  const lastSection = useProgress((st) => st.lastSection)
+  const lastNav = lastSection ? ALL_NAV.find((n) => n.to === lastSection.to) : undefined
 
   return (
     <div className="space-y-6">
@@ -206,6 +209,19 @@ export default function Dashboard() {
           </div>
         </div>
       </motion.section>
+
+      {lastNav && (
+        <Link to={lastNav.to} className="card card-hover flex items-center gap-3 p-4">
+          <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-brand-500/10 text-brand-700 dark:text-brand-400">
+            <lastNav.icon className="size-5" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-xs font-semibold text-muted">Continuar donde lo dejaste</span>
+            <span className="block truncate font-display font-bold">{lastNav.label}</span>
+          </span>
+          <ArrowRight className="size-5 shrink-0 text-muted" />
+        </Link>
+      )}
 
       <DailyPlanCard />
 

@@ -81,11 +81,12 @@ export default function Ranking() {
   const [me, setMe] = useState<MyPosition | null>(null)
   const [unis, setUnis] = useState<UniversityRow[]>([])
   const [state, setState] = useState<'loading' | 'ready' | 'error'>('loading')
+  const [published, setPublished] = useState(true)
 
   const load = useCallback(async () => {
     setState('loading')
     try {
-      await publishStats(true)
+      setPublished(await publishStats(true))
       if (scope === 'universidades') setUnis(await fetchUniversities())
       else {
         const r = await fetchRanking(order, scope === 'universidad' ? university : null)
@@ -230,8 +231,11 @@ export default function Ranking() {
         <Card className="p-6 text-sm text-muted">{order === 'accuracy' ? 'Para salir en precisión hace falta responder al menos 50 preguntas.' : 'Todavía no hay nadie aquí. ¡Sé el primero!'}</Card>
       )}
 
+      {state === 'ready' && !published && (
+        <p className="rounded-xl bg-amber-500/10 px-3 py-2 text-xs text-amber-700 dark:text-amber-300">No se pudo actualizar tu resumen ahora mismo; lo que ves puede no incluir tu último progreso. Se reintenta al seguir estudiando.</p>
+      )}
       <p className="text-xs text-muted">
-        Cuenta a quien estudió en los últimos 120 días. Tu resumen (preguntas, precisión, tiempo, XP y racha) se actualiza cada vez que se sincroniza tu progreso; tus respuestas no se comparten.
+        Aparecen todas las cuentas activas en los últimos 120 días, incluso las que apenas empiezan. Tu resumen (preguntas, precisión, tiempo, XP y racha) se actualiza cada vez que se sincroniza tu progreso; tus respuestas no se comparten.
       </p>
     </div>
   )

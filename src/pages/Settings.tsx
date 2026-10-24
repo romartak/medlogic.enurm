@@ -8,7 +8,7 @@ import { MAX_SNAPSHOT_BYTES, restoreSnapshot, takeSnapshot } from '@/lib/backup'
 import { useAuth } from '@/store/auth'
 import { Button, Card, LinkButton, PageHeader, Segmented, Toggle } from '@/components/ui/primitives'
 import { Modal } from '@/components/ui/Modal'
-import { cn, dayKey, downloadFile } from '@/lib/utils'
+import { cn, dayKey, downloadFile, splitName } from '@/lib/utils'
 import { formatEnurmDate, upcomingEnurm } from '@/data/enurm'
 import { toast } from '@/store/toasts'
 import { REPO_URL } from '@/components/layout/AppLayout'
@@ -79,7 +79,10 @@ export default function Settings() {
           </div>
           <label className="mt-4 block">
             <span className="text-sm text-muted">Nombre o apellido (opcional)</span>
-            <input value={settings.name} onChange={(e) => update({ name: e.target.value })} placeholder="Ej.: Pichardo" className="mt-1.5 h-11 w-full rounded-xl border border-soft surface-2 px-3 text-sm outline-none focus:border-brand-500" />
+            <input value={settings.name} onChange={(e) => update({ name: e.target.value })} onBlur={() => {
+                const { title, name } = splitName(settings.name)
+                update({ name, honorific: settings.honorific && settings.honorific !== 'none' ? settings.honorific : (title ?? settings.honorific) })
+              }} placeholder="Ej.: Pichardo" className="mt-1.5 h-11 w-full rounded-xl border border-soft surface-2 px-3 text-sm outline-none focus:border-brand-500" />
           </label>
           <div className="mt-4">
             <span className="text-sm text-muted">Convocatoria del ENURM</span>

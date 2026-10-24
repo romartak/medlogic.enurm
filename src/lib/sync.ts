@@ -41,12 +41,17 @@ let applying = false
 /** Tras cerrar sesión o borrar la cuenta no se sube ni se baja nada más (el dispositivo se está limpiando). */
 let paused = false
 let timer: ReturnType<typeof setTimeout> | null = null
+/** Reintento automático tras un fallo (mala conexión): 5 s, 15 s, 45 s y luego cada minuto, mientras haya algo sin subir. */
+let retryTimer: ReturnType<typeof setTimeout> | null = null
+let failures = 0
 
 /** Detiene la sincronización para siempre en esta carga de la página (se usa justo antes de limpiar el dispositivo). */
 export function pauseSync(): void {
   paused = true
   if (timer) clearTimeout(timer)
   timer = null
+  if (retryTimer) clearTimeout(retryTimer)
+  retryTimer = null
 }
 
 async function pull(userId: string): Promise<{ snapshot: unknown; updatedAt: string } | null> {
@@ -68,10 +73,23 @@ async function push(userId: string): Promise<void> {
     writeMeta({ userId, lastSyncedAt: data.updated_at as string, dirty: false })
     useAuth.getState().setSync({ sync: 'synced', lastSyncedAt: data.updated_at as string })
     // El resumen público del ranking viaja con cada sincronización (con su propio límite de frecuencia).
+    failures = 0
     void publishStats()
   } catch {
     useAuth.getState().setSync({ sync: navigator.onLine ? 'error' : 'offline' })
+    scheduleRetry(userId)
   }
+}
+
+function scheduleRetry(userId: string) {
+  if (paused || retryTimer) return
+  const wait = Math.min(60_000, 5_000 * 3 ** failures)
+  failures++
+  retryTimer = setTimeout(() => {
+    retryTimer = null
+    if (paused || useAuth.getState().user?.id !== userId || !readMeta()?.dirty) return
+    void push(userId)
+  }, wait)
 }
 
 function apply(userId: string, remote: { snapshot: unknown; updatedAt: string }) {
@@ -83,6 +101,8 @@ function apply(userId: string, remote: { snapshot: unknown; updatedAt: string })
   }
   writeMeta({ userId, lastSyncedAt: remote.updatedAt, dirty: false })
   useAuth.getState().setSync({ sync: 'synced', lastSyncedAt: remote.updatedAt, conflict: null })
+  // Con el progreso ya bajado de la nube, el ranking recibe el resumen de este dispositivo.
+  void publishStats()
 }
 
 /** Compara la copia local con la de la nube y decide qué hacer. */
@@ -97,7 +117,10 @@ export async function reconcile(userId: string): Promise<void> {
     if (!remote) return await push(userId)
     if (sameAccount && meta.lastSyncedAt === remote.updatedAt) {
       if (meta.dirty) await push(userId)
-      else auth.setSync({ sync: 'synced', lastSyncedAt: remote.updatedAt })
+      else {
+        auth.setSync({ sync: 'synced', lastSyncedAt: remote.updatedAt })
+        void publishStats()
+      }
       return
     }
     if ((sameAccount && !meta.dirty) || !hasLocalProgress()) return apply(userId, remote)
@@ -129,7 +152,10 @@ export async function flushPending(): Promise<boolean> {
   for (let i = 0; i < 60 && useAuth.getState().sync === 'syncing'; i++) await new Promise((r) => setTimeout(r, 100))
   if (useAuth.getState().conflict) return false
   if (readMeta()?.dirty) await push(user.id)
-  return !readMeta()?.dirty && !useAuth.getState().conflict
+  const saved = !readMeta()?.dirty && !useAuth.getState().conflict
+  // Que el ranking quede al día antes de limpiar el dispositivo (un envío diferido se perdería).
+  if (saved) await publishStats(true)
+  return saved
 }
 
 export function syncNow(): Promise<void> {
@@ -175,6 +201,13 @@ export function startSync(): () => void {
     else if (!readMeta()?.dirty) void reconcile(current)
   }
   document.addEventListener('visibilitychange', onVisible)
+  // Al volver la conexión se sube de inmediato lo que quedó pendiente.
+  const onOnline = () => {
+    if (!current || paused) return
+    if (readMeta()?.dirty) void push(current)
+    else void reconcile(current)
+  }
+  window.addEventListener('online', onOnline)
   // Al cerrar la pestaña o salir de la página también se sube lo pendiente.
   window.addEventListener('pagehide', flush)
 
@@ -182,6 +215,7 @@ export function startSync(): () => void {
     unsubAuth()
     unsubProgress()
     document.removeEventListener('visibilitychange', onVisible)
+    window.removeEventListener('online', onOnline)
     window.removeEventListener('pagehide', flush)
   }
 }

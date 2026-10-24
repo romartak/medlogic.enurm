@@ -131,6 +131,8 @@ function AccountButton() {
   )
 }
 
+const STUDY_SECTIONS = ['/plan', '/especialidades', '/practica', '/simulacro', '/casos', '/flashcards', '/terminologia', '/guias', '/banco', '/repaso', '/juegos', '/ecg', '/herramientas']
+
 export function AppLayout() {
   const [paletteOpen, setPaletteOpen] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -169,6 +171,15 @@ export function AppLayout() {
   useEffect(() => {
     window.scrollTo({ top: 0 })
   }, [location.pathname])
+
+  // Se recuerda la última sección de estudio usada; viaja con el progreso a la nube. No se anota
+  // hasta que la cuenta esté sincronizada, para no pisar lo que ya hay guardado en la nube.
+  const setLastSection = useProgress((s) => s.setLastSection)
+  useEffect(() => {
+    if (authStatus !== 'signed-in' || syncState !== 'synced') return
+    const section = '/' + location.pathname.split('/')[1]
+    if (STUDY_SECTIONS.includes(section)) setLastSection(section)
+  }, [location.pathname, authStatus, syncState, setLastSection])
 
   // Primera visita: cuestionario para personalizar el plan. Un enlace de duelo se abre directo
   // (quien lo recibe por WhatsApp viene a jugar; el cuestionario puede esperar).

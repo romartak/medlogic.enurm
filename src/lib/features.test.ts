@@ -136,7 +136,7 @@ describe('ECG', () => {
 
 describe('ranking y universidades', () => {
   it('solo muestra primer nombre e inicial', () => {
-    expect(shortName('robinson santos pérez')).toBe('robinson S.')
+    expect(shortName('robinson santos pérez')).toBe('Robinson S.')
     expect(shortName('Ana')).toBe('Ana')
     expect(shortName('Dra. Genao')).toBe('Dra. Genao')
     expect(shortName('Dr. Pérez Gómez')).toBe('Dr. Pérez')
