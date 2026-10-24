@@ -159,7 +159,7 @@ export function AppLayout() {
 
   // Primera visita: cuestionario para personalizar el plan. Un enlace de duelo se abre directo
   // (quien lo recibe por WhatsApp viene a jugar; el cuestionario puede esperar).
-  if (!profile.completed && !profile.skipped && !location.pathname.startsWith('/duelo')) return <Navigate to="/bienvenida" replace />
+  if (!profile.completed && !profile.skipped && !location.pathname.startsWith('/duelo') && !location.pathname.startsWith('/d/')) return <Navigate to="/bienvenida" replace />
 
   return (
     <div className="min-h-dvh">

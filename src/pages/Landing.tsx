@@ -87,7 +87,7 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: '¿De dónde salen las preguntas?',
-    a: <>De exámenes de años anteriores recopilados, más un banco de muestra. Cada pregunta trae la explicación de todas las opciones, la fisiopatología, puntos clave y la referencia del libro. Las respuestas se revisaron una por una con la bibliografía, y se quitaron las repetidas y las incompletas.</>,
+    a: <>De exámenes de años anteriores recopilados, más un banco de muestra. Hoy hay más de 1,000 preguntas y nuestra meta es llegar a 12,000. Cada pregunta trae la explicación de todas las opciones, la fisiopatología, puntos clave y la referencia del libro. Las respuestas se revisaron una por una con la bibliografía, y se quitaron las repetidas y las incompletas.</>,
   },
 ]
 
@@ -366,6 +366,7 @@ export default function Landing() {
           <motion.ul initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted">
             {[
               [HeartHandshake, 'Gratis para siempre'],
+              [ListChecks, 'Más de 1,000 preguntas explicadas · meta: 12,000'],
               [ShieldCheck, 'Sin registro ni anuncios'],
               [Check, 'Tu progreso queda en tu dispositivo'],
             ].map(([I, t]) => {
