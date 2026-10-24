@@ -179,7 +179,7 @@ function AuthForm() {
           {mode === 'signup' && (
             <label className="block text-sm font-medium" htmlFor="acc-name">
               ¿Cómo te llamamos?
-              <input id="acc-name" name="name" maxLength={80} value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" placeholder="Dra. / Dr. …" className={field} />
+              <input id="acc-name" name="nickname" maxLength={80} value={name} onChange={(e) => setName(e.target.value)} autoComplete="nickname" autoCapitalize="words" placeholder="Dra. / Dr. …" className={field} />
             </label>
           )}
           <label className="block text-sm font-medium" htmlFor="acc-email">
