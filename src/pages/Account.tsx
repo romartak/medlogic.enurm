@@ -218,9 +218,10 @@ function AuthForm() {
                   ))}
                 </div>
               </fieldset>
-              <label className="block text-sm font-medium" htmlFor="acc-name">
+              <label className="block text-sm font-medium" htmlFor="acc-apodo">
                 Tu nombre o apellido
-                <input id="acc-name" name="nickname" required maxLength={60} value={name} onChange={(e) => setName(e.target.value)} autoComplete="nickname" autoCapitalize="words" placeholder="Escribe tu nombre o tu apellido" className={field} />
+                {/* Sin «name» en id/name y con autocomplete="off": así el iPhone no ofrece tarjetas ni contactos aquí. */}
+                <input id="acc-apodo" name="apodo" required maxLength={60} value={name} onChange={(e) => setName(e.target.value)} autoComplete="off" autoCorrect="off" autoCapitalize="words" spellCheck={false} enterKeyHint="next" data-form-type="other" data-lpignore="true" placeholder="Escribe tu nombre o tu apellido" className={field} />
               </label>
             </>
           )}
