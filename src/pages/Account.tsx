@@ -19,7 +19,7 @@ const TREATMENTS = [
   { value: 'doctora', label: 'Dra.', prefix: 'Dra.' },
   { value: 'licenciado', label: 'Lic.', prefix: 'Lic.' },
   { value: 'estudiante', label: 'Est.', prefix: 'Est.' },
-  { value: 'medico-interno', label: 'MI.', prefix: 'MI.' },
+  { value: 'na', label: 'N/A', prefix: '' },
   { value: 'ninguno', label: 'Prefiero no decirlo', prefix: '' },
 ] as const
 type Treatment = (typeof TREATMENTS)[number]['value']
