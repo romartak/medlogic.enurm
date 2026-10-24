@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
-import { ArrowRight, Copy, Crown, Handshake, MessageCircle, Share2, Swords, Timer } from 'lucide-react'
+import { ArrowRight, Copy, Crown, Handshake, Image as ImageIcon, MessageCircle, Swords, Timer } from 'lucide-react'
 import type { Question } from '@/types'
 import { useBank } from '@/store/bank'
 import { useProgress } from '@/store/progress'
 import { QuestionCard } from '@/components/QuestionCard'
 import { Button, Card, PageHeader } from '@/components/ui/primitives'
-import { decodeDuel, DUEL_SIZE, DUEL_SIZES, duelPool, duelRecordResult, duelTally, duelUrl, duelWinner, newDuelQuestions, useDuels, type DuelPayload, type DuelScore } from '@/lib/duel'
+import { decodeDuel, DUEL_SIZE, DUEL_SIZES, duelPool, duelQuestions, duelRecordResult, duelTally, duelUrl, duelWinner, newDuelQuestions, useDuels, type DuelPayload, type DuelScore } from '@/lib/duel'
 import { SpecialtyPicker } from '@/components/Filters'
 import { getSpecialty } from '@/data/specialties'
 import { shortName } from '@/lib/ranking'
@@ -15,35 +15,64 @@ import { copyText } from '@/lib/clipboard'
 import { celebrate, playSound } from '@/lib/fx'
 import { cn, formatClock } from '@/lib/utils'
 import { toast } from '@/store/toasts'
+import { makeDuelImage } from '@/lib/duelCard'
 
 const time = (s: number) => formatClock(Math.round(s))
 
-/** Comparte por el menú del teléfono; si no se puede, copia el enlace. */
-async function shareLink(text: string, url: string) {
-  if (navigator.share) {
+/** Comparte la imagen del duelo con el enlace; si el teléfono no puede, la descarga y copia el enlace. */
+async function shareImage(payload: DuelPayload, topics: string, text: string, url: string) {
+  const blob = await makeDuelImage(payload, topics)
+  const file = new File([blob], 'duelo-medlogic.png', { type: 'image/png' })
+  if (navigator.canShare?.({ files: [file] })) {
     try {
-      await navigator.share({ text, url })
+      await navigator.share({ files: [file], text: `${text} ${url}` })
       return
     } catch (e) {
       if (e instanceof DOMException && e.name === 'AbortError') return
     }
   }
-  await copyText(`${text} ${url}`)
-  toast({ kind: 'success', title: 'Enlace copiado', body: 'Pégalo en WhatsApp o donde quieras.' })
+  const href = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = href
+  link.download = file.name
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+  setTimeout(() => URL.revokeObjectURL(href), 1000)
+  await copyText(url)
+  toast({ kind: 'success', title: 'Imagen guardada y enlace copiado', body: 'Envía la imagen y pega el enlace en el chat.' })
 }
 
-function ShareButtons({ text, url }: { text: string; url: string }) {
+function ShareButtons({ text, url, payload, topics }: { text: string; url: string; payload: DuelPayload; topics: string }) {
+  const [busy, setBusy] = useState(false)
   return (
-    <div className="grid gap-2 sm:grid-cols-3">
-      <a href={`https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}`} target="_blank" rel="noopener noreferrer" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 font-semibold text-white">
-        <MessageCircle className="size-5" /> WhatsApp
-      </a>
-      <Button size="lg" variant="secondary" onClick={() => void shareLink(text, url)}>
-        <Share2 className="size-5" /> Compartir
+    <div className="space-y-2">
+      <Button
+        size="lg"
+        className="w-full"
+        disabled={busy}
+        onClick={async () => {
+          setBusy(true)
+          try {
+            await shareImage(payload, topics, text, url)
+          } catch {
+            toast({ kind: 'error', title: 'No se pudo crear la imagen' })
+          } finally {
+            setBusy(false)
+          }
+        }}
+      >
+        <ImageIcon className="size-5" /> {busy ? 'Creando imagen…' : 'Compartir imagen con el enlace'}
       </Button>
-      <Button size="lg" variant="outline" onClick={() => copyText(url).then(() => toast({ kind: 'success', title: 'Enlace copiado' }))}>
-        <Copy className="size-5" /> Copiar
-      </Button>
+      <div className="grid grid-cols-2 gap-2">
+        <a href={`https://wa.me/?text=${encodeURIComponent(`${text} ${url}`)}`} target="_blank" rel="noopener noreferrer" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 font-semibold text-white">
+          <MessageCircle className="size-5" /> Solo enlace
+        </a>
+        <Button size="lg" variant="outline" onClick={() => copyText(url).then(() => toast({ kind: 'success', title: 'Enlace copiado' }))}>
+          <Copy className="size-5" /> Copiar
+        </Button>
+      </div>
+      <p className="truncate text-center text-xs text-muted">{url.replace(/^https?:\/\//, '')}</p>
     </div>
   )
 }
@@ -129,7 +158,13 @@ function NameField({ value, onChange }: { value: string; onChange: (v: string) =
   )
 }
 
-export default function Duel() {
+/** Cada enlace de duelo empieza limpio, aunque se abra en la misma pestaña. */
+export default function DuelRoute() {
+  const { code } = useParams()
+  return <Duel key={code ?? 'nuevo'} />
+}
+
+function Duel() {
   const { code } = useParams()
   const navigate = useNavigate()
   const bank = useBank((s) => s.questions)
@@ -145,7 +180,7 @@ export default function Duel() {
   const [result, setResult] = useState<DuelPayload | null>(null)
 
   const incoming = useMemo(() => (code ? decodeDuel(code) : null), [code])
-  const incomingQuestions = useMemo(() => (incoming ? incoming.q.map((id) => byId.get(id)).filter((q): q is Question => !!q) : []), [incoming, byId])
+  const incomingQuestions = useMemo(() => (incoming ? duelQuestions(incoming, bank, byId) : []), [incoming, bank, byId])
   const mine = incoming ? duels[incoming.id] : undefined
   const tally = duelTally(duels)
   const myName = name.trim() || 'Anónimo'
@@ -158,6 +193,8 @@ export default function Duel() {
 
   const header = <PageHeader icon={<Swords className="size-6" />} eyebrow="Reta a un amigo" title="Duelo" subtitle="Las mismas preguntas para los dos: tú eliges cuántas y de qué temas. Gana quien acierte más; si empatan, quien piense más rápido." />
   const topics = (ids?: string[]) => (ids?.length ? ids.map((id) => getSpecialty(id).short).join(', ') : 'Todo el examen')
+  /** Nombres completos para la imagen («Cardiología, Pediatría»). */
+  const topicsLong = (ids?: string[]) => (ids?.length ? (ids.length > 3 ? `${ids.length} temas` : ids.map((id) => getSpecialty(id).name).join(', ')) : 'Todo el examen')
 
   if (code && !incoming)
     return (
@@ -189,14 +226,14 @@ export default function Duel() {
           <Handshake className="mx-auto size-10 text-brand-600 dark:text-brand-400" />
           <h2 className="mt-2 font-display text-2xl font-extrabold">{headline}</h2>
           <div className="mt-6 grid grid-cols-2 gap-3">
-            <ScoreCard s={finalPayload.a} label="Retó" win={w === 'a'} total={finalPayload.q.length} />
-            <ScoreCard s={finalPayload.b} label="Aceptó" win={w === 'b'} total={finalPayload.q.length} />
+            <ScoreCard s={finalPayload.a} label="Retó" win={w === 'a'} total={finalPayload.n} />
+            <ScoreCard s={finalPayload.b} label="Aceptó" win={w === 'b'} total={finalPayload.n} />
           </div>
         </Card>
         {result && (
           <Card className="space-y-3 p-6">
             <div className="font-semibold">Mándale tu resultado a {finalPayload.a.name}</div>
-            <ShareButtons text={`Acepté tu duelo en MedLogic: saqué ${finalPayload.b.correct}/${finalPayload.q.length}. Mira quién ganó:`} url={replyUrl} />
+            <ShareButtons text={`Acepté tu duelo en MedLogic: saqué ${finalPayload.b.correct}/${finalPayload.n}. Mira quién ganó:`} url={replyUrl} payload={finalPayload} topics={topicsLong(finalPayload.s)} />
           </Card>
         )}
         <Button size="lg" variant="outline" className="w-full" onClick={() => navigate('/duelo')}>
@@ -217,10 +254,10 @@ export default function Duel() {
           if (correct >= questions.length * 0.7) celebrate('small')
           if (incoming) {
             const payload: DuelPayload = { ...incoming, b: me }
-            save({ id: incoming.id, rival: incoming.a.name, me, rivalScore: incoming.a, challenger: false, date: Date.now(), total: incoming.q.length })
+            save({ id: incoming.id, rival: incoming.a.name, me, rivalScore: incoming.a, challenger: false, date: Date.now(), total: incoming.n })
             setResult(payload)
           } else {
-            const payload: DuelPayload = { v: 1, id: created!.id, q: created!.questions.map((q) => q.id), a: me, ...(specialties.length ? { s: specialties } : {}) }
+            const payload: DuelPayload = { v: 2, id: created!.id, n: created!.questions.length, a: me, ...(specialties.length ? { s: specialties } : {}) }
             save({ id: created!.id, rival: 'Pendiente', me, rivalScore: null, challenger: true, date: Date.now(), total: created!.questions.length })
             setResult(payload)
             setPhase('done')
@@ -240,14 +277,14 @@ export default function Duel() {
           <div className="text-sm text-muted">Tu resultado</div>
           <div className="font-display text-5xl font-extrabold">
             {result.a.correct}
-            <span className="text-2xl text-muted">/{result.q.length}</span>
+            <span className="text-2xl text-muted">/{result.n}</span>
           </div>
           <div className="mt-1 text-sm text-muted">en {time(result.a.seconds)} pensando</div>
         </Card>
         <Card className="space-y-3 p-6">
           <div className="font-semibold">Ahora reta a un amigo</div>
-          <p className="text-sm text-muted">Le llegan las mismas {result.q.length} preguntas ({topics(result.s).toLowerCase()}). Cuando termine, te devolverá un enlace con quién ganó.</p>
-          <ShareButtons text={`Te reto en MedLogic ENURM: saqué ${result.a.correct}/${result.q.length}. ¿Me ganas?`} url={url} />
+          <p className="text-sm text-muted">Le llegan las mismas {result.n} preguntas ({topics(result.s).toLowerCase()}). Cuando termine, te devolverá un enlace con quién ganó.</p>
+          <ShareButtons text={`Te reto en MedLogic ENURM: saqué ${result.a.correct}/${result.n}. ¿Me ganas?`} url={url} payload={result} topics={topicsLong(result.s)} />
         </Card>
       </div>
     )
@@ -264,7 +301,7 @@ export default function Duel() {
             <p className="mt-1 text-sm text-muted">{mine.challenger ? 'Compártelo con un amigo para que lo acepte.' : 'Crea uno nuevo para seguir jugando.'}</p>
             {mine.challenger && (
               <div className="mt-4">
-                <ShareButtons text={`Te reto en MedLogic ENURM: saqué ${mine.me.correct}/${incoming.q.length}. ¿Me ganas?`} url={duelUrl(incoming)} />
+                <ShareButtons text={`Te reto en MedLogic ENURM: saqué ${mine.me.correct}/${incoming.n}. ¿Me ganas?`} url={duelUrl(incoming)} payload={incoming} topics={topicsLong(incoming.s)} />
               </div>
             )}
           </Card>
@@ -278,13 +315,13 @@ export default function Duel() {
           <Swords className="relative mx-auto size-10 text-brand-600 dark:text-brand-400" />
           <h2 className="relative mt-2 font-display text-2xl font-extrabold">{incoming.a.name} te reta</h2>
           <p className="relative mt-1 text-muted">
-            Sacó <b className="text-[var(--text)]">{incoming.a.correct}/{incoming.q.length}</b> en {time(incoming.a.seconds)}. ¿Puedes ganarle?
+            Sacó <b className="text-[var(--text)]">{incoming.a.correct}/{incoming.n}</b> en {time(incoming.a.seconds)}. ¿Puedes ganarle?
           </p>
           <p className="relative mt-3 inline-flex rounded-full surface-2 px-3 py-1 text-xs font-semibold">
-            {incoming.q.length} preguntas · {topics(incoming.s)}
+            {incoming.n} preguntas · {topics(incoming.s)}
           </p>
         </Card>
-        {incomingQuestions.length < Math.min(5, incoming.q.length) ? (
+        {incomingQuestions.length < Math.min(5, incoming.n) ? (
           <Card className="p-6 text-sm">Algunas preguntas de este duelo ya no están en el banco. Crea un duelo nuevo.</Card>
         ) : (
           <Card className="space-y-4 p-6">

@@ -14,16 +14,16 @@ export interface ShareStats {
 const W = 1080
 const H = 1350
 const PULSE = 'M10 34h10l5-12 8 22 6-16 4 6h11'
-const DISPLAY = '"Plus Jakarta Sans Variable", "Inter Variable", system-ui, sans-serif'
-const BODY = '"Inter Variable", system-ui, sans-serif'
+export const DISPLAY = '"Plus Jakarta Sans Variable", "Inter Variable", system-ui, sans-serif'
+export const BODY = '"Inter Variable", system-ui, sans-serif'
 export const SITE = 'medlogicenurm.vercel.app'
 
-function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+export function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
   ctx.beginPath()
   ctx.roundRect(x, y, w, h, r)
 }
 
-function logo(ctx: CanvasRenderingContext2D, x: number, y: number, size: number) {
+export function logo(ctx: CanvasRenderingContext2D, x: number, y: number, size: number) {
   const g = ctx.createLinearGradient(x, y, x + size, y + size)
   g.addColorStop(0, '#14b8a6')
   g.addColorStop(1, '#6366f1')

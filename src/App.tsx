@@ -172,6 +172,7 @@ export default function App() {
               <Route path="/simulacro-nacional" element={<Lazy><NationalExam /></Lazy>} />
               <Route path="/duelo" element={<Lazy><Duel /></Lazy>} />
               <Route path="/duelo/:code" element={<Lazy><Duel /></Lazy>} />
+              <Route path="/d/:code" element={<Lazy><Duel /></Lazy>} />
               <Route path="/casos" element={<Lazy><Cases /></Lazy>} />
               <Route path="/casos/:id" element={<Lazy><Cases /></Lazy>} />
               <Route path="/ecg" element={<Lazy><EcgGame /></Lazy>} />
