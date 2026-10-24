@@ -41,6 +41,8 @@ export interface UniversityRow {
 export function shortName(full: string): string {
   const parts = full.trim().split(/\s+/).filter(Boolean)
   if (!parts.length) return ''
+  // Con título («Dra. Genao», «Dr. Pérez Gómez») se conserva el apellido: «Dra. Genao».
+  if (/^dra?\.?$/i.test(parts[0]) && parts[1]) return `${parts[0]} ${parts[1].slice(0, 20)}`
   const first = parts[0].slice(0, 20)
   return parts[1] ? `${first} ${parts[1][0].toUpperCase()}.` : first
 }

@@ -9,7 +9,10 @@ import { hashString } from './utils'
  * El enlace lleva las preguntas (por id), el nombre y el resultado de quien reta; quien acepta
  * responde las mismas y devuelve otro enlace con los dos resultados.
  */
+/** Cuántas preguntas puede tener un duelo (quien reta elige). */
+export const DUEL_SIZES = [5, 10, 15, 20, 30, 50] as const
 export const DUEL_SIZE = 10
+export const MAX_DUEL_SIZE = 50
 
 export interface DuelScore {
   name: string
@@ -27,6 +30,8 @@ export interface DuelPayload {
   a: DuelScore
   /** Quien aceptó (solo en el enlace de vuelta). */
   b?: DuelScore
+  /** Temas elegidos (ids de especialidad); vacío o ausente = mezcla de todo. */
+  s?: string[]
 }
 
 const SALT = 'medlogic-duelo-v1'
@@ -59,7 +64,8 @@ export function decodeDuel(code: string): DuelPayload | null {
     const body = fromBase64Url(data)
     if (sign(body) !== sig) return null
     const p = JSON.parse(body) as DuelPayload
-    if (p.v !== 1 || !Array.isArray(p.q) || !p.q.length || p.q.length > 20 || !p.a) return null
+    if (p.v !== 1 || !Array.isArray(p.q) || !p.q.length || p.q.length > MAX_DUEL_SIZE || !p.a) return null
+    if (p.s && (!Array.isArray(p.s) || p.s.length > 30 || p.s.some((x) => typeof x !== 'string'))) return null
     const ok = (s: DuelScore | undefined) => !s || (typeof s.correct === 'number' && s.correct >= 0 && s.correct <= p.q.length && s.seconds >= 0 && typeof s.name === 'string')
     if (!ok(p.a) || !ok(p.b)) return null
     return { ...p, a: { ...p.a, name: p.a.name.slice(0, 30) }, b: p.b && { ...p.b, name: p.b.name.slice(0, 30) } }
@@ -72,10 +78,15 @@ export function duelUrl(p: DuelPayload): string {
   return `${window.location.origin}${window.location.pathname}#/duelo/${encodeDuel(p)}`
 }
 
-export function newDuelQuestions(bank: Question[], specialty: string | null): { id: string; questions: Question[] } {
+/** Preguntas del banco para los temas elegidos (todas si no se elige ninguno). */
+export function duelPool(bank: Question[], specialties: string[]): Question[] {
+  return specialties.length ? bank.filter((q) => specialties.includes(q.specialty)) : bank
+}
+
+export function newDuelQuestions(bank: Question[], specialties: string[], count: number): { id: string; questions: Question[] } {
   const id = Math.random().toString(36).slice(2, 10)
-  const pool = specialty ? bank.filter((q) => q.specialty === specialty) : bank
-  return { id, questions: seededPick(pool, DUEL_SIZE, `duelo-${id}`) }
+  const n = Math.max(1, Math.min(MAX_DUEL_SIZE, Math.round(count)))
+  return { id, questions: seededPick(duelPool(bank, specialties), n, `duelo-${id}`) }
 }
 
 /** Gana quien acierta más; si empatan, quien tardó menos. */
@@ -92,6 +103,8 @@ export interface DuelRecord {
   rivalScore: DuelScore | null
   /** Yo reté (true) o acepté (false). */
   challenger: boolean
+  /** Número de preguntas del duelo (los duelos antiguos eran de 10). */
+  total?: number
   date: number
 }
 

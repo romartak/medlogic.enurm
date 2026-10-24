@@ -34,7 +34,7 @@ export const ROADMAP: RoadmapStage[] = [
     when: '1–3 meses',
     color: '#0ea5e9',
     items: [
-      { title: 'Banco completo de todos los años', body: 'Todas las preguntas del ENURM con análisis por opción, fisiopatología y referencias actualizadas.', icon: 'database' },
+      { title: 'Banco de 12,000 preguntas', body: 'Hoy hay más de 1,000 preguntas explicadas; la meta es llegar a 12,000, todas con análisis por opción, fisiopatología y referencias actualizadas.', icon: 'database' },
       { title: 'Temas calientes del ENURM', body: 'Mapa de calor tema × año para ver qué se repite y qué temas podrían salir en el próximo examen.', icon: 'flame' },
       { title: 'Modo examen real', body: 'Pantalla completa, hoja de respuestas tipo burbuja y cronómetro oficial, sin distracciones.', icon: 'graduation' },
       { title: 'Calibración de confianza', body: 'Indica qué tan seguro estás antes de responder: verás tu curva metacognitiva y los aciertos "por suerte".', icon: 'gauge' },

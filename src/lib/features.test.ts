@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Question } from '@/types'
-import { decodeDuel, duelWinner, encodeDuel, type DuelPayload } from './duel'
+import { decodeDuel, duelWinner, encodeDuel, newDuelQuestions, type DuelPayload } from './duel'
 import { seededPick } from './selection'
 import { currentEdition, nationalQuestions } from './national'
 import { ECG_PATTERNS, makeStrip } from './ecg'
@@ -30,6 +30,15 @@ describe('duelo', () => {
     const tampered = encodeDuel({ ...p, a: { ...p.a, correct: 3 } }).split('.')[0] + '.' + code.split('.')[1]
     expect(decodeDuel(tampered)).toBeNull()
     expect(decodeDuel('basura')).toBeNull()
+  })
+
+  it('acepta duelos de hasta 50 preguntas con temas elegidos', () => {
+    const { questions } = newDuelQuestions(bank, [SPECIALTIES[0].id, SPECIALTIES[1].id], 50)
+    expect(questions).toHaveLength(50)
+    expect(questions.every((q) => q.specialty === SPECIALTIES[0].id || q.specialty === SPECIALTIES[1].id)).toBe(true)
+    const big: DuelPayload = { v: 1, id: 'big', q: questions.map((q) => q.id), a: { name: 'Dra. Genao', correct: 41, seconds: 300 }, s: [SPECIALTIES[0].id] }
+    expect(decodeDuel(encodeDuel(big))).toEqual(big)
+    expect(decodeDuel(encodeDuel({ ...big, q: Array.from({ length: 51 }, (_, i) => `q-${i}`) }))).toBeNull()
   })
 
   it('gana quien acierta más; si empatan, quien tarda menos', () => {
@@ -101,6 +110,8 @@ describe('ranking y universidades', () => {
   it('solo muestra primer nombre e inicial', () => {
     expect(shortName('robinson santos pérez')).toBe('robinson S.')
     expect(shortName('Ana')).toBe('Ana')
+    expect(shortName('Dra. Genao')).toBe('Dra. Genao')
+    expect(shortName('Dr. Pérez Gómez')).toBe('Dr. Pérez')
     expect(shortName('  ')).toBe('')
   })
 
