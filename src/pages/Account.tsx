@@ -15,11 +15,11 @@ const RECOVERY_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('O
 
 /** Cómo prefiere que lo llamen quien se registra: lo que se muestra y el tratamiento que antecede al nombre. */
 const TREATMENTS = [
-  { value: 'doctor', label: 'Doctor', prefix: 'Dr.' },
-  { value: 'doctora', label: 'Doctora', prefix: 'Dra.' },
-  { value: 'enfermero', label: 'Enfermero', prefix: 'Enfermero' },
-  { value: 'enfermera', label: 'Enfermera', prefix: 'Enfermera' },
-  { value: 'estudiante', label: 'Estudiante', prefix: '' },
+  { value: 'doctor', label: 'Dr.', prefix: 'Dr.' },
+  { value: 'doctora', label: 'Dra.', prefix: 'Dra.' },
+  { value: 'licenciado', label: 'Lic.', prefix: 'Lic.' },
+  { value: 'estudiante', label: 'Est.', prefix: 'Est.' },
+  { value: 'medico-interno', label: 'MI.', prefix: 'MI.' },
   { value: 'ninguno', label: 'Prefiero no decirlo', prefix: '' },
 ] as const
 type Treatment = (typeof TREATMENTS)[number]['value']
