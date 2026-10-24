@@ -86,6 +86,9 @@ export interface StudyProfile {
   /** 1–12, o null si aún no lo sabe. */
   examMonth: number | null
   residency: string | null
+  /** Universidad (id de data/universities.ts) y nombre escrito si es «otra» o extranjera. */
+  university: string | null
+  universityOther: string
   /** Días de la semana en que estudia (0 = domingo). */
   studyDays: number[]
   minutesPerDay: number
@@ -221,4 +224,6 @@ export interface Settings {
   sound: boolean
   shuffleOptions: boolean
   reduceMotion: boolean
+  /** En el ranking: salir con primer nombre e inicial (true) o como «Estudiante». */
+  rankingShowName: boolean
 }

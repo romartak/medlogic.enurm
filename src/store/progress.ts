@@ -69,6 +69,7 @@ const DEFAULT_SETTINGS: Settings = {
   sound: true,
   shuffleOptions: false,
   reduceMotion: false,
+  rankingShowName: true,
 }
 
 const INITIAL: ProgressData = {

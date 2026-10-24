@@ -12,7 +12,7 @@ La página funciona sin servidor: sin cuentas, todo se guarda en el navegador de
 ### 2. Conecta Supabase desde Vercel (sin copiar claves)
 1. En tu proyecto de Vercel → pestaña **Storage** → **Create Database** → **Supabase** (o desde [vercel.com/marketplace/supabase](https://vercel.com/marketplace/supabase)). Elige el plan gratis y conéctalo al proyecto.
 2. Vercel crea solas las variables (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `POSTGRES_URL_NON_POOLING`…). La app lee las públicas; las secretas nunca llegan al navegador.
-3. **Deployments → ⋯ → Redeploy**. En el registro de la compilación verás `[migraciones] Aplicada 0001…` y `0002…`: las tablas, la seguridad por filas y los límites se crean solos. Solo ocurre en producción; las vistas previas no tocan la base de datos.
+3. **Deployments → ⋯ → Redeploy**. En el registro de la compilación verás `[migraciones] Aplicada 0001…`, `0002…` y `0003…`: las tablas, la seguridad por filas, los límites, el ranking y el simulacro nacional se crean solos. Solo ocurre en producción; las vistas previas no tocan la base de datos.
 
 ### 3. Dos ajustes en Supabase
 Abre Supabase desde Vercel (**Storage → tu base → Open in Supabase**):
@@ -61,7 +61,7 @@ En Vercel → **Analytics** y **Speed Insights** → **Enable**. La app ya trae 
 
 ## Camino manual (sin la integración)
 1. Crea un proyecto en [supabase.com](https://supabase.com).
-2. **SQL Editor** → pega y ejecuta, en orden, `supabase/migrations/0001_cuentas_y_progreso.sql` y `0002_limites_y_seguridad.sql`. También puedes definir `POSTGRES_URL_NON_POOLING` en Vercel y se aplican solas al desplegar.
+2. **SQL Editor** → pega y ejecuta, en orden, `supabase/migrations/0001_cuentas_y_progreso.sql`, `0002_limites_y_seguridad.sql` y `0003_ranking_y_simulacro_nacional.sql`. También puedes definir `POSTGRES_URL_NON_POOLING` en Vercel y se aplican solas al desplegar.
 3. **Project Settings → API**: copia la URL y la clave pública (*anon* o *publishable*) en Vercel como `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`.
 4. Sigue los pasos 3, 4 y 5 de arriba.
 

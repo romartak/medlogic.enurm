@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { ArrowRight, Languages, BookOpen, CalendarDays, Check, ChartColumn, Flame, GraduationCap, Layers, Newspaper, RotateCcw, Share2, Sparkles, Target, Timer, Trophy, Zap } from 'lucide-react'
+import { ArrowRight, Languages, BookOpen, CalendarDays, Check, ChartColumn, Flag, Flame, GraduationCap, HeartPulse, Layers, Medal, Newspaper, RotateCcw, Share2, Sparkles, Stethoscope, Swords, Target, Timer, Trophy, Zap } from 'lucide-react'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { useProgress, levelFromXp, levelTitle } from '@/store/progress'
 import { resolveExamDate } from '@/lib/plan'
@@ -20,6 +20,9 @@ import { lingoStreak, useLingo } from '@/store/lingo'
 import { dueItems } from '@/lib/lingo'
 import { shareProgress, type ShareStats } from '@/lib/shareCard'
 import { toast } from '@/store/toasts'
+import { currentEdition, daysLeftInEdition, editionLabel, useNational } from '@/lib/national'
+import { duelTally, useDuels } from '@/lib/duel'
+import { hasReminder, ReminderCard } from '@/components/ReminderCard'
 
 function greeting() {
   const h = new Date().getHours()
@@ -80,6 +83,33 @@ function ShareButton({ stats, className }: { stats: ShareStats; className?: stri
     <button onClick={go} disabled={busy} className={cn('inline-flex h-11 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold transition-colors disabled:opacity-60', className)}>
       <Share2 className="size-4 shrink-0" /> {busy ? 'Creando…' : 'Compartir progreso'}
     </button>
+  )
+}
+
+/** Simulacro nacional, duelos, casos, ECG y ranking: accesos rápidos con el estado de cada uno. */
+function ExploreCard() {
+  const edition = currentEdition()
+  const national = useNational((s) => s.attempts[edition])
+  const tally = duelTally(useDuels((s) => s.duels))
+  const items = [
+    { to: '/simulacro-nacional', icon: Flag, color: '#0ea5e9', title: 'Simulacro nacional', hint: national ? `Hecho: ${pct(national.correct, national.total)} %` : `${editionLabel(edition)} · ${daysLeftInEdition()} días` },
+    { to: '/duelo', icon: Swords, color: '#f97316', title: 'Duelo', hint: tally.total ? `${tally.wins} ganados · ${tally.losses} perdidos` : 'Reta a un amigo' },
+    { to: '/casos', icon: Stethoscope, color: '#8b5cf6', title: 'Casos clínicos', hint: 'Decide paso a paso' },
+    { to: '/ecg', icon: HeartPulse, color: '#ef4444', title: 'Lee el ECG', hint: 'Arritmias y bloqueos' },
+    { to: '/ranking', icon: Medal, color: '#f59e0b', title: 'Ranking', hint: 'Tu posición en el país' },
+  ]
+  return (
+    <div className="-mx-4 flex snap-x gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 lg:grid-cols-5">
+      {items.map((it) => (
+        <Link key={it.to} to={it.to} className="card card-hover group flex w-40 shrink-0 snap-start flex-col p-4 sm:w-auto">
+          <span className="grid size-10 place-items-center rounded-xl" style={{ backgroundColor: `${it.color}1a`, color: it.color }}>
+            <it.icon className="size-5" />
+          </span>
+          <span className="mt-3 font-display font-bold">{it.title}</span>
+          <span className="text-xs text-muted">{it.hint}</span>
+        </Link>
+      ))}
+    </div>
   )
 }
 
@@ -221,6 +251,8 @@ export default function Dashboard() {
         </div>
       )}
 
+      <ExploreCard />
+
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Acciones */}
         <div className="min-w-0 space-y-6 lg:col-span-2">
@@ -302,6 +334,8 @@ export default function Dashboard() {
           </Card>
 
           <LingoCard />
+
+          {!hasReminder() && <ReminderCard compact />}
 
           <Card className="p-5">
             <h2 className="mb-1 font-display font-bold">Para reforzar</h2>

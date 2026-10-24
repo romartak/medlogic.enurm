@@ -15,8 +15,9 @@ import { useHotkeys } from '@/hooks/useHotkeys'
 import { celebrate, playSound } from '@/lib/fx'
 import { cn, formatClock, formatDate, formatDuration, LETTERS, pct, uid, softHyphens } from '@/lib/utils'
 import { getSpecialty } from '@/data/specialties'
+import { currentEdition, editionLabel, useNational } from '@/lib/national'
 
-interface ExamConfig {
+export interface ExamConfig {
   title: string
   questions: Question[]
   minutes: number
@@ -68,6 +69,8 @@ export default function Exam() {
   return (
     <div>
       <PageHeader icon={<GraduationCap className="size-6" />} eyebrow="Modo examen" title="Simulacro" subtitle="Condiciones reales: tiempo limitado, sin retroalimentación hasta el final y resultados por especialidad." />
+
+      <NationalBanner />
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="min-w-0 space-y-6 lg:col-span-2">
@@ -202,7 +205,25 @@ export default function Exam() {
   )
 }
 
-function ExamRunner({ config, onExit }: { config: ExamConfig; onExit: () => void }) {
+/** Acceso al simulacro nacional del mes. */
+function NationalBanner() {
+  const edition = currentEdition()
+  const done = useNational((s) => s.attempts[edition])
+  return (
+    <Link to="/simulacro-nacional" className="card card-hover group mb-6 flex items-center gap-4 border-brand-500/30 bg-brand-500/[0.05] p-4 sm:p-5">
+      <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-white shadow-glow">
+        <Flag className="size-6" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block font-display font-bold">Simulacro nacional · {editionLabel(edition)}</span>
+        <span className="block text-sm text-muted">{done ? `Ya lo hiciste: ${pct(done.correct, done.total)} %. Mira tu percentil.` : 'El mismo examen para todo el país. Descubre en qué percentil quedas.'}</span>
+      </span>
+      <ChevronRight className="size-5 shrink-0 text-muted transition-transform group-hover:translate-x-1" />
+    </Link>
+  )
+}
+
+export function ExamRunner({ config, onExit, onSubmitted }: { config: ExamConfig; onExit: () => void; onSubmitted?: (r: ExamResult) => void }) {
   const { questions } = config
   const shuffleOpts = useProgress((s) => s.settings.shuffleOptions)
   const recordAnswer = useProgress((s) => s.recordAnswer)
@@ -241,6 +262,7 @@ function ExamRunner({ config, onExit }: { config: ExamConfig; onExit: () => void
       answers,
     }
     saveExam(result)
+    onSubmitted?.(result)
     const ratio = correct / questions.length
     if (ratio >= 0.6) {
       celebrate('big')

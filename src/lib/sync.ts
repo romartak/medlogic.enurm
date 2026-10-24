@@ -1,6 +1,7 @@
 import { supabase } from './supabase'
 import { hasLocalProgress, MAX_SNAPSHOT_BYTES, onProgressChange, restoreSnapshot, takeSnapshot } from './backup'
 import { useAuth } from '@/store/auth'
+import { publishStats } from './ranking'
 
 /**
  * Sincronización del progreso con Supabase (tabla public.user_state, una fila por usuario).
@@ -56,6 +57,8 @@ async function push(userId: string): Promise<void> {
     if (error) throw error
     writeMeta({ userId, lastSyncedAt: data.updated_at as string, dirty: false })
     useAuth.getState().setSync({ sync: 'synced', lastSyncedAt: data.updated_at as string })
+    // El resumen público del ranking viaja con cada sincronización (con su propio límite de frecuencia).
+    void publishStats()
   } catch {
     useAuth.getState().setSync({ sync: navigator.onLine ? 'error' : 'offline' })
   }

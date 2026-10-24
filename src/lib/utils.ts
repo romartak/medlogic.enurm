@@ -12,11 +12,27 @@ export function cn(...classes: (string | false | null | undefined)[]): string {
   return classes.filter(Boolean).join(' ')
 }
 
-/** Fisher–Yates; devuelve una copia. */
-export function shuffle<T>(arr: readonly T[]): T[] {
+/** Números pseudoaleatorios a partir de un texto: la misma semilla da siempre la misma secuencia (mulberry32). */
+export function seededRandom(seed: string): () => number {
+  let h = 1779033703 ^ seed.length
+  for (let i = 0; i < seed.length; i++) {
+    h = Math.imul(h ^ seed.charCodeAt(i), 3432918353)
+    h = (h << 13) | (h >>> 19)
+  }
+  let t = h >>> 0
+  return () => {
+    t += 0x6d2b79f5
+    let r = Math.imul(t ^ (t >>> 15), t | 1)
+    r ^= r + Math.imul(r ^ (r >>> 7), r | 61)
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+/** Fisher–Yates; devuelve una copia. Con `rng` propio el orden se puede repetir (ver seededRandom). */
+export function shuffle<T>(arr: readonly T[], rng: () => number = Math.random): T[] {
   const a = arr.slice()
   for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
+    const j = Math.floor(rng() * (i + 1))
     ;[a[i], a[j]] = [a[j], a[i]]
   }
   return a
