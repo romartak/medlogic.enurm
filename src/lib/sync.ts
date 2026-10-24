@@ -41,12 +41,17 @@ let applying = false
 /** Tras cerrar sesión o borrar la cuenta no se sube ni se baja nada más (el dispositivo se está limpiando). */
 let paused = false
 let timer: ReturnType<typeof setTimeout> | null = null
+/** Reintento automático tras un fallo (mala conexión): 5 s, 15 s, 45 s y luego cada minuto, mientras haya algo sin subir. */
+let retryTimer: ReturnType<typeof setTimeout> | null = null
+let failures = 0
 
 /** Detiene la sincronización para siempre en esta carga de la página (se usa justo antes de limpiar el dispositivo). */
 export function pauseSync(): void {
   paused = true
   if (timer) clearTimeout(timer)
   timer = null
+  if (retryTimer) clearTimeout(retryTimer)
+  retryTimer = null
 }
 
 async function pull(userId: string): Promise<{ snapshot: unknown; updatedAt: string } | null> {
@@ -68,10 +73,23 @@ async function push(userId: string): Promise<void> {
     writeMeta({ userId, lastSyncedAt: data.updated_at as string, dirty: false })
     useAuth.getState().setSync({ sync: 'synced', lastSyncedAt: data.updated_at as string })
     // El resumen público del ranking viaja con cada sincronización (con su propio límite de frecuencia).
+    failures = 0
     void publishStats()
   } catch {
     useAuth.getState().setSync({ sync: navigator.onLine ? 'error' : 'offline' })
+    scheduleRetry(userId)
   }
+}
+
+function scheduleRetry(userId: string) {
+  if (paused || retryTimer) return
+  const wait = Math.min(60_000, 5_000 * 3 ** failures)
+  failures++
+  retryTimer = setTimeout(() => {
+    retryTimer = null
+    if (paused || useAuth.getState().user?.id !== userId || !readMeta()?.dirty) return
+    void push(userId)
+  }, wait)
 }
 
 function apply(userId: string, remote: { snapshot: unknown; updatedAt: string }) {
@@ -183,6 +201,13 @@ export function startSync(): () => void {
     else if (!readMeta()?.dirty) void reconcile(current)
   }
   document.addEventListener('visibilitychange', onVisible)
+  // Al volver la conexión se sube de inmediato lo que quedó pendiente.
+  const onOnline = () => {
+    if (!current || paused) return
+    if (readMeta()?.dirty) void push(current)
+    else void reconcile(current)
+  }
+  window.addEventListener('online', onOnline)
   // Al cerrar la pestaña o salir de la página también se sube lo pendiente.
   window.addEventListener('pagehide', flush)
 
@@ -190,6 +215,7 @@ export function startSync(): () => void {
     unsubAuth()
     unsubProgress()
     document.removeEventListener('visibilitychange', onVisible)
+    window.removeEventListener('online', onOnline)
     window.removeEventListener('pagehide', flush)
   }
 }

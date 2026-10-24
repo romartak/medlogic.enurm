@@ -35,6 +35,8 @@ interface ProgressData {
   planDone: Record<string, number>
   /** Plan del día congelado para que no cambie mientras se estudia. */
   planSnapshot: { plan: DailyPlan; profileAt: number } | null
+  /** Última sección de estudio que usó la persona (para «Continuar donde lo dejaste»). */
+  lastSection: { to: string; at: number } | null
 }
 
 interface ProgressActions {
@@ -56,6 +58,7 @@ interface ProgressActions {
   togglePlanCheck: (taskId: string) => void
   setPlanSnapshot: (snap: ProgressData['planSnapshot']) => void
   markPlanDone: () => boolean
+  setLastSection: (to: string) => void
 }
 
 export type ProgressState = ProgressData & ProgressActions
@@ -92,6 +95,7 @@ const INITIAL: ProgressData = {
   planChecks: {},
   planDone: {},
   planSnapshot: null,
+  lastSection: null,
 }
 
 const EMPTY_DAY: DayActivity = { answered: 0, correct: 0, cards: 0, minutes: 0 }
@@ -242,6 +246,11 @@ export const useProgress = create<ProgressState>()(
         },
 
         addMinutes: (n) => set({ activity: bumpDay(get().activity, { minutes: n }) }),
+
+        setLastSection: (to) => {
+          if (get().lastSection?.to === to) return
+          set({ lastSection: { to, at: Date.now() } })
+        },
 
         addXp: (n) => commit({ xp: get().xp + n }),
 
