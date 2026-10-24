@@ -149,11 +149,13 @@ export function softHyphens(text: string, minLength = 9): string {
   })
 }
 
-/** «Dra. Pérez», «doctor», «Ana» o '' según el trato elegido y el nombre opcional. */
-export function addressName(s: { name: string; honorific?: 'dr' | 'dra' | 'none' | null }): string {
+/** «Dra. Pérez», «doctor», «Lic. Ana», «Est. Ana», «Ana» o '' según el trato elegido y el nombre opcional. */
+export function addressName(s: { name: string; honorific?: 'dr' | 'dra' | 'lic' | 'est' | 'none' | null }): string {
   const name = s.name.trim()
   if (s.honorific === 'dr') return name ? `Dr. ${name}` : 'doctor'
   if (s.honorific === 'dra') return name ? `Dra. ${name}` : 'doctora'
+  if (s.honorific === 'lic') return name ? `Lic. ${name}` : ''
+  if (s.honorific === 'est') return name ? `Est. ${name}` : ''
   return name
 }
 

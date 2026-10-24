@@ -7,6 +7,7 @@ import { Logo, GithubIcon } from '@/components/ui/Logo'
 import { CommandPalette } from './CommandPalette'
 import { useProgress, levelFromXp } from '@/store/progress'
 import { displayName, useAuth } from '@/store/auth'
+import { Avatar, isAvatarId } from '@/components/ui/Avatar'
 import { computeStreak } from '@/lib/stats'
 import { cn, daysBetween } from '@/lib/utils'
 import { enurmDate, formatEnurmDate, upcomingEnurm } from '@/data/enurm'
@@ -118,10 +119,13 @@ function AccountButton() {
         <LogIn className="size-4" /> <span className="max-sm:hidden">Iniciar sesión</span>
       </NavLink>
     )
-  const initial = displayName(user).charAt(0).toUpperCase()
+  const meta = user?.user_metadata as { call_name?: string; avatar?: string } | undefined
+  const initial = (meta?.call_name || displayName(user)).charAt(0).toUpperCase()
   return (
-    <NavLink to="/cuenta" className="relative ml-1 grid size-9 place-items-center rounded-full bg-brand-gradient font-display text-sm font-bold text-white" aria-label="Mi cuenta">
-      {initial || <UserRound className="size-4" />}
+    <NavLink to="/cuenta" className="relative ml-1 block size-9 shrink-0" aria-label="Mi cuenta">
+      <Avatar avatar={isAvatarId(meta?.avatar) ? meta.avatar : null} initial={initial} className="size-9 text-sm">
+        <UserRound className="size-4" />
+      </Avatar>
       {(sync === 'error' || sync === 'offline' || sync === 'conflict') && <span className="absolute -top-0.5 -right-0.5 size-3 rounded-full border-2 border-[var(--surface)] bg-amber-500" aria-label="Sincronización pendiente" />}
     </NavLink>
   )

@@ -9,7 +9,8 @@ import { publishStats } from './ranking'
  * se conecta en un dispositivo que ya tiene progreso propio.
  */
 const META_KEY = 'medlogic-sync'
-const PUSH_DELAY = 4000
+// La base de datos acepta como mucho una actualización por segundo y usuario (ver migración 0002).
+const PUSH_DELAY = 2000
 
 interface SyncMeta {
   userId: string
@@ -132,20 +133,29 @@ export function startSync(): () => void {
     timer = setTimeout(() => void push(id), PUSH_DELAY)
   })
 
+  /** Sube ya lo que esté pendiente (sin esperar al temporizador). */
+  const flush = () => {
+    if (!current) return
+    if (timer && readMeta()?.dirty) {
+      clearTimeout(timer)
+      timer = null
+      void push(current)
+    }
+  }
+
   const onVisible = () => {
     if (!current) return
-    if (document.visibilityState === 'hidden') {
-      if (timer && readMeta()?.dirty) {
-        clearTimeout(timer)
-        void push(current)
-      }
-    } else if (!readMeta()?.dirty) void reconcile(current)
+    if (document.visibilityState === 'hidden') flush()
+    else if (!readMeta()?.dirty) void reconcile(current)
   }
   document.addEventListener('visibilitychange', onVisible)
+  // Al cerrar la pestaña o salir de la página también se sube lo pendiente.
+  window.addEventListener('pagehide', flush)
 
   return () => {
     unsubAuth()
     unsubProgress()
     document.removeEventListener('visibilitychange', onVisible)
+    window.removeEventListener('pagehide', flush)
   }
 }

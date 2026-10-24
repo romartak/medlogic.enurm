@@ -9,6 +9,8 @@ export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_USER}/`
 const SEEN_KEY = 'medlogic-instagram-asked'
 /** Espera tras abrir la página, para no tapar la portada nada más entrar. */
 const DELAY_MS = 2500
+/** Páginas donde la persona está haciendo algo importante (crear su cuenta o su plan). */
+const BUSY_PAGES = /^#\/(cuenta|bienvenida)/
 
 function alreadyAsked() {
   try {
@@ -42,8 +44,14 @@ export function InstagramPrompt() {
 
   useEffect(() => {
     if (alreadyAsked()) return
-    const t = setTimeout(() => setOpen(true), DELAY_MS)
-    return () => clearTimeout(t)
+    const start = Date.now()
+    // No se abre sobre otra ventana importante: en la cuenta y en el cuestionario espera a que la persona avance.
+    const id = setInterval(() => {
+      if (Date.now() - start < DELAY_MS || BUSY_PAGES.test(window.location.hash)) return
+      clearInterval(id)
+      setOpen(true)
+    }, 1000)
+    return () => clearInterval(id)
   }, [])
 
   const close = (answer: 'si' | 'no' | 'cerrado') => {
