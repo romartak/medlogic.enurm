@@ -83,6 +83,8 @@ function apply(userId: string, remote: { snapshot: unknown; updatedAt: string })
   }
   writeMeta({ userId, lastSyncedAt: remote.updatedAt, dirty: false })
   useAuth.getState().setSync({ sync: 'synced', lastSyncedAt: remote.updatedAt, conflict: null })
+  // Con el progreso ya bajado de la nube, el ranking recibe el resumen de este dispositivo.
+  void publishStats()
 }
 
 /** Compara la copia local con la de la nube y decide qué hacer. */
@@ -97,7 +99,10 @@ export async function reconcile(userId: string): Promise<void> {
     if (!remote) return await push(userId)
     if (sameAccount && meta.lastSyncedAt === remote.updatedAt) {
       if (meta.dirty) await push(userId)
-      else auth.setSync({ sync: 'synced', lastSyncedAt: remote.updatedAt })
+      else {
+        auth.setSync({ sync: 'synced', lastSyncedAt: remote.updatedAt })
+        void publishStats()
+      }
       return
     }
     if ((sameAccount && !meta.dirty) || !hasLocalProgress()) return apply(userId, remote)
@@ -129,7 +134,10 @@ export async function flushPending(): Promise<boolean> {
   for (let i = 0; i < 60 && useAuth.getState().sync === 'syncing'; i++) await new Promise((r) => setTimeout(r, 100))
   if (useAuth.getState().conflict) return false
   if (readMeta()?.dirty) await push(user.id)
-  return !readMeta()?.dirty && !useAuth.getState().conflict
+  const saved = !readMeta()?.dirty && !useAuth.getState().conflict
+  // Que el ranking quede al día antes de limpiar el dispositivo (un envío diferido se perdería).
+  if (saved) await publishStats(true)
+  return saved
 }
 
 export function syncNow(): Promise<void> {

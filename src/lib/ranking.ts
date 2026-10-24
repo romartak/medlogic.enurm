@@ -66,22 +66,47 @@ export function myPublicStats() {
 }
 
 let lastPublish = 0
-const MIN_GAP = 60_000
+let pending: ReturnType<typeof setTimeout> | null = null
+const MIN_GAP = 15_000
 
-/** Sube el resumen al ranking (como mucho una vez por minuto, salvo `force`). */
+async function upsertStats(userId: string) {
+  return supabase!.from('leaderboard').upsert({ user_id: userId, ...myPublicStats() })
+}
+
+/**
+ * Sube el resumen al ranking. Si se pide antes de que pasen 15 s desde la última vez (salvo `force`),
+ * queda programado para cuando se cumplan, de modo que el último estado siempre llega.
+ */
 export async function publishStats(force = false): Promise<boolean> {
   const user = useAuth.getState().user
   if (!supabase || !user) return false
-  if (!force && Date.now() - lastPublish < MIN_GAP) return false
+  const wait = MIN_GAP - (Date.now() - lastPublish)
+  if (!force && wait > 0) {
+    if (!pending) {
+      pending = setTimeout(() => {
+        pending = null
+        void publishStats()
+      }, wait)
+    }
+    return false
+  }
+  if (pending) clearTimeout(pending)
+  pending = null
   lastPublish = Date.now()
-  const { error } = await supabase.from('leaderboard').upsert({ user_id: user.id, ...myPublicStats() })
+  let { error } = await upsertStats(user.id)
+  // La base acepta una actualización por segundo: si justo se subió otra, se reintenta una vez.
+  if (error?.code === '54000') {
+    await new Promise((r) => setTimeout(r, 1200))
+    ;({ error } = await upsertStats(user.id))
+  }
+  if (error) lastPublish = 0
   return !error
 }
 
 export async function fetchRanking(order: RankingOrder, university: string | null) {
   if (!supabase) return { rows: [] as RankingRow[], me: null as MyPosition | null }
   const [list, me] = await Promise.all([
-    supabase.rpc('ranking_lista', { p_orden: order, p_universidad: university, p_limite: 50 }),
+    supabase.rpc('ranking_lista', { p_orden: order, p_universidad: university, p_limite: 100 }),
     supabase.rpc('ranking_mi_posicion', { p_orden: order }),
   ])
   if (list.error) throw list.error
