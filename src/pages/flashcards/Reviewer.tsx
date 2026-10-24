@@ -366,7 +366,7 @@ export default function Reviewer() {
         </motion.div>
       </AnimatePresence>
 
-      <div className="sticky bottom-24 mt-5 lg:bottom-4">
+      <div className="glass sticky bottom-24 z-10 mt-5 rounded-2xl p-2 shadow-lift lg:bottom-4">
         {shown ? (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-4 gap-2">
             {GRADES.map((b) => (

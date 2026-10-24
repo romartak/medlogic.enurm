@@ -272,14 +272,14 @@ function PracticeSession({ questions, onExit, onRestart }: { questions: Question
         </motion.div>
       </AnimatePresence>
 
-      <div className="sticky bottom-24 mt-5 flex items-center justify-between gap-3 lg:bottom-4">
+      <div className="glass sticky bottom-24 z-10 mt-5 flex items-center justify-between gap-3 rounded-2xl p-2.5 shadow-lift lg:bottom-4">
         <Button variant="outline" onClick={finish} disabled={answered === 0}>
           Terminar
         </Button>
         <AnimatePresence>
           {selected !== null && (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
-              <Button size="lg" onClick={next} className="shadow-lift">
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex-1 sm:flex-none">
+              <Button size="lg" onClick={next} className="w-full shadow-lift sm:w-auto">
                 {index + 1 < questions.length ? 'Siguiente' : 'Ver resultados'} <ArrowRight className="size-5" />
               </Button>
             </motion.div>

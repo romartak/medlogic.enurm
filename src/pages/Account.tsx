@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { CloudOff, Cloud, Eye, EyeOff, KeyRound, Laptop, LogOut, Mail, RefreshCw, ShieldCheck, Smartphone, UserRound } from 'lucide-react'
 import { authErrorMessage, authRedirectUrl, isSupabaseConfigured, supabase } from '@/lib/supabase'
@@ -20,9 +20,11 @@ const TREATMENTS = [
   { value: 'licenciado', label: 'Lic.', prefix: 'Lic.' },
   { value: 'estudiante', label: 'Est.', prefix: 'Est.' },
   { value: 'na', label: 'N/A', prefix: '' },
-  { value: 'ninguno', label: 'Prefiero no decirlo', prefix: '' },
 ] as const
 type Treatment = (typeof TREATMENTS)[number]['value']
+
+/** El acceso con Google se activa cuando ya esté listo en Google Cloud y Supabase; hasta entonces solo correo y contraseña. */
+const GOOGLE_LOGIN_ENABLED = false
 
 const field = 'mt-1.5 h-12 w-full rounded-xl border border-soft surface-2 px-4 outline-none transition-colors focus:border-brand-500'
 
@@ -78,7 +80,7 @@ type Mode = 'signin' | 'signup'
 
 function AuthForm() {
   const [mode, setMode] = useState<Mode>('signin')
-  const [treatment, setTreatment] = useState<Treatment>('ninguno')
+  const [treatment, setTreatment] = useState<Treatment>('na')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -153,7 +155,7 @@ function AuthForm() {
     <div className="mx-auto grid max-w-5xl items-start gap-8 lg:grid-cols-[1fr_440px]">
       <div className="order-last lg:order-first lg:pt-6">
         <h2 className="font-display text-2xl font-bold">Tu progreso, en todos tus dispositivos</h2>
-        <p className="mt-2 text-muted">La cuenta es gratis y opcional: sin ella todo sigue funcionando en este navegador.</p>
+        <p className="mt-2 text-muted">La cuenta es gratis y la necesitas para estudiar en MedLogic. Con ella tu progreso se guarda en la nube y te sigue a cualquier dispositivo.</p>
         <ul className="mt-6 space-y-4">
           {[
             [Smartphone, 'Empieza en el teléfono, sigue en la computadora', 'Preguntas, flashcards, plan y terminología se sincronizan solos.'],
@@ -188,14 +190,18 @@ function AuthForm() {
         />
         <h2 className="font-display text-xl font-bold">{titles[mode]}</h2>
 
-        <Button variant="outline" size="lg" className="mt-5 w-full" onClick={google}>
-          <GoogleIcon className="size-5" /> Continuar con Google
-        </Button>
-        <div className="my-5 flex items-center gap-3 text-xs text-muted">
-          <span className="h-px flex-1 bg-[var(--border)]" /> o con tu correo <span className="h-px flex-1 bg-[var(--border)]" />
-        </div>
+        {GOOGLE_LOGIN_ENABLED && (
+          <>
+            <Button variant="outline" size="lg" className="mt-5 w-full" onClick={google}>
+              <GoogleIcon className="size-5" /> Continuar con Google
+            </Button>
+            <div className="my-5 flex items-center gap-3 text-xs text-muted">
+              <span className="h-px flex-1 bg-[var(--border)]" /> o con tu correo <span className="h-px flex-1 bg-[var(--border)]" />
+            </div>
+          </>
+        )}
 
-        <form onSubmit={submit} className="space-y-4">
+        <form onSubmit={submit} className={cn('space-y-4', !GOOGLE_LOGIN_ENABLED && 'mt-5')}>
           {mode === 'signup' && (
             <>
               <fieldset>
@@ -383,10 +389,13 @@ function Profile() {
 export default function Account() {
   const { status, recovering } = useAuth()
   const ready = status !== 'loading'
+  // Quien llegó aquí porque la página pide iniciar sesión vuelve a donde iba al entrar.
+  const from = (useLocation().state as { from?: string } | null)?.from
+  if (status === 'signed-in' && !recovering && from && from !== '/cuenta') return <Navigate to={from} replace />
 
   return (
     <div>
-      <PageHeader icon={<UserRound className="size-6" />} title={status === 'signed-in' ? 'Mi cuenta' : 'Tu cuenta'} subtitle={status === 'signed-in' ? 'Tu perfil y la sincronización de tu progreso.' : 'Guarda tu progreso en la nube y estudia desde cualquier dispositivo.'} />
+      <PageHeader icon={<UserRound className="size-6" />} title={status === 'signed-in' ? 'Mi cuenta' : 'Tu cuenta'} subtitle={status === 'signed-in' ? 'Tu perfil y la sincronización de tu progreso.' : 'Crea tu cuenta gratis o inicia sesión para estudiar y guardar tu progreso.'} />
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
         {!isSupabaseConfigured ? <NotConfigured /> : !ready ? <div className="skeleton mx-auto h-80 max-w-md rounded-2xl" /> : recovering ? <NewPassword /> : status === 'signed-in' ? <Profile /> : <AuthForm />}
       </motion.div>
