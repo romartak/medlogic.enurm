@@ -598,7 +598,8 @@ export default function Account() {
   useEffect(() => {
     if (status === 'signed-in') markHadAccount()
   }, [status])
-  if (status === 'signed-in' && !recovering && from && from !== '/cuenta') return <Navigate to={from} replace />
+  // Al iniciar sesión se llega siempre al Inicio (el progreso ya se descargó); no se reabre lo que se estaba haciendo.
+  if (status === 'signed-in' && !recovering && from && from !== '/cuenta') return <Navigate to="/inicio" replace />
 
   return (
     <div>

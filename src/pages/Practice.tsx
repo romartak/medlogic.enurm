@@ -34,6 +34,8 @@ export default function Practice() {
     count: Number(params.get('count')) || 20,
   }))
   const [session, setSession] = useState<Question[] | null>(null)
+  // Cada sesión nueva (o «Repetir falladas») empieza desde cero: sin esto conservaba la pregunta y el resultado de la anterior y la pantalla quedaba en negro.
+  const [round, setRound] = useState(0)
 
   const pool = useMemo(() => filterQuestions(questions, { ...config }, attempts, bookmarks), [questions, config, attempts, bookmarks])
 
@@ -41,6 +43,7 @@ export default function Practice() {
     // Prioriza las no vistas y luego el resto, para cubrir el banco más rápido.
     const unseen = shuffle(qs.filter((q) => !attempts[q.id]))
     const seen = shuffle(qs.filter((q) => attempts[q.id]))
+    setRound((r) => r + 1)
     setSession([...unseen, ...seen].slice(0, config.count))
   }
 
@@ -53,7 +56,18 @@ export default function Practice() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, pool.length])
 
-  if (session) return <PracticeSession questions={session} onExit={() => setSession(null)} onRestart={(qs) => setSession(shuffle(qs))} />
+  if (session)
+    return (
+      <PracticeSession
+        key={round}
+        questions={session}
+        onExit={() => setSession(null)}
+        onRestart={(qs) => {
+          setRound((r) => r + 1)
+          setSession(shuffle(qs))
+        }}
+      />
+    )
 
   return (
     <div>
