@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useScroll, useTransform } from 'motion/react'
 import {
@@ -21,7 +21,6 @@ import {
   Layers,
   LayoutGrid,
   ListChecks,
-  Menu,
   Newspaper,
   ShieldCheck,
   Sparkles,
@@ -34,6 +33,7 @@ import { buttonClass } from '@/components/ui/primitives'
 import { SPECIALTIES } from '@/data/specialties'
 import { Icon } from '@/components/ui/Icon'
 import { REPO_URL } from '@/components/layout/AppLayout'
+import { SectionBar, SectionGrid, SectionStrip, navVariant } from '@/components/landing/MobileSections'
 import { INSTAGRAM_URL, INSTAGRAM_USER, InstagramIcon } from '@/components/Instagram'
 import { ENURM_FACTS, formatEnurmDate, upcomingEnurm } from '@/data/enurm'
 import { cn, daysBetween, softHyphens, tintText } from '@/lib/utils'
@@ -307,36 +307,21 @@ export default function Landing() {
   const next = upcomingEnurm(1)[0]
   const daysLeft = Math.max(0, daysBetween(new Date(), next.date))
 
-  // Menú de secciones para el teléfono: antes no había forma de saltar a una sección.
-  const [menuOpen, setMenuOpen] = useState(false)
-  const menuRef = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    if (!menuOpen) return
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMenuOpen(false)
-    const onPointer = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false)
-    }
-    window.addEventListener('keydown', onKey)
-    document.addEventListener('mousedown', onPointer)
-    return () => {
-      window.removeEventListener('keydown', onKey)
-      document.removeEventListener('mousedown', onPointer)
-    }
-  }, [menuOpen])
+  // Las secciones van visibles en el teléfono: nada de esconderlas tras un icono de tres rayas.
+  const variant = navVariant()
   /** Los enlaces de sección se manejan a mano: con HashRouter, un `#ancla` normal rompería la ruta. */
   const goTo = (href: string) => (e: React.MouseEvent) => {
     e.preventDefault()
-    setMenuOpen(false)
     document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
-    <div className="relative min-h-dvh overflow-x-clip">
+    <div className={cn('relative min-h-dvh overflow-x-clip', variant === 'bar' && 'pb-16 md:pb-0')}>
       <div className="pointer-events-none absolute inset-0 -z-10 bg-mesh" />
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[720px] grid-pattern opacity-60" />
 
       <header className={cn('sticky top-0 z-30 transition-colors duration-300', scrolled ? 'border-b border-soft bg-[color-mix(in_oklab,var(--bg)_85%,transparent)] backdrop-blur-xl' : 'border-b border-transparent')}>
-        <div ref={menuRef}>
+        <div>
           <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:h-20 sm:px-6 lg:px-8">
             <Logo />
             <nav className="hidden items-center gap-1 text-sm font-medium md:flex" aria-label="Secciones">
@@ -350,45 +335,18 @@ export default function Landing() {
               <a href={REPO_URL} target="_blank" rel="noreferrer" className={buttonClass('ghost', 'md', 'max-lg:hidden')}>
                 <GithubIcon className="size-4" /> Código abierto
               </a>
-              <button
-                type="button"
-                onClick={() => setMenuOpen((o) => !o)}
-                aria-expanded={menuOpen}
-                aria-controls="menu-secciones"
-                aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
-                className="grid size-10 place-items-center rounded-xl text-muted transition-colors hover:bg-slate-900/5 hover:text-[var(--text)] md:hidden dark:hover:bg-white/5"
-              >
-                {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-              </button>
               <Link to="/inicio" className={buttonClass('primary', 'md')}>
                 Entrar <ArrowRight className="size-4" />
               </Link>
             </div>
           </div>
 
-          {menuOpen && (
-            <div id="menu-secciones" className="border-t border-soft bg-[var(--surface)] md:hidden">
-              <nav aria-label="Secciones" className="mx-auto max-w-7xl px-4 py-2 sm:px-6">
-                <ul className="flex flex-col">
-                  {SECTIONS.map(([href, label]) => (
-                    <li key={href}>
-                      <a href={href} onClick={goTo(href)} className="flex items-center justify-between rounded-lg px-2 py-3 text-sm font-medium text-muted transition-colors hover:text-[var(--text)]">
-                        {label}
-                        <ArrowRight className="size-4" />
-                      </a>
-                    </li>
-                  ))}
-                  <li>
-                    <a href={REPO_URL} target="_blank" rel="noreferrer" className="flex items-center gap-2 rounded-lg px-2 py-3 text-sm font-medium text-muted transition-colors hover:text-[var(--text)]">
-                      <GithubIcon className="size-4" /> Código abierto
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          )}
         </div>
       </header>
+
+      {variant === 'franja' && <SectionStrip sections={SECTIONS} onGo={goTo} />}
+      {variant === 'grid' && <SectionGrid sections={SECTIONS} onGo={goTo} />}
+      {variant === 'bar' && <SectionBar sections={SECTIONS} onGo={goTo} />}
 
       <main>
       {/* Hero */}
