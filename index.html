@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="es-DO">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -16,7 +16,7 @@
     <meta property="og:locale" content="es_DO" />
     <meta property="og:url" content="https://medlogicenurm.vercel.app/" />
     <meta property="og:title" content="MedLogic ENURM · Prepárate gratis para el ENURM" />
-    <meta property="og:description" content="Más de 1,000 preguntas explicadas (meta: 12,000), simulacros, flashcards, guías y un plan de estudio hecho para ti. Gratis." />
+    <meta property="og:description" content="Más de 1.000 preguntas explicadas (meta: 12.000), simulacros, flashcards, guías y un plan de estudio hecho para ti. Gratis." />
     <meta property="og:image" content="https://medlogicenurm.vercel.app/og-image.jpg" />
     <meta property="og:image:secure_url" content="https://medlogicenurm.vercel.app/og-image.jpg" />
     <meta property="og:image:type" content="image/jpeg" />
@@ -25,11 +25,77 @@
     <meta property="og:image:alt" content="Logo de MedLogic ENURM: Prepárate para el ENURM gratis, con un plan hecho para ti." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="MedLogic ENURM · Prepárate gratis para el ENURM" />
-    <meta name="twitter:description" content="Más de 1,000 preguntas explicadas (meta: 12,000), simulacros, flashcards, guías y un plan de estudio hecho para ti. Gratis." />
+    <meta name="twitter:description" content="Más de 1.000 preguntas explicadas (meta: 12.000), simulacros, flashcards, guías y un plan de estudio hecho para ti. Gratis." />
     <meta name="twitter:image" content="https://medlogicenurm.vercel.app/og-image.jpg" />
     <meta name="twitter:image:alt" content="Logo de MedLogic ENURM" />
     <link rel="manifest" href="./manifest.webmanifest" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <title>MedLogic ENURM</title>
+    <!-- Datos estructurados: ayudan a que Google entienda qué es la plataforma y responda dudas frecuentes. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://medlogicenurm.vercel.app/#website",
+            "url": "https://medlogicenurm.vercel.app/",
+            "name": "MedLogic ENURM",
+            "description": "Plataforma gratuita y de código abierto para preparar el Examen Nacional Único de Residencias Médicas (ENURM).",
+            "inLanguage": "es-DO"
+          },
+          {
+            "@type": "EducationalOrganization",
+            "@id": "https://medlogicenurm.vercel.app/#organizacion",
+            "name": "MedLogic ENURM",
+            "url": "https://medlogicenurm.vercel.app/",
+            "logo": "https://medlogicenurm.vercel.app/icon-512.png",
+            "sameAs": [
+              "https://github.com/romartak/medlogic.enurm",
+              "https://www.instagram.com/medlogic.ai/"
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://medlogicenurm.vercel.app/#preguntas",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "¿Cuándo es el ENURM?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Se aplica una vez al año, el primer domingo de marzo, en la UASD. En la web se muestra la fecha proyectada hasta que sale la convocatoria oficial."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Qué puntaje necesito para concursar?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "60 puntos o más de 100 para concursar por una especialidad. La calificación vale por 2 años y, si repites, cuenta el examen más reciente."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Cómo es el examen?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "100 preguntas de selección múltiple en unas 2 horas: alrededor de 72 segundos por pregunta. Los simulacros de MedLogic usan ese mismo formato."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿De verdad es gratis?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sí, ahora y siempre. Es un proyecto de código abierto y sin anuncios. Solo necesitas una cuenta gratis con tu correo para guardar tu progreso."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
     <script src="./theme-init.js"></script>
     <style>
       /* Pantalla de carga: se ve antes de que cargue la app (y la app la reutiliza). */

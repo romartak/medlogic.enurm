@@ -12,10 +12,10 @@ import { useAuth } from '@/store/auth'
 import { startSync } from '@/lib/sync'
 import { SyncConflict } from '@/components/SyncConflict'
 import { PlanReveal } from '@/components/PlanReveal'
-import { InstagramPrompt } from '@/components/InstagramPrompt'
 import { VercelInsights } from '@/components/VercelInsights'
 import { motionAllowed } from '@/lib/fx'
 const Dashboard = lazy(() => import('@/pages/Dashboard'))
+const NotFound = lazy(() => import('@/pages/NotFound'))
 
 const Landing = lazy(() => import('@/pages/Landing'))
 const Practice = lazy(() => import('@/pages/Practice'))
@@ -56,8 +56,11 @@ const LingoPath = lazy(() => import('@/pages/lingo/Path'))
 const LingoLesson = lazy(() => import('@/pages/lingo/Lesson'))
 const LingoBlitz = lazy(() => import('@/pages/lingo/Blitz'))
 
-/** Tiempo mínimo de la pantalla de carga al abrir la página, para que la animación se vea completa. */
-const BOOT_MIN_MS = 2000
+/**
+ * Tiempo mínimo de la pantalla de carga. Solo cubre el salto del HTML a React: la portada ya está
+ * lista en unos 300 ms, así que no tiene sentido hacer esperar más a quien entra.
+ */
+const BOOT_MIN_MS = 250
 
 /** Misma pantalla de carga que index.html (sus estilos viven allí), sin repetir la entrada y con el pulso en fase. */
 function Splash({ onLeft }: { onLeft?: () => void }) {
@@ -125,6 +128,21 @@ function AuthGate() {
   return <Outlet />
 }
 
+/**
+ * El banco de preguntas pesa ~1,7 MB: se descarga al entrar a la plataforma, nunca en la portada.
+ * Con `block` se espera a tenerlo (páginas que lo necesitan para calcular), sin `block` se muestra
+ * la página enseguida y los conteos se actualizan solos cuando llegan.
+ */
+function BankGate({ block = true }: { block?: boolean }) {
+  const status = useBank((s) => s.status)
+  const load = useBank((s) => s.load)
+  useEffect(() => {
+    load().then(() => seedSpecialtiesSeen(useProgress.getState().attempts, useBank.getState().byId))
+  }, [load])
+  if (block && (status === 'idle' || status === 'loading')) return <Splash />
+  return <Outlet />
+}
+
 function PageFallback() {
   return (
     <div className="space-y-4">
@@ -142,8 +160,6 @@ function PageFallback() {
 export default function App() {
   useThemeSync()
   useStudyTimer()
-  const status = useBank((s) => s.status)
-  const load = useBank((s) => s.load)
   const reduceMotion = useProgress((s) => s.settings.reduceMotion)
   const [bootWait, setBootWait] = useState(motionAllowed)
   const [bootLeaving, setBootLeaving] = useState(false)
@@ -167,15 +183,12 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    load().then(() => seedSpecialtiesSeen(useProgress.getState().attempts, useBank.getState().byId))
     // Migra el progreso de flashcards anterior al sistema tipo Anki (una sola vez).
     const p = useProgress.getState()
     useAnki.getState().migrateLegacy(p.srs, p.customCards)
-  }, [load])
+  }, [])
 
   const endBoot = useCallback(() => setBootLeaving(false), [])
-
-  if (status === 'idle' || status === 'loading' || bootWait) return <Splash />
 
   return (
     <MotionConfig reducedMotion={reduceMotion ? 'always' : 'user'}>
@@ -183,10 +196,14 @@ export default function App() {
         <Suspense fallback={<Splash />}>
           <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/bienvenida" element={<Onboarding />} />
+            <Route element={<BankGate block={false} />}>
+              <Route path="/bienvenida" element={<Onboarding />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
             <Route element={<AuthGate />}>
             <Route path="/terminologia/leccion/:lessonId" element={<LingoLesson />} />
             <Route path="/terminologia/relampago" element={<LingoBlitz />} />
+            <Route element={<BankGate />}>
             <Route element={<AppLayout />}>
               <Route path="/inicio" element={<Lazy><Dashboard /></Lazy>} />
               <Route path="/practica" element={<Lazy><Practice /></Lazy>} />
@@ -226,7 +243,7 @@ export default function App() {
               <Route path="/ajustes" element={<Lazy><Settings /></Lazy>} />
               <Route path="/cuenta" element={<Lazy><Account /></Lazy>} />
               <Route path="/terminologia" element={<Lazy><LingoPath /></Lazy>} />
-              <Route path="*" element={<Navigate to="/inicio" replace />} />
+            </Route>
             </Route>
             </Route>
           </Routes>
@@ -237,9 +254,9 @@ export default function App() {
       </Suspense>
       <SyncConflict />
       <PlanReveal />
-      <InstagramPrompt />
       <Toaster />
       <VercelInsights />
+      {bootWait && <Splash />}
       {bootLeaving && <Splash onLeft={endBoot} />}
     </MotionConfig>
   )
