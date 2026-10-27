@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Navigate, NavLink, useLocation, useNavigate, useOutlet } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
-import { Flame, LogIn, Menu, Moon, RefreshCw, Search, Sun, Monitor, UserRound, X, Zap } from 'lucide-react'
+import { Flame, LogIn, Moon, RefreshCw, Search, Sun, Monitor, UserRound, Zap } from 'lucide-react'
 import { NAV_GROUPS, ALL_NAV, MOBILE_TABS } from './nav'
 import { Logo, GithubIcon } from '@/components/ui/Logo'
 import { CommandPalette } from './CommandPalette'
+import { FunctionsSheet, FunctionsTab } from './MobileMenu'
 import { useProgress, levelFromXp } from '@/store/progress'
 import { displayName, useAuth } from '@/store/auth'
 import { Avatar, isAvatarId } from '@/components/ui/Avatar'
@@ -32,7 +33,7 @@ function ExamChip() {
   )
 }
 
-function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
+function SidebarNav() {
   return (
     <nav className="flex flex-col gap-5">
       {NAV_GROUPS.map((g) => (
@@ -43,7 +44,6 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
               <li key={item.to}>
                 <NavLink
                   to={item.to}
-                  onClick={onNavigate}
                   className={({ isActive }) =>
                     cn(
                       'group relative flex items-center gap-3 rounded-xl px-3 py-[7px] text-sm font-medium transition-colors',
@@ -53,7 +53,7 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
                 >
                   {({ isActive }) => (
                     <>
-                      {isActive && <motion.span layoutId={onNavigate ? 'nav-active-m' : 'nav-active'} className="absolute inset-0 rounded-xl bg-brand-500/10 ring-1 ring-brand-500/20" transition={{ type: 'spring', stiffness: 500, damping: 38 }} />}
+                      {isActive && <motion.span layoutId="nav-active" className="absolute inset-0 rounded-xl bg-brand-500/10 ring-1 ring-brand-500/20" transition={{ type: 'spring', stiffness: 500, damping: 38 }} />}
                       <item.icon className="relative size-[18px]" />
                       <span className="relative">{item.label}</span>
                     </>
@@ -135,7 +135,7 @@ const STUDY_SECTIONS = ['/plan', '/especialidades', '/practica', '/simulacro', '
 
 export function AppLayout() {
   const [paletteOpen, setPaletteOpen] = useState(false)
-  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [functionsOpen, setFunctionsOpen] = useState(false)
   const location = useLocation()
   const outlet = useOutlet()
   const profile = useProgress((s) => s.profile)
@@ -219,46 +219,11 @@ export function AppLayout() {
         </div>
       </aside>
 
-      {/* Menú lateral (móvil) */}
-      <AnimatePresence>
-        {drawerOpen && (
-          <motion.div className="fixed inset-0 z-50 lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <div className="absolute inset-0 bg-slate-950/50 backdrop-blur-sm" onClick={() => setDrawerOpen(false)} />
-            <motion.aside
-              className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col bg-[var(--surface)] shadow-2xl"
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ type: 'spring', stiffness: 380, damping: 36 }}
-            >
-              <div className="flex h-16 items-center justify-between px-5">
-                <Logo />
-                <button onClick={() => setDrawerOpen(false)} className="rounded-lg p-2 text-muted" aria-label="Cerrar menú">
-                  <X className="size-5" />
-                </button>
-              </div>
-              <div className="flex-1 overflow-y-auto px-3 pb-8">
-                <SidebarNav onNavigate={() => setDrawerOpen(false)} />
-              </div>
-              <div className="space-y-1 border-t border-soft p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-                <ExamChip />
-                <a href={REPO_URL} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-2 py-2 text-xs text-muted hover:text-[var(--text)]">
-                  <GithubIcon className="size-4" /> Gratis y de código abierto
-                </a>
-              </div>
-            </motion.aside>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <div className="lg:pl-64">
         {/* Barra superior */}
         <header className="glass sticky top-0 z-20 border-x-0 border-t-0">
           <div className="mx-auto flex h-16 max-w-7xl items-center gap-2 px-4 sm:px-6 lg:px-8">
-            <button onClick={() => setDrawerOpen(true)} className="-ml-2 grid size-10 place-items-center rounded-xl text-muted lg:hidden" aria-label="Abrir menú">
-              <Menu className="size-5" />
-            </button>
-            <div className="min-w-0 flex-1 lg:hidden">
+            <div className='min-w-0 flex-1 lg:hidden'>
               <span className="truncate font-display font-bold">{current?.label ?? 'MedLogic'}</span>
             </div>
             <button
@@ -290,17 +255,29 @@ export function AppLayout() {
         </main>
       </div>
 
-      <MobileTabBar />
+      <MobileTabBar onOpenFunctions={() => setFunctionsOpen(true)} functionsOpen={functionsOpen} />
+      <FunctionsSheet
+        open={functionsOpen}
+        onClose={() => setFunctionsOpen(false)}
+        footer={
+          <div className="space-y-1">
+            <ExamChip />
+            <a href={REPO_URL} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-2 py-2 text-xs text-muted hover:text-[var(--text)]">
+              <GithubIcon className="size-4" /> Gratis y de código abierto
+            </a>
+          </div>
+        }
+      />
       <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
     </div>
   )
 }
 
-function MobileTabBar() {
+function MobileTabBar({ onOpenFunctions, functionsOpen }: { onOpenFunctions: () => void; functionsOpen: boolean }) {
   const tabs = MOBILE_TABS
   return (
     <nav className="glass fixed inset-x-3 bottom-3 z-30 rounded-2xl shadow-lift lg:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-      <ul className="grid grid-cols-5">
+      <ul className="grid grid-cols-6">
         {tabs.map((t) => (
           <li key={t.to}>
             <NavLink to={t.to} className={({ isActive }) => cn('relative flex flex-col items-center gap-0.5 py-2.5 text-[10px] font-semibold transition-colors', isActive ? 'text-brand-600 dark:text-brand-400' : 'text-muted')}>
@@ -308,12 +285,15 @@ function MobileTabBar() {
                 <>
                   {isActive && <motion.span layoutId="tab-active" className="absolute inset-x-3 inset-y-1 rounded-xl bg-brand-500/10" />}
                   <t.icon className="relative size-5" />
-                  <span className="relative">{t.label === 'Especialidades' ? 'Áreas' : t.label}</span>
+                  <span className="relative">{t.label === 'Especialidades' ? 'Áreas' : t.label === 'Flashcards' ? 'Tarjetas' : t.label}</span>
                 </>
               )}
             </NavLink>
           </li>
         ))}
+        <li>
+          <FunctionsTab active={functionsOpen} onClick={onOpenFunctions} />
+        </li>
       </ul>
     </nav>
   )
