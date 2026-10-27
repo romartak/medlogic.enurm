@@ -33,9 +33,17 @@ import { buttonClass } from '@/components/ui/primitives'
 import { SPECIALTIES } from '@/data/specialties'
 import { Icon } from '@/components/ui/Icon'
 import { REPO_URL } from '@/components/layout/AppLayout'
-import { INSTAGRAM_URL, INSTAGRAM_USER, InstagramIcon } from '@/components/InstagramPrompt'
+import { SectionBar, SectionGrid, SectionStrip, navVariant } from '@/components/landing/MobileSections'
+import { INSTAGRAM_URL, INSTAGRAM_USER, InstagramIcon } from '@/components/Instagram'
 import { ENURM_FACTS, formatEnurmDate, upcomingEnurm } from '@/data/enurm'
 import { cn, daysBetween, softHyphens, tintText } from '@/lib/utils'
+
+const SECTIONS = [
+  ['#examen', 'El examen'],
+  ['#funciones', 'Funciones'],
+  ['#plan', 'Cómo funciona'],
+  ['#preguntas', 'Preguntas frecuentes'],
+] as const
 
 const STEPS = [
   { icon: Sparkles, title: 'Responde el cuestionario', body: 'Tu convocatoria del ENURM, la residencia que quieres, cuánto tiempo tienes y cómo te sientes en cada área.' },
@@ -87,7 +95,7 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: '¿De dónde salen las preguntas?',
-    a: <>De exámenes de años anteriores recopilados, más un banco de muestra. Hoy hay más de 1,000 preguntas y nuestra meta es llegar a 12,000. Cada pregunta trae la explicación de todas las opciones, la fisiopatología, puntos clave y la referencia del libro. Las respuestas se revisaron una por una con la bibliografía, y se quitaron las repetidas y las incompletas.</>,
+    a: <>De exámenes de años anteriores recopilados, más un banco de muestra. Hoy hay más de 1.000 preguntas y nuestra meta es llegar a 12.000. Cada pregunta trae la explicación de todas las opciones, la fisiopatología, puntos clave y la referencia del libro. Las respuestas se revisaron una por una con la bibliografía, y se quitaron las repetidas y las incompletas.</>,
   },
 ]
 
@@ -208,11 +216,12 @@ function Features() {
           <div className="space-y-2">
             {options.map((o) => (
               <div key={o.l} className={cn('flex items-start gap-3 rounded-xl border px-3 py-2.5 text-sm', o.ok ? 'border-emerald-500/50 bg-emerald-500/[0.07]' : 'border-soft')}>
-                <span className={cn('grid size-6 shrink-0 place-items-center rounded-md text-[11px] font-bold', o.ok ? 'bg-emerald-600 text-white' : 'surface-2 text-muted')}>{o.ok ? <Check className="size-3.5" /> : <X className="size-3.5" />}</span>
-                <div className="min-w-0">
+                <span className={cn('grid size-6 shrink-0 place-items-center rounded-md text-[11px] font-bold', o.ok ? 'bg-emerald-600 text-white' : 'surface-2 text-muted')}>{o.l}</span>
+                <div className="min-w-0 flex-1">
                   <div className="font-semibold">{o.t}</div>
                   <div className="text-xs text-muted">{o.why}</div>
                 </div>
+                {o.ok ? <Check className="mt-0.5 size-4 shrink-0 text-emerald-600 dark:text-emerald-400" aria-label="Respuesta correcta" /> : <X className="mt-0.5 size-4 shrink-0 text-muted/60" aria-hidden />}
               </div>
             ))}
           </div>
@@ -298,37 +307,48 @@ export default function Landing() {
   const next = upcomingEnurm(1)[0]
   const daysLeft = Math.max(0, daysBetween(new Date(), next.date))
 
+  // Las secciones van visibles en el teléfono: nada de esconderlas tras un icono de tres rayas.
+  const variant = navVariant()
+  /** Los enlaces de sección se manejan a mano: con HashRouter, un `#ancla` normal rompería la ruta. */
+  const goTo = (href: string) => (e: React.MouseEvent) => {
+    e.preventDefault()
+    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
-    <div className="relative min-h-dvh overflow-x-clip">
+    <div className={cn('relative min-h-dvh overflow-x-clip', variant === 'bar' && 'pb-16 md:pb-0')}>
       <div className="pointer-events-none absolute inset-0 -z-10 bg-mesh" />
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[720px] grid-pattern opacity-60" />
 
       <header className={cn('sticky top-0 z-30 transition-colors duration-300', scrolled ? 'border-b border-soft bg-[color-mix(in_oklab,var(--bg)_85%,transparent)] backdrop-blur-xl' : 'border-b border-transparent')}>
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:h-20 sm:px-6 lg:px-8">
-          <Logo />
-          <nav className="hidden items-center gap-1 text-sm font-medium md:flex" aria-label="Secciones">
-            {[
-              ['#examen', 'El examen'],
-              ['#funciones', 'Funciones'],
-              ['#plan', 'Cómo funciona'],
-              ['#preguntas', 'Preguntas frecuentes'],
-            ].map(([href, label]) => (
-              <a key={href} href={href} onClick={(e) => { e.preventDefault(); document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' }) }} className="rounded-lg px-3 py-2 text-muted transition-colors hover:text-[var(--text)]">
-                {label}
+        <div>
+          <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:h-20 sm:px-6 lg:px-8">
+            <Logo />
+            <nav className="hidden items-center gap-1 text-sm font-medium md:flex" aria-label="Secciones">
+              {SECTIONS.map(([href, label]) => (
+                <a key={href} href={href} onClick={goTo(href)} className="rounded-lg px-3 py-2 text-muted transition-colors hover:text-[var(--text)]">
+                  {label}
+                </a>
+              ))}
+            </nav>
+            <div className="flex items-center gap-2">
+              <a href={REPO_URL} target="_blank" rel="noreferrer" className={buttonClass('ghost', 'md', 'max-lg:hidden')}>
+                <GithubIcon className="size-4" /> Código abierto
               </a>
-            ))}
-          </nav>
-          <div className="flex items-center gap-2">
-            <a href={REPO_URL} target="_blank" rel="noreferrer" className={buttonClass('ghost', 'md', 'max-lg:hidden')}>
-              <GithubIcon className="size-4" /> Código abierto
-            </a>
-            <Link to="/inicio" className={buttonClass('primary', 'md')}>
-              Entrar <ArrowRight className="size-4" />
-            </Link>
+              <Link to="/inicio" className={buttonClass('primary', 'md')}>
+                Entrar <ArrowRight className="size-4" />
+              </Link>
+            </div>
           </div>
+
         </div>
       </header>
 
+      {variant === 'franja' && <SectionStrip sections={SECTIONS} onGo={goTo} />}
+      {variant === 'grid' && <SectionGrid sections={SECTIONS} onGo={goTo} />}
+      {variant === 'bar' && <SectionBar sections={SECTIONS} onGo={goTo} />}
+
+      <main>
       {/* Hero */}
       <section className="mx-auto grid max-w-7xl items-center gap-12 px-4 pt-8 pb-16 sm:px-6 sm:pb-20 lg:grid-cols-2 lg:px-8 lg:pt-14">
         <motion.div style={{ y: heroY }}>
@@ -366,7 +386,7 @@ export default function Landing() {
           <motion.ul initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted">
             {[
               [HeartHandshake, 'Gratis para siempre'],
-              [ListChecks, 'Más de 1,000 preguntas explicadas · meta: 12,000'],
+              [ListChecks, 'Más de 1.000 preguntas explicadas · meta: 12.000'],
               [ShieldCheck, 'Sin anuncios y sin costo'],
               [Check, 'Tu progreso te sigue a cualquier dispositivo'],
             ].map(([I, t]) => {
@@ -398,8 +418,9 @@ export default function Landing() {
                   transition={{ delay: 0.5 + i * 0.1 }}
                   className={`flex items-center gap-3 rounded-xl border-2 px-3 py-2 text-sm ${i === 2 ? 'border-emerald-500 bg-emerald-500/10' : 'border-soft'}`}
                 >
-                  <span className={`grid size-6 place-items-center rounded-md text-[11px] font-bold ${i === 2 ? 'bg-emerald-600 text-white' : 'surface-2 text-muted'}`}>{i === 2 ? <Check className="size-3.5" /> : 'ABCD'[i]}</span>
-                  {o}
+                  <span className={`grid size-6 place-items-center rounded-md text-[11px] font-bold ${i === 2 ? 'bg-emerald-600 text-white' : 'surface-2 text-muted'}`}>{'ABCD'[i]}</span>
+                  <span className="min-w-0 flex-1">{o}</span>
+                  {i === 2 && <Check className="size-4 shrink-0 text-emerald-600 dark:text-emerald-400" aria-label="Respuesta correcta" />}
                 </motion.div>
               ))}
             </div>
@@ -442,8 +463,9 @@ export default function Landing() {
       {/* Cómo funciona */}
       <section id="plan" className="mx-auto max-w-7xl scroll-mt-24 px-4 pb-20 sm:px-6 sm:pb-24 lg:px-8">
         <SectionHeading eyebrow="Cómo funciona" title="Un plan hecho para ti" body="En dos minutos tienes un plan diario que se adapta a tu calendario y a tus resultados." />
-        <ol className="relative mt-12 grid gap-8 md:grid-cols-3 md:gap-6">
-          <div className="pointer-events-none absolute top-8 right-[16%] left-[16%] hidden h-px bg-gradient-to-r from-brand-500/0 via-brand-500/50 to-brand-500/0 md:block" />
+        <div className="relative mt-12">
+          <div aria-hidden className="pointer-events-none absolute top-8 right-[16%] left-[16%] hidden h-px bg-gradient-to-r from-brand-500/0 via-brand-500/50 to-brand-500/0 md:block" />
+          <ol className="relative grid gap-8 md:grid-cols-3 md:gap-6">
           {STEPS.map((st, i) => (
             <motion.li key={st.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 }} className="relative flex gap-4 md:flex-col md:items-center md:text-center">
               <div className="relative grid size-14 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-white shadow-glow md:size-16">
@@ -456,7 +478,8 @@ export default function Landing() {
               </div>
             </motion.li>
           ))}
-        </ol>
+          </ol>
+        </div>
         <div className="mt-10 flex justify-center">
           <Link to="/bienvenida" className={buttonClass('primary', 'lg', 'w-full sm:w-auto')}>
             <Sparkles className="size-5" /> Crear mi plan gratis
@@ -515,9 +538,27 @@ export default function Landing() {
           </div>
         </motion.div>
       </section>
+      </main>
 
       <footer className="border-t border-soft">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-10 px-4 py-12 sm:grid-cols-3 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr_1fr] lg:px-8">
+        {/* Antes esto era una ventana que se abría sola a los 2,5 s; ahora es una invitación discreta al pie. */}
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <div className="flex items-start gap-3">
+            <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-amber-400 via-pink-500 to-violet-600 text-white">
+              <InstagramIcon className="size-5" />
+            </span>
+            <div>
+              <p className="font-semibold">Tips para el ENURM cada semana</p>
+              <p className="mt-0.5 max-w-xl text-sm text-pretty text-muted">
+                En <span className="font-medium text-[var(--text)]">@{INSTAGRAM_USER}</span> comparto perlas, avisos de la convocatoria y novedades de la plataforma. Seguirme es la forma más fácil de ayudar a que MedLogic siga siendo gratis.
+              </p>
+            </div>
+          </div>
+          <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className={buttonClass('outline', 'md', 'w-full sm:w-auto')}>
+            <InstagramIcon className="size-4" /> Seguir en Instagram
+          </a>
+        </div>
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-10 border-t border-soft px-4 py-12 sm:grid-cols-3 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr_1fr] lg:px-8">
           <div className="col-span-2 sm:col-span-3 md:col-span-1">
             <Logo />
             <p className="mt-4 max-w-xs text-sm text-muted">Plataforma gratuita y de código abierto para preparar el Examen Nacional Único de Residencias Médicas.</p>

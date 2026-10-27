@@ -19,6 +19,35 @@ import { captchaEnabled, Turnstile } from '@/components/Turnstile'
 const CONTACT_EMAIL = 'medlogic.care@gmail.com'
 const RECOVERY_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Olvidé mi contraseña de MedLogic ENURM')}&body=${encodeURIComponent('Hola, olvidé mi contraseña. Mi cuenta es este correo.')}`
 
+/**
+ * La cuenta se pide al entrar a una sección concreta. El mensaje sigue esa intención («venías al
+ * simulacro») en vez de hablar siempre en abstracto de «guardar el progreso»: menos gente se va.
+ */
+function intentCopy(from?: string) {
+  const path = (from ?? '').split('?')[0]
+  if (path.startsWith('/simulacro'))
+    return {
+      subtitle: 'Crea tu cuenta gratis y haz tu simulacro: 100 preguntas con cronómetro y resultados por especialidad.',
+      modal: 'Tu simulacro te espera. Crea tu cuenta gratis y guardamos tus respuestas y tus resultados mientras lo haces.',
+    }
+  if (path.startsWith('/practica'))
+    return {
+      subtitle: 'Crea tu cuenta gratis y practica con el análisis de cada opción: por qué la correcta lo es y por qué las demás no.',
+      modal: 'Tu práctica te espera. Crea tu cuenta gratis y guardamos cada pregunta que respondas, con su explicación.',
+    }
+  if (path.startsWith('/plan') || path.startsWith('/bienvenida'))
+    return {
+      subtitle: 'Crea tu cuenta gratis y empieza tu plan diario: tareas concretas hasta el día del ENURM.',
+      modal: 'Tu plan te espera. Crea tu cuenta gratis y lo guardamos para que lo sigas desde cualquier dispositivo.',
+    }
+  if (path.startsWith('/flashcards') || path.startsWith('/repaso'))
+    return {
+      subtitle: 'Crea tu cuenta gratis y guarda tus flashcards y tus errores para repasarlos justo antes de olvidarlos.',
+      modal: 'Tus flashcards te esperan. Crea tu cuenta gratis y tu repaso espaciado te sigue a cualquier dispositivo.',
+    }
+  return null
+}
+
 /** Tratamientos del cuestionario. Al registrarse solo se preguntan si la persona no los puso allí. */
 const TREATMENTS: { value: Honorific; label: string }[] = [
   { value: 'dr', label: 'Dr.' },
@@ -84,6 +113,7 @@ function NotConfigured() {
 type Mode = 'signin' | 'signup'
 
 function AuthForm({ from }: { from?: string }) {
+  const intent = intentCopy(from)
   // Quien llega por primera vez desde el cuestionario del plan abre «Crear cuenta»; quien ya tuvo cuenta, «Iniciar sesión».
   const [mode, setMode] = useState<Mode>(from && !hadAccount() ? 'signup' : 'signin')
   const [nudge, setNudge] = useState(!!from)
@@ -174,7 +204,9 @@ function AuthForm({ from }: { from?: string }) {
           <div className="grid size-14 place-items-center rounded-2xl bg-brand-500/10 text-brand-700 dark:text-brand-300">
             <Cloud className="size-7" />
           </div>
-          <p className="text-sm text-muted">Crea tu cuenta gratis con tu correo. Así tu plan y todo lo que respondas se guardan en la nube desde el primer momento y no se pierden, aunque cambies de teléfono.</p>
+          <p className="text-sm text-muted">
+            {intent?.modal ?? 'Crea tu cuenta gratis con tu correo. Así tu plan y todo lo que respondas se guardan en la nube desde el primer momento y no se pierden, aunque cambies de teléfono.'}
+          </p>
           <div className="flex flex-col gap-2 sm:flex-row-reverse">
             <Button size="lg" className="sm:flex-1" onClick={() => (setMode('signup'), setNudge(false))}>
               Crear mi cuenta
@@ -313,6 +345,7 @@ function AuthForm({ from }: { from?: string }) {
             {busy && <RefreshCw className="size-4 animate-spin" />}
             {mode === 'signin' ? 'Entrar' : 'Crear cuenta'}
           </Button>
+          {mode === 'signup' && <p className="text-center text-xs text-muted">Gratis para siempre · sin anuncios · sin tarjeta</p>}
         </form>
 
         <p className="mt-4 text-center text-xs text-muted">
@@ -594,16 +627,22 @@ export default function Account() {
   const { status, recovering } = useAuth()
   const ready = status !== 'loading'
   // Quien llegó aquí porque la página pide iniciar sesión vuelve a donde iba al entrar.
-  const from = (useLocation().state as { from?: string } | null)?.from
+  const state = useLocation().state as { from?: string } | null
+  const from = state?.from?.startsWith('/') ? state.from : undefined
+  const intent = intentCopy(from)
   useEffect(() => {
     if (status === 'signed-in') markHadAccount()
   }, [status])
-  // Al iniciar sesión se llega siempre al Inicio (el progreso ya se descargó); no se reabre lo que se estaba haciendo.
-  if (status === 'signed-in' && !recovering && from && from !== '/cuenta') return <Navigate to="/inicio" replace />
+  // Se vuelve a la sección que la persona quería abrir (el simulacro, la práctica…), no al inicio genérico.
+  if (status === 'signed-in' && !recovering && from && from !== '/cuenta') return <Navigate to={from} replace />
 
   return (
     <div>
-      <PageHeader icon={<UserRound className="size-6" />} title={status === 'signed-in' ? 'Mi cuenta' : 'Tu cuenta'} subtitle={status === 'signed-in' ? 'Tu perfil y la sincronización de tu progreso.' : 'Crea tu cuenta gratis o inicia sesión para estudiar y guardar tu progreso.'} />
+      <PageHeader
+        icon={<UserRound className="size-6" />}
+        title={status === 'signed-in' ? 'Mi cuenta' : 'Tu cuenta'}
+        subtitle={status === 'signed-in' ? 'Tu perfil y la sincronización de tu progreso.' : (intent?.subtitle ?? 'Crea tu cuenta gratis o inicia sesión para estudiar y guardar tu progreso.')}
+      />
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
         {!isSupabaseConfigured ? <NotConfigured /> : !ready ? <div className="skeleton mx-auto h-80 max-w-md rounded-2xl" /> : recovering ? <NewPassword /> : status === 'signed-in' ? <Profile /> : <AuthForm from={from} />}
       </motion.div>

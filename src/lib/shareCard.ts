@@ -1,4 +1,4 @@
-import { INSTAGRAM_USER } from '@/components/InstagramPrompt'
+import { INSTAGRAM_USER } from '@/components/Instagram'
 
 export interface ShareStats {
   /** Puntaje estimado (0–100) o null si todavía hay pocas respuestas. */

@@ -1,4 +1,4 @@
-import { INSTAGRAM_USER } from '@/components/InstagramPrompt'
+import { INSTAGRAM_USER } from '@/components/Instagram'
 import { BODY, DISPLAY, logo, roundRect, SITE } from './shareCard'
 import { duelWinner, type DuelPayload, type DuelScore } from './duel'
 
