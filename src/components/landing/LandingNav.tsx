@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type MouseEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { useScroll } from 'motion/react'
-import { ArrowRight, CalendarDays, ChevronDown, CircleHelp, Compass, LayoutGrid, LogIn, type LucideIcon } from 'lucide-react'
+import { ArrowRight, CalendarDays, CircleHelp, Compass, LayoutGrid, LogIn, Menu, X, type LucideIcon } from 'lucide-react'
 import { AnimatedLogoMark } from '@/components/ui/Logo'
 import { buttonClass } from '@/components/ui/primitives'
 import { cn } from '@/lib/utils'
@@ -76,15 +76,14 @@ export function LandingNav({ sections, onGo }: { sections: readonly SectionLink[
   }, [open])
 
   const shown = hover ?? active
-  const label = active < 0 ? 'Inicio' : (META[hrefs[active]]?.short ?? sections[active][1])
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-40 px-3 pt-3 sm:pt-4">
       <div ref={wrap} className="mx-auto flex flex-col items-center">
         <div className={cn('pointer-events-auto flex w-full items-center gap-2 rounded-full border border-soft bg-[color-mix(in_oklab,var(--surface)_96%,transparent)] p-1.5 pl-2.5 transition-shadow duration-300 md:w-auto', raised ? 'shadow-lift' : 'shadow-soft')}>
-          <Link to="/" aria-label="MedLogic ENURM, inicio" className="relative flex shrink-0 items-center gap-2.5 before:absolute before:-inset-1 min-[380px]:min-w-0 min-[380px]:flex-1 md:flex-none md:pr-3">
+          <Link to="/" aria-label="MedLogic ENURM, inicio" className="relative flex min-w-0 flex-1 items-center gap-2.5 before:absolute before:-inset-1 md:flex-none md:pr-3">
             <AnimatedLogoMark delay={0.15} className="size-7" />
-            <span className="hidden items-baseline gap-1.5 leading-none min-[380px]:flex">
+            <span className="flex items-baseline gap-1.5 leading-none whitespace-nowrap">
               <span className="font-display text-[18px] font-extrabold tracking-tight">MedLogic</span>
               <span className="hidden text-[10px] font-bold tracking-[0.22em] text-brand-700 uppercase md:inline dark:text-brand-400">ENURM</span>
             </span>
@@ -109,17 +108,16 @@ export function LandingNav({ sections, onGo }: { sections: readonly SectionLink[
             ))}
           </nav>
 
-          {/* Teléfono: sección actual + lista */}
+          {/* Teléfono: botón cuadrado que abre la lista de secciones */}
           <button
             type="button"
             onClick={() => setOpen((o) => !o)}
             aria-expanded={open}
             aria-controls="landing-secciones"
             aria-label="Secciones de la página"
-            className="surface-2 relative flex h-9 min-w-9 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full px-3 text-sm font-semibold before:absolute before:-inset-1 min-[380px]:w-9 min-[380px]:flex-none min-[380px]:px-0 md:hidden"
+            className="surface-2 relative grid size-9 shrink-0 place-items-center rounded-xl text-[var(--text)] transition-[background-color,scale] duration-200 before:absolute before:-inset-1 active:scale-[0.95] md:hidden"
           >
-            <span className="truncate min-[380px]:hidden">{label}</span>
-            <ChevronDown className={cn('size-3.5 shrink-0 transition-transform duration-300', open && 'rotate-180')} />
+            {open ? <X className="size-[18px]" /> : <Menu className="size-[18px]" />}
           </button>
 
           <Link
