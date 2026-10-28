@@ -55,7 +55,7 @@ export default function Guides() {
                   <div className="flex items-start justify-between">
                     <SpecialtyIcon id={g.specialty} />
                     {read && (
-                      <span className="flex items-center gap-1 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[11px] font-semibold text-emerald-600">
+                      <span className="flex items-center gap-1 rounded-full bg-emerald-500/15 px-2 py-0.5 text-xs font-semibold text-emerald-600">
                         <Check className="size-3" /> Leída
                       </span>
                     )}
@@ -149,7 +149,7 @@ export function GuideDetail() {
                           <dl className="mt-2 space-y-1.5 text-sm">
                             {r.slice(1).map((c, k) => (
                               <div key={k}>
-                                <dt className="text-[11px] font-semibold tracking-wide text-muted uppercase">{sec.table!.head[k + 1]}</dt>
+                                <dt className="text-xs font-semibold tracking-wide text-muted uppercase">{sec.table!.head[k + 1]}</dt>
                                 <dd className="leading-relaxed">{c}</dd>
                               </div>
                             ))}
@@ -248,7 +248,7 @@ export function GuideDetail() {
 
         <aside className="hidden lg:block">
           <nav className="sticky top-24">
-            <div className="mb-3 text-[10px] font-bold tracking-[0.18em] text-muted uppercase">En esta guía</div>
+            <div className="mb-3 text-xs font-bold tracking-[0.18em] text-muted uppercase">En esta guía</div>
             <ul className="space-y-1 border-l border-soft">
               {guide.sections.map((sec) => (
                 <li key={sec.heading}>

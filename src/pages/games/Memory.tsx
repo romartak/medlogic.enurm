@@ -81,7 +81,7 @@ function Board({ setId, end }: { setId: string; end: EndGame }) {
                 <div
                   lang="es"
                   className={cn(
-                    'backface-hidden absolute inset-0 grid place-items-center overflow-hidden rounded-xl border-2 p-1 text-center text-[11px] leading-tight font-semibold hyphens-auto [overflow-wrap:anywhere] min-[400px]:p-1.5 sm:text-sm',
+                    'backface-hidden absolute inset-0 grid place-items-center overflow-hidden rounded-xl border-2 p-1 text-center text-xs leading-tight font-semibold hyphens-auto [overflow-wrap:anywhere] min-[400px]:p-1.5 sm:text-sm',
                     isMatched ? 'border-emerald-500 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' : isMiss ? 'border-rose-500 bg-rose-500/10' : 'border-brand-500 bg-[var(--surface)]',
                     t.side === 'b' && !isMatched && !isMiss && 'border-accent-500',
                   )}

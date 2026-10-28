@@ -40,7 +40,7 @@ function Countdown({ date }: { date: string }) {
               </motion.span>
             </AnimatePresence>
           </div>
-          <div className="text-[11px] font-medium text-white/80">{p.l}</div>
+          <div className="text-xs font-medium text-white/80">{p.l}</div>
         </div>
       ))}
     </div>
@@ -132,12 +132,12 @@ function PhaseTimeline({ current }: { current: PlanPhase }) {
         return (
           <div key={ph} className="relative">
             <div className="h-1.5 overflow-hidden rounded-full surface-2">
-              <motion.div className="h-full rounded-full" style={{ backgroundColor: info.color }} initial={{ width: 0 }} animate={{ width: state === 'past' ? '100%' : state === 'current' ? '55%' : '0%' }} transition={{ duration: 0.8, delay: i * 0.1 }} />
+              <motion.div className="h-full w-full origin-left rounded-full" style={{ backgroundColor: info.color }} initial={{ scaleX: 0 }} animate={{ scaleX: state === 'past' ? 1 : state === 'current' ? 0.55 : 0 }} transition={{ duration: 0.8, delay: i * 0.1 }} />
             </div>
-            <div lang="es" className={cn('mt-2 text-[11px] leading-tight font-semibold hyphens-auto [overflow-wrap:anywhere] sm:text-xs', state === 'current' ? '' : 'text-muted')} style={state === 'current' ? tintText(info.color) : undefined}>
+            <div lang="es" className={cn('mt-2 text-xs leading-tight font-semibold hyphens-auto [overflow-wrap:anywhere] sm:text-xs', state === 'current' ? '' : 'text-muted')} style={state === 'current' ? tintText(info.color) : undefined}>
               {softHyphens(info.name, 8)}
             </div>
-            <div className="hidden text-[11px] text-muted sm:block">{ph === 'fundamentos' ? '> 6 meses' : ph === 'consolidacion' ? '2–6 meses' : ph === 'intensivo' ? '15–60 días' : '≤ 14 días'}</div>
+            <div className="hidden text-xs text-muted sm:block">{ph === 'fundamentos' ? '> 6 meses' : ph === 'consolidacion' ? '2–6 meses' : ph === 'intensivo' ? '15–60 días' : '≤ 14 días'}</div>
           </div>
         )
       })}
@@ -224,7 +224,7 @@ export default function Planner() {
                 return (
                   <motion.div key={d.date} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }} className={cn('flex flex-row items-center gap-3 rounded-2xl border p-3 sm:flex-col sm:items-stretch sm:text-center', i === 0 ? 'border-brand-500 bg-brand-500/5 ring-1 ring-brand-500/30' : 'border-soft', d.restDay && 'opacity-70')}>
                     <div className="w-12 shrink-0 sm:w-auto">
-                      <div className="text-[11px] font-semibold text-muted uppercase">{i === 0 ? 'Hoy' : WEEKDAYS[date.getDay()]}</div>
+                      <div className="text-xs font-semibold text-muted uppercase">{i === 0 ? 'Hoy' : WEEKDAYS[date.getDay()]}</div>
                       <div className="font-display text-xl font-bold">{date.getDate()}</div>
                     </div>
                     <div className="flex flex-1 flex-wrap items-center gap-1.5 sm:flex-col">
@@ -234,14 +234,14 @@ export default function Planner() {
                         </span>
                       ) : (
                         d.focus.map((f) => (
-                          <button key={f} onClick={() => navigate(`/especialidades/${f}`)} className="flex items-center gap-1.5 rounded-lg p-0.5 text-left text-[11px] font-semibold hover:bg-slate-900/5 dark:hover:bg-white/5" title={getSpecialty(f).name}>
+                          <button key={f} onClick={() => navigate(`/especialidades/${f}`)} className="flex items-center gap-1.5 rounded-lg p-0.5 text-left text-xs font-semibold hover:bg-slate-900/5 dark:hover:bg-white/5" title={getSpecialty(f).name}>
                             <SpecialtyIcon id={f} size="sm" />
                             <span className="sm:hidden">{getSpecialty(f).short}</span>
                           </button>
                         ))
                       )}
                       {exam && (
-                        <span className="rounded-full bg-sky-500/15 px-2 py-0.5 text-[10px] font-bold text-sky-600 dark:text-sky-400" title={exam.title}>
+                        <span className="rounded-full bg-sky-500/15 px-2 py-0.5 text-xs font-bold text-sky-600 dark:text-sky-400" title={exam.title}>
                           Simulacro
                         </span>
                       )}
@@ -286,7 +286,7 @@ export default function Planner() {
                     <SpecialtyIcon id={p.id} size="sm" />
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-sm font-medium">{getSpecialty(p.id).name}</span>
-                      <span className="block truncate text-[11px] text-muted">{p.reason}</span>
+                      <span className="block truncate text-xs text-muted">{p.reason}</span>
                     </span>
                   </Link>
                 </li>

@@ -124,7 +124,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
                 const IconC = r.kind === 'question' ? FileQuestion : r.kind === 'guide' ? BookOpen : r.kind === 'card' ? Layers : r.kind === 'specialty' ? LayoutGrid : (ALL_NAV.find((n) => n.to === r.to)?.icon ?? Search)
                 return (
                   <div key={r.key}>
-                    {header && <div className="px-3 pt-3 pb-1 text-[10px] font-bold tracking-[0.18em] text-muted uppercase">{header}</div>}
+                    {header && <div className="px-3 pt-3 pb-1 text-xs font-bold tracking-[0.18em] text-muted uppercase">{header}</div>}
                     <button
                       data-idx={i}
                       onMouseMove={() => setActive(i)}
@@ -144,7 +144,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
                 )
               })}
             </div>
-            <div className="hidden items-center gap-4 border-t border-soft px-4 py-2 text-[11px] text-muted sm:flex">
+            <div className="hidden items-center gap-4 border-t border-soft px-4 py-2 text-xs text-muted sm:flex">
               <span className="flex items-center gap-1">
                 <span className="kbd">↑</span>
                 <span className="kbd">↓</span> navegar

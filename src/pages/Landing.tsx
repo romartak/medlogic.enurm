@@ -159,7 +159,7 @@ function ExamCountdown() {
               {parts.map((p) => (
                 <div key={p.l} className="rounded-2xl bg-white/15 px-1 py-3 text-center backdrop-blur-sm">
                   <div className="font-display text-2xl font-extrabold tabular-nums sm:text-4xl">{String(p.v).padStart(2, '0')}</div>
-                  <div className="text-[11px] font-medium text-white/80 sm:text-xs">{p.l}</div>
+                  <div className="text-xs font-medium text-white/80">{p.l}</div>
                 </div>
               ))}
             </div>
@@ -216,7 +216,7 @@ function Features() {
           <div className="space-y-2">
             {options.map((o) => (
               <div key={o.l} className={cn('flex items-start gap-3 rounded-xl border px-3 py-2.5 text-sm', o.ok ? 'border-emerald-500/50 bg-emerald-500/[0.07]' : 'border-soft')}>
-                <span className={cn('grid size-6 shrink-0 place-items-center rounded-md text-[11px] font-bold', o.ok ? 'bg-emerald-600 text-white' : 'surface-2 text-muted')}>{o.l}</span>
+                <span className={cn('grid size-6 shrink-0 place-items-center rounded-md text-xs font-bold', o.ok ? 'bg-emerald-600 text-white' : 'surface-2 text-muted')}>{o.l}</span>
                 <div className="min-w-0 flex-1">
                   <div className="font-semibold">{o.t}</div>
                   <div className="text-xs text-muted">{o.why}</div>
@@ -230,7 +230,7 @@ function Features() {
           <div className="rounded-xl border border-soft p-4 text-center">
             <div className="text-xs text-muted">Antídoto de la heparina</div>
             <div className="mt-1 font-display text-lg font-bold">Protamina</div>
-            <div className="mt-3 grid grid-cols-4 gap-1.5 text-[11px] font-semibold">
+            <div className="mt-3 grid grid-cols-4 gap-1.5 text-xs font-semibold">
               <span className="rounded-md bg-rose-500/15 py-1.5 text-rose-700 dark:text-rose-300">Otra vez</span>
               <span className="rounded-md bg-amber-500/15 py-1.5 text-amber-800 dark:text-amber-300">Difícil</span>
               <span className="rounded-md bg-emerald-500/15 py-1.5 text-emerald-800 dark:text-emerald-300">Bien</span>
@@ -405,8 +405,8 @@ export default function Landing() {
           <div className="relative">
           <motion.div initial={{ opacity: 0, scale: 0.9, rotate: -2 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 90, damping: 16 }} className="card relative p-5 shadow-lift sm:p-6 sm:pb-16">
             <div className="mb-3 flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-rose-500/15 px-2.5 py-0.5 text-[11px] font-semibold text-rose-700 dark:text-rose-300">Ginecología y Obstetricia</span>
-              <span className="surface-2 rounded-full px-2.5 py-0.5 text-[11px] font-semibold text-muted">Pregunta 12/100</span>
+              <span className="rounded-full bg-rose-500/15 px-2.5 py-0.5 text-xs font-semibold text-rose-700 dark:text-rose-300">Ginecología y Obstetricia</span>
+              <span className="surface-2 rounded-full px-2.5 py-0.5 text-xs font-semibold text-muted">Pregunta 12/100</span>
             </div>
             <p className="text-sm font-medium sm:text-base">Embarazada de 34 semanas con TA 165/112 mmHg y cefalea. ¿Qué fármaco previene las convulsiones?</p>
             <div className="mt-4 space-y-2">
@@ -418,7 +418,7 @@ export default function Landing() {
                   transition={{ delay: 0.5 + i * 0.1 }}
                   className={`flex items-center gap-3 rounded-xl border-2 px-3 py-2 text-sm ${i === 2 ? 'border-emerald-500 bg-emerald-500/10' : 'border-soft'}`}
                 >
-                  <span className={`grid size-6 place-items-center rounded-md text-[11px] font-bold ${i === 2 ? 'bg-emerald-600 text-white' : 'surface-2 text-muted'}`}>{'ABCD'[i]}</span>
+                  <span className={`grid size-6 place-items-center rounded-md text-xs font-bold ${i === 2 ? 'bg-emerald-600 text-white' : 'surface-2 text-muted'}`}>{'ABCD'[i]}</span>
                   <span className="min-w-0 flex-1">{o}</span>
                   {i === 2 && <Check className="size-4 shrink-0 text-emerald-600 dark:text-emerald-400" aria-label="Respuesta correcta" />}
                 </motion.div>
@@ -429,7 +429,7 @@ export default function Landing() {
                 <b className="text-emerald-800 dark:text-emerald-300">¿Por qué?</b> El magnesio estabiliza la membrana neuronal y es el anticonvulsivo de elección en preeclampsia grave.
               </div>
             </motion.div>
-            <div className="mt-3 flex items-center justify-end gap-1.5 text-[11px] font-semibold text-muted max-sm:hidden">
+            <div className="mt-3 flex items-center justify-end gap-1.5 text-xs font-semibold text-muted max-sm:hidden">
               <BookOpen className="size-3.5" /> 3 referencias · fisiopatología
             </div>
           </motion.div>
@@ -449,7 +449,7 @@ export default function Landing() {
             <div className="font-display text-2xl font-bold text-brand-600 dark:text-brand-400">78%</div>
             <div className="mt-2 flex h-8 items-end gap-1">
               {[40, 55, 48, 62, 70, 66, 78].map((h, i) => (
-                <motion.span key={i} initial={{ height: 0 }} animate={{ height: `${h}%` }} transition={{ delay: 1 + i * 0.06 }} className="w-2.5 rounded-sm bg-brand-gradient" />
+                <motion.span key={i} style={{ height: `${h}%` }} initial={{ scaleY: 0 }} animate={{ scaleY: 1 }} transition={{ delay: 1 + i * 0.06 }} className="w-2.5 origin-bottom rounded-sm bg-brand-gradient" />
               ))}
             </div>
           </FloatingCard>

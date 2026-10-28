@@ -106,15 +106,15 @@ export default function NationalExam() {
             <div className="mt-6 grid grid-cols-3 gap-3 text-center">
               <div className="rounded-2xl bg-white/15 p-3">
                 <div className="font-display text-2xl font-bold">{results?.percentil != null ? `${results.percentil}` : '—'}</div>
-                <div className="text-[11px] text-white/80">percentil</div>
+                <div className="text-xs text-white/80">percentil</div>
               </div>
               <div className="rounded-2xl bg-white/15 p-3">
                 <div className="font-display text-2xl font-bold">{results ? `#${results.posicion}` : '—'}</div>
-                <div className="text-[11px] text-white/80">{results ? `de ${results.participantes}` : 'posición'}</div>
+                <div className="text-xs text-white/80">{results ? `de ${results.participantes}` : 'posición'}</div>
               </div>
               <div className="rounded-2xl bg-white/15 p-3">
                 <div className="font-display text-2xl font-bold">{results ? `${results.promedio}%` : '—'}</div>
-                <div className="text-[11px] text-white/80">promedio del país</div>
+                <div className="text-xs text-white/80">promedio del país</div>
               </div>
             </div>
             <p className="mt-4 text-sm text-white/85">

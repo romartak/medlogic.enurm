@@ -71,7 +71,7 @@ export function QuestionAnalysis({ q, selected, order }: { q: Question; selected
                 const ok = orig === q.answer
                 return (
                   <li key={orig} className="flex gap-3">
-                    <span className={cn('mt-0.5 grid size-6 shrink-0 place-items-center rounded-md text-[11px] font-bold text-white', ok ? 'bg-emerald-500' : 'bg-rose-400')}>{letterOf(orig)}</span>
+                    <span className={cn('mt-0.5 grid size-6 shrink-0 place-items-center rounded-md text-xs font-bold text-white', ok ? 'bg-emerald-500' : 'bg-rose-400')}>{letterOf(orig)}</span>
                     <div>
                       <div className={cn('font-medium', ok && 'text-emerald-700 dark:text-emerald-400')}>{q.options[orig]}</div>
                       {ex[orig] && <div className="text-muted">{ex[orig]}</div>}
@@ -151,7 +151,7 @@ export function QuestionAnalysis({ q, selected, order }: { q: Question; selected
             <MessageSquareWarning className="size-3.5" /> Reportar un error
           </a>
           {!ex?.some(Boolean) && !q.pathophysiology && (
-            <span className="inline-flex items-center gap-1 text-[11px] text-muted">
+            <span className="inline-flex items-center gap-1 text-xs text-muted">
               <CircleAlert className="size-3" /> Análisis detallado en preparación
             </span>
           )}

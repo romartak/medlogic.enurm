@@ -123,7 +123,7 @@ function NextWordDemo() {
           <div key={c.w} className="flex items-center gap-3 text-sm">
             <span className={cn('w-36 shrink-0 truncate', i === 0 && step >= 1 && 'font-semibold')}>{c.w}</span>
             <div className="h-2.5 flex-1 overflow-hidden rounded-full surface-2">
-              <motion.div className={cn('h-full rounded-full', i === 0 ? 'bg-brand-gradient' : 'bg-slate-400/60')} initial={{ width: 0 }} animate={{ width: step >= 1 ? `${c.p * 100}%` : 0 }} transition={{ duration: 0.8, delay: i * 0.05 }} />
+              <motion.div className={cn('h-full w-full origin-left rounded-full', i === 0 ? 'bg-brand-gradient' : 'bg-slate-400/60')} initial={{ scaleX: 0 }} animate={{ scaleX: step >= 1 ? c.p : 0 }} transition={{ duration: 0.8, delay: i * 0.05 }} />
             </div>
             <span className="w-10 text-right text-xs text-muted tabular-nums">{step >= 1 ? `${Math.round(c.p * 100)}%` : ''}</span>
           </div>
@@ -261,7 +261,7 @@ export default function AiGuide() {
               <span className="font-display text-3xl font-black text-brand-500/25">{i + 1}</span>
               <div className="font-semibold">{t}</div>
               <div className="text-xs text-muted">{d}</div>
-              <div className="mt-2 rounded-lg surface-2 p-2 text-[11px] italic">{e}</div>
+              <div className="mt-2 rounded-lg surface-2 p-2 text-xs italic">{e}</div>
             </motion.div>
           ))}
         </div>

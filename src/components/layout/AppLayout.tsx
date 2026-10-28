@@ -38,7 +38,7 @@ function SidebarNav() {
     <nav className="flex flex-col gap-5">
       {NAV_GROUPS.map((g) => (
         <div key={g.title}>
-          <div className="mb-1.5 px-3 text-[10px] font-bold tracking-[0.18em] text-muted uppercase">{g.title}</div>
+          <div className="mb-1.5 px-3 text-xs font-bold tracking-[0.18em] text-muted uppercase">{g.title}</div>
           <ul className="flex flex-col gap-0.5">
             {g.items.map((item) => (
               <li key={item.to}>
@@ -280,7 +280,7 @@ function MobileTabBar({ onOpenFunctions, functionsOpen }: { onOpenFunctions: () 
       <ul className="grid grid-cols-6">
         {tabs.map((t) => (
           <li key={t.to}>
-            <NavLink to={t.to} className={({ isActive }) => cn('relative flex flex-col items-center gap-0.5 py-2.5 text-[10px] font-semibold transition-colors', isActive ? 'text-brand-600 dark:text-brand-400' : 'text-muted')}>
+            <NavLink to={t.to} className={({ isActive }) => cn('relative flex flex-col items-center gap-0.5 py-2.5 text-xs font-semibold transition-colors', isActive ? 'text-brand-600 dark:text-brand-400' : 'text-muted')}>
               {({ isActive }) => (
                 <>
                   {isActive && <motion.span layoutId="tab-active" className="absolute inset-x-3 inset-y-1 rounded-xl bg-brand-500/10" />}

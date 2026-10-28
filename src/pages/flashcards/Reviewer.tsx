@@ -260,7 +260,7 @@ export default function Reviewer() {
       </Link>
       <div className="min-w-0 flex-1 text-center">
         <div className="truncate font-display font-bold">{name}</div>
-        {filtered && !filtered.reschedule && <div className="text-[11px] text-amber-600">Sin reprogramar</div>}
+        {filtered && !filtered.reschedule && <div className="text-xs text-amber-600">Sin reprogramar</div>}
       </div>
       {settings.showRemaining && <CountTriplet n={counts.new} l={counts.learn} r={counts.review} active={activeKind} />}
     </div>
@@ -304,7 +304,7 @@ export default function Reviewer() {
       <AnimatePresence mode="wait">
         <motion.div key={current.id + seq} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }} className="card relative min-h-[320px] overflow-hidden p-6 sm:p-10">
           {flag && <div className="absolute inset-x-0 top-0 h-1.5" style={{ backgroundColor: flag.color }} />}
-          <div className="mb-6 flex items-center justify-between text-[11px] font-semibold text-muted">
+          <div className="mb-6 flex items-center justify-between text-xs font-semibold text-muted">
             <span className="flex items-center gap-2">
               <span className={cn('rounded-full px-2 py-0.5', state?.type === 'new' ? 'bg-sky-500/15 text-sky-600' : state?.type === 'review' ? 'bg-emerald-500/15 text-emerald-600' : 'bg-rose-500/15 text-rose-600')}>{KIND_LABEL[state?.type ?? 'new']}</span>
               {current.note.specialty && <span style={tintText(getSpecialty(current.note.specialty).color)}>{getSpecialty(current.note.specialty).short}</span>}
@@ -371,7 +371,7 @@ export default function Reviewer() {
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-4 gap-2">
             {GRADES.map((b) => (
               <motion.button key={b.g} whileTap={{ scale: 0.94 }} onClick={() => grade(b.g)} className={cn('flex flex-col items-center rounded-xl py-2.5 text-white shadow-lift transition-colors', b.cls)}>
-                {settings.showIntervals && intervals && <span className="text-[11px] font-semibold opacity-90">{intervals[b.g]}</span>}
+                {settings.showIntervals && intervals && <span className="text-xs font-semibold opacity-90">{intervals[b.g]}</span>}
                 <span className="text-sm font-bold">{b.label}</span>
               </motion.button>
             ))}

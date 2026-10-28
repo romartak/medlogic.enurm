@@ -42,7 +42,7 @@ export function QuickQuestion({ question: q, onAnswer, revealMs = 700 }: { quest
                 state === 'dim' && 'border-soft opacity-50',
               )}
             >
-              <span className={cn('grid size-6 shrink-0 place-items-center rounded-md text-[11px] font-bold', state === 'correct' ? 'bg-emerald-500 text-white' : state === 'wrong' ? 'bg-rose-500 text-white' : 'surface-2 text-muted')}>
+              <span className={cn('grid size-6 shrink-0 place-items-center rounded-md text-xs font-bold', state === 'correct' ? 'bg-emerald-500 text-white' : state === 'wrong' ? 'bg-rose-500 text-white' : 'surface-2 text-muted')}>
                 {state === 'correct' ? <Check className="size-3.5" /> : state === 'wrong' ? <X className="size-3.5" /> : LETTERS[i]}
               </span>
               {o}

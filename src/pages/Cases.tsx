@@ -152,7 +152,7 @@ function CasePlayer({ c, onRestart }: { c: ClinicalCase; onRestart: () => void }
             <X className="size-5" />
           </Link>
           <div className="h-2 flex-1 overflow-hidden rounded-full surface-2">
-            <motion.div className="h-full rounded-full bg-brand-500" animate={{ width: `${((step + (solved ? 1 : 0)) / c.steps.length) * 100}%` }} />
+            <motion.div className="h-full w-full origin-left rounded-full bg-brand-500" animate={{ scaleX: (step + (solved ? 1 : 0)) / c.steps.length }} />
           </div>
           <span className="text-sm font-bold tabular-nums">
             {step + 1}/{c.steps.length}

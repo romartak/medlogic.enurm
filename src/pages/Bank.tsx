@@ -74,7 +74,7 @@ export default function Bank() {
           )}
         </label>
         <Button variant={showFilters ? 'secondary' : 'outline'} onClick={() => setShowFilters(!showFilters)}>
-          <Filter className="size-4" /> Filtros {activeFilters > 0 && <span className="grid size-5 place-items-center rounded-full bg-brand-500 text-[10px] text-white">{activeFilters}</span>}
+          <Filter className="size-4" /> Filtros {activeFilters > 0 && <span className="grid size-5 place-items-center rounded-full bg-brand-500 text-xs text-white">{activeFilters}</span>}
         </Button>
       </div>
 

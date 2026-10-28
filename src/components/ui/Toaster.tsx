@@ -29,7 +29,7 @@ export function Toaster() {
               </span>
             )}
             <span className="min-w-0">
-              {t.kind === 'achievement' && <span className="block text-[10px] font-bold tracking-wider text-amber-500 uppercase">Logro desbloqueado</span>}
+              {t.kind === 'achievement' && <span className="block text-xs font-bold tracking-wider text-amber-500 uppercase">Logro desbloqueado</span>}
               <span className="block text-sm font-semibold">{t.title}</span>
               {t.body && <span className="block text-xs text-muted">{t.body}</span>}
             </span>

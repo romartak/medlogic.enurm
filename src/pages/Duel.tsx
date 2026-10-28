@@ -128,7 +128,7 @@ function DuelPlay({ questions, onDone }: { questions: Question[]; onDone: (corre
       <div className="flex items-center gap-3">
         <Swords className="size-5 text-brand-600 dark:text-brand-400" />
         <div className="h-2 flex-1 overflow-hidden rounded-full surface-2">
-          <motion.div className="h-full rounded-full bg-brand-500" animate={{ width: `${((i + (choice !== null ? 1 : 0)) / questions.length) * 100}%` }} />
+          <motion.div className="h-full w-full origin-left rounded-full bg-brand-500" animate={{ scaleX: (i + (choice !== null ? 1 : 0)) / questions.length }} />
         </div>
         <span className="text-sm font-bold tabular-nums">
           {i + 1}/{questions.length}
@@ -398,7 +398,7 @@ function Duel() {
             ].map(([n, k, c]) => (
               <div key={k as string} className="rounded-xl surface-2 p-2">
                 <div className={cn('font-display text-xl font-bold', c as string)}>{n}</div>
-                <div className="text-[11px] text-muted">{k}</div>
+                <div className="text-xs text-muted">{k}</div>
               </div>
             ))}
           </div>

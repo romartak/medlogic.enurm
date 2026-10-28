@@ -125,7 +125,7 @@ function Dictionary() {
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-baseline gap-x-2">
                   <span className="font-display text-lg font-bold">{i.term}</span>
-                  <span className="text-[11px] font-semibold tracking-wide text-muted uppercase">{KIND_LABEL[i.kind]}</span>
+                  <span className="text-xs font-semibold tracking-wide text-muted uppercase">{KIND_LABEL[i.kind]}</span>
                 </div>
                 <p className="text-sm">{i.meaning}</p>
                 {i.parts && (

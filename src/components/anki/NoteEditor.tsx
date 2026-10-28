@@ -189,11 +189,11 @@ export function NoteEditor() {
         {preview ? (
           <div className="space-y-3">
             <div className="rounded-xl border border-soft p-4 text-center">
-              <div className="mb-2 text-[10px] font-bold tracking-wider text-muted uppercase">Frente</div>
+              <div className="mb-2 text-xs font-bold tracking-wider text-muted uppercase">Frente</div>
               <CardHtml html={firstCard.front} />
             </div>
             <div className="rounded-xl border border-brand-500/30 p-4 text-center">
-              <div className="mb-2 text-[10px] font-bold tracking-wider text-muted uppercase">Reverso</div>
+              <div className="mb-2 text-xs font-bold tracking-wider text-muted uppercase">Reverso</div>
               <CardHtml html={firstCard.back} />
             </div>
           </div>

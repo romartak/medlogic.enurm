@@ -36,7 +36,7 @@ export function DailyPlanCard({ compact = false }: { compact?: boolean }) {
               <div className="font-display text-xl font-extrabold">
                 {completed}/{total}
               </div>
-              <div className="text-[10px] text-muted">tareas</div>
+              <div className="text-xs text-muted">tareas</div>
             </div>
           )}
         </Ring>
@@ -97,7 +97,7 @@ export function DailyPlanCard({ compact = false }: { compact?: boolean }) {
                 <div className="min-w-0 flex-1">
                   <div className={cn('flex flex-wrap items-center gap-x-2 text-sm font-semibold', t.complete && 'text-muted line-through')}>
                     {t.title}
-                    {t.optional && <span className="text-[10px] font-medium text-muted no-underline">opcional</span>}
+                    {t.optional && <span className="text-xs font-medium text-muted no-underline">opcional</span>}
                   </div>
                   <div className="truncate text-xs text-muted">
                     {t.detail} · {t.minutes} min
@@ -105,7 +105,7 @@ export function DailyPlanCard({ compact = false }: { compact?: boolean }) {
                   {t.target > 1 && !compact && (
                     <div className="mt-1.5 flex items-center gap-2">
                       <ProgressBar value={t.done / t.target} color={color} height="h-1" className="max-w-48" />
-                      <span className="text-[10px] whitespace-nowrap text-muted tabular-nums">
+                      <span className="text-xs whitespace-nowrap text-muted tabular-nums">
                         {t.done}/{t.target} {k.unit}
                       </span>
                     </div>

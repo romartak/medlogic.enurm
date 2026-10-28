@@ -53,7 +53,7 @@ export function Logo({ className }: { className?: string }) {
       <LogoMark />
       <span className="leading-none">
         <span className="block font-display text-[17px] font-extrabold tracking-tight">MedLogic</span>
-        <span className="block text-[10px] font-semibold tracking-[0.2em] text-brand-600 uppercase dark:text-brand-400">ENURM</span>
+        <span className="block text-xs font-semibold tracking-[0.2em] text-brand-600 uppercase dark:text-brand-400">ENURM</span>
       </span>
     </span>
   )

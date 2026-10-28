@@ -52,7 +52,7 @@ function PromptCard({ p, fav, onFav, i }: { p: PromptItem; fav: boolean; onFav: 
         <div className="mt-4 flex items-center justify-between gap-2 text-xs font-semibold">
           <span style={tintText(cat.color)}>{cat.name}</span>
           {p.attachment && (
-            <span className="flex items-center gap-1 rounded-full surface-2 px-2 py-0.5 text-[10px] text-muted" title={p.attachment}>
+            <span className="flex items-center gap-1 rounded-full surface-2 px-2 py-0.5 text-xs text-muted" title={p.attachment}>
               <Paperclip className="size-3" /> Adjunta archivo
             </span>
           )}
@@ -106,7 +106,7 @@ function Builder() {
             <textarea value={v[f.key] ?? ''} onChange={(e) => setV({ ...v, [f.key]: e.target.value })} rows={2} className="mt-1.5 w-full resize-y rounded-xl border border-soft surface-2 p-3 text-sm outline-none focus:border-brand-500" />
             <span className="mt-1.5 flex flex-wrap gap-1.5">
               {f.chips.map((c) => (
-                <button key={c} type="button" onClick={() => add(f.key, c)} className="rounded-full border border-soft px-2.5 py-1 text-[11px] text-muted transition-colors hover:border-brand-500/50 hover:text-[var(--text)]">
+                <button key={c} type="button" onClick={() => add(f.key, c)} className="rounded-full border border-soft px-2.5 py-1 text-xs text-muted transition-colors hover:border-brand-500/50 hover:text-[var(--text)]">
                   + {c}
                 </button>
               ))}
@@ -121,7 +121,7 @@ function Builder() {
             <span className={cn('font-bold', score >= 80 ? 'text-emerald-500' : score >= 40 ? 'text-amber-500' : 'text-rose-500')}>{score}%</span>
           </div>
           <div className="h-2 overflow-hidden rounded-full surface-2">
-            <motion.div className={cn('h-full rounded-full', score >= 80 ? 'bg-emerald-500' : score >= 40 ? 'bg-amber-500' : 'bg-rose-500')} animate={{ width: `${score}%` }} />
+            <motion.div className={cn('h-full w-full origin-left rounded-full', score >= 80 ? 'bg-emerald-500' : score >= 40 ? 'bg-amber-500' : 'bg-rose-500')} animate={{ scaleX: score / 100 }} />
           </div>
           <p className="mt-2 text-xs text-muted">{score === 100 ? '¡Excelente! Tu prompt tiene todas las partes.' : `Te ${BUILDER_FIELDS.length - filled === 1 ? 'falta 1 parte' : `faltan ${BUILDER_FIELDS.length - filled} partes`}: ${BUILDER_FIELDS.filter((f) => !(v[f.key] ?? '').trim()).map((f) => f.label.toLowerCase()).join(', ')}.`}</p>
         </Card>
@@ -159,7 +159,7 @@ function PromptActions({ prompt, attachment, disabled }: { prompt: string; attac
           </Button>
         ))}
       </div>
-      <p className="text-center text-[11px] text-muted">Funciona con cualquier IA: el prompt se copia y se abre la herramienta.</p>
+      <p className="text-center text-xs text-muted">Funciona con cualquier IA: el prompt se copia y se abre la herramienta.</p>
     </div>
   )
 }
@@ -244,7 +244,7 @@ function PromptDetail({ p }: { p: PromptItem }) {
               <ol className="space-y-2 text-sm">
                 {p.steps.map((s, i) => (
                   <li key={s} className="flex gap-2.5">
-                    <span className="grid size-5 shrink-0 place-items-center rounded-full bg-brand-500/15 text-[11px] font-bold text-brand-600">{i + 1}</span>
+                    <span className="grid size-5 shrink-0 place-items-center rounded-full bg-brand-500/15 text-xs font-bold text-brand-600">{i + 1}</span>
                     {s}
                   </li>
                 ))}
@@ -359,7 +359,7 @@ export default function Prompts() {
                   <motion.div key={p.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
                     <Link to={`/prompts/${p.id}`} className="group relative block h-full overflow-hidden rounded-3xl p-6 text-white shadow-lift transition-transform hover:-translate-y-1" style={{ background: `linear-gradient(135deg, ${c.color}, #4f46e5)` }}>
                       <Icon className="absolute -right-6 -bottom-6 size-36 text-white/15 transition-transform group-hover:scale-110 group-hover:-rotate-6" strokeWidth={1.5} />
-                      <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-0.5 text-[11px] font-semibold backdrop-blur">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-semibold backdrop-blur">
                         <Sparkles className="size-3" /> Destacado
                       </span>
                       <h3 className="relative mt-4 font-display text-xl font-extrabold">{p.title}</h3>

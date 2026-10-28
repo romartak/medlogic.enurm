@@ -161,7 +161,7 @@ export default function Decks() {
               <CountTriplet n={total.new} l={total.learn} r={total.review} size="lg" />
             </div>
           </div>
-          <div className="text-right text-[11px] text-muted">
+          <div className="text-right text-xs text-muted">
             <div>
               <span className="text-sky-500">●</span> nuevas
             </div>
@@ -189,7 +189,7 @@ export default function Decks() {
         ))}
         {filtered.length > 0 && (
           <>
-            <div className="border-t border-soft px-5 pt-4 pb-1 text-[10px] font-bold tracking-wider text-muted uppercase">Mazos filtrados</div>
+            <div className="border-t border-soft px-5 pt-4 pb-1 text-xs font-bold tracking-wider text-muted uppercase">Mazos filtrados</div>
             {filtered.map((d) => (
               <Row key={d.id} node={{ key: d.id, name: d.name, fullName: d.name, depth: 0, deck: d, children: [] }} />
             ))}

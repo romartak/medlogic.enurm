@@ -159,7 +159,7 @@ export default function Onboarding() {
         <div className="flex gap-1.5">
           {steps.map((s, i) => (
             <div key={s.key} className="h-1.5 flex-1 overflow-hidden rounded-full surface-2">
-              <motion.div className="h-full rounded-full bg-brand-500" initial={false} animate={{ width: i <= step ? '100%' : '0%' }} transition={{ duration: 0.4 }} />
+              <motion.div className="h-full w-full origin-left rounded-full bg-brand-500" initial={false} animate={{ scaleX: i <= step ? 1 : 0 }} transition={{ duration: 0.4 }} />
             </div>
           ))}
         </div>
@@ -362,15 +362,15 @@ export default function Onboarding() {
                     <div className="mt-5 grid grid-cols-3 gap-2 text-center">
                       <div className="rounded-xl bg-white/15 p-3">
                         <div className="font-display text-xl font-bold">{daysLeft !== null && daysLeft >= 0 ? daysLeft : '—'}</div>
-                        <div className="text-[11px] text-white/80">días</div>
+                        <div className="text-xs text-white/80">días</div>
                       </div>
                       <div className="rounded-xl bg-white/15 p-3">
                         <div className="font-display text-xl font-bold">{Math.round((p.studyDays.length * p.minutesPerDay) / 60)} h</div>
-                        <div className="text-[11px] text-white/80">por semana</div>
+                        <div className="text-xs text-white/80">por semana</div>
                       </div>
                       <div className="rounded-xl bg-white/15 p-3">
                         <div className="font-display text-xl font-bold">≈ {questionsPerDay}</div>
-                        <div className="text-[11px] text-white/80">preguntas/día</div>
+                        <div className="text-xs text-white/80">preguntas/día</div>
                       </div>
                     </div>
                   </div>
