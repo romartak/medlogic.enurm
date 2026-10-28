@@ -78,10 +78,10 @@ export default function Settings() {
           </span>
           <div className="min-w-[12rem] flex-1">
             <h2 className="font-semibold">Cuenta y sincronización</h2>
-            <p className="text-sm text-muted">{authStatus === 'signed-in' ? 'Tu progreso se guarda en la nube y en este dispositivo.' : authStatus === 'disabled' ? 'Las cuentas se activan en la versión publicada. Por ahora todo queda en este navegador.' : 'Crea una cuenta gratis para estudiar desde cualquier dispositivo.'}</p>
+            <p className="text-sm text-muted">{authStatus === 'signed-in' ? 'Tu progreso se guarda en la nube y en este dispositivo.' : authStatus === 'disabled' ? 'Las cuentas se activan en la versión publicada. Por ahora todo queda en este navegador.' : 'Sin cuenta, tu progreso solo se guarda en este navegador. Crea una cuenta gratis (es opcional) para tenerlo en todos tus dispositivos.'}</p>
           </div>
           <LinkButton to="/cuenta" variant={authStatus === 'signed-in' ? 'outline' : 'primary'}>
-            {authStatus === 'signed-in' ? 'Ver mi cuenta' : authStatus === 'disabled' ? 'Más información' : 'Iniciar sesión'}
+            {authStatus === 'signed-in' ? 'Ver mi cuenta' : authStatus === 'disabled' ? 'Más información' : 'Crear cuenta o entrar'}
           </LinkButton>
         </Card>
 

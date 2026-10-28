@@ -3,46 +3,56 @@ import { motion } from 'motion/react'
 import { cn } from '@/lib/utils'
 
 const PULSE = 'M10 34h10l5-12 8 22 6-16 4 6h11'
+/** En el círculo el trazo se reduce al 76 % y se centra, para que las puntas no rocen el borde. */
+const ROUND_FIT = 'translate(32 32) scale(0.76) translate(-32 -33)'
 
-export function LogoMark({ className }: { className?: string }) {
+/** Verde azulado de la marca: el mismo de los botones y las tarjetas. */
+const MARK_FROM = '#12b8a6'
+const MARK_TO = '#066a60'
+
+export function LogoMark({ className, round = false }: { className?: string; round?: boolean }) {
   return (
     <svg viewBox="0 0 64 64" className={cn('size-9', className)} aria-hidden>
       <defs>
         <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#14b8a6" />
-          <stop offset="1" stopColor="#6366f1" />
+          <stop offset="0" stopColor={MARK_FROM} />
+          <stop offset="1" stopColor={MARK_TO} />
         </linearGradient>
       </defs>
-      <rect width="64" height="64" rx="16" fill="url(#logo-g)" />
-      <path d={PULSE} fill="none" stroke="#fff" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+      <rect width="64" height="64" rx={round ? 32 : 16} fill="url(#logo-g)" />
+      <g transform={round ? ROUND_FIT : undefined}>
+        <path d={PULSE} fill="none" stroke="#fff" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+      </g>
     </svg>
   )
 }
 
 /** Logo con el trazo del pulso dibujándose: una vez (entrada) o en bucle (pantalla de carga). */
-export function AnimatedLogoMark({ className, loop = false, delay = 0 }: { className?: string; loop?: boolean; delay?: number }) {
+export function AnimatedLogoMark({ className, loop = false, delay = 0, round = false }: { className?: string; loop?: boolean; delay?: number; round?: boolean }) {
   const id = `logo-a${useId().replace(/[^a-zA-Z0-9]/g, '')}`
   return (
     <svg viewBox="0 0 64 64" className={cn('size-16', className)} aria-hidden>
       <defs>
         <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#14b8a6" />
-          <stop offset="1" stopColor="#6366f1" />
+          <stop offset="0" stopColor={MARK_FROM} />
+          <stop offset="1" stopColor={MARK_TO} />
         </linearGradient>
       </defs>
-      <rect width="64" height="64" rx="16" fill={`url(#${id})`} />
-      <path d={PULSE} fill="none" stroke="#fff" strokeOpacity="0.22" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
-      <motion.path
-        d={PULSE}
-        fill="none"
-        stroke="#fff"
-        strokeWidth="4.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={loop ? { pathLength: [0, 1, 1], opacity: [1, 1, 0] } : { pathLength: 1, opacity: 1 }}
-        transition={loop ? { duration: 1.8, times: [0, 0.55, 1], ease: 'easeInOut', repeat: Infinity, delay } : { duration: 0.9, ease: [0.65, 0, 0.35, 1], delay }}
-      />
+      <rect width="64" height="64" rx={round ? 32 : 16} fill={`url(#${id})`} />
+      <g transform={round ? ROUND_FIT : undefined}>
+        <path d={PULSE} fill="none" stroke="#fff" strokeOpacity="0.22" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+        <motion.path
+          d={PULSE}
+          fill="none"
+          stroke="#fff"
+          strokeWidth="4.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={loop ? { pathLength: [0, 1, 1], opacity: [1, 1, 0] } : { pathLength: 1, opacity: 1 }}
+          transition={loop ? { duration: 1.8, times: [0, 0.55, 1], ease: 'easeInOut', repeat: Infinity, delay } : { duration: 0.9, ease: [0.65, 0, 0.35, 1], delay }}
+        />
+      </g>
     </svg>
   )
 }

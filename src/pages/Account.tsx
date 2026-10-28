@@ -112,10 +112,10 @@ function NotConfigured() {
 
 type Mode = 'signin' | 'signup'
 
-function AuthForm({ from }: { from?: string }) {
+function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) {
   const intent = intentCopy(from)
   // Quien llega por primera vez desde el cuestionario del plan abre «Crear cuenta»; quien ya tuvo cuenta, «Iniciar sesión».
-  const [mode, setMode] = useState<Mode>(from && !hadAccount() ? 'signup' : 'signin')
+  const [mode, setMode] = useState<Mode>(initialMode ?? (!hadAccount() ? 'signup' : 'signin'))
   const [nudge, setNudge] = useState(!!from)
   // Mensaje de una sola vez tras cerrar sesión o borrar la cuenta (no se abre el aviso de «crear cuenta»).
   const [notice] = useState(takeNotice)
@@ -219,7 +219,7 @@ function AuthForm({ from }: { from?: string }) {
       </Modal>
       <div className="order-last lg:order-first lg:pt-6">
         <h2 className="font-display text-2xl font-bold">Tu progreso, en todos tus dispositivos</h2>
-        <p className="mt-2 text-muted">La cuenta es gratis y la necesitas para estudiar en MedLogic. Con ella tu progreso se guarda en la nube y te sigue a cualquier dispositivo.</p>
+        <p className="mt-2 text-muted">La cuenta es gratis y opcional. Sin ella todo funciona, pero tu progreso solo se guarda en este navegador. Con ella se guarda en la nube y es el mismo en todos tus dispositivos.</p>
         <ul className="mt-6 space-y-4">
           {[
             [Smartphone, 'Empieza en el teléfono, sigue en la computadora', 'Preguntas, flashcards, plan y terminología se sincronizan solos.'],
@@ -627,7 +627,7 @@ export default function Account() {
   const { status, recovering } = useAuth()
   const ready = status !== 'loading'
   // Quien llegó aquí porque la página pide iniciar sesión vuelve a donde iba al entrar.
-  const state = useLocation().state as { from?: string } | null
+  const state = useLocation().state as { from?: string; mode?: Mode } | null
   const from = state?.from?.startsWith('/') ? state.from : undefined
   const intent = intentCopy(from)
   useEffect(() => {
@@ -641,10 +641,10 @@ export default function Account() {
       <PageHeader
         icon={<UserRound className="size-6" />}
         title={status === 'signed-in' ? 'Mi cuenta' : 'Tu cuenta'}
-        subtitle={status === 'signed-in' ? 'Tu perfil y la sincronización de tu progreso.' : (intent?.subtitle ?? 'Crea tu cuenta gratis o inicia sesión para estudiar y guardar tu progreso.')}
+        subtitle={status === 'signed-in' ? 'Tu perfil y la sincronización de tu progreso.' : (intent?.subtitle ?? 'Es opcional: con una cuenta gratis tu progreso se guarda en la nube y lo usas en cualquier dispositivo.')}
       />
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-        {!isSupabaseConfigured ? <NotConfigured /> : !ready ? <div className="skeleton mx-auto h-80 max-w-md rounded-2xl" /> : recovering ? <NewPassword /> : status === 'signed-in' ? <Profile /> : <AuthForm from={from} />}
+        {!isSupabaseConfigured ? <NotConfigured /> : !ready ? <div className="skeleton mx-auto h-80 max-w-md rounded-2xl" /> : recovering ? <NewPassword /> : status === 'signed-in' ? <Profile /> : <AuthForm from={from} initialMode={state?.mode} />}
       </motion.div>
     </div>
   )

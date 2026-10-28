@@ -109,8 +109,8 @@ export function Ring({ value, size = 120, stroke = 10, color = 'url(#ring-grad)'
       <svg width={size} height={size} className="-rotate-90">
         <defs>
           <linearGradient id="ring-grad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#06c4b0" />
-            <stop offset="100%" stopColor="#6366f1" />
+            <stop offset="0%" stopColor="#12b8a6" />
+            <stop offset="100%" stopColor="#066a60" />
           </linearGradient>
         </defs>
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={track} strokeWidth={stroke} />
@@ -162,16 +162,15 @@ export function EmptyState({ icon, title, body, action }: { icon: ReactNode; tit
 
 export function StatCard({ icon, label, value, hint, color = '#06c4b0', delay = 0 }: { icon: ReactNode; label: string; value: ReactNode; hint?: ReactNode; color?: string; delay?: number }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }} className="card relative overflow-hidden p-4 sm:p-5">
-      <div className="pointer-events-none absolute -top-8 -right-8 size-24 rounded-full opacity-20 blur-2xl" style={{ backgroundColor: color }} />
-      <div className="flex items-center gap-3">
-        <span className="grid size-10 place-items-center rounded-xl" style={{ backgroundColor: `${color}1a`, color }}>
+    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }} className="card p-3.5 sm:p-5">
+      <div className="flex items-center gap-2.5 sm:gap-3">
+        <span className="grid size-9 shrink-0 place-items-center rounded-xl sm:size-10" style={{ backgroundColor: `${color}1a`, color }}>
           {icon}
         </span>
-        <span className="text-xs font-medium text-muted sm:text-sm">{label}</span>
+        <span className="min-w-0 text-xs leading-tight font-medium text-muted sm:text-sm">{label}</span>
       </div>
-      <div className="mt-3 font-display text-2xl font-bold sm:text-3xl">{value}</div>
-      {hint && <div className="mt-1 text-xs text-muted">{hint}</div>}
+      <div className="mt-2.5 font-display text-xl font-bold tabular-nums sm:mt-3 sm:text-3xl">{value}</div>
+      {hint && <div className="mt-0.5 text-xs leading-snug text-muted sm:mt-1">{hint}</div>}
     </motion.div>
   )
 }

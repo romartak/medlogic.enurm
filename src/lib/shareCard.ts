@@ -25,8 +25,8 @@ export function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w
 
 export function logo(ctx: CanvasRenderingContext2D, x: number, y: number, size: number) {
   const g = ctx.createLinearGradient(x, y, x + size, y + size)
-  g.addColorStop(0, '#14b8a6')
-  g.addColorStop(1, '#6366f1')
+  g.addColorStop(0, '#12b8a6')
+  g.addColorStop(1, '#066a60')
   ctx.fillStyle = g
   roundRect(ctx, x, y, size, size, size * 0.25)
   ctx.fill()

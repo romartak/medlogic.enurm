@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
-import { HashRouter, Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom'
+import { HashRouter, Outlet, Route, Routes } from 'react-router-dom'
 import { MotionConfig } from 'motion/react'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { Toaster } from '@/components/ui/Toaster'
@@ -87,8 +87,8 @@ function Splash({ onLeft }: { onLeft?: () => void }) {
           <svg viewBox="0 0 64 64" aria-hidden>
             <defs>
               <linearGradient id="boot-g2" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor="#14b8a6" />
-                <stop offset="1" stopColor="#6366f1" />
+                <stop offset="0" stopColor="#12b8a6" />
+                <stop offset="1" stopColor="#066a60" />
               </linearGradient>
             </defs>
             <rect width="64" height="64" rx="16" fill="url(#boot-g2)" />
@@ -104,28 +104,6 @@ function Splash({ onLeft }: { onLeft?: () => void }) {
       </div>
     </div>
   )
-}
-
-/**
- * Para usar la plataforma hay que iniciar sesión (la portada, el cuestionario del plan y la cuenta son públicos).
- * Sin Supabase configurado no hay cuentas y todo queda abierto. Sin conexión se deja pasar a quien ya había entrado.
- */
-function hadSessionOffline(): boolean {
-  try {
-    return navigator.onLine === false && localStorage.getItem('medlogic-auth') !== null
-  } catch {
-    return false
-  }
-}
-
-function AuthGate() {
-  const status = useAuth((s) => s.status)
-  const location = useLocation()
-  if (status === 'loading') return <Splash />
-  if (status === 'signed-out' && location.pathname !== '/cuenta' && !hadSessionOffline()) {
-    return <Navigate to="/cuenta" replace state={{ from: `${location.pathname}${location.search}` }} />
-  }
-  return <Outlet />
 }
 
 /**
@@ -200,7 +178,6 @@ export default function App() {
               <Route path="/bienvenida" element={<Onboarding />} />
             </Route>
             <Route path="*" element={<NotFound />} />
-            <Route element={<AuthGate />}>
             <Route path="/terminologia/leccion/:lessonId" element={<LingoLesson />} />
             <Route path="/terminologia/relampago" element={<LingoBlitz />} />
             <Route element={<BankGate />}>
@@ -243,7 +220,6 @@ export default function App() {
               <Route path="/ajustes" element={<Lazy><Settings /></Lazy>} />
               <Route path="/cuenta" element={<Lazy><Account /></Lazy>} />
               <Route path="/terminologia" element={<Lazy><LingoPath /></Lazy>} />
-            </Route>
             </Route>
             </Route>
           </Routes>

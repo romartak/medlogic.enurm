@@ -1,3 +1,4 @@
+import { LocalProgressLine } from '@/components/AccountNote'
 import { useEffect, useState } from 'react'
 import { Navigate, NavLink, useLocation, useNavigate, useOutlet } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
@@ -115,7 +116,7 @@ function AccountButton() {
   if (status === 'disabled' || status === 'loading') return null
   if (status === 'signed-out')
     return (
-      <NavLink to="/cuenta" className="ml-1 inline-flex h-11 items-center gap-1.5 rounded-xl bg-brand-gradient px-3 text-xs font-semibold text-white shadow-glow">
+      <NavLink to="/cuenta" state={{ mode: 'signin' }} className="ml-1 inline-flex h-11 items-center gap-1.5 rounded-xl bg-brand-gradient px-3 text-xs font-semibold text-white shadow-glow">
         <LogIn className="size-4" /> <span className="max-sm:hidden">Iniciar sesión</span>
       </NavLink>
     )
@@ -216,6 +217,7 @@ export function AppLayout() {
         </div>
         <div className="border-t border-soft p-3">
           <ExamChip />
+          <LocalProgressLine className="mt-2 px-1" />
         </div>
       </aside>
 
@@ -262,6 +264,7 @@ export function AppLayout() {
         footer={
           <div className="space-y-1">
             <ExamChip />
+            <LocalProgressLine className="px-2" />
             <a href={REPO_URL} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-2 py-2 text-xs text-muted hover:text-[var(--text)]">
               <GithubIcon className="size-4" /> Gratis y de código abierto
             </a>
