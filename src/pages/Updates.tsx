@@ -34,7 +34,7 @@ export default function Updates() {
       </div>
 
       <div className="relative">
-        <div className="absolute top-2 bottom-2 left-[19px] w-px bg-gradient-to-b from-brand-500/60 via-accent-500/30 to-transparent sm:left-[23px]" />
+        <div className="absolute top-2 bottom-2 left-[19px] w-px bg-gradient-to-b from-brand-500/60 via-brand-500/25 to-transparent sm:left-[23px]" />
         <ul className="space-y-6">
           {list.map((u, i) => {
             const s = getSpecialty(u.specialty)

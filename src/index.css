@@ -30,9 +30,11 @@
 
   --shadow-soft: 0 1px 2px rgb(15 23 42 / 0.04), 0 8px 24px -8px rgb(15 23 42 / 0.08);
   --shadow-lift: 0 2px 4px rgb(15 23 42 / 0.04), 0 18px 40px -12px rgb(15 23 42 / 0.18);
-  --shadow-glow: 0 10px 40px -10px rgb(6 196 176 / 0.55);
+  --shadow-glow: 0 8px 24px -10px rgb(7 95 88 / 0.45);
 
-  --animate-float: float 8s ease-in-out infinite;
+  --animate-float: float 4s ease-in-out 2;
+  --animate-marquee: marquee 60s linear infinite;
+  --animate-ping-few: ping-few 1.7s cubic-bezier(0, 0, 0.2, 1) 3;
   --animate-shimmer: shimmer 2.4s linear infinite;
   --animate-pulse-ring: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 
@@ -43,6 +45,21 @@
     }
     50% {
       transform: translate3d(0, -6px, 0);
+    }
+  }
+  @keyframes marquee {
+    to {
+      translate: -50% 0;
+    }
+  }
+  @keyframes ping-few {
+    from {
+      opacity: 0.35;
+      scale: 1;
+    }
+    to {
+      opacity: 0;
+      scale: 1.9;
     }
   }
   @keyframes shimmer {
@@ -64,6 +81,17 @@
       box-shadow: 0 0 0 0 rgb(6 196 176 / 0);
     }
   }
+}
+
+/* Tokens de movimiento (web-ui-motion): pulsar 120 ms, pasar el cursor 150 ms, cambio de estado 200 ms, paneles 380 ms. */
+:root {
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --t-press: 120ms;
+  --t-hover: 150ms;
+  --t-state: 200ms;
+  --t-panel: 380ms;
 }
 
 /*
@@ -168,14 +196,19 @@ html:root {
   }
   .card-hover {
     transition:
-      transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
-      box-shadow 0.25s,
-      border-color 0.25s;
+      translate var(--t-state) var(--ease-out),
+      box-shadow var(--t-state) ease,
+      border-color var(--t-state) ease;
   }
   .card-hover:hover {
-    transform: translateY(-3px);
     box-shadow: var(--shadow-lift);
     border-color: color-mix(in oklab, var(--color-brand-500) 40%, transparent);
+  }
+  /* Solo con ratón: en pantallas táctiles el :hover se queda pegado tras tocar. */
+  @media (hover: hover) and (pointer: fine) {
+    .card-hover:hover {
+      translate: 0 -2px;
+    }
   }
   .glass {
     background: color-mix(in oklab, var(--surface) 72%, transparent);
@@ -194,19 +227,18 @@ html:root {
     border-color: var(--border);
   }
   .text-gradient {
-    background: linear-gradient(120deg, var(--color-brand-500), var(--color-accent-500) 60%, #ec4899);
+    background: linear-gradient(120deg, var(--color-brand-500), var(--color-brand-700));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
   .bg-brand-gradient {
-    background: linear-gradient(135deg, var(--color-brand-600), var(--color-accent-600));
+    background: linear-gradient(135deg, var(--color-brand-600), var(--color-brand-800));
   }
   .bg-mesh {
     background:
-      radial-gradient(60rem 40rem at 10% -10%, rgb(6 196 176 / 0.14), transparent 60%),
-      radial-gradient(50rem 40rem at 110% 10%, rgb(99 102 241 / 0.14), transparent 60%),
-      radial-gradient(40rem 30rem at 50% 120%, rgb(236 72 153 / 0.08), transparent 60%);
+      radial-gradient(60rem 40rem at 10% -10%, rgb(6 196 176 / 0.12), transparent 60%),
+      radial-gradient(50rem 40rem at 110% 10%, rgb(6 124 113 / 0.08), transparent 60%);
   }
   .skeleton {
     background: linear-gradient(90deg, var(--surface-2) 25%, color-mix(in oklab, var(--surface-2) 60%, white) 50%, var(--surface-2) 75%);
@@ -231,7 +263,7 @@ html:root {
     -webkit-backface-visibility: hidden;
   }
   .kbd {
-    @apply inline-flex h-5 min-w-5 items-center justify-center rounded-md border px-1 font-sans text-[10px] font-semibold;
+    @apply inline-flex h-5 min-w-5 items-center justify-center rounded-md border px-1 font-sans text-xs font-semibold;
     border-color: var(--border);
     background: var(--surface-2);
     color: var(--muted);
@@ -239,6 +271,12 @@ html:root {
   .prose-guide p {
     @apply leading-relaxed;
   }
+}
+
+/* Carrusel automático: se detiene al pasar el cursor o enfocar un enlace (WCAG 2.2.2).
+   Fuera de @layer para ganar a la utilidad animate-marquee, que reinicia animation-play-state. */
+.marquee:is(:hover, :focus-within) {
+  animation-play-state: paused;
 }
 
 /* En tema claro, los tonos 500 de estado no llegan a 4.5:1 sobre blanco: se oscurecen. */
@@ -270,6 +308,7 @@ html:not(.dark) .text-violet-600 {
 .reduce-motion *::before,
 .reduce-motion *::after {
   animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
   transition-duration: 0.001ms !important;
 }
 
@@ -278,7 +317,9 @@ html:not(.dark) .text-violet-600 {
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -288,7 +329,7 @@ html:not(.dark) .text-violet-600 {
   overflow-wrap: anywhere;
 }
 .anki-content .cloze {
-  color: var(--color-accent-500);
+  color: var(--color-accent-600);
   font-weight: 700;
 }
 .dark .anki-content .cloze {

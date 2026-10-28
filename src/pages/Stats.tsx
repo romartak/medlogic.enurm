@@ -41,7 +41,7 @@ function Heatmap({ activity }: { activity: Record<string, { answered: number; ca
           </div>
         ))}
       </div>
-      <div className="mt-2 flex items-center justify-end gap-1 text-[11px] text-muted">
+      <div className="mt-2 flex items-center justify-end gap-1 text-xs text-muted">
         Menos
         {colors.map((c) => (
           <span key={c} className="size-3 rounded-[3px]" style={{ backgroundColor: c }} />

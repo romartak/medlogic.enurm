@@ -48,7 +48,7 @@ export default function Roadmap() {
             <div className="mb-5 flex items-center gap-3">
               <span className="relative grid size-11 place-items-center rounded-2xl font-display text-lg font-extrabold text-white shadow-lg" style={solidBg(stage.color)}>
                 {si + 1}
-                {stage.id === 'hecho' && <span className="absolute -right-1 -bottom-1 grid size-5 place-items-center rounded-full bg-white text-[10px] text-emerald-700 shadow">✓</span>}
+                {stage.id === 'hecho' && <span className="absolute -right-1 -bottom-1 grid size-5 place-items-center rounded-full bg-white text-xs text-emerald-700 shadow">✓</span>}
               </span>
               <div>
                 <h2 className="font-display text-xl font-bold">{stage.name}</h2>

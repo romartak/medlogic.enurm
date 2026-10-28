@@ -148,11 +148,11 @@ function CasePlayer({ c, onRestart }: { c: ClinicalCase; onRestart: () => void }
     <div className="mx-auto grid max-w-5xl gap-6 lg:grid-cols-[1fr_320px]">
       <div className="min-w-0 space-y-4">
         <div className="flex items-center gap-3">
-          <Link to="/casos" className="grid size-10 place-items-center rounded-xl text-muted hover:text-[var(--text)]" aria-label="Salir del caso">
+          <Link to="/casos" className="grid size-11 place-items-center rounded-xl text-muted hover:text-[var(--text)]" aria-label="Salir del caso">
             <X className="size-5" />
           </Link>
           <div className="h-2 flex-1 overflow-hidden rounded-full surface-2">
-            <motion.div className="h-full rounded-full bg-brand-500" animate={{ width: `${((step + (solved ? 1 : 0)) / c.steps.length) * 100}%` }} />
+            <motion.div className="h-full w-full origin-left rounded-full bg-brand-500" animate={{ scaleX: (step + (solved ? 1 : 0)) / c.steps.length }} />
           </div>
           <span className="text-sm font-bold tabular-nums">
             {step + 1}/{c.steps.length}

@@ -310,7 +310,7 @@ export function ExamRunner({ config, onExit, onSubmitted }: { config: ExamConfig
             setGridOpen(false)
           }}
           className={cn(
-            'relative grid aspect-square place-items-center rounded-lg text-[11px] font-bold transition-all',
+            'relative grid aspect-square place-items-center rounded-lg text-xs font-bold transition-all',
             i === index ? 'ring-2 ring-brand-500 ring-offset-1 ring-offset-[var(--surface)]' : '',
             answers[i] !== null ? 'bg-brand-500 text-white' : 'surface-2 text-muted hover:bg-brand-500/15',
           )}
@@ -330,7 +330,7 @@ export function ExamRunner({ config, onExit, onSubmitted }: { config: ExamConfig
             <div className="truncate text-sm font-semibold">{config.title}</div>
             <ProgressBar value={answered / questions.length} className="mt-1.5" height="h-1.5" />
           </div>
-          <motion.div animate={lowTime ? { scale: [1, 1.06, 1] } : {}} transition={{ repeat: Infinity, duration: 1 }} className={cn('flex items-center gap-1.5 rounded-xl px-3 py-1.5 font-mono text-sm font-bold tabular-nums', lowTime ? 'bg-rose-500/15 text-rose-500' : 'surface-2')}>
+          <motion.div animate={lowTime ? { scale: [1, 1.06, 1] } : {}} transition={{ repeat: 4, duration: 1 }} className={cn('flex items-center gap-1.5 rounded-xl px-3 py-1.5 font-mono text-sm font-bold tabular-nums', lowTime ? 'bg-rose-500/15 text-rose-500' : 'surface-2')}>
             <Clock className="size-4" /> {formatClock(left)}
           </motion.div>
           <Button variant="secondary" size="sm" className="lg:hidden" onClick={() => setGridOpen(true)} aria-label="Ver todas las preguntas">
@@ -383,7 +383,7 @@ export function ExamRunner({ config, onExit, onSubmitted }: { config: ExamConfig
             </span>
           </div>
           {Grid}
-          <div className="mt-4 flex flex-wrap gap-3 text-[11px] text-muted">
+          <div className="mt-4 flex flex-wrap gap-3 text-xs text-muted">
             <span className="flex items-center gap-1">
               <span className="size-2.5 rounded bg-brand-500" /> Respondida
             </span>
@@ -472,15 +472,15 @@ export function ExamResults() {
           <div className="mt-6 grid w-full grid-cols-3 gap-2 text-center">
             <div className="rounded-xl bg-emerald-500/10 p-3">
               <div className="font-display text-xl font-bold text-emerald-600">{exam.correct}</div>
-              <div className="text-[11px] text-muted">Correctas</div>
+              <div className="text-xs text-muted">Correctas</div>
             </div>
             <div className="rounded-xl bg-rose-500/10 p-3">
               <div className="font-display text-xl font-bold text-rose-600 dark:text-rose-400">{exam.total - exam.correct - blank}</div>
-              <div className="text-[11px] text-muted">Incorrectas</div>
+              <div className="text-xs text-muted">Incorrectas</div>
             </div>
             <div className="rounded-xl surface-2 p-3">
               <div className="font-display text-xl font-bold">{blank}</div>
-              <div className="text-[11px] text-muted">En blanco</div>
+              <div className="text-xs text-muted">En blanco</div>
             </div>
           </div>
           <p className="mt-4 text-xs text-muted">

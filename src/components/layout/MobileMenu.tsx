@@ -38,7 +38,7 @@ function DetailGrid({ groups, onPick }: { groups: typeof NAV_GROUPS; onPick: () 
     <>
       {groups.map((group) => (
         <section key={group.title} className="mt-4">
-          <h3 className="text-[10px] font-bold tracking-[0.18em] text-muted uppercase">{group.title}</h3>
+          <h3 className="text-xs font-bold tracking-[0.18em] text-muted uppercase">{group.title}</h3>
           <ul className="mt-2 grid grid-cols-2 gap-2">
             {group.items.map((item) => (
               <li key={item.to}>
@@ -56,7 +56,7 @@ function DetailGrid({ groups, onPick }: { groups: typeof NAV_GROUPS; onPick: () 
                   </span>
                   <span className="min-w-0">
                     <span className="block text-[11.5px] leading-tight font-bold">{item.label}</span>
-                    <span className="mt-0.5 line-clamp-2 block text-[10px] leading-snug text-muted">{item.description}</span>
+                    <span className="mt-0.5 line-clamp-2 block text-xs leading-snug text-muted">{item.description}</span>
                   </span>
                 </NavLink>
               </li>
@@ -90,7 +90,7 @@ export function FunctionsSheet({ open, onClose, footer }: { open: boolean; onClo
     <AnimatePresence>
       {open && (
         <motion.div className="fixed inset-0 z-50 lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <div className="absolute inset-0 bg-slate-950/50 backdrop-blur-sm" onClick={onClose} />
+          <div className="absolute inset-0 bg-slate-950/55" onClick={onClose} />
           <motion.div
             role="dialog"
             aria-modal="true"
@@ -109,7 +109,7 @@ export function FunctionsSheet({ open, onClose, footer }: { open: boolean; onClo
                     {query ? `${total} ${total === 1 ? 'resultado' : 'resultados'}` : `${ALL_NAV.length} funciones en MedLogic`}
                   </p>
                 </div>
-                <button onClick={onClose} className="grid size-9 place-items-center rounded-xl text-muted" aria-label="Cerrar funciones">
+                <button onClick={onClose} className="grid size-11 place-items-center rounded-xl text-muted" aria-label="Cerrar funciones">
                   <X className="size-5" />
                 </button>
               </div>
@@ -135,7 +135,7 @@ export function FunctionsTab({ active, onClick }: { active: boolean; onClick: ()
   return (
     <button
       onClick={onClick}
-      className={`relative flex flex-col items-center gap-0.5 py-2.5 text-[10px] font-semibold transition-colors ${active ? 'text-brand-600 dark:text-brand-400' : 'text-muted'}`}
+      className={`relative flex flex-col items-center gap-0.5 py-2.5 text-xs font-semibold transition-colors ${active ? 'text-brand-600 dark:text-brand-400' : 'text-muted'}`}
     >
       {active && <motion.span layoutId="tab-active" className="absolute inset-x-3 inset-y-1 rounded-xl bg-brand-500/10" />}
       <LayoutGrid className="relative size-5" />

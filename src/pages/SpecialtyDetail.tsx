@@ -132,11 +132,11 @@ export default function SpecialtyDetail() {
             </div>
             <div className="rounded-2xl bg-white/15 p-3 backdrop-blur">
               <div className="font-display text-2xl font-bold">{specQuestions.length}</div>
-              <div className="text-[11px] text-white/75">preguntas en el banco</div>
+              <div className="text-xs text-white/75">preguntas en el banco</div>
             </div>
             <div className="rounded-2xl bg-white/15 p-3 backdrop-blur">
               <div className="font-display text-2xl font-bold">{Math.round(coverage * 100)}%</div>
-              <div className="text-[11px] text-white/75">del banco visto</div>
+              <div className="text-xs text-white/75">del banco visto</div>
             </div>
           </div>
         </div>

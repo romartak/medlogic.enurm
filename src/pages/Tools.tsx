@@ -22,7 +22,7 @@ function Check({ label, checked, onChange, points }: { label: string; checked: b
   return (
     <button onClick={() => onChange(!checked)} className={cn('flex w-full items-center justify-between gap-3 rounded-xl border px-3 py-2.5 text-left text-sm transition-all', checked ? 'border-brand-500 bg-brand-500/[0.07]' : 'border-soft hover:border-brand-500/40')}>
       <span className="flex items-center gap-2.5">
-        <span className={cn('grid size-5 place-items-center rounded-md border-2 text-[10px] font-bold', checked ? 'border-brand-500 bg-brand-500 text-white' : 'border-soft')}>{checked ? '✓' : ''}</span>
+        <span className={cn('grid size-5 place-items-center rounded-md border-2 text-xs font-bold', checked ? 'border-brand-500 bg-brand-500 text-white' : 'border-soft')}>{checked ? '✓' : ''}</span>
         {label}
       </span>
       <span className="text-xs font-semibold text-muted">+{points}</span>
@@ -46,7 +46,7 @@ function Select({ label, value, onChange, options }: { label: string; value: num
 }
 
 function Result({ value, label, tone = 'brand', children }: { value: ReactNode; label: string; tone?: 'brand' | 'ok' | 'warn' | 'bad'; children?: ReactNode }) {
-  const colors = { brand: 'from-brand-500 to-accent-500', ok: 'from-emerald-500 to-teal-500', warn: 'from-amber-500 to-orange-500', bad: 'from-rose-500 to-pink-600' }
+  const colors = { brand: 'from-brand-500 to-brand-700', ok: 'from-emerald-500 to-teal-500', warn: 'from-amber-500 to-orange-500', bad: 'from-rose-500 to-rose-700' }
   return (
     <motion.div key={String(value)} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className={cn('mt-6 rounded-2xl bg-gradient-to-br p-5 text-white shadow-lift', colors[tone])}>
       <div className="text-xs font-semibold tracking-wider text-white/80 uppercase">{label}</div>
@@ -355,7 +355,7 @@ export default function Tools() {
               <t.icon className="relative size-4 shrink-0" />
               <span className="relative">
                 <span className="block text-sm font-semibold whitespace-nowrap">{t.name}</span>
-                <span className="hidden text-[11px] text-muted lg:block">{t.area}</span>
+                <span className="hidden text-xs text-muted lg:block">{t.area}</span>
               </span>
             </button>
           ))}

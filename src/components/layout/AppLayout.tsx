@@ -38,7 +38,7 @@ function SidebarNav() {
     <nav className="flex flex-col gap-5">
       {NAV_GROUPS.map((g) => (
         <div key={g.title}>
-          <div className="mb-1.5 px-3 text-[10px] font-bold tracking-[0.18em] text-muted uppercase">{g.title}</div>
+          <div className="mb-1.5 px-3 text-xs font-bold tracking-[0.18em] text-muted uppercase">{g.title}</div>
           <ul className="flex flex-col gap-0.5">
             {g.items.map((item) => (
               <li key={item.to}>
@@ -115,14 +115,14 @@ function AccountButton() {
   if (status === 'disabled' || status === 'loading') return null
   if (status === 'signed-out')
     return (
-      <NavLink to="/cuenta" className="ml-1 inline-flex h-9 items-center gap-1.5 rounded-xl bg-brand-gradient px-3 text-xs font-semibold text-white shadow-glow">
+      <NavLink to="/cuenta" className="ml-1 inline-flex h-11 items-center gap-1.5 rounded-xl bg-brand-gradient px-3 text-xs font-semibold text-white shadow-glow">
         <LogIn className="size-4" /> <span className="max-sm:hidden">Iniciar sesión</span>
       </NavLink>
     )
   const meta = user?.user_metadata as { call_name?: string; avatar?: string } | undefined
   const initial = (meta?.call_name || displayName(user)).charAt(0).toUpperCase()
   return (
-    <NavLink to="/cuenta" className="relative ml-1 block size-9 shrink-0" aria-label="Mi cuenta">
+    <NavLink to="/cuenta" className="relative ml-1 block size-9 shrink-0 before:absolute before:-inset-1" aria-label="Mi cuenta">
       <Avatar avatar={isAvatarId(meta?.avatar) ? meta.avatar : null} initial={initial} className="size-9 text-sm">
         <UserRound className="size-4" />
       </Avatar>
@@ -248,7 +248,7 @@ export function AppLayout() {
 
         <main className="mx-auto max-w-7xl px-4 pt-6 pb-28 sm:px-6 lg:px-8 lg:pt-8 lg:pb-12">
           <AnimatePresence mode="wait">
-            <motion.div key={location.pathname} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6, transition: { duration: 0.12 } }} transition={{ duration: 0.22, ease: 'easeOut' }}>
+            <motion.div key={location.pathname} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6, transition: { duration: 0.12 } }} transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}>
               {outlet}
             </motion.div>
           </AnimatePresence>
@@ -280,7 +280,7 @@ function MobileTabBar({ onOpenFunctions, functionsOpen }: { onOpenFunctions: () 
       <ul className="grid grid-cols-6">
         {tabs.map((t) => (
           <li key={t.to}>
-            <NavLink to={t.to} className={({ isActive }) => cn('relative flex flex-col items-center gap-0.5 py-2.5 text-[10px] font-semibold transition-colors', isActive ? 'text-brand-600 dark:text-brand-400' : 'text-muted')}>
+            <NavLink to={t.to} className={({ isActive }) => cn('relative flex flex-col items-center gap-0.5 py-2.5 text-xs font-semibold transition-colors', isActive ? 'text-brand-600 dark:text-brand-400' : 'text-muted')}>
               {({ isActive }) => (
                 <>
                   {isActive && <motion.span layoutId="tab-active" className="absolute inset-x-3 inset-y-1 rounded-xl bg-brand-500/10" />}

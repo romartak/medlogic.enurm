@@ -19,7 +19,7 @@ export default function Achievements() {
       <Card className="mb-8 flex flex-col items-center gap-6 p-6 sm:flex-row sm:p-8">
         <Ring value={lvl.progress} size={150} stroke={12}>
           <div>
-            <div className="text-[11px] font-semibold text-muted uppercase">Nivel</div>
+            <div className="text-xs font-semibold text-muted uppercase">Nivel</div>
             <div className="font-display text-5xl font-extrabold">{lvl.level}</div>
           </div>
         </Ring>
@@ -67,7 +67,7 @@ export default function Achievements() {
               </div>
               <div className="mt-3 text-sm font-bold">{a.title}</div>
               <div className="mt-1 text-xs text-muted">{a.description}</div>
-              <div className="mt-2 text-[11px] font-semibold text-amber-600 dark:text-amber-400">{at ? formatDate(at) : `+${a.xp} XP`}</div>
+              <div className="mt-2 text-xs font-semibold text-amber-600 dark:text-amber-400">{at ? formatDate(at) : `+${a.xp} XP`}</div>
             </motion.div>
           )
         })}

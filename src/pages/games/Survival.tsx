@@ -53,7 +53,7 @@ function Round({ end }: { end: EndGame }) {
           ))}
         </div>
         <div className="text-right">
-          <div className="text-[11px] text-muted">Aciertos</div>
+          <div className="text-xs text-muted">Aciertos</div>
           <motion.div key={score} initial={{ scale: 1.4 }} animate={{ scale: 1 }} className="font-display text-2xl font-bold">
             {score}
           </motion.div>

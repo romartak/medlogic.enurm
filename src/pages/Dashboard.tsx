@@ -186,7 +186,7 @@ export default function Dashboard() {
                 <span>Nivel {lvl.level + 1}</span>
               </div>
               <div className="h-2 overflow-hidden rounded-full bg-white/20">
-                <motion.div className="h-full rounded-full bg-white" initial={{ width: 0 }} animate={{ width: `${lvl.progress * 100}%` }} transition={{ duration: 1 }} />
+                <motion.div className="h-full w-full origin-left rounded-full bg-white" initial={{ scaleX: 0 }} animate={{ scaleX: lvl.progress }} transition={{ duration: 1 }} />
               </div>
             </div>
           </div>
@@ -194,7 +194,7 @@ export default function Dashboard() {
             <Ring value={goalProgress} size={116} stroke={10} color="#fff" track="rgb(255 255 255 / 0.22)">
               <div>
                 <div className="font-display text-3xl font-extrabold">{ov.todayAnswered}</div>
-                <div className="text-[11px] text-white/80">de {settings.dailyGoal} hoy</div>
+                <div className="text-xs text-white/80">de {settings.dailyGoal} hoy</div>
               </div>
             </Ring>
             <div className="flex min-w-0 flex-1 flex-col gap-2 md:flex-none">

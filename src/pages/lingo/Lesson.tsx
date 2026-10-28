@@ -502,7 +502,7 @@ export default function LingoLesson() {
 
       <AnimatePresence>
         {confirmExit && (
-          <motion.div className="fixed inset-0 z-40 flex items-end justify-center bg-slate-950/50 p-4 backdrop-blur-sm sm:items-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setConfirmExit(false)}>
+          <motion.div className="fixed inset-0 z-40 flex items-end justify-center bg-slate-950/55 p-4 sm:items-center" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setConfirmExit(false)}>
             <motion.div role="dialog" aria-modal="true" aria-labelledby="exit-title" initial={{ y: 40 }} animate={{ y: 0 }} exit={{ y: 40 }} onClick={(e) => e.stopPropagation()} className="card w-full max-w-sm p-6 text-center" style={{ marginBottom: 'env(safe-area-inset-bottom)' }}>
               <h2 id="exit-title" className="font-display text-xl font-extrabold">
                 ¿Seguro que quieres salir?

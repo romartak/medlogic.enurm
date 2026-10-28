@@ -73,7 +73,7 @@ function Quiz({ questions, onFinish }: { questions: GuideQuestion[]; onFinish: (
                     }}
                     className={cn('flex items-start gap-3 rounded-xl border-2 px-3.5 py-3 text-left text-sm transition-colors', isAnswer ? 'border-emerald-500 bg-emerald-500/10' : isWrong ? 'border-rose-500 bg-rose-500/10' : 'border-soft hover:border-brand-500/40')}
                   >
-                    <span className={cn('mt-px grid size-5 shrink-0 place-items-center rounded-md text-[10px] font-bold', isAnswer ? 'bg-emerald-600 text-white' : isWrong ? 'bg-rose-600 text-white' : 'surface-2 text-muted')}>{isAnswer ? <Check className="size-3" /> : isWrong ? <X className="size-3" /> : 'ABCD'[k]}</span>
+                    <span className={cn('mt-px grid size-5 shrink-0 place-items-center rounded-md text-xs font-bold', isAnswer ? 'bg-emerald-600 text-white' : isWrong ? 'bg-rose-600 text-white' : 'surface-2 text-muted')}>{isAnswer ? <Check className="size-3" /> : isWrong ? <X className="size-3" /> : 'ABCD'[k]}</span>
                     <span className="leading-snug">{o}</span>
                   </button>
                 )

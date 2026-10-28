@@ -178,7 +178,7 @@ export default function EcgGame() {
           <X className="size-5" />
         </button>
         <div className="h-2 flex-1 overflow-hidden rounded-full surface-2">
-          <motion.div className="h-full rounded-full bg-rose-500" animate={{ width: `${((i + (picked ? 1 : 0)) / round.length) * 100}%` }} />
+          <motion.div className="h-full w-full origin-left rounded-full bg-rose-500" animate={{ scaleX: (i + (picked ? 1 : 0)) / round.length }} />
         </div>
         <span className="text-sm font-bold tabular-nums">
           {i + 1}/{round.length}

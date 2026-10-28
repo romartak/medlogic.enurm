@@ -95,7 +95,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
     <AnimatePresence>
       {open && (
         <motion.div className="fixed inset-0 z-50 flex items-start justify-center p-3 pt-[8vh] sm:p-4 sm:pt-[12vh]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <div className="absolute inset-0 bg-slate-950/50 backdrop-blur-sm" onClick={onClose} />
+          <div className="absolute inset-0 bg-slate-950/55" onClick={onClose} />
           <motion.div
             className="card relative w-full max-w-2xl overflow-hidden shadow-2xl"
             initial={{ y: -12, scale: 0.98, opacity: 0 }}
@@ -124,7 +124,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
                 const IconC = r.kind === 'question' ? FileQuestion : r.kind === 'guide' ? BookOpen : r.kind === 'card' ? Layers : r.kind === 'specialty' ? LayoutGrid : (ALL_NAV.find((n) => n.to === r.to)?.icon ?? Search)
                 return (
                   <div key={r.key}>
-                    {header && <div className="px-3 pt-3 pb-1 text-[10px] font-bold tracking-[0.18em] text-muted uppercase">{header}</div>}
+                    {header && <div className="px-3 pt-3 pb-1 text-xs font-bold tracking-[0.18em] text-muted uppercase">{header}</div>}
                     <button
                       data-idx={i}
                       onMouseMove={() => setActive(i)}
@@ -144,7 +144,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
                 )
               })}
             </div>
-            <div className="hidden items-center gap-4 border-t border-soft px-4 py-2 text-[11px] text-muted sm:flex">
+            <div className="hidden items-center gap-4 border-t border-soft px-4 py-2 text-xs text-muted sm:flex">
               <span className="flex items-center gap-1">
                 <span className="kbd">↑</span>
                 <span className="kbd">↓</span> navegar

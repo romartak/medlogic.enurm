@@ -57,13 +57,13 @@ function Round({ end }: { end: EndGame }) {
           </AnimatePresence>
         </div>
         <div className="card py-3 text-center">
-          <div className="text-[11px] text-muted">Puntos</div>
+          <div className="text-xs text-muted">Puntos</div>
           <motion.div key={score} initial={{ scale: 1.3 }} animate={{ scale: 1 }} className="font-display text-xl font-bold">
             {score}
           </motion.div>
         </div>
         <div className="card py-3 text-center">
-          <div className="text-[11px] text-muted">Racha</div>
+          <div className="text-xs text-muted">Racha</div>
           <div className={cn('flex items-center justify-center gap-1 font-display text-xl font-bold', streak >= 3 && 'text-orange-500')}>
             <Flame className="size-4" /> {streak}
           </div>

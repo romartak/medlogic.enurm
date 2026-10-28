@@ -124,7 +124,7 @@ export default function Overview() {
                 <motion.div key={k} initial={{ width: 0 }} animate={{ width: `${(dist[k as keyof typeof dist] / totalCards) * 100}%` }} transition={{ duration: 0.8 }} style={{ backgroundColor: color }} title={k} />
               ))}
             </div>
-            <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-muted">
+            <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
               {(
                 [
                   ['Nuevas', dist.new, '#0ea5e9'],

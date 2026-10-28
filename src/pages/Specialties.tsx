@@ -56,7 +56,7 @@ function SpecialtyLink({ id, description, large }: { id: string; description?: s
       <div className="min-w-0 flex-1">
         <div className={cn('font-semibold group-hover:text-brand-700 dark:group-hover:text-brand-300', large && 'font-display text-lg font-bold')}>{s.name}</div>
         {description && <p className="mt-0.5 text-xs text-muted">{description}</p>}
-        <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-muted">
+        <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-muted">
           <span className="flex items-center gap-1">
             <Target className="size-3" /> {plural(counts[id] ?? 0, 'pregunta', 'preguntas')}
           </span>

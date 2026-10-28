@@ -174,7 +174,7 @@ export default function LingoBlitz() {
             <X className="size-6" />
           </button>
           <div className="h-4 flex-1 overflow-hidden rounded-full surface-2" role="timer" aria-label={`${left} segundos`}>
-            <motion.div key={round} className={cn('h-full rounded-full', left <= 10 ? 'bg-rose-500' : 'bg-amber-500')} initial={{ width: '100%' }} animate={{ width: `${(left / SECONDS) * 100}%` }} transition={{ duration: 1, ease: 'linear' }} />
+            <motion.div key={round} className={cn('h-full w-full origin-left rounded-full', left <= 10 ? 'bg-rose-500' : 'bg-amber-500')} initial={{ scaleX: 1 }} animate={{ scaleX: left / SECONDS }} transition={{ duration: 1, ease: 'linear' }} />
           </div>
           <div className="flex w-14 items-center justify-end gap-1 font-bold tabular-nums" aria-label={`${score} correctas`}>
             <Check className="size-5 text-emerald-600" />

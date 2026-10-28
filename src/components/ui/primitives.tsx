@@ -24,7 +24,7 @@ const SIZES: Record<Size, string> = {
 
 export function buttonClass(variant: Variant = 'primary', size: Size = 'md', className?: string) {
   return cn(
-    'inline-flex select-none items-center justify-center font-semibold whitespace-nowrap transition-all duration-200 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97]',
+    'inline-flex select-none items-center justify-center font-semibold whitespace-nowrap transition-[color,background-color,border-color,box-shadow,filter,opacity,scale] duration-[var(--t-state)] ease-out active:duration-[var(--t-press)] disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97]',
     VARIANTS[variant],
     SIZES[size],
     className,
@@ -55,7 +55,7 @@ export function Card({ className, ...rest }: HTMLAttributes<HTMLDivElement>) {
 export function Badge({ children, color, className }: { children: ReactNode; color?: string; className?: string }) {
   return (
     <span
-      className={cn('inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold', !color && 'surface-2 text-muted', className)}
+      className={cn('inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold', !color && 'surface-2 text-muted', className)}
       style={color ? { backgroundColor: `${color}1f`, ...tintText(color) } : undefined}
     >
       {children}
@@ -89,10 +89,10 @@ export function ProgressBar({ value, className, color, height = 'h-2' }: { value
   return (
     <div className={cn('w-full overflow-hidden rounded-full surface-2', height, className)}>
       <motion.div
-        className={cn('h-full rounded-full', !color && 'bg-brand-gradient')}
+        className={cn('h-full w-full origin-left rounded-full', !color && 'bg-brand-gradient')}
         style={color ? { backgroundColor: color } : undefined}
-        initial={{ width: 0 }}
-        animate={{ width: `${v * 100}%` }}
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: v }}
         transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
       />
     </div>

@@ -37,7 +37,7 @@ export function EcgStrip({ samples, seconds, label = 'DII', className }: { sampl
         </text>
         <path d={path} fill="none" stroke="#111827" strokeWidth="0.32" strokeLinejoin="round" strokeLinecap="round" />
       </svg>
-      <div className="mt-1 flex justify-between text-[11px] text-muted">
+      <div className="mt-1 flex justify-between text-xs text-muted">
         <span>25 mm/s · 10 mm/mV</span>
         <span>1 cuadro grande = 0,20 s</span>
       </div>

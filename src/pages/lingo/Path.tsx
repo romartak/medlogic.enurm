@@ -50,7 +50,7 @@ function PathView() {
                 return (
                   <li key={lesson.id} className="flex flex-col items-center" style={{ transform: `translateX(${offset}px)` }}>
                     {state === 'current' && (
-                      <motion.div initial={{ y: 6, opacity: 0 }} animate={{ y: [0, -4, 0], opacity: 1 }} transition={{ y: { repeat: Infinity, duration: 2, ease: 'easeInOut' } }} className="mb-2 rounded-xl border-2 border-soft bg-[var(--surface)] px-3 py-1.5 text-xs font-bold tracking-wide uppercase" style={tintText(unit.color)}>
+                      <motion.div initial={{ y: 6, opacity: 0 }} animate={{ y: [0, -4, 0], opacity: 1 }} transition={{ y: { repeat: 3, duration: 2, ease: 'easeInOut' } }} className="mb-2 rounded-xl border-2 border-soft bg-[var(--surface)] px-3 py-1.5 text-xs font-bold tracking-wide uppercase" style={tintText(unit.color)}>
                         {active?.lessonId === lesson.id ? 'Continuar' : 'Empezar'}
                       </motion.div>
                     )}
@@ -61,7 +61,7 @@ function PathView() {
                       className={cn('relative grid size-[72px] place-items-center rounded-full border-b-[6px] text-white transition-[filter] hover:brightness-110', state === 'locked' && 'border-slate-300 bg-slate-200 text-slate-400 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-500')}
                       style={state === 'locked' ? undefined : { backgroundColor: unit.color, borderColor: `color-mix(in oklab, ${unit.color} 65%, black)` }}
                     >
-                      {state === 'current' && <span className="absolute -inset-2 animate-ping rounded-full opacity-20" style={{ backgroundColor: unit.color }} />}
+                      {state === 'current' && <span className="absolute -inset-2 animate-ping-few rounded-full opacity-20" style={{ backgroundColor: unit.color }} />}
                       {state === 'locked' ? <Lock className="size-7" /> : state === 'done' ? (result?.stars === 3 ? <Crown className="size-8" /> : <Check className="size-8" strokeWidth={3} />) : <Icon name={unit.icon} className="size-8" />}
                     </motion.button>
                     <div className="mt-2 text-center text-sm font-semibold">{lesson.title}</div>
@@ -125,7 +125,7 @@ function Dictionary() {
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-baseline gap-x-2">
                   <span className="font-display text-lg font-bold">{i.term}</span>
-                  <span className="text-[11px] font-semibold tracking-wide text-muted uppercase">{KIND_LABEL[i.kind]}</span>
+                  <span className="text-xs font-semibold tracking-wide text-muted uppercase">{KIND_LABEL[i.kind]}</span>
                 </div>
                 <p className="text-sm">{i.meaning}</p>
                 {i.parts && (

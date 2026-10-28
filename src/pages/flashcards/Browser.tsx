@@ -161,7 +161,7 @@ export default function Browser() {
       <div className="grid gap-4 lg:grid-cols-[200px_1fr]">
         <aside className="hidden space-y-5 text-sm lg:block">
           <div>
-            <div className="mb-1.5 text-[10px] font-bold tracking-wider text-muted uppercase">Estado</div>
+            <div className="mb-1.5 text-xs font-bold tracking-wider text-muted uppercase">Estado</div>
             {QUICK.map((f) => (
               <button key={f.q} onClick={() => run(f.q)} className={cn('block w-full rounded-lg px-2 py-1 text-left hover:bg-slate-900/5 dark:hover:bg-white/5', applied === f.q && 'bg-brand-500/10 text-brand-700 dark:text-brand-300')}>
                 {f.label}
@@ -169,7 +169,7 @@ export default function Browser() {
             ))}
           </div>
           <div>
-            <div className="mb-1.5 text-[10px] font-bold tracking-wider text-muted uppercase">Banderas</div>
+            <div className="mb-1.5 text-xs font-bold tracking-wider text-muted uppercase">Banderas</div>
             <div className="flex flex-wrap gap-1.5 px-2">
               {FLAGS.map((f) => (
                 <button key={f.n} title={f.name} onClick={() => run(`flag:${f.n}`)} className="size-5 rounded-full" style={{ backgroundColor: f.color }} />
@@ -177,7 +177,7 @@ export default function Browser() {
             </div>
           </div>
           <div>
-            <div className="mb-1.5 text-[10px] font-bold tracking-wider text-muted uppercase">Mazos</div>
+            <div className="mb-1.5 text-xs font-bold tracking-wider text-muted uppercase">Mazos</div>
             {col.decks
               .filter((d) => !d.filtered)
               .map((d) => (
@@ -187,10 +187,10 @@ export default function Browser() {
               ))}
           </div>
           <div>
-            <div className="mb-1.5 text-[10px] font-bold tracking-wider text-muted uppercase">Etiquetas</div>
+            <div className="mb-1.5 text-xs font-bold tracking-wider text-muted uppercase">Etiquetas</div>
             <div className="flex flex-wrap gap-1 px-1">
               {tags.map(([t, n]) => (
-                <button key={t} onClick={() => run(`tag:${t}`)} className="rounded-md surface-2 px-1.5 py-0.5 text-[11px] text-muted hover:text-[var(--text)]">
+                <button key={t} onClick={() => run(`tag:${t}`)} className="rounded-md surface-2 px-1.5 py-0.5 text-xs text-muted hover:text-[var(--text)]">
                   {t} <span className="opacity-60">{n}</span>
                 </button>
               ))}
@@ -365,7 +365,7 @@ export default function Browser() {
                   </div>
                   <div className="flex flex-wrap gap-1">
                     {activeCard.note.tags.map((t) => (
-                      <span key={t} className="rounded-md surface-2 px-1.5 py-0.5 text-[11px] text-muted">
+                      <span key={t} className="rounded-md surface-2 px-1.5 py-0.5 text-xs text-muted">
                         {t}
                       </span>
                     ))}
