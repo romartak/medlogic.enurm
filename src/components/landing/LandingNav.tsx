@@ -86,7 +86,7 @@ export function LandingNav({ sections, onGo }: { sections: readonly SectionLink[
             <AnimatedLogoMark delay={0.15} className="size-7 shrink-0" />
             <span className="flex items-baseline whitespace-nowrap">
               <span className="font-display text-[18px] leading-none font-extrabold tracking-tight">MedLogic</span>
-              <span className="ml-[7px] hidden text-[10.5px] leading-none font-bold tracking-[0.22em] text-brand-700 uppercase min-[380px]:inline dark:text-brand-400">ENURM</span>
+              <span className="ml-[7px] text-[10.5px] leading-none font-bold tracking-[0.22em] text-brand-700 uppercase dark:text-brand-400">ENURM</span>
             </span>
           </Link>
 
@@ -123,7 +123,7 @@ export function LandingNav({ sections, onGo }: { sections: readonly SectionLink[
 
           <Link
             to="/inicio"
-            className="relative inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-brand-700 px-4 text-sm font-semibold text-white transition-[background-color,scale] duration-200 before:absolute before:-inset-1 hover:bg-brand-600 active:scale-[0.97] dark:bg-brand-600 dark:hover:bg-brand-500"
+            className="relative hidden h-9 shrink-0 items-center gap-1.5 rounded-full bg-brand-700 px-4 text-sm font-semibold text-white md:inline-flex transition-[background-color,scale] duration-200 before:absolute before:-inset-1 hover:bg-brand-600 active:scale-[0.97] dark:bg-brand-600 dark:hover:bg-brand-500"
           >
             Entrar <ArrowRight className="size-3.5" />
           </Link>
@@ -169,14 +169,14 @@ export function EnterBar() {
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:hidden">
       <div className="pointer-events-auto mx-auto flex max-w-md items-center gap-2 rounded-3xl border border-soft bg-[var(--surface)] p-2 shadow-lift">
-        <Link to="/inicio" className={buttonClass('primary', 'lg', 'min-w-0 flex-1')}>
-          {returning ? 'Continuar' : 'Entrar'} <ArrowRight className="size-5" />
-        </Link>
         {status === 'signed-out' && (
-          <Link to="/cuenta" state={{ mode: 'signin' }} className={buttonClass('outline', 'lg', 'shrink-0 px-4 text-sm')}>
+          <Link to="/cuenta" state={{ mode: 'signin' }} className={buttonClass('ghost', 'lg', 'shrink-0 px-4 text-sm')}>
             <LogIn className="size-5" /> Iniciar sesión
           </Link>
         )}
+        <Link to="/inicio" className={buttonClass('primary', 'lg', 'min-w-0 flex-1')}>
+          {returning ? 'Continuar' : 'Entrar'} <ArrowRight className="size-5" />
+        </Link>
       </div>
     </div>
   )
