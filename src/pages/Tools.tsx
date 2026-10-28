@@ -46,7 +46,7 @@ function Select({ label, value, onChange, options }: { label: string; value: num
 }
 
 function Result({ value, label, tone = 'brand', children }: { value: ReactNode; label: string; tone?: 'brand' | 'ok' | 'warn' | 'bad'; children?: ReactNode }) {
-  const colors = { brand: 'from-brand-500 to-accent-500', ok: 'from-emerald-500 to-teal-500', warn: 'from-amber-500 to-orange-500', bad: 'from-rose-500 to-pink-600' }
+  const colors = { brand: 'from-brand-500 to-brand-700', ok: 'from-emerald-500 to-teal-500', warn: 'from-amber-500 to-orange-500', bad: 'from-rose-500 to-rose-700' }
   return (
     <motion.div key={String(value)} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className={cn('mt-6 rounded-2xl bg-gradient-to-br p-5 text-white shadow-lift', colors[tone])}>
       <div className="text-xs font-semibold tracking-wider text-white/80 uppercase">{label}</div>
