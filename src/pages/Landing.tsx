@@ -330,7 +330,7 @@ export default function Landing() {
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex max-w-full items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 py-1 pr-3 pl-1 text-xs font-semibold text-brand-800 transition-colors hover:bg-brand-500/15 dark:text-brand-200"
           >
-            <span className="rounded-full bg-brand-600 px-2 py-0.5 text-white">ENURM {next.year}</span>
+            <span className="shrink-0 rounded-full bg-brand-600 px-2 py-0.5 whitespace-nowrap text-white">ENURM {next.year}</span>
             <span className="truncate first-letter:uppercase">{formatEnurmDate(next, { weekday: true })}</span>
           </motion.a>
           <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="mt-5 text-4xl leading-[1.05] font-extrabold text-balance sm:text-5xl lg:text-6xl">

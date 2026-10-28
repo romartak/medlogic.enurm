@@ -13,7 +13,7 @@ export interface ShareStats {
 
 const W = 1080
 const H = 1350
-const PULSE = 'M9 38H15L22 17 32 43 42 17 49 38H55'
+const PULSE = 'M9 40H15L22 18 32 44 42 18 49 40H52'
 export const DISPLAY = '"Plus Jakarta Sans Variable", "Inter Variable", system-ui, sans-serif'
 export const BODY = '"Inter Variable", system-ui, sans-serif'
 export const SITE = 'medlogicenurm.vercel.app'
@@ -45,6 +45,10 @@ export function logo(ctx: CanvasRenderingContext2D, x: number, y: number, size: 
   ctx.lineCap = 'round'
   ctx.lineJoin = 'round'
   ctx.stroke(new Path2D(PULSE))
+  ctx.fillStyle = '#a7f3d0'
+  ctx.beginPath()
+  ctx.arc(56, 40, 3.2, 0, Math.PI * 2)
+  ctx.fill()
   ctx.restore()
 }
 

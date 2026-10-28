@@ -2,8 +2,10 @@ import { useId } from 'react'
 import { motion } from 'motion/react'
 import { cn } from '@/lib/utils'
 
-/** La «M» de MedLogic dibujada como un latido: pie plano, subida, valle, subida y vuelta al pie. */
-const PULSE = 'M9 38H15L22 17 32 43 42 17 49 38H55'
+/** La «M» de MedLogic dibujada como un latido: pie plano, subida, valle, subida y vuelta al pie, con un punto al final. */
+const PULSE = 'M9 40H15L22 18 32 44 42 18 49 40H52'
+/** El punto del final: la señal que sigue viva. */
+const DOT = { cx: 56, cy: 40, r: 3.2, fill: '#a7f3d0' }
 const STROKE = 4.6
 
 /**
@@ -34,9 +36,10 @@ function MarkBase({ id }: { id: string }) {
 export function LogoMark({ className }: { className?: string }) {
   const id = `lm${useId().replace(/[^a-zA-Z0-9]/g, '')}`
   return (
-    <svg viewBox="0 0 64 64" className={cn('size-9', className)} aria-hidden>
+    <svg viewBox="0 0 64 64" className={className ?? 'size-9'} aria-hidden>
       <MarkBase id={id} />
       <path d={PULSE} fill="none" stroke="#fff" strokeWidth={STROKE} strokeLinecap="round" strokeLinejoin="round" />
+      <circle {...DOT} />
     </svg>
   )
 }
@@ -45,7 +48,7 @@ export function LogoMark({ className }: { className?: string }) {
 export function AnimatedLogoMark({ className, loop = false, delay = 0 }: { className?: string; loop?: boolean; delay?: number }) {
   const id = `la${useId().replace(/[^a-zA-Z0-9]/g, '')}`
   return (
-    <svg viewBox="0 0 64 64" className={cn('size-16', className)} aria-hidden>
+    <svg viewBox="0 0 64 64" className={className ?? 'size-16'} aria-hidden>
       <MarkBase id={id} />
       <path d={PULSE} fill="none" stroke="#fff" strokeOpacity="0.22" strokeWidth={STROKE} strokeLinecap="round" strokeLinejoin="round" />
       <motion.path
@@ -58,6 +61,13 @@ export function AnimatedLogoMark({ className, loop = false, delay = 0 }: { class
         initial={{ pathLength: 0, opacity: 0 }}
         animate={loop ? { pathLength: [0, 1, 1], opacity: [1, 1, 0] } : { pathLength: 1, opacity: 1 }}
         transition={loop ? { duration: 1.8, times: [0, 0.55, 1], ease: 'easeInOut', repeat: Infinity, delay } : { duration: 0.9, ease: [0.65, 0, 0.35, 1], delay }}
+      />
+      <motion.circle
+        {...DOT}
+        initial={{ opacity: 0, scale: 0.4 }}
+        animate={loop ? { opacity: [0, 0, 1, 1, 0], scale: [0.4, 0.4, 1, 1, 1] } : { opacity: 1, scale: 1 }}
+        style={{ transformOrigin: `${DOT.cx}px ${DOT.cy}px` }}
+        transition={loop ? { duration: 1.8, times: [0, 0.5, 0.6, 0.85, 1], repeat: Infinity, delay } : { duration: 0.3, delay: delay + 0.8 }}
       />
     </svg>
   )

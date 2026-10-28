@@ -99,8 +99,9 @@ function Splash({ onLeft }: { onLeft?: () => void }) {
             <rect width="64" height="64" rx="18" fill="url(#boot-g2)" />
             <rect width="64" height="64" rx="18" fill="url(#boot-h2)" />
             <rect x="0.5" y="0.5" width="63" height="63" rx="17.5" fill="none" stroke="#fff" strokeOpacity="0.16" />
-            <path d="M9 38H15L22 17 32 43 42 17 49 38H55" fill="none" stroke="#fff" strokeOpacity=".22" strokeWidth="4.6" strokeLinecap="round" strokeLinejoin="round" />
-            <path className="boot-line" style={phase} pathLength={100} d="M9 38H15L22 17 32 43 42 17 49 38H55" fill="none" stroke="#fff" strokeWidth="4.6" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M9 40H15L22 18 32 44 42 18 49 40H52" fill="none" stroke="#fff" strokeOpacity=".22" strokeWidth="4.6" strokeLinecap="round" strokeLinejoin="round" />
+            <path className="boot-line" style={phase} pathLength={100} d="M9 40H15L22 18 32 44 42 18 49 40H52" fill="none" stroke="#fff" strokeWidth="4.6" strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx="56" cy="40" r="3.2" fill="#a7f3d0" />
           </svg>
         </div>
         <div className="boot-name">MedLogic</div>

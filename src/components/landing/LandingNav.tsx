@@ -10,6 +10,7 @@ import { useProgress } from '@/store/progress'
 import { hadAccount } from '@/lib/account'
 
 export type SectionLink = readonly [href: string, label: string]
+
 type Go = (href: string) => (e: MouseEvent) => void
 
 const META: Record<string, { short: string; desc: string; icon: LucideIcon }> = {
@@ -80,12 +81,12 @@ export function LandingNav({ sections, onGo }: { sections: readonly SectionLink[
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-40 px-3 pt-3 sm:pt-4">
       <div ref={wrap} className="mx-auto flex flex-col items-center">
-        <div className={cn('pointer-events-auto flex w-full items-center gap-2 rounded-full border border-soft bg-[color-mix(in_oklab,var(--surface)_96%,transparent)] p-1.5 pl-2.5 transition-shadow duration-300 md:w-auto', raised ? 'shadow-lift' : 'shadow-soft')}>
+        <div className={cn('pointer-events-auto flex w-full items-center gap-2 rounded-full border border-soft bg-[color-mix(in_oklab,var(--surface)_96%,transparent)] p-1.5 transition-shadow duration-300 md:w-auto', 'pl-2.5', raised ? 'shadow-lift' : 'shadow-soft')}>
           <Link to="/" aria-label="MedLogic ENURM, inicio" className="relative flex min-w-0 flex-1 items-center gap-2.5 before:absolute before:-inset-1 md:flex-none md:pr-3">
-            <AnimatedLogoMark delay={0.15} className="size-7" />
-            <span className="flex items-baseline gap-1.5 leading-none whitespace-nowrap">
-              <span className="font-display text-[18px] font-extrabold tracking-tight">MedLogic</span>
-              <span className="hidden text-[10px] font-bold tracking-[0.22em] text-brand-700 uppercase md:inline dark:text-brand-400">ENURM</span>
+            <AnimatedLogoMark delay={0.15} className="size-7 shrink-0" />
+            <span className="flex items-baseline whitespace-nowrap">
+              <span className="font-display text-[18px] leading-none font-extrabold tracking-tight">MedLogic</span>
+              <span className="ml-[7px] hidden text-[10.5px] leading-none font-bold tracking-[0.22em] text-brand-700 uppercase min-[380px]:inline dark:text-brand-400">ENURM</span>
             </span>
           </Link>
 
