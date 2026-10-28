@@ -96,11 +96,11 @@ function Splash({ onLeft }: { onLeft?: () => void }) {
                 <stop offset="0.65" stopColor="#fff" stopOpacity="0" />
               </radialGradient>
             </defs>
-            <rect width="64" height="64" rx="16" fill="url(#boot-g2)" />
-            <rect width="64" height="64" rx="16" fill="url(#boot-h2)" />
-            <rect x="0.5" y="0.5" width="63" height="63" rx="15.5" fill="none" stroke="#fff" strokeOpacity="0.16" />
-            <path d="M10 34h10l5-12 8 22 6-16 4 6h11" fill="none" stroke="#fff" strokeOpacity=".22" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-            <path className="boot-line" style={phase} pathLength={100} d="M10 34h10l5-12 8 22 6-16 4 6h11" fill="none" stroke="#fff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+            <rect width="64" height="64" rx="18" fill="url(#boot-g2)" />
+            <rect width="64" height="64" rx="18" fill="url(#boot-h2)" />
+            <rect x="0.5" y="0.5" width="63" height="63" rx="17.5" fill="none" stroke="#fff" strokeOpacity="0.16" />
+            <path d="M9 38H15L22 17 32 43 42 17 49 38H55" fill="none" stroke="#fff" strokeOpacity=".22" strokeWidth="4.6" strokeLinecap="round" strokeLinejoin="round" />
+            <path className="boot-line" style={phase} pathLength={100} d="M9 38H15L22 17 32 43 42 17 49 38H55" fill="none" stroke="#fff" strokeWidth="4.6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
         <div className="boot-name">MedLogic</div>

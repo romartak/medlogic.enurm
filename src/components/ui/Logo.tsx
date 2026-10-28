@@ -2,17 +2,15 @@ import { useId } from 'react'
 import { motion } from 'motion/react'
 import { cn } from '@/lib/utils'
 
-const PULSE = 'M10 34h10l5-12 8 22 6-16 4 6h11'
-/** En el círculo el trazo se reduce y se centra, para que las puntas no rocen el borde. */
-const ROUND_FIT = 'translate(32 32) scale(0.72) translate(-32 -33)'
-const STROKE = 4
+/** La «M» de MedLogic dibujada como un latido: pie plano, subida, valle, subida y vuelta al pie. */
+const PULSE = 'M9 38H15L22 17 32 43 42 17 49 38H55'
+const STROKE = 4.6
 
 /**
- * Fondo de la marca: verde azulado en degradado, un brillo suave arriba a la izquierda y un filo interior casi
- * invisible. Se repite igual en el favicon y en los iconos de la aplicación.
+ * Fondo de la marca: un cuadrado de esquinas amplias en verde azulado, con un brillo suave arriba a la izquierda y
+ * un filo interior casi invisible. Es el mismo en el favicon, los iconos de la aplicación y la pantalla de carga.
  */
-function MarkBase({ id, round }: { id: string; round: boolean }) {
-  const rx = round ? 32 : 16
+function MarkBase({ id }: { id: string }) {
   return (
     <>
       <defs>
@@ -22,49 +20,45 @@ function MarkBase({ id, round }: { id: string; round: boolean }) {
           <stop offset="1" stopColor="#055b53" />
         </linearGradient>
         <radialGradient id={`${id}-h`} cx="0.28" cy="0.18" r="0.78">
-          <stop offset="0" stopColor="#fff" stopOpacity="0.28" />
+          <stop offset="0" stopColor="#fff" stopOpacity="0.3" />
           <stop offset="0.65" stopColor="#fff" stopOpacity="0" />
         </radialGradient>
       </defs>
-      <rect width="64" height="64" rx={rx} fill={`url(#${id}-g)`} />
-      <rect width="64" height="64" rx={rx} fill={`url(#${id}-h)`} />
-      <rect x="0.5" y="0.5" width="63" height="63" rx={rx - 0.5} fill="none" stroke="#fff" strokeOpacity="0.16" />
+      <rect width="64" height="64" rx="18" fill={`url(#${id}-g)`} />
+      <rect width="64" height="64" rx="18" fill={`url(#${id}-h)`} />
+      <rect x="0.5" y="0.5" width="63" height="63" rx="17.5" fill="none" stroke="#fff" strokeOpacity="0.18" />
     </>
   )
 }
 
-export function LogoMark({ className, round = false }: { className?: string; round?: boolean }) {
+export function LogoMark({ className }: { className?: string }) {
   const id = `lm${useId().replace(/[^a-zA-Z0-9]/g, '')}`
   return (
     <svg viewBox="0 0 64 64" className={cn('size-9', className)} aria-hidden>
-      <MarkBase id={id} round={round} />
-      <g transform={round ? ROUND_FIT : undefined}>
-        <path d={PULSE} fill="none" stroke="#fff" strokeWidth={STROKE} strokeLinecap="round" strokeLinejoin="round" />
-      </g>
+      <MarkBase id={id} />
+      <path d={PULSE} fill="none" stroke="#fff" strokeWidth={STROKE} strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
 
-/** Logo con el trazo del pulso dibujándose: una vez (entrada) o en bucle (pantalla de carga). */
-export function AnimatedLogoMark({ className, loop = false, delay = 0, round = false }: { className?: string; loop?: boolean; delay?: number; round?: boolean }) {
+/** Logo con el trazo dibujándose: una vez (entrada) o en bucle (pantalla de carga). */
+export function AnimatedLogoMark({ className, loop = false, delay = 0 }: { className?: string; loop?: boolean; delay?: number }) {
   const id = `la${useId().replace(/[^a-zA-Z0-9]/g, '')}`
   return (
     <svg viewBox="0 0 64 64" className={cn('size-16', className)} aria-hidden>
-      <MarkBase id={id} round={round} />
-      <g transform={round ? ROUND_FIT : undefined}>
-        <path d={PULSE} fill="none" stroke="#fff" strokeOpacity="0.22" strokeWidth={STROKE} strokeLinecap="round" strokeLinejoin="round" />
-        <motion.path
-          d={PULSE}
-          fill="none"
-          stroke="#fff"
-          strokeWidth={STROKE}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={loop ? { pathLength: [0, 1, 1], opacity: [1, 1, 0] } : { pathLength: 1, opacity: 1 }}
-          transition={loop ? { duration: 1.8, times: [0, 0.55, 1], ease: 'easeInOut', repeat: Infinity, delay } : { duration: 0.9, ease: [0.65, 0, 0.35, 1], delay }}
-        />
-      </g>
+      <MarkBase id={id} />
+      <path d={PULSE} fill="none" stroke="#fff" strokeOpacity="0.22" strokeWidth={STROKE} strokeLinecap="round" strokeLinejoin="round" />
+      <motion.path
+        d={PULSE}
+        fill="none"
+        stroke="#fff"
+        strokeWidth={STROKE}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={loop ? { pathLength: [0, 1, 1], opacity: [1, 1, 0] } : { pathLength: 1, opacity: 1 }}
+        transition={loop ? { duration: 1.8, times: [0, 0.55, 1], ease: 'easeInOut', repeat: Infinity, delay } : { duration: 0.9, ease: [0.65, 0, 0.35, 1], delay }}
+      />
     </svg>
   )
 }
@@ -74,8 +68,8 @@ export function Logo({ className }: { className?: string }) {
     <span className={cn('flex items-center gap-2.5', className)}>
       <LogoMark />
       <span className="leading-none">
-        <span className="block font-display text-[17px] font-extrabold tracking-tight">MedLogic</span>
-        <span className="block text-xs font-semibold tracking-[0.2em] text-brand-600 uppercase dark:text-brand-400">ENURM</span>
+        <span className="block font-display text-[18px] font-extrabold tracking-tight">MedLogic</span>
+        <span className="mt-1 block text-[10px] font-bold tracking-[0.24em] text-brand-700 uppercase dark:text-brand-400">ENURM</span>
       </span>
     </span>
   )
