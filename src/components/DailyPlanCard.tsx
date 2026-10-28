@@ -112,7 +112,7 @@ export function DailyPlanCard({ compact = false }: { compact?: boolean }) {
                   )}
                 </div>
                 {!t.complete && (
-                  <Link to={t.link} aria-label={`Empezar: ${t.title}`} className="inline-flex size-10 shrink-0 items-center justify-center gap-1 rounded-xl bg-brand-500/10 text-xs font-semibold sm:h-9 sm:w-auto sm:px-3 text-brand-700 transition-colors hover:bg-brand-500/20 dark:text-brand-300">
+                  <Link to={t.link} aria-label={`Empezar: ${t.title}`} className="inline-flex size-11 shrink-0 items-center justify-center gap-1 rounded-xl bg-brand-500/10 text-xs font-semibold sm:h-9 sm:w-auto sm:px-3 text-brand-700 transition-colors hover:bg-brand-500/20 dark:text-brand-300">
                     <Play className="size-3.5 fill-current sm:size-3" /> <span className="hidden sm:inline">Empezar</span>
                   </Link>
                 )}

@@ -115,14 +115,14 @@ function AccountButton() {
   if (status === 'disabled' || status === 'loading') return null
   if (status === 'signed-out')
     return (
-      <NavLink to="/cuenta" className="ml-1 inline-flex h-9 items-center gap-1.5 rounded-xl bg-brand-gradient px-3 text-xs font-semibold text-white shadow-glow">
+      <NavLink to="/cuenta" className="ml-1 inline-flex h-11 items-center gap-1.5 rounded-xl bg-brand-gradient px-3 text-xs font-semibold text-white shadow-glow">
         <LogIn className="size-4" /> <span className="max-sm:hidden">Iniciar sesión</span>
       </NavLink>
     )
   const meta = user?.user_metadata as { call_name?: string; avatar?: string } | undefined
   const initial = (meta?.call_name || displayName(user)).charAt(0).toUpperCase()
   return (
-    <NavLink to="/cuenta" className="relative ml-1 block size-9 shrink-0" aria-label="Mi cuenta">
+    <NavLink to="/cuenta" className="relative ml-1 block size-9 shrink-0 before:absolute before:-inset-1" aria-label="Mi cuenta">
       <Avatar avatar={isAvatarId(meta?.avatar) ? meta.avatar : null} initial={initial} className="size-9 text-sm">
         <UserRound className="size-4" />
       </Avatar>

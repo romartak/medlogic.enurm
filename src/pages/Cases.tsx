@@ -148,7 +148,7 @@ function CasePlayer({ c, onRestart }: { c: ClinicalCase; onRestart: () => void }
     <div className="mx-auto grid max-w-5xl gap-6 lg:grid-cols-[1fr_320px]">
       <div className="min-w-0 space-y-4">
         <div className="flex items-center gap-3">
-          <Link to="/casos" className="grid size-10 place-items-center rounded-xl text-muted hover:text-[var(--text)]" aria-label="Salir del caso">
+          <Link to="/casos" className="grid size-11 place-items-center rounded-xl text-muted hover:text-[var(--text)]" aria-label="Salir del caso">
             <X className="size-5" />
           </Link>
           <div className="h-2 flex-1 overflow-hidden rounded-full surface-2">

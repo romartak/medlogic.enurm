@@ -109,7 +109,7 @@ export function FunctionsSheet({ open, onClose, footer }: { open: boolean; onClo
                     {query ? `${total} ${total === 1 ? 'resultado' : 'resultados'}` : `${ALL_NAV.length} funciones en MedLogic`}
                   </p>
                 </div>
-                <button onClick={onClose} className="grid size-9 place-items-center rounded-xl text-muted" aria-label="Cerrar funciones">
+                <button onClick={onClose} className="grid size-11 place-items-center rounded-xl text-muted" aria-label="Cerrar funciones">
                   <X className="size-5" />
                 </button>
               </div>

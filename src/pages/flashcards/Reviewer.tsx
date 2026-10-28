@@ -287,7 +287,7 @@ export default function Reviewer() {
             <Button variant="outline" onClick={() => setCustom(true)}>
               <Sparkles className="size-4" /> Estudio personalizado
             </Button>
-            <Link to="/flashcards" className="inline-flex h-10 items-center rounded-xl bg-brand-gradient px-4 text-sm font-semibold text-white">
+            <Link to="/flashcards" className="inline-flex h-11 items-center rounded-xl bg-brand-gradient px-4 text-sm font-semibold text-white">
               Volver a los mazos
             </Link>
           </div>
