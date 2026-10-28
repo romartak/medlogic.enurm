@@ -81,12 +81,12 @@ export function LandingNav({ sections, onGo }: { sections: readonly SectionLink[
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-40 px-3 pt-3 sm:pt-4">
       <div ref={wrap} className="mx-auto flex flex-col items-center">
-        <div className={cn('pointer-events-auto flex w-full items-center gap-2 rounded-full border border-soft bg-[color-mix(in_oklab,var(--surface)_96%,transparent)] p-1.5 transition-shadow duration-300 md:w-auto md:pl-3', raised ? 'shadow-lift' : 'shadow-soft')}>
-          <Link to="/" aria-label="MedLogic ENURM, inicio" className="flex shrink-0 items-center gap-2.5">
-            <AnimatedLogoMark round delay={0.15} className="size-11" />
+        <div className={cn('pointer-events-auto flex w-full items-center gap-2 rounded-full border border-soft bg-[color-mix(in_oklab,var(--surface)_96%,transparent)] p-1.5 transition-shadow duration-300 md:w-auto', raised ? 'shadow-lift' : 'shadow-soft')}>
+          <Link to="/" aria-label="MedLogic ENURM, inicio" className="relative flex shrink-0 items-center gap-2 before:absolute before:-inset-1 md:pr-2">
+            <AnimatedLogoMark round delay={0.15} className="ml-0.5 size-8" />
             <span className="hidden leading-none md:block">
-              <span className="block font-display text-[17px] font-extrabold tracking-tight">MedLogic</span>
-              <span className="block text-xs font-semibold tracking-[0.2em] text-brand-600 uppercase dark:text-brand-400">ENURM</span>
+              <span className="block font-display text-[15px] font-extrabold tracking-tight">MedLogic</span>
+              <span className="mt-[3px] block text-[10px] font-bold tracking-[0.24em] text-brand-700 uppercase dark:text-brand-400">ENURM</span>
             </span>
           </Link>
 
@@ -102,7 +102,7 @@ export function LandingNav({ sections, onGo }: { sections: readonly SectionLink[
                 onFocus={() => setHover(i)}
                 onBlur={() => setHover(null)}
                 aria-current={active === i ? 'location' : undefined}
-                className={cn('relative z-10 w-26 py-2.5 text-center text-sm font-semibold transition-colors duration-200', shown === i ? 'text-brand-700 dark:text-brand-300' : 'text-muted')}
+                className={cn('relative z-10 inline-flex h-9 w-26 items-center justify-center text-sm font-semibold transition-colors duration-200', shown === i ? 'text-brand-700 dark:text-brand-300' : 'text-muted')}
               >
                 {META[href]?.short ?? name}
               </a>
@@ -115,14 +115,17 @@ export function LandingNav({ sections, onGo }: { sections: readonly SectionLink[
             onClick={() => setOpen((o) => !o)}
             aria-expanded={open}
             aria-controls="landing-secciones"
-            className="surface-2 flex h-11 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full px-3 text-[15px] font-bold md:hidden"
+            className="surface-2 relative flex h-9 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full px-3 text-sm font-semibold before:absolute before:-inset-1 md:hidden"
           >
             <span className="truncate">{label}</span>
-            <ChevronDown className={cn('size-4 shrink-0 transition-transform duration-300', open && 'rotate-180')} />
+            <ChevronDown className={cn('size-3.5 shrink-0 transition-transform duration-300', open && 'rotate-180')} />
           </button>
 
-          <Link to="/inicio" className={buttonClass('primary', 'md', 'h-11 shrink-0 rounded-full')}>
-            Entrar <ArrowRight className="size-4" />
+          <Link
+            to="/inicio"
+            className="relative inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-brand-700 px-4 text-sm font-semibold text-white transition-[background-color,scale] duration-200 before:absolute before:-inset-1 hover:bg-brand-600 active:scale-[0.97] dark:bg-brand-600 dark:hover:bg-brand-500"
+          >
+            Entrar <ArrowRight className="size-3.5" />
           </Link>
         </div>
 

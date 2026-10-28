@@ -381,7 +381,7 @@ html:not(.dark) .text-violet-600 {
 }
 .seg-glide {
   position: absolute;
-  inset: 3px auto 3px 0;
+  inset: 0 auto 0 0;
   width: 6.5rem;
   border-radius: 999px;
   background: color-mix(in oklab, var(--color-brand-500) 14%, transparent);

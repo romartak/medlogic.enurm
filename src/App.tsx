@@ -87,13 +87,20 @@ function Splash({ onLeft }: { onLeft?: () => void }) {
           <svg viewBox="0 0 64 64" aria-hidden>
             <defs>
               <linearGradient id="boot-g2" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor="#12b8a6" />
-                <stop offset="1" stopColor="#066a60" />
+                <stop offset="0" stopColor="#14bfac" />
+                <stop offset="0.55" stopColor="#078377" />
+                <stop offset="1" stopColor="#055b53" />
               </linearGradient>
+              <radialGradient id="boot-h2" cx="0.28" cy="0.18" r="0.78">
+                <stop offset="0" stopColor="#fff" stopOpacity="0.28" />
+                <stop offset="0.65" stopColor="#fff" stopOpacity="0" />
+              </radialGradient>
             </defs>
             <rect width="64" height="64" rx="16" fill="url(#boot-g2)" />
-            <path d="M10 34h10l5-12 8 22 6-16 4 6h11" fill="none" stroke="#fff" strokeOpacity=".22" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
-            <path className="boot-line" style={phase} pathLength={100} d="M10 34h10l5-12 8 22 6-16 4 6h11" fill="none" stroke="#fff" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+            <rect width="64" height="64" rx="16" fill="url(#boot-h2)" />
+            <rect x="0.5" y="0.5" width="63" height="63" rx="15.5" fill="none" stroke="#fff" strokeOpacity="0.16" />
+            <path d="M10 34h10l5-12 8 22 6-16 4 6h11" fill="none" stroke="#fff" strokeOpacity=".22" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+            <path className="boot-line" style={phase} pathLength={100} d="M10 34h10l5-12 8 22 6-16 4 6h11" fill="none" stroke="#fff" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
         <div className="boot-name">MedLogic</div>

@@ -3,25 +3,43 @@ import { motion } from 'motion/react'
 import { cn } from '@/lib/utils'
 
 const PULSE = 'M10 34h10l5-12 8 22 6-16 4 6h11'
-/** En el círculo el trazo se reduce al 76 % y se centra, para que las puntas no rocen el borde. */
-const ROUND_FIT = 'translate(32 32) scale(0.76) translate(-32 -33)'
+/** En el círculo el trazo se reduce y se centra, para que las puntas no rocen el borde. */
+const ROUND_FIT = 'translate(32 32) scale(0.72) translate(-32 -33)'
+const STROKE = 4
 
-/** Verde azulado de la marca: el mismo de los botones y las tarjetas. */
-const MARK_FROM = '#12b8a6'
-const MARK_TO = '#066a60'
+/**
+ * Fondo de la marca: verde azulado en degradado, un brillo suave arriba a la izquierda y un filo interior casi
+ * invisible. Se repite igual en el favicon y en los iconos de la aplicación.
+ */
+function MarkBase({ id, round }: { id: string; round: boolean }) {
+  const rx = round ? 32 : 16
+  return (
+    <>
+      <defs>
+        <linearGradient id={`${id}-g`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#14bfac" />
+          <stop offset="0.55" stopColor="#078377" />
+          <stop offset="1" stopColor="#055b53" />
+        </linearGradient>
+        <radialGradient id={`${id}-h`} cx="0.28" cy="0.18" r="0.78">
+          <stop offset="0" stopColor="#fff" stopOpacity="0.28" />
+          <stop offset="0.65" stopColor="#fff" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <rect width="64" height="64" rx={rx} fill={`url(#${id}-g)`} />
+      <rect width="64" height="64" rx={rx} fill={`url(#${id}-h)`} />
+      <rect x="0.5" y="0.5" width="63" height="63" rx={rx - 0.5} fill="none" stroke="#fff" strokeOpacity="0.16" />
+    </>
+  )
+}
 
 export function LogoMark({ className, round = false }: { className?: string; round?: boolean }) {
+  const id = `lm${useId().replace(/[^a-zA-Z0-9]/g, '')}`
   return (
     <svg viewBox="0 0 64 64" className={cn('size-9', className)} aria-hidden>
-      <defs>
-        <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor={MARK_FROM} />
-          <stop offset="1" stopColor={MARK_TO} />
-        </linearGradient>
-      </defs>
-      <rect width="64" height="64" rx={round ? 32 : 16} fill="url(#logo-g)" />
+      <MarkBase id={id} round={round} />
       <g transform={round ? ROUND_FIT : undefined}>
-        <path d={PULSE} fill="none" stroke="#fff" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d={PULSE} fill="none" stroke="#fff" strokeWidth={STROKE} strokeLinecap="round" strokeLinejoin="round" />
       </g>
     </svg>
   )
@@ -29,23 +47,17 @@ export function LogoMark({ className, round = false }: { className?: string; rou
 
 /** Logo con el trazo del pulso dibujándose: una vez (entrada) o en bucle (pantalla de carga). */
 export function AnimatedLogoMark({ className, loop = false, delay = 0, round = false }: { className?: string; loop?: boolean; delay?: number; round?: boolean }) {
-  const id = `logo-a${useId().replace(/[^a-zA-Z0-9]/g, '')}`
+  const id = `la${useId().replace(/[^a-zA-Z0-9]/g, '')}`
   return (
     <svg viewBox="0 0 64 64" className={cn('size-16', className)} aria-hidden>
-      <defs>
-        <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor={MARK_FROM} />
-          <stop offset="1" stopColor={MARK_TO} />
-        </linearGradient>
-      </defs>
-      <rect width="64" height="64" rx={round ? 32 : 16} fill={`url(#${id})`} />
+      <MarkBase id={id} round={round} />
       <g transform={round ? ROUND_FIT : undefined}>
-        <path d={PULSE} fill="none" stroke="#fff" strokeOpacity="0.22" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d={PULSE} fill="none" stroke="#fff" strokeOpacity="0.22" strokeWidth={STROKE} strokeLinecap="round" strokeLinejoin="round" />
         <motion.path
           d={PULSE}
           fill="none"
           stroke="#fff"
-          strokeWidth="4.5"
+          strokeWidth={STROKE}
           strokeLinecap="round"
           strokeLinejoin="round"
           initial={{ pathLength: 0, opacity: 0 }}
