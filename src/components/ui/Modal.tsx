@@ -62,8 +62,8 @@ export function Modal({ open, onClose, title, children, className }: { open: boo
   return (
     <AnimatePresence>
       {open && (
-        <motion.div className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <div className="absolute inset-0 bg-slate-950/50 backdrop-blur-sm" onClick={onClose} />
+        <div className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-4">
+          <motion.div className="absolute inset-0 bg-slate-950/55" onClick={onClose} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.2 } }} />
           <motion.div
             ref={panelRef}
             role="dialog"
@@ -71,10 +71,10 @@ export function Modal({ open, onClose, title, children, className }: { open: boo
             aria-labelledby={title ? titleId : undefined}
             tabIndex={-1}
             className={cn('card relative max-h-[90dvh] w-full overflow-y-auto rounded-b-none p-5 outline-none sm:max-w-lg sm:rounded-b-[var(--radius-2xl)] sm:p-6', className)}
-            initial={{ y: 40, opacity: 0, scale: 0.98 }}
-            animate={{ y: 0, opacity: 1, scale: 1 }}
-            exit={{ y: 40, opacity: 0, scale: 0.98 }}
-            transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+            initial={{ y: 40 }}
+            animate={{ y: 0 }}
+            exit={{ y: 40, transition: { duration: 0.2, ease: [0.77, 0, 0.175, 1] } }}
+            transition={{ duration: 0.38, ease: [0.32, 0.72, 0, 1] }}
           >
             <div className="mb-4 flex items-start justify-between gap-4">
               {title && (
@@ -88,7 +88,7 @@ export function Modal({ open, onClose, title, children, className }: { open: boo
             </div>
             {children}
           </motion.div>
-        </motion.div>
+        </div>
       )}
     </AnimatePresence>
   )

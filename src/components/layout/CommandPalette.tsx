@@ -95,7 +95,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
     <AnimatePresence>
       {open && (
         <motion.div className="fixed inset-0 z-50 flex items-start justify-center p-3 pt-[8vh] sm:p-4 sm:pt-[12vh]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <div className="absolute inset-0 bg-slate-950/50 backdrop-blur-sm" onClick={onClose} />
+          <div className="absolute inset-0 bg-slate-950/55" onClick={onClose} />
           <motion.div
             className="card relative w-full max-w-2xl overflow-hidden shadow-2xl"
             initial={{ y: -12, scale: 0.98, opacity: 0 }}

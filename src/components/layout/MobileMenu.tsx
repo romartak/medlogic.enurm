@@ -90,7 +90,7 @@ export function FunctionsSheet({ open, onClose, footer }: { open: boolean; onClo
     <AnimatePresence>
       {open && (
         <motion.div className="fixed inset-0 z-50 lg:hidden" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <div className="absolute inset-0 bg-slate-950/50 backdrop-blur-sm" onClick={onClose} />
+          <div className="absolute inset-0 bg-slate-950/55" onClick={onClose} />
           <motion.div
             role="dialog"
             aria-modal="true"

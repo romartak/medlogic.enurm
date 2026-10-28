@@ -490,7 +490,7 @@ export default function Landing() {
       {/* Especialidades */}
       <section className="overflow-hidden py-4" aria-label="Especialidades">
         <div className="relative flex [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-          <motion.div className="flex shrink-0 gap-3 pr-3" animate={{ x: ['0%', '-50%'] }} transition={{ duration: 60, ease: 'linear', repeat: Infinity }}>
+          <div className="marquee flex shrink-0 animate-marquee gap-3 pr-3">
             {[...SPECIALTIES, ...SPECIALTIES].map((s, i) => (
               <Link key={i} to={`/especialidades/${s.id}`} tabIndex={i >= SPECIALTIES.length ? -1 : undefined} className="card flex shrink-0 items-center gap-2 px-4 py-2.5 text-sm font-medium transition-colors hover:border-brand-500/40">
                 <span style={tintText(s.color)}>
@@ -499,7 +499,7 @@ export default function Landing() {
                 {s.name}
               </Link>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 

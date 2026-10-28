@@ -330,7 +330,7 @@ export function ExamRunner({ config, onExit, onSubmitted }: { config: ExamConfig
             <div className="truncate text-sm font-semibold">{config.title}</div>
             <ProgressBar value={answered / questions.length} className="mt-1.5" height="h-1.5" />
           </div>
-          <motion.div animate={lowTime ? { scale: [1, 1.06, 1] } : {}} transition={{ repeat: Infinity, duration: 1 }} className={cn('flex items-center gap-1.5 rounded-xl px-3 py-1.5 font-mono text-sm font-bold tabular-nums', lowTime ? 'bg-rose-500/15 text-rose-500' : 'surface-2')}>
+          <motion.div animate={lowTime ? { scale: [1, 1.06, 1] } : {}} transition={{ repeat: 4, duration: 1 }} className={cn('flex items-center gap-1.5 rounded-xl px-3 py-1.5 font-mono text-sm font-bold tabular-nums', lowTime ? 'bg-rose-500/15 text-rose-500' : 'surface-2')}>
             <Clock className="size-4" /> {formatClock(left)}
           </motion.div>
           <Button variant="secondary" size="sm" className="lg:hidden" onClick={() => setGridOpen(true)} aria-label="Ver todas las preguntas">
