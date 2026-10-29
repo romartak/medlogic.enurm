@@ -1,103 +1,134 @@
+<div align="center">
+
+<img src="public/icon-192.png" alt="MedLogic ENURM" width="96" height="96" />
+
 # MedLogic ENURM
 
-**Siempre gratis y de código abierto.** Mi regalo para todos los médicos en formación.
+**La plataforma gratuita para preparar el ENURM, hecha por y para médicos en formación.**
 
-Plataforma web para preparar el **ENURM** (Examen Nacional Único de Residencias Médicas) con varios métodos de estudio en un solo lugar.
+Banco de preguntas con explicación, simulacros con reloj, flashcards estilo Anki, plan de estudio diario y rachas.
+Sin anuncios, sin pagos y sin obligación de crear cuenta.
+
+[**Probar ahora → medlogicenurm.vercel.app**](https://medlogicenurm.vercel.app)
+
+[![CI](https://github.com/romartak/medlogic.enurm/actions/workflows/ci.yml/badge.svg)](https://github.com/romartak/medlogic.enurm/actions/workflows/ci.yml)
+![React 19](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-7-646cff?logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8?logo=tailwindcss&logoColor=white)
+![Gratis](https://img.shields.io/badge/precio-gratis%20para%20siempre-0f766e)
+
+</div>
+
+---
+
+## Qué es
+
+El **ENURM** (Examen Nacional Único de Residencias Médicas, República Dominicana) se prepara durante meses y con muchas herramientas sueltas. MedLogic junta todo en un solo lugar y te dice **qué estudiar hoy**, según los días que faltan para el examen, tu tiempo disponible y tus puntos débiles.
+
+- **Entra y prueba ya.** No hace falta cuenta: tu progreso se guarda en tu dispositivo.
+- **Cuenta opcional.** Con ella sincronizas el progreso entre el celular y la computadora.
+- **Cero presión.** Rachas y cuenta atrás para motivarte, nunca para culparte.
 
 ## Funciones
 
-| | |
+| Área | Qué incluye |
 | --- | --- |
-| 🧭 **Cuestionario inicial** | Convocatoria del ENURM (la fecha se calcula sola: primer domingo de marzo), residencia deseada, días y horas disponibles, autoevaluación por área y métodos preferidos. |
-| 🗓️ **Plan diario personalizado** | Tareas concretas cada día (preguntas de dos especialidades intercaladas, repaso de errores, flashcards, una guía, simulacro semanal) según la fase de preparación, tu tiempo, tus puntos débiles y tu residencia. Se recalcula con tu precisión real. |
-| 🩺 **Espacios por especialidad** | Una página para cada una de las 23 áreas: temas de alto rendimiento, perlas, temas del banco con tu precisión, flashcards, guías, actualizaciones y tus errores. |
-| 🎯 **Práctica (modo tutor)** | Filtra por especialidad, año o estado (no vistas, falladas, marcadas). Explicación inmediata, atajos de teclado, rachas. |
-| 🎓 **Simulacros** | Completo (100 preguntas / 2 h), medio, rápido o personalizado. Reparto proporcional por especialidad, cronómetro, navegación, preguntas marcadas, examen completo por año, resultados por especialidad y revisión. |
-| 🧠 **Flashcards estilo Anki** | Notas básicas, invertidas y cloze; mazos y submazos (`::`); presets de opciones (pasos de aprendizaje, intervalos, facilidad, sanguijuelas, enterrar hermanas); cola con nuevas/aprendiendo/repasos y límites diarios; deshacer, banderas, suspender; explorador con búsqueda tipo Anki (`deck:`, `tag:`, `is:due`, `prop:ivl>=21`…); estudio personalizado y mazos filtrados; estadísticas (pronóstico, retención, intervalos, facilidad); importar y exportar en formato de texto de Anki. |
-| 🔬 **Análisis por opción** | Al responder: por qué tu opción es incorrecta, la correcta explicada, fisiopatología, análisis de cada opción, puntos clave y bibliografía con DOI. Botones para crear una flashcard o reportar un error. |
-| ✨ **Prompts de IA** | 18 prompts listos para ChatGPT, Claude, Gemini o Copilot (transformar diapositivas, flashcards importables, "Conóceme", tutor socrático, paciente virtual, resumen de guías, lectura crítica…), con campos para personalizarlos, copiar y abrir en la IA con un clic, más un constructor de prompts propios. |
-| 🤖 **IA para médicos** | Qué puede hacer la IA por ti, cómo funciona un modelo de lenguaje, cómo escribir buenos prompts, aplicaciones en medicina, riesgos, reglas de uso seguro y un quiz. |
-| 🚀 **Lo que viene** | Hoja de ruta pública dentro de la app (ver [docs/ROADMAP.md](docs/ROADMAP.md)). |
-| 📚 **Guías** | Resúmenes de alto rendimiento con tablas, perlas y alertas (dengue, preeclampsia, SCA, sepsis, asma…). |
-| 📰 **Actualizaciones** | Cambios recientes en guías clínicas (ESC, GINA, GOLD, KDIGO, ADA, SSC…). |
-| 🎮 **Juegos** | Contrarreloj, supervivencia, verdadero/falso, parejas clínicas y diagnóstico en 5 pistas. |
-| 📈 **Estadísticas** | Precisión por especialidad, calendario de actividad, radar, evolución de simulacros y puntaje estimado. |
-| ⏱️ **Mi plan** | Cuenta regresiva, fases de preparación, vista de los próximos 7 días, prioridades y pomodoro. |
-| 🧮 **Herramientas clínicas** | IMC, TFG CKD-EPI 2021, anion gap y Winter, osmolaridad, calcio corregido, Glasgow, Parkland, Alvarado, CHA₂DS₂-VASc, CURB-65, edad gestacional/FPP y Holliday-Segar. |
-| 🧭 **Cómo prepararte** | Fases, métodos de estudio con evidencia, semana tipo, día del examen y preguntas frecuentes. |
-| 🏆 **Gamificación** | XP, niveles y 18 logros (incluidos los de cumplir el plan diario). |
-| 🔎 **Búsqueda global** | `Ctrl + K` para buscar preguntas, guías, flashcards y páginas. |
+| **Práctica** | 1 082 preguntas revisadas. Filtra por especialidad, año o estado (no vistas, falladas, marcadas). Explicación inmediata de por qué la correcta lo es y por qué las demás no. |
+| **Simulacros** | Completo (100 preguntas, 2 h), medio, rápido o personalizado. Cronómetro, preguntas marcadas, nota final y resultado por especialidad. |
+| **Simulacro nacional** | El mismo examen para todos cada mes; cuenta el primer intento y muestra tu percentil. |
+| **Plan diario** | Tareas concretas según la fase de preparación, tu tiempo, tu residencia deseada y tu precisión real. |
+| **Flashcards estilo Anki** | Notas básicas, invertidas y cloze, mazos y submazos, repaso espaciado, explorador con búsqueda, estadísticas e importar/exportar. |
+| **Terminología médica** | Lecciones cortas de prefijos, sufijos, raíces y siglas, como un juego de idiomas. |
+| **Especialidades** | Una página por cada una de las 23 áreas: temas de alto rendimiento, perlas, preguntas, flashcards y guías. |
+| **Casos clínicos y ECG** | Casos para razonar paso a paso y un lector de electrocardiogramas. |
+| **Juegos y duelos** | Contrarreloj, supervivencia, verdadero/falso, parejas clínicas, diagnóstico en 5 pistas y duelo contra amigos. |
+| **Guías y actualizaciones** | Resúmenes de alto rendimiento y cambios recientes en guías clínicas. |
+| **Herramientas clínicas** | 12 calculadoras (TFG CKD-EPI 2021, Glasgow, CURB-65, CHA₂DS₂-VASc, Parkland…). |
+| **Prompts e IA** | Biblioteca de prompts para estudiar con asistentes de IA y una guía de uso seguro. |
+| **Motivación** | XP, niveles, 18 logros, rachas, ranking por universidad y cuenta atrás al examen. |
 
-Además: tema claro/oscuro, diseño adaptable a móvil, animaciones, sonidos, respaldo/restauración del progreso y funcionamiento sin cuentas (el progreso se guarda en el dispositivo).
+Además: tema claro y oscuro, diseño pensado primero para el celular, búsqueda global con `Ctrl + K` y respaldo de tu progreso en un archivo.
 
-## Empezar
+## Empezar a desarrollar
 
-Requiere Node.js 20 o superior.
+Requiere **Node.js 22**.
 
 ```bash
+git clone https://github.com/romartak/medlogic.enurm.git
+cd medlogic.enurm
 npm install
-npm run dev        # http://localhost:5173
+npm run dev          # http://localhost:5173
 ```
 
-Otros comandos:
+| Comando | Para qué sirve |
+| --- | --- |
+| `npm run dev` | Servidor de desarrollo |
+| `npm run typecheck` | Revisa los tipos de TypeScript |
+| `npm test` | Pruebas (Vitest) |
+| `npm run build` | Compila a `dist/` |
+| `npm run preview` | Sirve la versión compilada |
+| `npm run import:questions -- banco.csv` | Genera `public/data/questions.json` desde un CSV o JSON |
 
-```bash
-npm run build      # compila a dist/
-npm run preview    # sirve la versión compilada
-npm test           # pruebas
-npm run import:questions -- banco.csv   # genera public/data/questions.json
+Antes de subir cambios corre `npm run typecheck`, `npm test` y `npm run build`: es lo mismo que revisa la integración continua.
+
+Las cuentas son opcionales y necesitan Supabase. Sin ellas la app funciona completa en local. Para activarlas, copia `.env.example` a `.env.local` (guía en [docs/DESPLIEGUE.md](docs/DESPLIEGUE.md)).
+
+## Estructura del repositorio
+
+```text
+.
+├── src/
+│   ├── pages/         una página por sección (juegos, flashcards y terminología en subcarpetas)
+│   ├── components/    interfaz: layout, tarjeta de pregunta, landing, flashcards, componentes base
+│   ├── data/          contenido: especialidades, guías, flashcards, casos, logros, prompts
+│   ├── lib/           lógica: plan diario, repetición espaciada, estadísticas, sincronización, ranking
+│   ├── store/         estado (Zustand): progreso del usuario, banco de preguntas, sesión
+│   └── hooks/         hooks reutilizables
+├── public/            banco publicado (data/), videos de la landing (demo/), iconos y páginas legales
+├── data/banco/        banco original y revisión de respuestas (fuente de public/data/questions.json)
+├── scripts/           importador de preguntas, armado del banco y migraciones de despliegue
+├── supabase/          migraciones SQL: cuentas, seguridad por filas, ranking y simulacro nacional
+├── docs/              despliegue, formato de preguntas, hoja de ruta y revisión de respuestas
+└── .github/           integración continua y plantillas de issues y pull requests
 ```
 
-## Banco de preguntas
+## Documentación
 
-Mientras no haya un banco cargado, la plataforma usa ~60 **preguntas de muestra** (no oficiales). El banco real de todos los años lo carga el mantenedor del proyecto:
-
-1. Prepara un CSV o JSON (ver [docs/FORMATO_PREGUNTAS.md](docs/FORMATO_PREGUNTAS.md)).
-2. Ejecuta `npm run import:questions -- tu-archivo.csv`.
-3. Revisa el resumen (errores por fila, preguntas por año y especialidad) y haz commit de `public/data/questions.json`.
-
-Los usuarios no suben preguntas: todos usan el mismo banco publicado con la web.
+| Documento | Contenido |
+| --- | --- |
+| [docs/DESPLIEGUE.md](docs/DESPLIEGUE.md) | Publicar en Vercel y conectar Supabase paso a paso |
+| [docs/FORMATO_PREGUNTAS.md](docs/FORMATO_PREGUNTAS.md) | Formato del banco de preguntas y cómo cargarlo |
+| [docs/REVISION-RESPUESTAS.md](docs/REVISION-RESPUESTAS.md) | Qué respuestas se corrigieron o retiraron y por qué |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | Hacia dónde va el proyecto |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Cómo contribuir |
+| [SECURITY.md](SECURITY.md) | Cómo reportar un problema de seguridad |
 
 ## Cómo funciona el plan diario
 
-1. **Fase** según los días que faltan: Fundamentos (> 6 meses), Consolidación (2–6 meses), Repaso intensivo (15–60 días) y Recta final (≤ 14 días). Cada fase reparte el tiempo de forma distinta entre preguntas, errores, flashcards y guías, y define el tamaño del simulacro semanal.
-2. **Prioridad** de cada especialidad = peso en el examen × debilidad × refuerzo por la residencia elegida. La debilidad sale de la autoevaluación al principio y de la precisión real cuando hay al menos 5 respuestas.
-3. **Rotación ponderada**: cada día combina una especialidad prioritaria y otra complementaria; las prioritarias aparecen más días sin dejar fuera al resto.
-4. El plan del día se **congela** al generarse, y el avance de cada tarea se registra solo (o se marca a mano).
+1. **Fase** según los días que faltan: Fundamentos (más de 6 meses), Consolidación (2 a 6 meses), Repaso intensivo (15 a 60 días) y Recta final (14 días o menos). Cada fase reparte distinto el tiempo entre preguntas, errores, flashcards y guías.
+2. **Prioridad** de cada especialidad = peso en el examen × debilidad × refuerzo por la residencia elegida. La debilidad sale de tu autoevaluación al inicio y de tu precisión real a partir de 5 respuestas.
+3. **Rotación ponderada:** cada día combina una especialidad prioritaria con otra complementaria, sin dejar fuera al resto.
+4. El plan del día se **congela** al generarse y el avance de cada tarea se registra solo.
 
-La lógica está en `src/lib/plan.ts` y tiene pruebas en `src/lib/plan.test.ts`.
+La lógica vive en `src/lib/plan.ts` y está probada en `src/lib/plan.test.ts`.
 
-## Publicar
+## Privacidad y seguridad
 
-La app es estática (Vite + React) y usa rutas con `#`, así que funciona en cualquier hosting sin configuración extra.
-
-- **GitHub Pages (opcional):** el flujo `.github/workflows/deploy.yml` se ejecuta a mano desde *Actions → Run workflow*. Antes, actívalo en *Settings → Pages → Source: GitHub Actions*. La página pública está en Vercel.
-- **Vercel (recomendado):** importa el repositorio y listo; `vercel.json` trae la compilación, las cabeceras de seguridad y la caché. Para activar las cuentas conecta Supabase desde el Marketplace de Vercel: las tablas se crean solas al desplegar. Guía paso a paso en [docs/DESPLIEGUE.md](docs/DESPLIEGUE.md).
-- **Netlify / Cloudflare Pages:** comando `npm run build`, carpeta `dist`.
-- **App móvil (futuro):** al ser una web estática con base relativa, puede empaquetarse con Capacitor sin cambios en las rutas.
-
-## Estructura
-
-```
-src/
-  data/          contenido: especialidades y áreas, espacios por especialidad, preguntas de muestra,
-                 flashcards, guías, actualizaciones, juegos, logros
-  lib/           lógica: plan diario, importador, repetición espaciada, estadísticas, selección de preguntas
-  store/         estado: banco de preguntas y progreso/perfil del usuario (localStorage)
-  components/    layout, tarjeta de pregunta y componentes de interfaz
-  pages/         una página por sección (juegos en pages/games)
-scripts/         importador de línea de comandos
-docs/            formato del banco de preguntas
-```
+- Sin cuenta, nada sale de tu navegador. Con cuenta, solo se guarda tu correo, tu nombre y tu progreso.
+- Cada cuenta puede leer y modificar únicamente sus propios datos (seguridad a nivel de fila en Supabase).
+- Puedes exportar tu progreso y **eliminar tu cuenta** desde Configuración.
+- Cabeceras de seguridad estrictas (CSP, HSTS, sin iframes) configuradas en `vercel.json`.
+- Consulta la [política de privacidad](https://medlogicenurm.vercel.app/privacidad/) y los [términos](https://medlogicenurm.vercel.app/terminos/).
 
 ## Tecnologías
 
-React 19, TypeScript, Vite, Tailwind CSS 4, Motion (animaciones), Recharts, Zustand, Fuse.js, PapaParse.
+React 19 · TypeScript · Vite · Tailwind CSS 4 · Motion · Recharts · Zustand · Fuse.js · PapaParse · Supabase · Vercel
 
 ## Aviso
 
-Contenido con fines educativos. No sustituye el juicio clínico, las guías oficiales vigentes ni los protocolos del Ministerio de Salud Pública. Las preguntas de muestra no son preguntas oficiales del ENURM.
+Contenido con fines educativos. No sustituye el juicio clínico, las guías oficiales vigentes ni los protocolos del Ministerio de Salud Pública. MedLogic no está afiliado a la institución que organiza el ENURM.
 
 ## Contribuir
 
-Las contribuciones son bienvenidas: preguntas con explicación, correcciones de contenido, nuevas guías o funciones. Abre un *issue* o un *pull request*.
+Las contribuciones son bienvenidas: preguntas con explicación, correcciones de contenido, guías nuevas o funciones. Lee [CONTRIBUTING.md](CONTRIBUTING.md) y abre un *issue* o un *pull request*.

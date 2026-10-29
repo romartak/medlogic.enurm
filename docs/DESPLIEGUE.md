@@ -82,3 +82,7 @@ npm run dev
   - si ambos tienen progreso distinto, pregunta cuál conservar.
 - Después, cada cambio se sube solo a los pocos segundos, y al volver a la pestaña se descargan los cambios hechos en otro dispositivo.
 - Todo vive en una fila por usuario (`user_state.snapshot`, el mismo formato que el respaldo JSON de Ajustes).
+
+## Si las cuentas no funcionan: revisa las migraciones
+
+Si en el registro de la compilación aparece `[migraciones] Omitidas (sin POSTGRES_URL_NON_POOLING)`, las tablas **no se crearon**: la página se publica igual, pero sin cuentas, ranking ni simulacro nacional. Agrega esa variable en Vercel (Supabase → Connect, cadena de conexión directa) y vuelve a desplegar, o pega los archivos de `supabase/migrations/` en el *SQL Editor* de Supabase, en orden numérico.
