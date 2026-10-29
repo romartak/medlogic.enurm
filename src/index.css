@@ -37,6 +37,8 @@
   --animate-ping-few: ping-few 1.7s cubic-bezier(0, 0, 0.2, 1) 3;
   --animate-shimmer: shimmer 2.4s linear infinite;
   --animate-pulse-ring: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  /* Un latido del monitor de ECG: se dispara una vez por cada QRS del trazo. */
+  --animate-beat: beat 300ms var(--ease-out);
 
   @keyframes float {
     0%,
@@ -45,6 +47,11 @@
     }
     50% {
       transform: translate3d(0, -6px, 0);
+    }
+  }
+  @keyframes beat {
+    from {
+      scale: 1.35;
     }
   }
   @keyframes marquee {

@@ -7,7 +7,7 @@ import { ACHIEVEMENTS } from '@/data/achievements'
 import { computeStreak } from '@/lib/stats'
 import { useToasts } from './toasts'
 
-export const GAME_IDS = ['contrarreloj', 'supervivencia', 'verdadero-falso', 'parejas', 'pistas'] as const
+export const GAME_IDS = ['contrarreloj', 'supervivencia', 'verdadero-falso', 'parejas', 'pistas', 'cuadrantes'] as const
 export type GameId = (typeof GAME_IDS)[number]
 
 interface ProgressData {

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import { Activity, ArrowRight, BookOpen, Check, HeartPulse, RotateCcw, Trophy, X } from 'lucide-react'
+import { Activity, ArrowRight, BookOpen, Check, HeartPulse, MonitorDot, RotateCcw, Trophy, X } from 'lucide-react'
 import { Button, Card, PageHeader } from '@/components/ui/primitives'
 import { EcgStrip } from '@/components/EcgStrip'
 import { ECG_PATTERNS, ecgById, makeStrip } from '@/lib/ecg'
@@ -142,6 +142,16 @@ export default function EcgGame() {
             </Button>
           </Card>
         </div>
+        <Link to="/ecg/monitor" className="card card-hover mt-4 flex items-center gap-4 p-5">
+          <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-[#06110c] text-green-400">
+            <MonitorDot className="size-6" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block font-display font-bold">Monitor en vivo</span>
+            <span className="block text-sm text-muted">Cada ritmo corriendo como en la emergencia, con su frecuencia, y un reto de «¿qué tiene el paciente?».</span>
+          </span>
+          <ArrowRight className="size-5 shrink-0 text-muted" />
+        </Link>
         <p className="mt-6 text-xs text-muted">
           Las tiras son simulaciones didácticas de una derivación (DII). Para diagnosticar a un paciente usa siempre el ECG de 12 derivaciones. ¿Quieres más? Prueba los <Link to="/casos" className="font-semibold underline">casos clínicos</Link>.
         </p>

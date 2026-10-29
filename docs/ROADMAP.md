@@ -9,7 +9,8 @@ Hacia dónde va el proyecto. También se ve dentro de la app en **Lo que viene**
 - **Espacio por especialidad.** 23 áreas con temas de alto rendimiento, perlas, preguntas, flashcards y guías.
 - **Análisis por opción.** Por qué cada opción es correcta o incorrecta, fisiopatología y bibliografía con DOI.
 - **Prompts e IA para médicos.** Biblioteca de prompts (diapositivas, flashcards, casos, tutor) y una guía para usar la IA con seguridad.
-- **Simulacros, juegos y herramientas.** Examen cronometrado, 5 juegos y 12 calculadoras clínicas.
+- **Simulacros, juegos y herramientas.** Examen cronometrado, 6 juegos y 12 calculadoras clínicas.
+- **Habilidades clínicas.** ATLS, trauma y fracturas, semiología por sistemas, espirometría, hemograma, monitor de ECG en vivo y 18 casos clínicos por especialidad.
 
 ## Próximo — 1–3 meses
 

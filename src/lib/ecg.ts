@@ -278,3 +278,28 @@ export function makeStrip(patternId: string, seed: string, seconds = 6) {
   const strip = ecgById(patternId).build(seconds, rng)
   return { strip, samples: renderStrip(strip, `${patternId}-${seed}`) }
 }
+
+/**
+ * Tramo de ECG que se puede repetir sin costura, para el monitor en vivo. Se corta un poco antes de dos
+ * latidos del mismo tipo (mismo PR y morfología) y con el mismo latido previo, en la pausa entre la T del
+ * anterior y la P del siguiente: así el final empalma con el principio como un latido más.
+ * Devuelve también la frecuencia ventricular (null si no hay QRS: FV, asistolia).
+ */
+export function loopSegment(patternId: string, seed: string, seconds = 30) {
+  const { strip, samples } = makeStrip(patternId, seed, seconds)
+  const beats = strip.beats
+  if (beats.length < 4) return { samples, beats: [] as number[], seconds, rate: null as number | null }
+  const kind = (b: Beat) => `${b.pr}|${!!b.pvc}|${!!b.wide}`
+  const a = 1
+  let b = beats.length - 1
+  while (b > a && kind(beats[b]) !== kind(beats[a])) b--
+  // La P empieza unos 0,08 s antes de su pico; la T del latido previo termina a ~0,45 s de su R.
+  const lower = Math.max(beats[a].pr ?? 0, beats[b].pr ?? 0) + 0.09
+  const upper = Math.min(beats[a].r - beats[a - 1].r, beats[b].r - beats[b - 1].r) - 0.45
+  const lead = upper >= lower ? (lower + upper) / 2 : lower
+  const from = Math.round((beats[a].r - lead) * SAMPLE_RATE)
+  const to = Math.round((beats[b].r - lead) * SAMPLE_RATE)
+  const kept = beats.slice(a, b).map((x) => x.r - from / SAMPLE_RATE)
+  const span = (to - from) / SAMPLE_RATE
+  return { samples: samples.slice(from, to), beats: kept, seconds: span, rate: Math.round((60 * kept.length) / span) }
+}

@@ -178,6 +178,15 @@ export interface GuideSection {
   warning?: string
 }
 
+/** Pregunta corta de práctica de las páginas de habilidades clínicas (ATLS, espirometría…). */
+export interface QuizItem {
+  q: string
+  options: string[]
+  /** Índice de la correcta en `options`. */
+  answer: number
+  why: string
+}
+
 export interface Guide {
   id: string
   title: string

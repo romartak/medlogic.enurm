@@ -41,8 +41,9 @@ El **ENURM** (Examen Nacional Único de Residencias Médicas, República Dominic
 | **Flashcards estilo Anki** | Notas básicas, invertidas y cloze, mazos y submazos, repaso espaciado, explorador con búsqueda, estadísticas e importar/exportar. |
 | **Terminología médica** | Lecciones cortas de prefijos, sufijos, raíces y siglas, como un juego de idiomas. |
 | **Especialidades** | Una página por cada una de las 23 áreas: temas de alto rendimiento, perlas, preguntas, flashcards y guías. |
-| **Casos clínicos y ECG** | Casos para razonar paso a paso y un lector de electrocardiogramas. |
-| **Juegos y duelos** | Contrarreloj, supervivencia, verdadero/falso, parejas clínicas, diagnóstico en 5 pistas y duelo contra amigos. |
+| **Casos clínicos y ECG** | 18 casos para razonar paso a paso, filtrables por especialidad, un lector de electrocardiogramas y un monitor de ECG en vivo. |
+| **Habilidades clínicas** | ATLS (xABCDE, shock, tórax, TCE, quemaduras), trauma y fracturas, semiología por sistemas, espirometría y hemograma, con intérpretes y práctica. |
+| **Juegos y duelos** | Contrarreloj, supervivencia, verdadero/falso, parejas clínicas, diagnóstico en 5 pistas, cuadrantes y órganos del abdomen y duelo contra amigos. |
 | **Guías y actualizaciones** | Resúmenes de alto rendimiento y cambios recientes en guías clínicas. |
 | **Herramientas clínicas** | 12 calculadoras (TFG CKD-EPI 2021, Glasgow, CURB-65, CHA₂DS₂-VASc, Parkland…). |
 | **Prompts e IA** | Biblioteca de prompts para estudiar con asistentes de IA y una guía de uso seguro. |

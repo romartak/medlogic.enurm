@@ -25,7 +25,8 @@ export const ROADMAP: RoadmapStage[] = [
       { title: 'Espacio por especialidad', body: '23 áreas con temas de alto rendimiento, perlas, preguntas, flashcards y guías.', icon: 'grid' },
       { title: 'Análisis por opción', body: 'Por qué cada opción es correcta o incorrecta, fisiopatología y bibliografía con DOI.', icon: 'microscope' },
       { title: 'Prompts e IA para médicos', body: 'Biblioteca de prompts (diapositivas, flashcards, casos, tutor) y una guía para usar la IA con seguridad.', icon: 'bot' },
-      { title: 'Simulacros, juegos y herramientas', body: 'Examen cronometrado, 5 juegos y 12 calculadoras clínicas.', icon: 'gamepad' },
+      { title: 'Simulacros, juegos y herramientas', body: 'Examen cronometrado, 6 juegos y 12 calculadoras clínicas.', icon: 'gamepad' },
+      { title: 'Habilidades clínicas', body: 'ATLS, trauma y fracturas, semiología por sistemas, espirometría, hemograma, monitor de ECG en vivo y 18 casos clínicos por especialidad.', icon: 'heart-pulse' },
     ],
   },
   {

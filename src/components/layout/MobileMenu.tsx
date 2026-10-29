@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 import { ChevronRight, LayoutGrid, Play, Search, Target, X } from 'lucide-react'
 import { useProgress } from '@/store/progress'
 import { cn } from '@/lib/utils'
-import { ALL_NAV, NAV_GROUPS, type NavItem } from './nav'
+import { ALL_NAV, NAV_GROUPS, hasNestedNav, type NavItem } from './nav'
 import { useScrollLock } from '@/hooks/useScrollLock'
 
 /** Accesos rápidos del teléfono: lo que más se abre además de la barra inferior. */
@@ -36,6 +36,7 @@ function Row({ item, onPick, hint }: { item: NavItem; onPick: () => void; hint?:
   return (
     <NavLink
       to={item.to}
+      end={hasNestedNav(item.to)}
       onClick={onPick}
       className={({ isActive }) => cn('flex min-h-14 items-center gap-3 border-b border-soft px-0.5 py-2 transition-colors active:bg-slate-900/5 dark:active:bg-white/5', isActive && 'bg-brand-500/[0.07]')}
     >

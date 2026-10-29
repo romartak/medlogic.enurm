@@ -7,6 +7,7 @@ const COMPONENTS = {
   'verdadero-falso': lazy(() => import('./TrueFalse')),
   parejas: lazy(() => import('./Memory')),
   pistas: lazy(() => import('./Clues')),
+  cuadrantes: lazy(() => import('./Quadrants')),
 }
 
 export default function GamePage() {

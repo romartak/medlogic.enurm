@@ -2,21 +2,10 @@ import { useState, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Activity, Baby, Brain, Calculator, Droplets, Flame, FlaskConical, HeartPulse, Scale, Stethoscope, Wind, type LucideIcon } from 'lucide-react'
 import { Card, PageHeader, Segmented } from '@/components/ui/primitives'
+import { NumField as Num } from '@/components/ui/NumField'
 import { addDays, cn, daysBetween } from '@/lib/utils'
 
 /* ---------- piezas de formulario ---------- */
-
-function Num({ label, value, onChange, unit, step = 'any' }: { label: string; value: string; onChange: (v: string) => void; unit?: string; step?: string }) {
-  return (
-    <label className="block">
-      <span className="text-sm font-medium">{label}</span>
-      <span className="mt-1.5 flex items-center rounded-xl border border-soft surface-2 focus-within:border-brand-500">
-        <input type="number" inputMode="decimal" step={step} value={value} onChange={(e) => onChange(e.target.value)} className="h-11 w-full bg-transparent px-3 text-sm outline-none" />
-        {unit && <span className="pr-3 text-xs text-muted">{unit}</span>}
-      </span>
-    </label>
-  )
-}
 
 function Check({ label, checked, onChange, points }: { label: string; checked: boolean; onChange: (v: boolean) => void; points: number }) {
   return (
