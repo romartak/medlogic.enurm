@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { ArrowRight, BookOpen, Check, ChevronRight, ClipboardList, Clock, Lightbulb, RotateCcw, Star, Stethoscope, X } from 'lucide-react'
 import { CASES, caseById, type ClinicalCase } from '@/data/cases'
-import { Button, Card, PageHeader, SpecialtyBadge } from '@/components/ui/primitives'
+import { Button, Card, Chip, PageHeader, SpecialtyBadge } from '@/components/ui/primitives'
+import { getSpecialty } from '@/data/specialties'
 import { useProgress } from '@/store/progress'
 import { celebrate, playSound } from '@/lib/fx'
 import { cn } from '@/lib/utils'
@@ -25,13 +26,33 @@ function stars(score: number) {
   return score >= 90 ? 3 : score >= 70 ? 2 : score > 0 ? 1 : 0
 }
 
+/** Especialidades que tienen casos, en el orden del listado de especialidades. */
+const CASE_SPECIALTIES = [...new Set(CASES.map((c) => c.specialty))]
+
 function CaseList() {
   const best = useCaseScores((s) => s.best)
+  const [params, setParams] = useSearchParams()
+  const spec = params.get('especialidad')
+  const shown = spec ? CASES.filter((c) => c.specialty === spec) : CASES
+  const pick = (id: string | null) => setParams(id ? { especialidad: id } : {}, { replace: true })
   return (
     <div>
       <PageHeader icon={<Stethoscope className="size-6" />} eyebrow="Aprende como en la guardia" title="Casos clínicos" subtitle="El paciente llega y tú decides: qué estudio pedir, cuál es el diagnóstico y cómo tratarlo. Cada decisión se explica." />
+      <div className="mb-5 flex flex-wrap gap-2" aria-label="Filtrar por especialidad">
+        <Chip active={!spec} onClick={() => pick(null)}>
+          Todas ({CASES.length})
+        </Chip>
+        {CASE_SPECIALTIES.map((id) => {
+          const sp = getSpecialty(id)
+          return (
+            <Chip key={id} active={spec === id} onClick={() => pick(id)} color={sp.color}>
+              {sp.short} ({CASES.filter((c) => c.specialty === id).length})
+            </Chip>
+          )
+        })}
+      </div>
       <div className="grid gap-4 md:grid-cols-2">
-        {CASES.map((c, i) => {
+        {shown.map((c, i) => {
           const s = best[c.id]
           return (
             <motion.div key={c.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}>

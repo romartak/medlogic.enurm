@@ -1,4 +1,4 @@
-import { Flag, HeartPulse, Languages, Medal, Stethoscope, Swords, UserRound, BookOpen, Calculator, Rocket, Sparkles, WandSparkles, CalendarCheck, ChartColumn, Compass, Gamepad2, GraduationCap, House, Layers, LayoutGrid, Library, Newspaper, RotateCcw, Settings, Target, Trophy, type LucideIcon } from 'lucide-react'
+import { Bone, Droplet, Flag, Hand, HeartPulse, Languages, Medal, MonitorDot, Siren, Stethoscope, Swords, UserRound, BookOpen, Calculator, Rocket, Sparkles, WandSparkles, Wind, CalendarCheck, ChartColumn, Compass, Gamepad2, GraduationCap, House, Layers, LayoutGrid, Library, Newspaper, RotateCcw, Settings, Target, Trophy, type LucideIcon } from 'lucide-react'
 
 export interface NavItem {
   to: string
@@ -21,6 +21,17 @@ export const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
       { to: '/flashcards', label: 'Flashcards', icon: Layers, description: 'Repetición espaciada' },
       { to: '/terminologia', label: 'Terminología', icon: Languages, description: 'Aprende términos médicos por partes, como en Duolingo' },
       { to: '/guias', label: 'Guías', icon: BookOpen, description: 'Resúmenes de alto rendimiento' },
+    ],
+  },
+  {
+    title: 'Habilidades clínicas',
+    items: [
+      { to: '/atls', label: 'ATLS', icon: Siren, description: 'El politraumatizado: xABCDE, shock, tórax, TCE y quemaduras' },
+      { to: '/fracturas', label: 'Trauma y fracturas', icon: Bone, description: 'Mecanismos, trazos, Salter-Harris y fracturas con nombre propio' },
+      { to: '/semiologia', label: 'Semiología', icon: Hand, description: 'Cómo explorar cada sistema y qué significa cada signo' },
+      { to: '/espirometria', label: 'Espirometría', icon: Wind, description: 'Interpreta patrones, gravedad y curvas flujo-volumen' },
+      { to: '/hemograma', label: 'Hemograma', icon: Droplet, description: 'Aprende a leer las tres series con casos reales' },
+      { to: '/ecg/monitor', label: 'Monitor de ECG', icon: MonitorDot, description: 'Ritmos en vivo como en la emergencia' },
     ],
   },
   {
@@ -57,6 +68,13 @@ export const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
 ]
 
 export const ALL_NAV = NAV_GROUPS.flatMap((g) => g.items)
+
+/** La entrada del menú que corresponde a una ruta: la coincidencia más larga (/ecg/monitor antes que /ecg). */
+export const navFor = (pathname: string) =>
+  ALL_NAV.filter((n) => pathname === n.to || pathname.startsWith(`${n.to}/`)).sort((a, b) => b.to.length - a.to.length)[0]
+
+/** ¿Hay otra entrada del menú dentro de esta ruta? Entonces su enlace solo se marca en la ruta exacta. */
+export const hasNestedNav = (to: string) => ALL_NAV.some((o) => o.to !== to && o.to.startsWith(`${to}/`))
 
 /** Pestañas de la barra inferior en móvil. */
 export const MOBILE_TABS = ['/inicio', '/plan', '/especialidades', '/practica', '/flashcards'].map((to) => ALL_NAV.find((n) => n.to === to)!)

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { NavLink, useLocation, useNavigate, useOutlet } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { Flame, LogIn, Moon, Search, Sun, Monitor, UserRound, Zap } from 'lucide-react'
-import { NAV_GROUPS, ALL_NAV, MOBILE_TABS } from './nav'
+import { NAV_GROUPS, MOBILE_TABS, hasNestedNav, navFor } from './nav'
 import { Logo, GithubIcon } from '@/components/ui/Logo'
 import { CommandPalette } from './CommandPalette'
 import { FunctionsSheet, FunctionsTab } from './MobileMenu'
@@ -46,6 +46,7 @@ function SidebarNav() {
               <li key={item.to}>
                 <NavLink
                   to={item.to}
+                  end={hasNestedNav(item.to)}
                   className={({ isActive }) =>
                     cn(
                       'group relative flex items-center gap-3 rounded-xl px-3 py-[7px] text-sm font-medium transition-colors',
@@ -131,14 +132,14 @@ function AccountButton() {
   )
 }
 
-const STUDY_SECTIONS = ['/plan', '/especialidades', '/practica', '/simulacro', '/casos', '/flashcards', '/terminologia', '/guias', '/banco', '/repaso', '/juegos', '/ecg', '/herramientas']
+const STUDY_SECTIONS = ['/plan', '/especialidades', '/practica', '/simulacro', '/casos', '/flashcards', '/terminologia', '/guias', '/banco', '/repaso', '/juegos', '/ecg', '/herramientas', '/atls', '/fracturas', '/semiologia', '/espirometria', '/hemograma']
 
 export function AppLayout() {
   const [paletteOpen, setPaletteOpen] = useState(false)
   const [functionsOpen, setFunctionsOpen] = useState(false)
   const location = useLocation()
   const outlet = useOutlet()
-  const current = ALL_NAV.find((n) => location.pathname.startsWith(n.to))
+  const current = navFor(location.pathname)
   const recovering = useAuth((s) => s.recovering)
   const authStatus = useAuth((s) => s.status)
   const syncState = useAuth((s) => s.sync)

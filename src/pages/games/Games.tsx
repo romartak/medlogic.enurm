@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { Gamepad2, Heart, Puzzle, Search, Timer, ToggleLeft, Trophy } from 'lucide-react'
+import { Gamepad2, Grid3x3, Heart, Puzzle, Search, Timer, ToggleLeft, Trophy } from 'lucide-react'
 import { PageHeader } from '@/components/ui/primitives'
 import { useProgress, type GameId } from '@/store/progress'
 
@@ -10,6 +10,7 @@ export const GAMES: { id: GameId; title: string; description: string; icon: type
   { id: 'verdadero-falso', title: 'Verdadero o falso', description: 'Afirmaciones rápidas sobre conceptos clave. Decide en un segundo.', icon: ToggleLeft, gradient: 'from-emerald-500 to-teal-500', unit: 'pts' },
   { id: 'parejas', title: 'Parejas clínicas', description: 'Memoria: une cada tóxico con su antídoto, cada signo con su enfermedad.', icon: Puzzle, gradient: 'from-violet-500 to-fuchsia-500', unit: 'pts' },
   { id: 'pistas', title: 'Diagnóstico en 5 pistas', description: 'Las pistas se revelan una a una. Cuanto antes diagnostiques, más puntos.', icon: Search, gradient: 'from-amber-500 to-pink-500', unit: 'pts' },
+  { id: 'cuadrantes', title: 'Cuadrantes y órganos', description: '¿Dónde está el bazo? ¿Dónde duele la colecistitis? Toca la región correcta del abdomen.', icon: Grid3x3, gradient: 'from-orange-500 to-rose-500', unit: 'pts' },
 ]
 
 export default function Games() {
