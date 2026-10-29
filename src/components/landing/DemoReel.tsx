@@ -10,6 +10,8 @@ interface Demo {
   sticker: ReactNode
   /** Inclinación del teléfono en escritorio: le da un aire de mesa de trabajo, no de catálogo. */
   tilt: string
+  /** Dónde va la etiqueta si la posición alterna (arriba a la izquierda o abajo a la derecha) tapa algo del video. */
+  stickerAt?: string
 }
 
 const DEMOS: Demo[] = [
@@ -45,6 +47,8 @@ const DEMOS: Demo[] = [
       </>
     ),
     tilt: 'lg:-rotate-1',
+    // Sobre el borde del teléfono: a la altura de top-16 tapaba el título «Tu plan de hoy».
+    stickerAt: '-left-3 -top-3',
   },
   {
     id: 'flashcards',
@@ -184,7 +188,7 @@ export function DemoReel() {
               <motion.span
                 variants={sticker(i)}
                 aria-hidden
-                className={cn('pointer-events-none absolute z-20 inline-flex items-center gap-1.5 rounded-full border border-soft bg-[var(--surface)] px-3 py-1.5 text-xs font-bold whitespace-nowrap shadow-lift', i % 2 ? '-right-2 bottom-16' : '-left-2 top-16')}
+                className={cn('pointer-events-none absolute z-20 inline-flex items-center gap-1.5 rounded-full border border-soft bg-[var(--surface)] px-3 py-1.5 text-xs font-bold whitespace-nowrap shadow-lift', d.stickerAt ?? (i % 2 ? '-right-2 bottom-16' : '-left-2 top-16'))}
               >
                 {d.sticker}
               </motion.span>
