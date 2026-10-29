@@ -1,7 +1,8 @@
+import { LocalProgressLine } from '@/components/AccountNote'
 import { useEffect, useState } from 'react'
-import { Navigate, NavLink, useLocation, useNavigate, useOutlet } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate, useOutlet } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
-import { Flame, LogIn, Moon, RefreshCw, Search, Sun, Monitor, UserRound, Zap } from 'lucide-react'
+import { Flame, LogIn, Moon, Search, Sun, Monitor, UserRound, Zap } from 'lucide-react'
 import { NAV_GROUPS, ALL_NAV, MOBILE_TABS } from './nav'
 import { Logo, GithubIcon } from '@/components/ui/Logo'
 import { CommandPalette } from './CommandPalette'
@@ -115,7 +116,7 @@ function AccountButton() {
   if (status === 'disabled' || status === 'loading') return null
   if (status === 'signed-out')
     return (
-      <NavLink to="/cuenta" className="ml-1 inline-flex h-11 items-center gap-1.5 rounded-xl bg-brand-gradient px-3 text-xs font-semibold text-white shadow-glow">
+      <NavLink to="/cuenta" state={{ mode: 'signin' }} className="ml-1 inline-flex h-11 items-center gap-1.5 rounded-xl bg-brand-gradient px-3 text-xs font-semibold text-white shadow-glow">
         <LogIn className="size-4" /> <span className="max-sm:hidden">Iniciar sesión</span>
       </NavLink>
     )
@@ -138,18 +139,10 @@ export function AppLayout() {
   const [functionsOpen, setFunctionsOpen] = useState(false)
   const location = useLocation()
   const outlet = useOutlet()
-  const profile = useProgress((s) => s.profile)
   const current = ALL_NAV.find((n) => location.pathname.startsWith(n.to))
   const recovering = useAuth((s) => s.recovering)
   const authStatus = useAuth((s) => s.status)
   const syncState = useAuth((s) => s.sync)
-  // Con mala conexión no se espera para siempre a la nube: a los 8 s se sigue como si no hubiera plan guardado.
-  const [cloudTimedOut, setCloudTimedOut] = useState(false)
-  useEffect(() => {
-    if (authStatus !== 'signed-in') return setCloudTimedOut(false)
-    const t = setTimeout(() => setCloudTimedOut(true), 8000)
-    return () => clearTimeout(t)
-  }, [authStatus])
   const navigate = useNavigate()
 
   // Tras abrir el enlace de «olvidé mi contraseña», pedir la nueva.
@@ -181,25 +174,6 @@ export function AppLayout() {
     if (STUDY_SECTIONS.includes(section)) setLastSection(section)
   }, [location.pathname, authStatus, syncState, setLastSection])
 
-  // Primera visita: cuestionario para personalizar el plan. Un enlace de duelo se abre directo
-  // (quien lo recibe por WhatsApp viene a jugar; el cuestionario puede esperar).
-  const needsSurvey = !profile.completed && !profile.skipped && !location.pathname.startsWith('/duelo') && !location.pathname.startsWith('/d/') && location.pathname !== '/cuenta'
-  if (needsSurvey) {
-    // Quien acaba de entrar con su cuenta en un dispositivo vacío: se espera a bajar su plan de la nube antes de decidir
-    // si hace falta el cuestionario (si no, lo vería otra vez aunque ya lo hizo).
-    if (authStatus === 'signed-in' && !cloudTimedOut && (syncState === 'idle' || syncState === 'syncing')) {
-      return (
-        <div className="grid min-h-dvh place-items-center" role="status" aria-label="Cargando tu progreso">
-          <div className="text-center">
-            <RefreshCw className="mx-auto size-6 animate-spin text-brand-600" />
-            <p className="mt-3 text-sm text-muted">Cargando tu progreso…</p>
-          </div>
-        </div>
-      )
-    }
-    return <Navigate to="/bienvenida" replace />
-  }
-
   return (
     <div className="min-h-dvh">
       <div className="pointer-events-none fixed inset-0 -z-10 bg-mesh" />
@@ -216,6 +190,7 @@ export function AppLayout() {
         </div>
         <div className="border-t border-soft p-3">
           <ExamChip />
+          <LocalProgressLine className="mt-2 px-1" />
         </div>
       </aside>
 
@@ -262,6 +237,7 @@ export function AppLayout() {
         footer={
           <div className="space-y-1">
             <ExamChip />
+            <LocalProgressLine className="px-2" />
             <a href={REPO_URL} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-2 py-2 text-xs text-muted hover:text-[var(--text)]">
               <GithubIcon className="size-4" /> Gratis y de código abierto
             </a>

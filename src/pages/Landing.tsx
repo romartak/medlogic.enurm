@@ -33,7 +33,7 @@ import { buttonClass } from '@/components/ui/primitives'
 import { SPECIALTIES } from '@/data/specialties'
 import { Icon } from '@/components/ui/Icon'
 import { REPO_URL } from '@/components/layout/AppLayout'
-import { SectionBar, SectionGrid, SectionStrip, navVariant } from '@/components/landing/MobileSections'
+import { EnterBar, LandingNav } from '@/components/landing/LandingNav'
 import { INSTAGRAM_URL, INSTAGRAM_USER, InstagramIcon } from '@/components/Instagram'
 import { ENURM_FACTS, formatEnurmDate, upcomingEnurm } from '@/data/enurm'
 import { cn, daysBetween, softHyphens, tintText } from '@/lib/utils'
@@ -87,11 +87,11 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: '¿De verdad es gratis?',
-    a: <>Sí, ahora y siempre. Es un proyecto de código abierto y sin anuncios. Solo necesitas una cuenta gratis con tu correo para guardar tu progreso, y nadie vende tus datos.</>,
+    a: <>Sí, ahora y siempre. Es un proyecto de código abierto y sin anuncios. Puedes estudiar sin registrarte: la cuenta es opcional. Nadie vende tus datos.</>,
   },
   {
     q: '¿Dónde se guarda mi progreso?',
-    a: <>En tu propio navegador. Desde Ajustes puedes descargar una copia de seguridad y cargarla en otro dispositivo.</>,
+    a: <>Sin cuenta, solo en tu navegador: si borras los datos del navegador o cambias de dispositivo, no lo recuperas (desde Ajustes puedes descargar una copia). Con una cuenta gratis se guarda en la nube y es el mismo en todos tus dispositivos.</>,
   },
   {
     q: '¿De dónde salen las preguntas?',
@@ -302,13 +302,9 @@ function Features() {
 export default function Landing() {
   const { scrollY } = useScroll()
   const heroY = useTransform(scrollY, [0, 500], [0, 60])
-  const [scrolled, setScrolled] = useState(false)
-  useEffect(() => scrollY.on('change', (v) => setScrolled(v > 12)), [scrollY])
   const next = upcomingEnurm(1)[0]
   const daysLeft = Math.max(0, daysBetween(new Date(), next.date))
 
-  // Las secciones van visibles en el teléfono: nada de esconderlas tras un icono de tres rayas.
-  const variant = navVariant()
   /** Los enlaces de sección se manejan a mano: con HashRouter, un `#ancla` normal rompería la ruta. */
   const goTo = (href: string) => (e: React.MouseEvent) => {
     e.preventDefault()
@@ -316,37 +312,12 @@ export default function Landing() {
   }
 
   return (
-    <div className={cn('relative min-h-dvh overflow-x-clip', variant === 'bar' && 'pb-16 md:pb-0')}>
+    <div className="relative min-h-dvh overflow-x-clip pt-[4.75rem] pb-24 sm:pt-24 md:pb-0">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-mesh" />
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[720px] grid-pattern opacity-60" />
 
-      <header className={cn('sticky top-0 z-30 transition-colors duration-300', scrolled ? 'border-b border-soft bg-[color-mix(in_oklab,var(--bg)_85%,transparent)] backdrop-blur-xl' : 'border-b border-transparent')}>
-        <div>
-          <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:h-20 sm:px-6 lg:px-8">
-            <Logo />
-            <nav className="hidden items-center gap-1 text-sm font-medium md:flex" aria-label="Secciones">
-              {SECTIONS.map(([href, label]) => (
-                <a key={href} href={href} onClick={goTo(href)} className="rounded-lg px-3 py-2 text-muted transition-colors hover:text-[var(--text)]">
-                  {label}
-                </a>
-              ))}
-            </nav>
-            <div className="flex items-center gap-2">
-              <a href={REPO_URL} target="_blank" rel="noreferrer" className={buttonClass('ghost', 'md', 'max-lg:hidden')}>
-                <GithubIcon className="size-4" /> Código abierto
-              </a>
-              <Link to="/inicio" className={buttonClass('primary', 'md')}>
-                Entrar <ArrowRight className="size-4" />
-              </Link>
-            </div>
-          </div>
-
-        </div>
-      </header>
-
-      {variant === 'franja' && <SectionStrip sections={SECTIONS} onGo={goTo} />}
-      {variant === 'grid' && <SectionGrid sections={SECTIONS} onGo={goTo} />}
-      {variant === 'bar' && <SectionBar sections={SECTIONS} onGo={goTo} />}
+      <LandingNav sections={SECTIONS} onGo={goTo} />
+      <EnterBar />
 
       <main>
       {/* Hero */}
@@ -359,7 +330,7 @@ export default function Landing() {
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex max-w-full items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 py-1 pr-3 pl-1 text-xs font-semibold text-brand-800 transition-colors hover:bg-brand-500/15 dark:text-brand-200"
           >
-            <span className="rounded-full bg-brand-600 px-2 py-0.5 text-white">ENURM {next.year}</span>
+            <span className="shrink-0 rounded-full bg-brand-600 px-2 py-0.5 whitespace-nowrap text-white">ENURM {next.year}</span>
             <span className="truncate first-letter:uppercase">{formatEnurmDate(next, { weekday: true })}</span>
           </motion.a>
           <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="mt-5 text-4xl leading-[1.05] font-extrabold text-balance sm:text-5xl lg:text-6xl">
@@ -376,8 +347,8 @@ export default function Landing() {
             Preguntas tipo ENURM con el porqué de cada opción, simulacros cronometrados, flashcards estilo Anki, guías y un plan diario que se ajusta al tiempo que te queda.
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.24 }} className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link to="/bienvenida" className={buttonClass('primary', 'lg', 'w-full sm:w-auto')}>
-              Crear mi plan gratis <ArrowRight className="size-5" />
+            <Link to="/inicio" className={buttonClass('primary', 'lg', 'w-full sm:w-auto')}>
+              Empezar ahora, gratis <ArrowRight className="size-5" />
             </Link>
             <Link to="/simulacro" className={buttonClass('outline', 'lg', 'w-full bg-[var(--surface)] sm:w-auto')}>
               <GraduationCap className="size-5" /> Probar un simulacro
@@ -387,8 +358,8 @@ export default function Landing() {
             {[
               [HeartHandshake, 'Gratis para siempre'],
               [ListChecks, 'Más de 1.000 preguntas explicadas · meta: 12.000'],
-              [ShieldCheck, 'Sin anuncios y sin costo'],
-              [Check, 'Tu progreso te sigue a cualquier dispositivo'],
+              [ShieldCheck, 'Sin anuncios y sin cuenta obligatoria'],
+              [Check, 'Tu progreso queda en tu navegador; con cuenta, en todos tus dispositivos'],
             ].map(([I, t]) => {
               const C = I as typeof Check
               return (
@@ -481,8 +452,8 @@ export default function Landing() {
           </ol>
         </div>
         <div className="mt-10 flex justify-center">
-          <Link to="/bienvenida" className={buttonClass('primary', 'lg', 'w-full sm:w-auto')}>
-            <Sparkles className="size-5" /> Crear mi plan gratis
+          <Link to="/inicio" className={buttonClass('primary', 'lg', 'w-full sm:w-auto')}>
+            <Sparkles className="size-5" /> Empezar ahora, gratis
           </Link>
         </div>
       </section>
@@ -528,7 +499,7 @@ export default function Landing() {
             <h2 className="text-3xl font-extrabold text-balance sm:text-4xl">Un regalo para todos los médicos en formación</h2>
             <p className="mt-3 text-white/85">MedLogic ENURM es y será siempre gratuito y de código abierto. Faltan {daysLeft} días: cada pregunta cuenta.</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link to="/bienvenida" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-white px-6 font-semibold text-slate-900 transition-transform hover:scale-[1.02] active:scale-[0.97]">
+              <Link to="/inicio" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-white px-6 font-semibold text-slate-900 transition-transform hover:scale-[1.02] active:scale-[0.97]">
                 Comenzar ahora <ArrowRight className="size-5" />
               </Link>
               <Link to="/como-prepararte" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-white/15 px-6 font-semibold text-white backdrop-blur transition-colors hover:bg-white/25">

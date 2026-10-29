@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
-import { HashRouter, Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom'
+import { HashRouter, Outlet, Route, Routes } from 'react-router-dom'
 import { MotionConfig } from 'motion/react'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { Toaster } from '@/components/ui/Toaster'
@@ -87,13 +87,21 @@ function Splash({ onLeft }: { onLeft?: () => void }) {
           <svg viewBox="0 0 64 64" aria-hidden>
             <defs>
               <linearGradient id="boot-g2" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stopColor="#14b8a6" />
-                <stop offset="1" stopColor="#6366f1" />
+                <stop offset="0" stopColor="#14bfac" />
+                <stop offset="0.55" stopColor="#078377" />
+                <stop offset="1" stopColor="#055b53" />
               </linearGradient>
+              <radialGradient id="boot-h2" cx="0.28" cy="0.18" r="0.78">
+                <stop offset="0" stopColor="#fff" stopOpacity="0.28" />
+                <stop offset="0.65" stopColor="#fff" stopOpacity="0" />
+              </radialGradient>
             </defs>
-            <rect width="64" height="64" rx="16" fill="url(#boot-g2)" />
-            <path d="M10 34h10l5-12 8 22 6-16 4 6h11" fill="none" stroke="#fff" strokeOpacity=".22" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
-            <path className="boot-line" style={phase} pathLength={100} d="M10 34h10l5-12 8 22 6-16 4 6h11" fill="none" stroke="#fff" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+            <rect width="64" height="64" rx="18" fill="url(#boot-g2)" />
+            <rect width="64" height="64" rx="18" fill="url(#boot-h2)" />
+            <rect x="0.5" y="0.5" width="63" height="63" rx="17.5" fill="none" stroke="#fff" strokeOpacity="0.16" />
+            <path d="M9 40H15L22 18 32 44 42 18 49 40H52" fill="none" stroke="#fff" strokeOpacity=".22" strokeWidth="4.6" strokeLinecap="round" strokeLinejoin="round" />
+            <path className="boot-line" style={phase} pathLength={100} d="M9 40H15L22 18 32 44 42 18 49 40H52" fill="none" stroke="#fff" strokeWidth="4.6" strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx="56" cy="40" r="3.2" fill="#a7f3d0" />
           </svg>
         </div>
         <div className="boot-name">MedLogic</div>
@@ -104,28 +112,6 @@ function Splash({ onLeft }: { onLeft?: () => void }) {
       </div>
     </div>
   )
-}
-
-/**
- * Para usar la plataforma hay que iniciar sesión (la portada, el cuestionario del plan y la cuenta son públicos).
- * Sin Supabase configurado no hay cuentas y todo queda abierto. Sin conexión se deja pasar a quien ya había entrado.
- */
-function hadSessionOffline(): boolean {
-  try {
-    return navigator.onLine === false && localStorage.getItem('medlogic-auth') !== null
-  } catch {
-    return false
-  }
-}
-
-function AuthGate() {
-  const status = useAuth((s) => s.status)
-  const location = useLocation()
-  if (status === 'loading') return <Splash />
-  if (status === 'signed-out' && location.pathname !== '/cuenta' && !hadSessionOffline()) {
-    return <Navigate to="/cuenta" replace state={{ from: `${location.pathname}${location.search}` }} />
-  }
-  return <Outlet />
 }
 
 /**
@@ -200,7 +186,6 @@ export default function App() {
               <Route path="/bienvenida" element={<Onboarding />} />
             </Route>
             <Route path="*" element={<NotFound />} />
-            <Route element={<AuthGate />}>
             <Route path="/terminologia/leccion/:lessonId" element={<LingoLesson />} />
             <Route path="/terminologia/relampago" element={<LingoBlitz />} />
             <Route element={<BankGate />}>
@@ -243,7 +228,6 @@ export default function App() {
               <Route path="/ajustes" element={<Lazy><Settings /></Lazy>} />
               <Route path="/cuenta" element={<Lazy><Account /></Lazy>} />
               <Route path="/terminologia" element={<Lazy><LingoPath /></Lazy>} />
-            </Route>
             </Route>
             </Route>
           </Routes>

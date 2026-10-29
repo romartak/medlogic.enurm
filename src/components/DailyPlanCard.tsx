@@ -26,35 +26,39 @@ export function DailyPlanCard({ compact = false }: { compact?: boolean }) {
 
   return (
     <Card className="overflow-hidden">
-      <div className="relative flex flex-col gap-4 border-b border-soft p-5 sm:flex-row sm:items-center sm:p-6">
-        <div className="pointer-events-none absolute -top-20 -right-10 size-56 rounded-full opacity-20 blur-3xl" style={{ backgroundColor: phase.color }} />
-        <Ring value={ratio} size={86} stroke={8} color={allDone ? '#10b981' : phase.color}>
+      <div className="flex items-start gap-3.5 border-b border-soft p-4 sm:items-center sm:gap-5 sm:p-6">
+        <Ring value={ratio} size={72} stroke={7} color={allDone ? '#10b981' : phase.color}>
           {allDone ? (
-            <Check className="size-8 text-emerald-500" />
+            <Check className="size-7 text-emerald-500" />
           ) : (
-            <div>
-              <div className="font-display text-xl font-extrabold">
+            <div className="leading-none">
+              <div className="font-display text-lg font-extrabold tabular-nums">
                 {completed}/{total}
               </div>
-              <div className="text-xs text-muted">tareas</div>
+              <div className="mt-0.5 text-xs text-muted">tareas</div>
             </div>
           )}
         </Ring>
-        <div className="relative min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <h2 className="font-display text-lg font-bold">{plan.restDay ? 'Hoy: día de descanso' : 'Tu plan de hoy'}</h2>
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <h2 className="font-display text-base font-bold sm:text-lg">{plan.restDay ? 'Hoy: día de descanso' : 'Tu plan de hoy'}</h2>
             <Badge color={phase.color}>{phase.name}</Badge>
             {plan.minutes > 0 && <Badge>≈ {formatDuration(plan.minutes * 60)}</Badge>}
           </div>
-          <p className="mt-1 text-sm text-muted">{plan.message}</p>
+          <p className="mt-1 text-sm text-pretty text-muted">{plan.message}</p>
           {plan.focus.length > 0 && !plan.restDay && (
             <div className="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-muted">
               Enfoque: {plan.focus.map((f) => <SpecialtyBadge key={f} id={f} />)}
             </div>
           )}
+          {!compact && (
+            <Link to="/plan" className="mt-2 inline-block text-sm font-semibold text-brand-600 hover:underline sm:hidden dark:text-brand-400">
+              Ver semana →
+            </Link>
+          )}
         </div>
         {!compact && (
-          <Link to="/plan" className="relative text-sm font-semibold text-brand-600 hover:underline dark:text-brand-400">
+          <Link to="/plan" className="shrink-0 self-start text-sm font-semibold text-brand-600 hover:underline max-sm:hidden dark:text-brand-400 sm:self-center">
             Ver semana →
           </Link>
         )}
@@ -64,7 +68,7 @@ export function DailyPlanCard({ compact = false }: { compact?: boolean }) {
         <Link to="/bienvenida" className="flex items-center gap-3 border-b border-soft bg-amber-500/[0.07] px-5 py-3 text-sm transition-colors hover:bg-amber-500/[0.12] sm:px-6">
           <Sparkles className="size-4 shrink-0 text-amber-500" />
           <span className="flex-1">
-            <b>Personaliza este plan:</b> responde el cuestionario (2 minutos) con la fecha de tu examen y tu disponibilidad.
+            <b>Personaliza este plan:</b> dime la fecha de tu examen y cuánto tiempo tienes (1 minuto).
           </span>
           <span className="font-semibold text-amber-600">Empezar →</span>
         </Link>

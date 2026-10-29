@@ -13,7 +13,7 @@ export interface ShareStats {
 
 const W = 1080
 const H = 1350
-const PULSE = 'M10 34h10l5-12 8 22 6-16 4 6h11'
+const PULSE = 'M9 40H15L22 18 32 44 42 18 49 40H52'
 export const DISPLAY = '"Plus Jakarta Sans Variable", "Inter Variable", system-ui, sans-serif'
 export const BODY = '"Inter Variable", system-ui, sans-serif'
 export const SITE = 'medlogicenurm.vercel.app'
@@ -25,19 +25,30 @@ export function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w
 
 export function logo(ctx: CanvasRenderingContext2D, x: number, y: number, size: number) {
   const g = ctx.createLinearGradient(x, y, x + size, y + size)
-  g.addColorStop(0, '#14b8a6')
-  g.addColorStop(1, '#6366f1')
+  g.addColorStop(0, '#14bfac')
+  g.addColorStop(0.55, '#078377')
+  g.addColorStop(1, '#055b53')
   ctx.fillStyle = g
-  roundRect(ctx, x, y, size, size, size * 0.25)
+  roundRect(ctx, x, y, size, size, size * 0.28)
+  ctx.fill()
+  const h = ctx.createRadialGradient(x + size * 0.28, y + size * 0.18, 0, x + size * 0.28, y + size * 0.18, size * 0.78)
+  h.addColorStop(0, 'rgba(255,255,255,0.30)')
+  h.addColorStop(0.65, 'rgba(255,255,255,0)')
+  ctx.fillStyle = h
+  roundRect(ctx, x, y, size, size, size * 0.28)
   ctx.fill()
   ctx.save()
   ctx.translate(x, y)
   ctx.scale(size / 64, size / 64)
   ctx.strokeStyle = '#fff'
-  ctx.lineWidth = 4.5
+  ctx.lineWidth = 4.6
   ctx.lineCap = 'round'
   ctx.lineJoin = 'round'
   ctx.stroke(new Path2D(PULSE))
+  ctx.fillStyle = '#a7f3d0'
+  ctx.beginPath()
+  ctx.arc(56, 40, 3.2, 0, Math.PI * 2)
+  ctx.fill()
   ctx.restore()
 }
 

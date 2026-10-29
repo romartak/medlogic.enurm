@@ -78,7 +78,7 @@ export default function NationalExam() {
                 <p className="mt-3 text-xs text-amber-700 dark:text-amber-400">
                   {isSupabaseConfigured ? (
                     <>
-                      Tu resultado entra al percentil del país cuando tienes la sesión iniciada. <Link to="/cuenta" className="font-semibold underline">Inicia sesión</Link> antes de empezar.
+                      Sin cuenta puedes hacerlo, pero tu resultado no entra al percentil del país. <Link to="/cuenta" className="font-semibold underline">Inicia sesión o crea tu cuenta</Link> antes de empezar si quieres entrar al percentil.
                     </>
                   ) : (
                     'El percentil del país se activará pronto; tu resultado quedará guardado.'

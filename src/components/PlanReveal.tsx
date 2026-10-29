@@ -88,7 +88,7 @@ export function PlanReveal() {
           exit={{ clipPath: 'circle(0% at 50% 50%)', transition: { duration: 0.6, ease: EASE } }}
         >
           {/* 1. Círculo de color que crece */}
-          <motion.div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #0ba595, #6366f1)' }} initial={{ clipPath: 'circle(0% at 50% 50%)' }} animate={{ clipPath: 'circle(75% at 50% 50%)' }} transition={{ duration: 0.55, ease: EASE }} />
+          <motion.div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #0ba595, #066a60)' }} initial={{ clipPath: 'circle(0% at 50% 50%)' }} animate={{ clipPath: 'circle(75% at 50% 50%)' }} transition={{ duration: 0.55, ease: EASE }} />
           {/* 2. Le sigue uno blanco: la página queda en blanco */}
           <motion.div className="absolute inset-0 bg-white" initial={{ clipPath: 'circle(0% at 50% 50%)' }} animate={{ clipPath: 'circle(75% at 50% 50%)' }} transition={{ duration: 0.6, ease: EASE, delay: 0.28 }} />
 

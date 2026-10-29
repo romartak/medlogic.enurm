@@ -81,6 +81,8 @@ export default function Onboarding() {
   const counts = useBank((s) => s.specialtyCounts)
 
   const [step, setStep] = useState(0)
+  // Primera vez: solo lo esencial (fecha y tiempo). El resto se ofrece al final como «Afinar mi plan».
+  const [fine, setFine] = useState(stored.completed)
   const [dir, setDir] = useState(1)
   const [name, setName] = useState(settings.name)
   const [honorific, setHonorific] = useState<Honorific | null>(settings.honorific ?? null)
@@ -96,8 +98,8 @@ export default function Onboarding() {
   const advice = useMemo(() => questionAdvice(p, priorities), [p, priorities])
   const questionsPerDay = advice.perDay
 
-  const steps = [
-    { key: 'hola', title: '¡Bienvenido a MedLogic!', subtitle: 'Responde unas preguntas rápidas y crearemos un plan de estudio diario hecho para ti.', valid: true },
+  const allSteps = [
+    { key: 'hola', title: '¡Bienvenido a MedLogic!', subtitle: fine ? 'Responde unas preguntas rápidas y crearemos un plan de estudio diario hecho para ti.' : 'Solo 2 preguntas (menos de un minuto) y tendrás un plan diario hecho para ti. Sin presión: puedes cambiarlo cuando quieras.', valid: true },
     { key: 'rol', title: '¿En qué etapa estás?', subtitle: 'Así ajustamos el ritmo de tu plan.', valid: !!p.role },
     {
       key: 'universidad',
@@ -112,6 +114,8 @@ export default function Onboarding() {
     { key: 'metodos', title: '¿Cómo te gusta estudiar?', subtitle: 'Elige todos los que quieras. Las preguntas siempre forman parte del plan.', valid: p.methods.length > 0 },
     { key: 'resumen', title: 'Tu plan está listo', subtitle: 'Puedes cambiar estas respuestas cuando quieras desde «Mi plan».', valid: true },
   ]
+  const QUICK = ['hola', 'fecha', 'tiempo', 'resumen']
+  const steps = fine ? allSteps : allSteps.filter((s) => QUICK.includes(s.key))
   const current = steps[step]
 
   const go = (delta: number) => {
@@ -410,6 +414,18 @@ export default function Onboarding() {
           <Button variant="ghost" onClick={() => (step === 0 ? navigate(-1) : go(-1))}>
             <ArrowLeft className="size-4" /> {step === 0 ? 'Volver' : 'Atrás'}
           </Button>
+          {current.key === 'resumen' && !fine && (
+            <Button
+              variant="outline"
+              onClick={() => {
+                setFine(true)
+                setDir(1)
+                setStep(1)
+              }}
+            >
+              Afinar mi plan
+            </Button>
+          )}
           {step < steps.length - 1 ? (
             <Button size="lg" onClick={() => go(1)} disabled={!current.valid}>
               {step === 0 ? 'Comenzar' : 'Continuar'} <ArrowRight className="size-5" />
