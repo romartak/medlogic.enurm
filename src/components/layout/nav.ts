@@ -77,4 +77,4 @@ export const navFor = (pathname: string) =>
 export const hasNestedNav = (to: string) => ALL_NAV.some((o) => o.to !== to && o.to.startsWith(`${to}/`))
 
 /** Pestañas de la barra inferior en móvil. */
-export const MOBILE_TABS = ['/inicio', '/plan', '/especialidades', '/practica', '/flashcards'].map((to) => ALL_NAV.find((n) => n.to === to)!)
+export const MOBILE_TABS = ['/inicio', '/plan', '/practica', '/flashcards'].map((to) => ALL_NAV.find((n) => n.to === to)!)
