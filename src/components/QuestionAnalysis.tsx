@@ -59,7 +59,8 @@ export function QuestionAnalysis({ q, selected, order }: { q: Question; selected
         </Section>
 
         {q.pathophysiology && (
-          <Section icon={<Activity className="size-4 text-violet-500" />} title="Fisiopatología: qué está pasando" tone="border-violet-500/25 bg-violet-500/[0.06]" collapsible>
+          // Borde en sRGB: el violet-500 de Tailwind (oklch fuera de gama) con transparencia deja píxeles amarillos en las esquinas redondeadas de Chrome.
+          <Section icon={<Activity className="size-4 text-violet-500" />} title="Fisiopatología: qué está pasando" tone="border-[rgb(139_92_246/0.25)] bg-violet-500/[0.06]" collapsible>
             <p className="whitespace-pre-line">{q.pathophysiology}</p>
           </Section>
         )}

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { motion, useReducedMotion } from 'motion/react'
+import { motion, useReducedMotionConfig, type Variants } from 'motion/react'
 import { BatteryFull, Flame, Layers, Play, Signal, Sparkles, Trophy, Wifi } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -10,6 +10,8 @@ interface Demo {
   sticker: ReactNode
   /** Inclinación del teléfono en escritorio: le da un aire de mesa de trabajo, no de catálogo. */
   tilt: string
+  /** Dónde va la etiqueta si la posición alterna (arriba a la izquierda o abajo a la derecha) tapa algo del video. */
+  stickerAt?: string
 }
 
 const DEMOS: Demo[] = [
@@ -45,6 +47,8 @@ const DEMOS: Demo[] = [
       </>
     ),
     tilt: 'lg:-rotate-1',
+    // Sobre el borde del teléfono: a la altura de top-16 tapaba el título «Tu plan de hoy».
+    stickerAt: '-left-3 -top-3',
   },
   {
     id: 'flashcards',
@@ -61,16 +65,19 @@ const DEMOS: Demo[] = [
 
 /**
  * Video corto en bucle dentro de un teléfono. Solo se descarga y se reproduce cuando está a la vista
- * (ahorra datos en el celular); con «reducir movimiento» se queda quieto y se reproduce al tocarlo.
+ * (ahorra datos en el celular). Tocarlo lo pausa o lo reanuda; con «reducir movimiento» (del sistema o de
+ * Configuración) se queda quieto hasta que lo toquen.
  */
 function PhoneVideo({ id, title }: { id: string; title: string }) {
   const ref = useRef<HTMLVideoElement>(null)
-  const reduce = useReducedMotion()
+  const reduce = useReducedMotionConfig()
   const [playing, setPlaying] = useState(false)
+  /** Pausado a mano: no se reanuda solo al volver a la vista. */
+  const [held, setHeld] = useState(false)
 
   useEffect(() => {
     const v = ref.current
-    if (!v || reduce) return
+    if (!v || reduce || held) return
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) void v.play().catch(() => {})
@@ -80,7 +87,19 @@ function PhoneVideo({ id, title }: { id: string; title: string }) {
     )
     io.observe(v)
     return () => io.disconnect()
-  }, [reduce])
+  }, [reduce, held])
+
+  const toggle = () => {
+    const v = ref.current
+    if (!v) return
+    if (v.paused) {
+      setHeld(false)
+      void v.play().catch(() => {})
+    } else {
+      setHeld(true)
+      v.pause()
+    }
+  }
 
   return (
     <div className="relative mx-auto w-[min(15.5rem,70vw)] rounded-[2.4rem] bg-slate-900 p-[7px] shadow-[0_30px_60px_-20px_rgb(15_23_42/0.45)] ring-1 ring-slate-900/10 dark:ring-white/10">
@@ -103,23 +122,43 @@ function PhoneVideo({ id, title }: { id: string; title: string }) {
           loop
           playsInline
           preload="none"
-          aria-label={`Demostración: ${title}`}
+          aria-hidden
           onPlay={() => setPlaying(true)}
           onPause={() => setPlaying(false)}
         >
           <source src={`${import.meta.env.BASE_URL}demo/${id}.mp4`} type="video/mp4" />
         </video>
       </div>
-      {reduce && !playing && (
-        <button type="button" onClick={() => void ref.current?.play()} className="absolute inset-0 grid place-items-center rounded-[2.4rem]" aria-label={`Reproducir: ${title}`}>
-          <span className="grid size-14 place-items-center rounded-full bg-slate-900/70 text-white backdrop-blur">
+      <button type="button" onClick={toggle} className="absolute inset-0 grid place-items-center rounded-[2.4rem]" aria-label={`${playing ? 'Pausar' : 'Reproducir'} la demostración: ${title}`}>
+        {!playing && (reduce || held) && (
+          <span className="grid size-14 place-items-center rounded-full bg-slate-900/70 text-white">
             <Play className="ml-0.5 size-6 fill-current" />
           </span>
-        </button>
-      )}
+        )}
+      </button>
     </div>
   )
 }
+
+/**
+ * Entrada en cascada disparada por la lista entera: en el celular los teléfonos de la derecha están fuera de
+ * la pantalla, y con su propio `whileInView` aparecían a medio animar al deslizar.
+ */
+const LIST: Variants = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } }
+const ITEM: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+}
+/** El rebote va solo en escala y giro: un resorte en la opacidad se pasa de 1 y parpadea. */
+const sticker = (i: number): Variants => ({
+  hidden: { opacity: 0, scale: 0.6, rotate: -8 },
+  show: {
+    opacity: 1,
+    scale: 1,
+    rotate: i % 2 ? 4 : -4,
+    transition: { opacity: { duration: 0.2, delay: 0.3 }, default: { type: 'spring', stiffness: 260, damping: 14, delay: 0.3 } },
+  },
+})
 
 /** «Míralo en acción»: la app de verdad grabada en un celular, en vez de capturas estáticas. */
 export function DemoReel() {
@@ -135,24 +174,21 @@ export function DemoReel() {
       </div>
 
       {/* En el celular se desliza de lado; en escritorio, los cuatro a la vista. */}
-      <ul className="mt-12 flex snap-x snap-mandatory gap-6 overflow-x-auto px-[max(1rem,calc((100vw-15.5rem)/2))] pt-4 pb-10 [scrollbar-width:none] lg:mx-auto lg:grid lg:max-w-6xl lg:grid-cols-4 lg:gap-8 lg:overflow-visible lg:px-8 lg:pb-16">
+      <motion.ul
+        variants={LIST}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.2 }}
+        className="mt-12 flex snap-x snap-mandatory gap-6 overflow-x-auto px-[max(1rem,calc((100vw-15.5rem)/2))] pt-4 pb-10 [scrollbar-width:none] lg:mx-auto lg:grid lg:max-w-6xl lg:grid-cols-4 lg:gap-8 lg:overflow-visible lg:px-8 lg:pb-16"
+      >
         {DEMOS.map((d, i) => (
-          <motion.li
-            key={d.id}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-            className="w-[min(15.5rem,70vw)] shrink-0 snap-center lg:w-auto"
-          >
-            <div className={cn('relative transition-transform duration-300', d.tilt)}>
+          <motion.li key={d.id} variants={ITEM} className="w-[min(15.5rem,70vw)] shrink-0 snap-center lg:w-auto">
+            <div className={cn('relative', d.tilt)}>
               <PhoneVideo id={d.id} title={d.title} />
               <motion.span
-                initial={{ opacity: 0, scale: 0.6, rotate: -8 }}
-                whileInView={{ opacity: 1, scale: 1, rotate: i % 2 ? 4 : -4 }}
-                viewport={{ once: true }}
-                transition={{ type: 'spring', stiffness: 260, damping: 14, delay: 0.35 + i * 0.08 }}
-                className={cn('absolute z-20 inline-flex items-center gap-1.5 rounded-full border border-soft bg-[var(--surface)] px-3 py-1.5 text-xs font-bold whitespace-nowrap shadow-lift', i % 2 ? '-right-2 bottom-16' : '-left-2 top-16')}
+                variants={sticker(i)}
+                aria-hidden
+                className={cn('pointer-events-none absolute z-20 inline-flex items-center gap-1.5 rounded-full border border-soft bg-[var(--surface)] px-3 py-1.5 text-xs font-bold whitespace-nowrap shadow-lift', d.stickerAt ?? (i % 2 ? '-right-2 bottom-16' : '-left-2 top-16'))}
               >
                 {d.sticker}
               </motion.span>
@@ -163,7 +199,7 @@ export function DemoReel() {
             </div>
           </motion.li>
         ))}
-      </ul>
+      </motion.ul>
       <p className="-mt-4 text-center text-xs font-semibold text-muted lg:hidden" aria-hidden>
         Desliza para ver más →
       </p>

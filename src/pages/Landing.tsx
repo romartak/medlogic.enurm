@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useScroll, useTransform } from 'motion/react'
+import { motion, useReducedMotionConfig, useScroll, useTransform } from 'motion/react'
 import {
   ArrowRight,
   BookOpen,
@@ -107,6 +107,17 @@ function useNow(intervalMs = 1000) {
     return () => clearInterval(id)
   }, [intervalMs])
   return now
+}
+
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(() => matchMedia(query).matches)
+  useEffect(() => {
+    const mq = matchMedia(query)
+    const onChange = () => setMatches(mq.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [query])
+  return matches
 }
 
 function FloatingCard({ className, delay, children }: { className: string; delay: number; children: React.ReactNode }) {
@@ -303,6 +314,10 @@ function Features() {
 export default function Landing() {
   const { scrollY } = useScroll()
   const heroY = useTransform(scrollY, [0, 500], [0, 60])
+  // Paralaje solo en escritorio: en el celular la tarjeta de ejemplo va debajo del texto y este se le montaba encima.
+  const wide = useMediaQuery('(min-width: 1024px)')
+  const reduceMotion = useReducedMotionConfig()
+  const parallax = wide && !reduceMotion
   const next = upcomingEnurm(1)[0]
   const daysLeft = Math.max(0, daysBetween(new Date(), next.date))
 
@@ -323,7 +338,7 @@ export default function Landing() {
       <main>
       {/* Hero */}
       <section className="mx-auto grid max-w-7xl items-center gap-12 px-4 pt-8 pb-16 sm:px-6 sm:pb-20 lg:grid-cols-2 lg:px-8 lg:pt-14">
-        <motion.div style={{ y: heroY }}>
+        <motion.div style={{ y: parallax ? heroY : 0 }}>
           <motion.a
             href="#examen"
             onClick={(e) => { e.preventDefault(); document.querySelector('#examen')?.scrollIntoView({ behavior: 'smooth' }) }}

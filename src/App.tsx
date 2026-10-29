@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
+import { createElement, lazy, Suspense, useCallback, useEffect, useState, type ComponentType } from 'react'
 import { HashRouter, Outlet, Route, Routes } from 'react-router-dom'
 import { MotionConfig } from 'motion/react'
 import { AppLayout } from '@/components/layout/AppLayout'
@@ -14,13 +14,34 @@ import { SyncConflict } from '@/components/SyncConflict'
 import { PlanReveal } from '@/components/PlanReveal'
 import { VercelInsights } from '@/components/VercelInsights'
 import { motionAllowed } from '@/lib/fx'
+
+/**
+ * Varias páginas de un mismo módulo diferido. Con un `lazy` por página, la segunda volvía a pasar por
+ * Suspense aunque el módulo ya estuviera cargado, y React dejaba el esqueleto ~0,4 s (al entregar un
+ * simulacro, por ejemplo). Ahora, si el módulo ya llegó, la página se pinta directo.
+ */
+function lazyModule<M>(load: () => Promise<M>) {
+  let mod: M | undefined
+  const ready = () => load().then((m) => (mod = m))
+  return <P extends object>(pick: (m: M) => ComponentType<P>) => {
+    const Deferred = lazy(() => ready().then((m) => ({ default: pick(m) })))
+    return function Page(props: P) {
+      // Se elige una vez por montaje: cambiar de componente a mitad de camino reiniciaría la página.
+      const [C] = useState<ComponentType<P>>(() => (mod ? pick(mod) : Deferred))
+      return createElement(C, props)
+    }
+  }
+}
+const examPages = lazyModule(() => import('@/pages/Exam'))
+const guidePages = lazyModule(() => import('@/pages/Guides'))
+
 const Dashboard = lazy(() => import('@/pages/Dashboard'))
 const NotFound = lazy(() => import('@/pages/NotFound'))
 
 const Landing = lazy(() => import('@/pages/Landing'))
 const Practice = lazy(() => import('@/pages/Practice'))
-const Exam = lazy(() => import('@/pages/Exam'))
-const ExamResults = lazy(() => import('@/pages/Exam').then((m) => ({ default: m.ExamResults })))
+const Exam = examPages((m) => m.default)
+const ExamResults = examPages((m) => m.ExamResults)
 const Review = lazy(() => import('@/pages/Review'))
 const Decks = lazy(() => import('@/pages/flashcards/Decks'))
 const DeckOverview = lazy(() => import('@/pages/flashcards/Overview'))
@@ -28,8 +49,8 @@ const Reviewer = lazy(() => import('@/pages/flashcards/Reviewer'))
 const CardBrowser = lazy(() => import('@/pages/flashcards/Browser'))
 const CardStats = lazy(() => import('@/pages/flashcards/CardStats'))
 const NoteEditor = lazy(() => import('@/components/anki/NoteEditor').then((m) => ({ default: m.NoteEditor })))
-const Guides = lazy(() => import('@/pages/Guides'))
-const GuideDetail = lazy(() => import('@/pages/Guides').then((m) => ({ default: m.GuideDetail })))
+const Guides = guidePages((m) => m.default)
+const GuideDetail = guidePages((m) => m.GuideDetail)
 const Updates = lazy(() => import('@/pages/Updates'))
 const Games = lazy(() => import('@/pages/games/Games'))
 const GamePage = lazy(() => import('@/pages/games/GamePage'))
