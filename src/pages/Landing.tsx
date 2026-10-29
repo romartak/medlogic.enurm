@@ -34,6 +34,7 @@ import { SPECIALTIES } from '@/data/specialties'
 import { Icon } from '@/components/ui/Icon'
 import { REPO_URL } from '@/components/layout/AppLayout'
 import { EnterBar, LandingNav } from '@/components/landing/LandingNav'
+import { DemoReel } from '@/components/landing/DemoReel'
 import { INSTAGRAM_URL, INSTAGRAM_USER, InstagramIcon } from '@/components/Instagram'
 import { ENURM_FACTS, formatEnurmDate, upcomingEnurm } from '@/data/enurm'
 import { cn, daysBetween, softHyphens, tintText } from '@/lib/utils'
@@ -46,7 +47,7 @@ const SECTIONS = [
 ] as const
 
 const STEPS = [
-  { icon: Sparkles, title: 'Responde el cuestionario', body: 'Tu convocatoria del ENURM, la residencia que quieres, cuánto tiempo tienes y cómo te sientes en cada área.' },
+  { icon: Sparkles, title: 'Dos preguntas y listo', body: 'Tu convocatoria del ENURM y cuánto tiempo tienes. Si quieres, afinas después tu residencia y cómo te sientes en cada área.' },
   { icon: CalendarDays, title: 'Sigue tu plan del día', body: 'Tareas concretas: preguntas de dos especialidades, flashcards, una guía y simulacros semanales.' },
   { icon: ChartColumn, title: 'Mide y ajusta', body: 'El plan se recalcula con tu precisión real: más tiempo para lo que más fallas y lo que más pesa.' },
 ]
@@ -428,12 +429,13 @@ export default function Landing() {
         </div>
       </section>
 
+      <DemoReel />
       <ExamCountdown />
       <Features />
 
       {/* Cómo funciona */}
       <section id="plan" className="mx-auto max-w-7xl scroll-mt-24 px-4 pb-20 sm:px-6 sm:pb-24 lg:px-8">
-        <SectionHeading eyebrow="Cómo funciona" title="Un plan hecho para ti" body="En dos minutos tienes un plan diario que se adapta a tu calendario y a tus resultados." />
+        <SectionHeading eyebrow="Cómo funciona" title="Un plan hecho para ti" body="En un minuto tienes un plan diario que se adapta a tu calendario y a tus resultados." />
         <div className="relative mt-12">
           <div aria-hidden className="pointer-events-none absolute top-8 right-[16%] left-[16%] hidden h-px bg-gradient-to-r from-brand-500/0 via-brand-500/50 to-brand-500/0 md:block" />
           <ol className="relative grid gap-8 md:grid-cols-3 md:gap-6">

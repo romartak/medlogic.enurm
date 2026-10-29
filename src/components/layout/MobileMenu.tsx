@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { NavLink } from 'react-router-dom'
-import { ChevronDown, ChevronRight, LayoutGrid, Play, Search, Target, X } from 'lucide-react'
+import { ChevronRight, LayoutGrid, Play, Search, Target, X } from 'lucide-react'
 import { useProgress } from '@/store/progress'
 import { cn } from '@/lib/utils'
 import { ALL_NAV, NAV_GROUPS, type NavItem } from './nav'
@@ -80,7 +80,6 @@ function ResumeCard({ onPick }: { onPick: () => void }) {
  */
 export function FunctionsSheet({ open, onClose, footer }: { open: boolean; onClose: () => void; footer?: ReactNode }) {
   const [query, setQuery] = useState('')
-  const [group, setGroup] = useState(NAV_GROUPS[0].title)
   useScrollLock(open)
 
   useEffect(() => {
@@ -148,34 +147,19 @@ export function FunctionsSheet({ open, onClose, footer }: { open: boolean; onClo
                     ))}
                   </div>
 
-                  <p className="mt-5 mb-1 px-1 text-xs font-bold tracking-[0.14em] text-muted uppercase">Todas las funciones</p>
-                  <div className="border-t border-soft">
-                    {NAV_GROUPS.map((g) => {
-                      const isOpen = group === g.title
-                      return (
-                        <div key={g.title}>
-                          <button
-                            type="button"
-                            onClick={() => setGroup(isOpen ? '' : g.title)}
-                            aria-expanded={isOpen}
-                            className="flex min-h-13 w-full items-center justify-between border-b border-soft text-left font-display text-[17px] font-extrabold"
-                          >
-                            <span>
-                              {g.title} <span className="ml-1 font-sans text-sm font-semibold text-muted">{g.items.length}</span>
-                            </span>
-                            <ChevronDown className={cn('size-5 text-muted transition-transform duration-300', isOpen && 'rotate-180')} />
-                          </button>
-                          <div className="acc-panel" data-open={isOpen} inert={!isOpen}>
-                            <div>
-                              {g.items.map((i) => (
-                                <Row key={i.to} item={i} onPick={onClose} />
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
+                  {/* Todas abiertas: quien no rebusca igual ve todo lo que ofrece la app. */}
+                  {NAV_GROUPS.map((g) => (
+                    <section key={g.title} aria-labelledby={`fx-${g.title}`}>
+                      <h2 id={`fx-${g.title}`} className="mt-6 mb-1 px-1 font-display text-[17px] font-extrabold">
+                        {g.title} <span className="ml-1 font-sans text-sm font-semibold text-muted">{g.items.length}</span>
+                      </h2>
+                      <div className="border-t border-soft">
+                        {g.items.map((i) => (
+                          <Row key={i.to} item={i} onPick={onClose} />
+                        ))}
+                      </div>
+                    </section>
+                  ))}
                 </>
               )}
             </div>
