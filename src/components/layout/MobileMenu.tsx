@@ -5,6 +5,7 @@ import { ChevronDown, ChevronRight, LayoutGrid, Play, Search, Target, X } from '
 import { useProgress } from '@/store/progress'
 import { cn } from '@/lib/utils'
 import { ALL_NAV, NAV_GROUPS, type NavItem } from './nav'
+import { useScrollLock } from '@/hooks/useScrollLock'
 
 /** Accesos rápidos del teléfono: lo que más se abre además de la barra inferior. */
 const QUICK = ['/simulacro', '/flashcards', '/casos', '/repaso', '/ecg']
@@ -80,6 +81,7 @@ function ResumeCard({ onPick }: { onPick: () => void }) {
 export function FunctionsSheet({ open, onClose, footer }: { open: boolean; onClose: () => void; footer?: ReactNode }) {
   const [query, setQuery] = useState('')
   const [group, setGroup] = useState(NAV_GROUPS[0].title)
+  useScrollLock(open)
 
   useEffect(() => {
     if (!open) return
@@ -96,12 +98,12 @@ export function FunctionsSheet({ open, onClose, footer }: { open: boolean; onClo
     <AnimatePresence>
       {open && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <motion.div className="absolute inset-0 bg-slate-950/55" onClick={onClose} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.2 } }} />
+          <motion.div className="absolute inset-0 touch-none bg-slate-950/55" onClick={onClose} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.2 } }} />
           <motion.div
             role="dialog"
             aria-modal="true"
             aria-label="Funciones"
-            className="absolute inset-x-0 top-10 bottom-0 flex flex-col rounded-t-3xl bg-[var(--surface)] shadow-2xl"
+            className="absolute inset-x-0 top-10 bottom-0 flex flex-col overscroll-none rounded-t-3xl bg-[var(--surface)] shadow-2xl"
             initial={{ y: '100%' }}
             animate={{ y: 0 }}
             exit={{ y: '100%', transition: { duration: 0.22, ease: [0.77, 0, 0.175, 1] } }}
@@ -118,7 +120,7 @@ export function FunctionsSheet({ open, onClose, footer }: { open: boolean; onClo
             </div>
             <BigSearch value={query} onChange={setQuery} />
 
-            <div className="flex-1 overflow-y-auto px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-[max(1.5rem,env(safe-area-inset-bottom))] [-webkit-overflow-scrolling:touch]">
               {q ? (
                 results.length ? (
                   <div className="mt-3 border-t border-soft">
