@@ -1,8 +1,8 @@
 import { LocalProgressLine } from '@/components/AccountNote'
 import { useEffect, useState } from 'react'
-import { Navigate, NavLink, useLocation, useNavigate, useOutlet } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate, useOutlet } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
-import { Flame, LogIn, Moon, RefreshCw, Search, Sun, Monitor, UserRound, Zap } from 'lucide-react'
+import { Flame, LogIn, Moon, Search, Sun, Monitor, UserRound, Zap } from 'lucide-react'
 import { NAV_GROUPS, ALL_NAV, MOBILE_TABS } from './nav'
 import { Logo, GithubIcon } from '@/components/ui/Logo'
 import { CommandPalette } from './CommandPalette'
@@ -139,18 +139,10 @@ export function AppLayout() {
   const [functionsOpen, setFunctionsOpen] = useState(false)
   const location = useLocation()
   const outlet = useOutlet()
-  const profile = useProgress((s) => s.profile)
   const current = ALL_NAV.find((n) => location.pathname.startsWith(n.to))
   const recovering = useAuth((s) => s.recovering)
   const authStatus = useAuth((s) => s.status)
   const syncState = useAuth((s) => s.sync)
-  // Con mala conexión no se espera para siempre a la nube: a los 8 s se sigue como si no hubiera plan guardado.
-  const [cloudTimedOut, setCloudTimedOut] = useState(false)
-  useEffect(() => {
-    if (authStatus !== 'signed-in') return setCloudTimedOut(false)
-    const t = setTimeout(() => setCloudTimedOut(true), 8000)
-    return () => clearTimeout(t)
-  }, [authStatus])
   const navigate = useNavigate()
 
   // Tras abrir el enlace de «olvidé mi contraseña», pedir la nueva.
@@ -181,25 +173,6 @@ export function AppLayout() {
     const section = '/' + location.pathname.split('/')[1]
     if (STUDY_SECTIONS.includes(section)) setLastSection(section)
   }, [location.pathname, authStatus, syncState, setLastSection])
-
-  // Primera visita: cuestionario para personalizar el plan. Un enlace de duelo se abre directo
-  // (quien lo recibe por WhatsApp viene a jugar; el cuestionario puede esperar).
-  const needsSurvey = !profile.completed && !profile.skipped && !location.pathname.startsWith('/duelo') && !location.pathname.startsWith('/d/') && location.pathname !== '/cuenta'
-  if (needsSurvey) {
-    // Quien acaba de entrar con su cuenta en un dispositivo vacío: se espera a bajar su plan de la nube antes de decidir
-    // si hace falta el cuestionario (si no, lo vería otra vez aunque ya lo hizo).
-    if (authStatus === 'signed-in' && !cloudTimedOut && (syncState === 'idle' || syncState === 'syncing')) {
-      return (
-        <div className="grid min-h-dvh place-items-center" role="status" aria-label="Cargando tu progreso">
-          <div className="text-center">
-            <RefreshCw className="mx-auto size-6 animate-spin text-brand-600" />
-            <p className="mt-3 text-sm text-muted">Cargando tu progreso…</p>
-          </div>
-        </div>
-      )
-    }
-    return <Navigate to="/bienvenida" replace />
-  }
 
   return (
     <div className="min-h-dvh">

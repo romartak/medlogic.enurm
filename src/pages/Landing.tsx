@@ -347,8 +347,8 @@ export default function Landing() {
             Preguntas tipo ENURM con el porqué de cada opción, simulacros cronometrados, flashcards estilo Anki, guías y un plan diario que se ajusta al tiempo que te queda.
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.24 }} className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link to="/bienvenida" className={buttonClass('primary', 'lg', 'w-full sm:w-auto')}>
-              Crear mi plan gratis <ArrowRight className="size-5" />
+            <Link to="/inicio" className={buttonClass('primary', 'lg', 'w-full sm:w-auto')}>
+              Empezar ahora, gratis <ArrowRight className="size-5" />
             </Link>
             <Link to="/simulacro" className={buttonClass('outline', 'lg', 'w-full bg-[var(--surface)] sm:w-auto')}>
               <GraduationCap className="size-5" /> Probar un simulacro
@@ -452,8 +452,8 @@ export default function Landing() {
           </ol>
         </div>
         <div className="mt-10 flex justify-center">
-          <Link to="/bienvenida" className={buttonClass('primary', 'lg', 'w-full sm:w-auto')}>
-            <Sparkles className="size-5" /> Crear mi plan gratis
+          <Link to="/inicio" className={buttonClass('primary', 'lg', 'w-full sm:w-auto')}>
+            <Sparkles className="size-5" /> Empezar ahora, gratis
           </Link>
         </div>
       </section>
@@ -499,7 +499,7 @@ export default function Landing() {
             <h2 className="text-3xl font-extrabold text-balance sm:text-4xl">Un regalo para todos los médicos en formación</h2>
             <p className="mt-3 text-white/85">MedLogic ENURM es y será siempre gratuito y de código abierto. Faltan {daysLeft} días: cada pregunta cuenta.</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link to="/bienvenida" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-white px-6 font-semibold text-slate-900 transition-transform hover:scale-[1.02] active:scale-[0.97]">
+              <Link to="/inicio" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-white px-6 font-semibold text-slate-900 transition-transform hover:scale-[1.02] active:scale-[0.97]">
                 Comenzar ahora <ArrowRight className="size-5" />
               </Link>
               <Link to="/como-prepararte" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-white/15 px-6 font-semibold text-white backdrop-blur transition-colors hover:bg-white/25">

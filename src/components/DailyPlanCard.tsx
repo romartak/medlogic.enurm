@@ -68,7 +68,7 @@ export function DailyPlanCard({ compact = false }: { compact?: boolean }) {
         <Link to="/bienvenida" className="flex items-center gap-3 border-b border-soft bg-amber-500/[0.07] px-5 py-3 text-sm transition-colors hover:bg-amber-500/[0.12] sm:px-6">
           <Sparkles className="size-4 shrink-0 text-amber-500" />
           <span className="flex-1">
-            <b>Personaliza este plan:</b> responde el cuestionario (2 minutos) con la fecha de tu examen y tu disponibilidad.
+            <b>Personaliza este plan:</b> dime la fecha de tu examen y cuánto tiempo tienes (1 minuto).
           </span>
           <span className="font-semibold text-amber-600">Empezar →</span>
         </Link>
