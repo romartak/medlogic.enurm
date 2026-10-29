@@ -415,16 +415,3 @@ html:not(.dark) .text-violet-600 {
 .drop-panel[data-open='true'] > a:nth-child(4) {
   animation-delay: 120ms;
 }
-
-/* Categorías plegables del panel «Funciones»: la altura se abre con filas de grid, sin medir en JavaScript. */
-.acc-panel {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows var(--t-panel) var(--ease-out);
-}
-.acc-panel[data-open='true'] {
-  grid-template-rows: 1fr;
-}
-.acc-panel > div {
-  overflow: hidden;
-}

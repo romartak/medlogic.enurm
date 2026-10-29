@@ -206,7 +206,7 @@ export default function Onboarding() {
                     )}
                   </div>
                   <ul className="space-y-2 text-sm text-muted">
-                    {['Plan diario con tareas concretas', 'Se adapta a tu fecha de examen y a tus resultados', 'Toma menos de 2 minutos'].map((t) => (
+                    {['Plan diario con tareas concretas', 'Se adapta a tu fecha de examen y a tus resultados', fine ? 'Toma menos de 2 minutos' : 'Toma menos de un minuto'].map((t) => (
                       <li key={t} className="flex items-center gap-2">
                         <Check className="size-4 text-brand-500" /> {t}
                       </li>
