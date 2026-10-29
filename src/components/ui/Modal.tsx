@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { X } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useScrollLock } from '@/hooks/useScrollLock'
 
 /**
  * Ventana modal accesible: se anuncia con su título, lleva el foco dentro al abrirse, lo devuelve al
@@ -11,17 +12,13 @@ export function Modal({ open, onClose, title, children, className }: { open: boo
   const titleId = useId()
   const panelRef = useRef<HTMLDivElement>(null)
   const restoreRef = useRef<HTMLElement | null>(null)
+  useScrollLock(open)
 
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
     window.addEventListener('keydown', onKey)
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      window.removeEventListener('keydown', onKey)
-      document.body.style.overflow = prev
-    }
+    return () => window.removeEventListener('keydown', onKey)
   }, [open, onClose])
 
   useEffect(() => {
@@ -70,7 +67,7 @@ export function Modal({ open, onClose, title, children, className }: { open: boo
             aria-modal="true"
             aria-labelledby={title ? titleId : undefined}
             tabIndex={-1}
-            className={cn('card relative max-h-[90dvh] w-full overflow-y-auto rounded-b-none p-5 outline-none sm:max-w-lg sm:rounded-b-[var(--radius-2xl)] sm:p-6', className)}
+            className={cn('card relative max-h-[90dvh] w-full overflow-y-auto overscroll-contain rounded-b-none p-5 outline-none sm:max-w-lg sm:rounded-b-[var(--radius-2xl)] sm:p-6', className)}
             initial={{ y: 40 }}
             animate={{ y: 0 }}
             exit={{ y: 40, transition: { duration: 0.2, ease: [0.77, 0, 0.175, 1] } }}

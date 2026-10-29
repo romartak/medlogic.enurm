@@ -73,6 +73,7 @@ const DEFAULT_SETTINGS: Settings = {
   shuffleOptions: false,
   reduceMotion: false,
   rankingShowName: true,
+  avatar: null,
 }
 
 const INITIAL: ProgressData = {

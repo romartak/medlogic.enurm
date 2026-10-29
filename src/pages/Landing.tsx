@@ -91,7 +91,7 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: '¿Dónde se guarda mi progreso?',
-    a: <>Sin cuenta, solo en tu navegador: si borras los datos del navegador o cambias de dispositivo, no lo recuperas (desde Ajustes puedes descargar una copia). Con una cuenta gratis se guarda en la nube y es el mismo en todos tus dispositivos.</>,
+    a: <>Sin cuenta, solo en tu navegador: si borras los datos del navegador o cambias de dispositivo, no lo recuperas (desde Configuración puedes descargar una copia). Con una cuenta gratis se guarda en la nube y es el mismo en todos tus dispositivos.</>,
   },
   {
     q: '¿De dónde salen las preguntas?',
@@ -537,7 +537,7 @@ export default function Landing() {
           {[
             { title: 'Estudiar', links: [['Práctica', '/practica'], ['Simulacro', '/simulacro'], ['Flashcards', '/flashcards'], ['Guías', '/guias']] },
             { title: 'Recursos', links: [['Cómo prepararte', '/como-prepararte'], ['Prompts de IA', '/prompts'], ['IA para médicos', '/ia'], ['Hoja de ruta', '/roadmap']] },
-            { title: 'Tu cuenta', links: [['Mi plan', '/plan'], ['Estadísticas', '/estadisticas'], ['Logros', '/logros'], ['Ajustes', '/ajustes']] },
+            { title: 'Tu cuenta', links: [['Mi plan', '/plan'], ['Estadísticas', '/estadisticas'], ['Logros', '/logros'], ['Configuración', '/ajustes']] },
           ].map((col) => (
             <div key={col.title}>
               <div className="text-sm font-semibold">{col.title}</div>

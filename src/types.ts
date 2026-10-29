@@ -226,4 +226,6 @@ export interface Settings {
   reduceMotion: boolean
   /** En el ranking: salir con primer nombre e inicial (true) o como «Estudiante». */
   rankingShowName: boolean
+  /** Foto de perfil elegida (id de AVATARS); null = la inicial. Funciona también sin cuenta. */
+  avatar: string | null
 }

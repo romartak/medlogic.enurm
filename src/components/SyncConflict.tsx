@@ -35,7 +35,7 @@ export function SyncConflict() {
           </button>
         ))}
       </div>
-      <p className="mt-4 text-xs text-muted">Consejo: si no estás seguro, descarga antes un respaldo desde Ajustes.</p>
+      <p className="mt-4 text-xs text-muted">Consejo: si no estás seguro, descarga antes un respaldo desde Configuración.</p>
     </Modal>
   )
 }

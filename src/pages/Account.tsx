@@ -1,22 +1,19 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { Link, Navigate, useLocation } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { CloudOff, Cloud, Eye, EyeOff, KeyRound, Laptop, LogOut, Mail, RefreshCw, Settings as SettingsIcon, ShieldCheck, Smartphone, Trash2, UserRound } from 'lucide-react'
+import { CloudOff, Cloud, Eye, EyeOff, KeyRound, Laptop, Mail, RefreshCw, ShieldCheck, Smartphone, UserRound } from 'lucide-react'
 import { authErrorMessage, authRedirectUrl, isSupabaseConfigured, supabase } from '@/lib/supabase'
-import { syncNow } from '@/lib/sync'
-import { displayName, useAuth } from '@/store/auth'
-import { Button, buttonClass, Card, PageHeader, Segmented } from '@/components/ui/primitives'
+import { useAuth } from '@/store/auth'
+import { Button, Card, PageHeader, Segmented } from '@/components/ui/primitives'
 import { Modal } from '@/components/ui/Modal'
-import { Avatar, AVATARS, isAvatarId } from '@/components/ui/Avatar'
-import { deleteMyAccount, hadAccount, logout, markHadAccount, setAvatar, takeNotice } from '@/lib/account'
-import { flushPending } from '@/lib/sync'
+import { hadAccount, markHadAccount, takeNotice } from '@/lib/account'
 import { useProgress } from '@/store/progress'
 import type { Honorific } from '@/types'
 import { toast } from '@/store/toasts'
-import { addressName, cleanName, cn, formatDate, splitName } from '@/lib/utils'
+import { addressName, cleanName, cn, splitName } from '@/lib/utils'
 import { captchaEnabled, Turnstile } from '@/components/Turnstile'
+import { CONTACT_EMAIL } from '@/components/AccountSection'
 
-const CONTACT_EMAIL = 'medlogic.care@gmail.com'
 const RECOVERY_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Olvidé mi contraseña de MedLogic ENURM')}&body=${encodeURIComponent('Hola, olvidé mi contraseña. Mi cuenta es este correo.')}`
 
 /**
@@ -100,7 +97,7 @@ function NotConfigured() {
       <p className="mt-4 text-sm text-muted">
         Mientras tanto, desde{' '}
         <Link to="/ajustes" className="font-semibold text-brand-700 hover:underline dark:text-brand-400">
-          Ajustes
+          Configuración
         </Link>{' '}
         puedes descargar una copia de tu progreso.
       </p>
@@ -415,214 +412,6 @@ function NewPassword() {
   )
 }
 
-/* ---------- Cuenta conectada ---------- */
-
-const SYNC_LABEL = {
-  idle: 'Preparando…',
-  syncing: 'Sincronizando…',
-  synced: 'Al día',
-  offline: 'Sin conexión: se subirá al volver',
-  error: 'No se pudo sincronizar',
-  conflict: 'Elige qué progreso conservar',
-} as const
-
-function Profile() {
-  const { user, sync, lastSyncedAt } = useAuth()
-  const name = displayName(user)
-  const meta = user?.user_metadata as { call_name?: string; avatar?: string } | undefined
-  const initial = (meta?.call_name || name).charAt(0).toUpperCase()
-  const avatar = isAvatarId(meta?.avatar) ? meta.avatar : null
-  const provider = (user?.app_metadata as { provider?: string } | undefined)?.provider
-  const [savingAvatar, setSavingAvatar] = useState<string | null>(null)
-  const [confirmDelete, setConfirmDelete] = useState(false)
-  const [typed, setTyped] = useState('')
-  const [deleting, setDeleting] = useState(false)
-  const [deleteError, setDeleteError] = useState('')
-  const [leaving, setLeaving] = useState(false)
-  const [confirmLeave, setConfirmLeave] = useState(false)
-  const CONFIRM_WORD = 'ELIMINAR'
-
-  /** Sube lo pendiente y cierra la sesión. Si no se pudo subir, avisa antes de borrar este dispositivo. */
-  const leave = async () => {
-    setLeaving(true)
-    if (!(await flushPending())) {
-      setLeaving(false)
-      setConfirmLeave(true)
-      return
-    }
-    await logout()
-  }
-  const leaveAnyway = async () => {
-    setConfirmLeave(false)
-    setLeaving(true)
-    await logout()
-  }
-
-  const pickAvatar = async (id: string | null) => {
-    if (id === avatar || savingAvatar !== null) return
-    setSavingAvatar(id ?? 'inicial')
-    try {
-      await setAvatar(id)
-      toast({ kind: 'success', title: 'Foto de perfil actualizada' })
-    } catch (err) {
-      toast({ kind: 'error', title: 'No se pudo cambiar la foto', body: authErrorMessage(err) })
-    } finally {
-      setSavingAvatar(null)
-    }
-  }
-
-  const closeDelete = () => {
-    if (deleting) return
-    setConfirmDelete(false)
-    setTyped('')
-    setDeleteError('')
-  }
-
-  const doDelete = async () => {
-    if (typed.trim().toUpperCase() !== CONFIRM_WORD) return
-    setDeleting(true)
-    setDeleteError('')
-    try {
-      // Si sale bien, la página se recarga en la pantalla de entrar.
-      await deleteMyAccount()
-    } catch {
-      setDeleteError('No pudimos eliminar la cuenta. Revisa tu conexión e inténtalo de nuevo; si sigue fallando, escríbenos a ' + CONTACT_EMAIL + '.')
-    } finally {
-      setDeleting(false)
-    }
-  }
-
-  return (
-    <div className="mx-auto max-w-2xl space-y-4">
-      <Card className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center">
-        <Avatar avatar={avatar} initial={initial} className="size-16 shrink-0 text-2xl">
-          <UserRound className="size-7" />
-        </Avatar>
-        <div className="min-w-0 flex-1">
-          <div className="font-display text-xl font-bold">{name}</div>
-          <div className="truncate text-sm text-muted">{user?.email}</div>
-          <div className="mt-1 text-xs text-muted">Acceso con {provider === 'google' ? 'Google' : 'correo'}</div>
-        </div>
-        <Button variant="outline" onClick={() => void leave()} disabled={leaving}>
-          {leaving ? <RefreshCw className="size-4 animate-spin" /> : <LogOut className="size-4" />} Cerrar sesión
-        </Button>
-      </Card>
-
-      <Card className="p-6">
-        <h2 className="font-semibold">Foto de perfil</h2>
-        <p className="mt-1 text-sm text-muted">Elige el diseño que más te guste.</p>
-        <div role="radiogroup" aria-label="Foto de perfil" className="mt-4 grid grid-cols-4 gap-3 sm:grid-cols-5">
-          <button
-            type="button"
-            role="radio"
-            aria-checked={avatar === null}
-            aria-label="Usar mi inicial"
-            onClick={() => void pickAvatar(null)}
-            className={cn('group relative grid aspect-square place-items-center rounded-2xl p-1 transition-transform active:scale-95', avatar === null ? 'ring-2 ring-brand-500 ring-offset-2 ring-offset-[var(--surface)]' : 'hover:scale-105')}
-          >
-            <Avatar initial={initial} className="size-full text-xl">
-              <UserRound className="size-6" />
-            </Avatar>
-          </button>
-          {AVATARS.map((a) => (
-            <button
-              key={a.id}
-              type="button"
-              role="radio"
-              aria-checked={avatar === a.id}
-              aria-label={a.label}
-              title={a.label}
-              onClick={() => void pickAvatar(a.id)}
-              className={cn('relative grid aspect-square place-items-center rounded-2xl p-1 transition-transform active:scale-95', avatar === a.id ? 'ring-2 ring-brand-500 ring-offset-2 ring-offset-[var(--surface)]' : 'hover:scale-105', savingAvatar === a.id && 'opacity-60')}
-            >
-              <Avatar avatar={a.id} className="size-full" />
-            </button>
-          ))}
-        </div>
-      </Card>
-
-      <Card className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center">
-        <div className="flex min-w-0 flex-1 items-center gap-4">
-          <span className={cn('grid size-12 shrink-0 place-items-center rounded-2xl', sync === 'error' || sync === 'offline' ? 'bg-amber-500/15 text-amber-700 dark:text-amber-300' : 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300')}>
-            {sync === 'offline' ? <CloudOff className="size-6" /> : <Cloud className="size-6" />}
-          </span>
-          <div className="min-w-0 flex-1">
-            <div className="font-semibold">Sincronización: {SYNC_LABEL[sync]}</div>
-            <div className="text-sm text-muted">{lastSyncedAt ? `Última copia: ${formatDate(new Date(lastSyncedAt).getTime(), { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}` : 'Tu progreso se guarda en la nube automáticamente.'}</div>
-          </div>
-        </div>
-        <Button variant="secondary" className="w-full sm:w-auto" onClick={() => void syncNow()} disabled={sync === 'syncing'}>
-          <RefreshCw className={cn('size-4', sync === 'syncing' && 'animate-spin')} /> Sincronizar ahora
-        </Button>
-      </Card>
-
-      <Card className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center">
-        <div className="flex min-w-0 flex-1 items-center gap-4">
-          <span className="grid size-12 shrink-0 place-items-center rounded-2xl surface-2 text-muted">
-            <SettingsIcon className="size-6" />
-          </span>
-          <div className="min-w-0 flex-1">
-            <div className="font-semibold">Tu nombre, tu trato y tus datos</div>
-            <div className="text-sm text-muted">Cambia cómo te llamamos, descarga un respaldo o borra tu progreso desde Ajustes.</div>
-          </div>
-        </div>
-        <Link to="/ajustes" className={buttonClass('outline', 'md', 'w-full sm:w-auto')}>
-          Ir a Ajustes
-        </Link>
-      </Card>
-
-      <Card className="border-rose-500/30 p-6">
-        <h2 className="font-semibold text-rose-600 dark:text-rose-400">Eliminar mi cuenta</h2>
-        <p className="mt-1 text-sm text-muted">Borra tu cuenta y todo lo que está en la nube: tu perfil, tu progreso, tu lugar en el ranking y tus simulacros. No se puede deshacer.</p>
-        <Button variant="danger" className="mt-4" onClick={() => setConfirmDelete(true)}>
-          <Trash2 className="size-4" /> Eliminar mi cuenta
-        </Button>
-      </Card>
-
-      <Modal open={confirmLeave} onClose={() => setConfirmLeave(false)} title="No se pudo guardar tu último progreso">
-        <div className="space-y-4 text-sm">
-          <p className="text-muted">Tu progreso más reciente todavía no está guardado en la nube (¿sin conexión?). Si cierras sesión ahora, ese progreso se perderá de este dispositivo.</p>
-          <p className="text-muted">Lo mejor es esperar a tener conexión, pulsar «Sincronizar ahora» y cerrar sesión después.</p>
-          <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-            <Button variant="danger" onClick={() => void leaveAnyway()}>
-              Cerrar sesión y perderlo
-            </Button>
-            <Button onClick={() => setConfirmLeave(false)}>Me quedo</Button>
-          </div>
-        </div>
-      </Modal>
-
-      <Modal open={confirmDelete} onClose={closeDelete} title="¿Eliminar tu cuenta para siempre?">
-        <div className="space-y-4 text-sm">
-          <ul className="list-disc space-y-1 pl-5 text-muted">
-            <li>Se borra tu cuenta y tu correo de nuestros servidores.</li>
-            <li>Se borra tu progreso en la nube, tu ranking y tus simulacros.</li>
-            <li>Se borra el progreso guardado en este dispositivo.</li>
-            <li>Para volver a estudiar tendrás que crear una cuenta nueva.</li>
-          </ul>
-          <label className="block font-medium" htmlFor="del-confirm">
-            Para confirmar, escribe <b className="text-rose-600 dark:text-rose-400">{CONFIRM_WORD}</b>
-            <input id="del-confirm" name="confirmar" value={typed} onChange={(e) => setTyped(e.target.value)} autoComplete="off" autoCapitalize="characters" spellCheck={false} className={field} />
-          </label>
-          {deleteError && (
-            <p role="alert" className="rounded-xl bg-rose-500/10 px-3 py-2.5 text-rose-700 dark:text-rose-300">
-              {deleteError}
-            </p>
-          )}
-          <div className="flex justify-end gap-2">
-            <Button variant="ghost" onClick={closeDelete} disabled={deleting}>
-              Cancelar
-            </Button>
-            <Button variant="danger" onClick={() => void doDelete()} disabled={deleting || typed.trim().toUpperCase() !== CONFIRM_WORD}>
-              {deleting && <RefreshCw className="size-4 animate-spin" />} Eliminar para siempre
-            </Button>
-          </div>
-        </div>
-      </Modal>
-    </div>
-  )
-}
-
 export default function Account() {
   const { status, recovering } = useAuth()
   const ready = status !== 'loading'
@@ -644,7 +433,7 @@ export default function Account() {
         subtitle={status === 'signed-in' ? 'Tu perfil y la sincronización de tu progreso.' : (intent?.subtitle ?? 'Es opcional: con una cuenta gratis tu progreso se guarda en la nube y lo usas en cualquier dispositivo.')}
       />
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-        {!isSupabaseConfigured ? <NotConfigured /> : !ready ? <div className="skeleton mx-auto h-80 max-w-md rounded-2xl" /> : recovering ? <NewPassword /> : status === 'signed-in' ? <Profile /> : <AuthForm from={from} initialMode={state?.mode} />}
+        {!isSupabaseConfigured ? <NotConfigured /> : !ready ? <div className="skeleton mx-auto h-80 max-w-md rounded-2xl" /> : recovering ? <NewPassword /> : status === 'signed-in' ? <Navigate to="/ajustes" replace /> : <AuthForm from={from} initialMode={state?.mode} />}
       </motion.div>
     </div>
   )

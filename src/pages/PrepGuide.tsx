@@ -46,7 +46,7 @@ const FAQ = [
   { q: '¿Empiezo por la teoría o por las preguntas?', a: 'Combina ambas. Al inicio, una guía corta seguida de preguntas del mismo tema. Con el tiempo, las preguntas deben ocupar la mayor parte, porque te enseñan qué y cómo se pregunta.' },
   { q: '¿Qué hago con las preguntas que fallo?', a: 'Lee la explicación, anota lo que no sabías y vuelve a responderlas en unos días desde «Repaso». Fallar durante la preparación es la mejor forma de no fallar en el examen.' },
   { q: '¿Cada cuánto hacer simulacros?', a: 'Uno semanal en las primeras fases y con mayor frecuencia en los últimos dos meses. Lo más importante es revisar los resultados por especialidad y las preguntas falladas después de cada uno.' },
-  { q: '¿Dónde se guarda mi progreso?', a: 'En tu propio dispositivo, sin necesidad de cuenta. Desde Ajustes puedes descargar un respaldo y restaurarlo en otro navegador o teléfono.' },
+  { q: '¿Dónde se guarda mi progreso?', a: 'En tu propio dispositivo, sin necesidad de cuenta. Desde Configuración puedes descargar un respaldo y restaurarlo en otro navegador o teléfono.' },
   { q: '¿El formato del simulacro es igual al del examen real?', a: 'Los simulacros reproducen la dinámica: tiempo limitado, sin retroalimentación y preguntas repartidas por especialidad. El número de preguntas y la duración oficiales los define cada convocatoria; puedes ajustar el simulacro personalizado a esos valores.' },
 ]
 

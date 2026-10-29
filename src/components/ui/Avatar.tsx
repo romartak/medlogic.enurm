@@ -1,186 +1,240 @@
-import { useId, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
 /**
- * Fotos de perfil abstractas (vectores, sin imágenes que descargar). Cada una se guarda por su id
- * en los datos de la cuenta (user_metadata.avatar). Sin foto elegida se muestra la inicial.
+ * Fotos de perfil abstractas y cálidas: 12 motivos planos en 6 paletas suaves (36 en total), en vectores
+ * sin imágenes que descargar. Se guardan por su id en los ajustes (y, con cuenta, en user_metadata.avatar).
+ * Sin foto elegida se muestra la inicial.
  */
-interface AvatarDef {
+interface Palette {
   id: string
-  label: string
-  from: string
-  to: string
-  art: () => ReactNode
+  name: string
+  bg: string
+  fg: string
 }
 
-const W = 'rgb(255 255 255 / 0.9)'
-const S = 'rgb(255 255 255 / 0.35)'
-const D = 'rgb(15 23 42 / 0.22)'
+const PALETTES: Palette[] = [
+  { id: 'terracota', name: 'terracota', bg: '#F6E3D8', fg: '#C8603F' },
+  { id: 'salvia', name: 'salvia', bg: '#E2EADB', fg: '#5B7B53' },
+  { id: 'ocre', name: 'ocre', bg: '#F6EACF', fg: '#B5832A' },
+  { id: 'azul', name: 'azul', bg: '#DEE6F0', fg: '#46699A' },
+  { id: 'ciruela', name: 'ciruela', bg: '#EFDFE8', fg: '#8B4D71' },
+  { id: 'carbon', name: 'carbón', bg: '#EDE8DF', fg: '#3E3A34' },
+]
 
-export const AVATARS: AvatarDef[] = [
+type Art = (fg: string) => ReactNode
+
+/** Rayos alrededor del centro: largos alternos, puntas redondeadas. */
+function rays(n: number, inner: number, outer: (i: number) => number, width: number, fg: string) {
+  return Array.from({ length: n }, (_, i) => {
+    const a = (i / n) * Math.PI * 2 - Math.PI / 2
+    const o = outer(i)
+    return <line key={i} x1={32 + Math.cos(a) * inner} y1={32 + Math.sin(a) * inner} x2={32 + Math.cos(a) * o} y2={32 + Math.sin(a) * o} stroke={fg} strokeWidth={width} strokeLinecap="round" />
+  })
+}
+
+interface Motif {
+  id: string
+  name: string
+  family: AvatarFamily
+  art: Art
+}
+
+export type AvatarFamily = 'cielo' | 'naturaleza' | 'formas'
+export const AVATAR_FAMILIES: { id: AvatarFamily; label: string }[] = [
+  { id: 'cielo', label: 'Cielo' },
+  { id: 'naturaleza', label: 'Naturaleza' },
+  { id: 'formas', label: 'Formas' },
+]
+
+const MOTIFS: Motif[] = [
   {
-    id: 'aurora',
-    label: 'Aurora',
-    from: '#14b8a6',
-    to: '#6366f1',
-    art: () => (
+    id: 'sol',
+    name: 'Sol',
+    family: 'cielo',
+    art: (fg) => (
       <>
-        <circle cx="24" cy="30" r="17" fill={S} />
-        <circle cx="42" cy="36" r="15" fill={W} fillOpacity="0.55" />
-        <circle cx="33" cy="22" r="8" fill={W} />
+        <circle cx="32" cy="32" r="10" fill={fg} />
+        {rays(10, 15, () => 20, 3.4, fg)}
       </>
     ),
   },
   {
-    id: 'ondas',
-    label: 'Ondas',
-    from: '#0ea5e9',
-    to: '#14b8a6',
-    art: () => (
+    id: 'luna',
+    name: 'Luna',
+    family: 'cielo',
+    art: (fg) => (
       <>
-        <path d="M-2 28c10-10 18 10 28 0s18 10 28 0 18 10 28 0v40H-2z" fill={S} />
-        <path d="M-2 40c10-10 18 10 28 0s18 10 28 0 18 10 28 0v28H-2z" fill={W} fillOpacity="0.55" />
-        <path d="M-2 52c10-10 18 10 28 0s18 10 28 0 18 10 28 0v16H-2z" fill={W} />
+        <path d="M40 12a20 20 0 1 0 12 30A17 17 0 0 1 40 12Z" fill={fg} />
+        <circle cx="47" cy="20" r="2.4" fill={fg} fillOpacity="0.5" />
+      </>
+    ),
+  },
+  {
+    id: 'nube',
+    name: 'Nube',
+    family: 'cielo',
+    art: (fg) => (
+      <>
+        <circle cx="44" cy="22" r="7" fill={fg} fillOpacity="0.45" />
+        <path d="M20 46a9 9 0 0 1-1-17.9A12 12 0 0 1 42 27a9.5 9.5 0 0 1 3 19Z" fill={fg} />
       </>
     ),
   },
   {
     id: 'montes',
-    label: 'Montes',
-    from: '#f59e0b',
-    to: '#ec4899',
-    art: () => (
+    name: 'Montes',
+    family: 'cielo',
+    art: (fg) => (
       <>
-        <path d="M-2 56 22 20l22 36z" fill={S} />
-        <path d="M18 56 42 14l24 42z" fill={W} fillOpacity="0.6" />
-        <path d="M38 56 52 32l14 24z" fill={W} />
+        <circle cx="44" cy="20" r="5" fill={fg} fillOpacity="0.5" />
+        <path d="M10 48 26 26l9 12 6-7 13 17Z" fill={fg} />
+      </>
+    ),
+  },
+  {
+    id: 'flor',
+    name: 'Flor',
+    family: 'naturaleza',
+    art: (fg) => (
+      <>
+        {Array.from({ length: 6 }, (_, i) => (
+          <ellipse key={i} cx="32" cy="20" rx="6.5" ry="11" fill={fg} fillOpacity="0.85" transform={`rotate(${i * 60} 32 32)`} />
+        ))}
+        <circle cx="32" cy="32" r="6" fill="#FFF8EE" />
+      </>
+    ),
+  },
+  {
+    id: 'hoja',
+    name: 'Hoja',
+    family: 'naturaleza',
+    art: (fg) => (
+      <>
+        <path d="M16 48C14 28 28 14 50 14c0 22-14 36-34 34Z" fill={fg} />
+        <path d="M18 46 40 24" stroke="#FFF8EE" strokeOpacity="0.7" strokeWidth="2.4" strokeLinecap="round" />
+      </>
+    ),
+  },
+  {
+    id: 'brote',
+    name: 'Brote',
+    family: 'naturaleza',
+    art: (fg) => (
+      <>
+        <path d="M32 52V30" stroke={fg} strokeWidth="3.6" strokeLinecap="round" />
+        <path d="M32 32c-12 1-17-5-17-14 10 0 16 4 17 14Z" fill={fg} />
+        <path d="M32 38c10 .5 15-4.5 15-12-8.5 0-14 3.6-15 12Z" fill={fg} fillOpacity="0.6" />
+      </>
+    ),
+  },
+  {
+    id: 'gota',
+    name: 'Gota',
+    family: 'naturaleza',
+    art: (fg) => (
+      <>
+        <path d="M32 11c8 11 15 19 15 28a15 15 0 0 1-30 0c0-9 7-17 15-28Z" fill={fg} />
+        <path d="M25 40a7 7 0 0 0 6 7" stroke="#FFF8EE" strokeOpacity="0.7" strokeWidth="2.6" fill="none" strokeLinecap="round" />
+      </>
+    ),
+  },
+  {
+    id: 'arcos',
+    name: 'Arcos',
+    family: 'formas',
+    art: (fg) => (
+      <>
+        <path d="M12 46a20 20 0 0 1 40 0" stroke={fg} strokeWidth="5" fill="none" strokeLinecap="round" />
+        <path d="M21 46a11 11 0 0 1 22 0" stroke={fg} strokeOpacity="0.6" strokeWidth="5" fill="none" strokeLinecap="round" />
+        <circle cx="32" cy="46" r="3" fill={fg} />
+      </>
+    ),
+  },
+  {
+    id: 'ondas',
+    name: 'Ondas',
+    family: 'formas',
+    art: (fg) =>
+      [22, 32, 42].map((y, i) => (
+        <path key={y} d={`M13 ${y}c4.75-5 9.5-5 14.25 0s9.5 5 14.25 0 9.5-5 14.25 0`} stroke={fg} strokeOpacity={1 - i * 0.25} strokeWidth="4" fill="none" strokeLinecap="round" />
+      )),
+  },
+  {
+    id: 'guijarro',
+    name: 'Guijarro',
+    family: 'formas',
+    art: (fg) => (
+      <>
+        <path d="M18 34c-2-11 8-20 19-18s14 11 11 20-13 13-21 11-8-6-9-13Z" fill={fg} />
+        <circle cx="47" cy="47" r="5" fill={fg} fillOpacity="0.5" />
       </>
     ),
   },
   {
     id: 'orbita',
-    label: 'Órbita',
-    from: '#6366f1',
-    to: '#8b5cf6',
-    art: () => (
+    name: 'Órbita',
+    family: 'formas',
+    art: (fg) => (
       <>
-        <circle cx="32" cy="32" r="22" fill="none" stroke={S} strokeWidth="3" />
-        <circle cx="32" cy="32" r="14" fill="none" stroke={W} strokeOpacity="0.6" strokeWidth="3" />
-        <circle cx="32" cy="32" r="6" fill={W} />
-        <circle cx="50" cy="20" r="4" fill={W} />
-      </>
-    ),
-  },
-  {
-    id: 'mosaico',
-    label: 'Mosaico',
-    from: '#ec4899',
-    to: '#f97316',
-    art: () => (
-      <>
-        <rect x="10" y="10" width="20" height="20" rx="5" fill={W} />
-        <rect x="34" y="10" width="20" height="20" rx="5" fill={S} />
-        <rect x="10" y="34" width="20" height="20" rx="5" fill={S} />
-        <rect x="34" y="34" width="20" height="20" rx="5" fill={W} fillOpacity="0.7" />
-      </>
-    ),
-  },
-  {
-    id: 'sol',
-    label: 'Sol',
-    from: '#f97316',
-    to: '#facc15',
-    art: () => (
-      <>
-        <circle cx="32" cy="38" r="15" fill={W} />
-        <path d="M32 8v8M12 18l6 6M52 18l-6 6M6 38h8M50 38h8" stroke={W} strokeOpacity="0.7" strokeWidth="4" strokeLinecap="round" />
-        <rect x="-2" y="46" width="68" height="20" fill={D} />
-      </>
-    ),
-  },
-  {
-    id: 'hojas',
-    label: 'Hojas',
-    from: '#10b981',
-    to: '#0ea5e9',
-    art: () => (
-      <>
-        <ellipse cx="24" cy="32" rx="9" ry="20" transform="rotate(-35 24 32)" fill={S} />
-        <ellipse cx="40" cy="32" rx="9" ry="20" transform="rotate(35 40 32)" fill={W} fillOpacity="0.6" />
-        <ellipse cx="32" cy="30" rx="8" ry="19" fill={W} />
-      </>
-    ),
-  },
-  {
-    id: 'diamantes',
-    label: 'Diamantes',
-    from: '#8b5cf6',
-    to: '#ec4899',
-    art: () => (
-      <>
-        <rect x="12" y="12" width="22" height="22" rx="4" transform="rotate(45 23 23)" fill={S} />
-        <rect x="30" y="30" width="22" height="22" rx="4" transform="rotate(45 41 41)" fill={W} />
-        <rect x="30" y="8" width="14" height="14" rx="3" transform="rotate(45 37 15)" fill={W} fillOpacity="0.55" />
-      </>
-    ),
-  },
-  {
-    id: 'burbujas',
-    label: 'Burbujas',
-    from: '#06b6d4',
-    to: '#6366f1',
-    art: () => (
-      <>
-        <circle cx="20" cy="40" r="12" fill={S} />
-        <circle cx="44" cy="22" r="9" fill={W} fillOpacity="0.7" />
-        <circle cx="42" cy="46" r="6" fill={W} />
-        <circle cx="16" cy="16" r="4" fill={W} />
-      </>
-    ),
-  },
-  {
-    id: 'rayas',
-    label: 'Rayas',
-    from: '#14b8a6',
-    to: '#22c55e',
-    art: () => (
-      <>
-        <path d="M-4 52 36-8h14L10 52z" fill={S} />
-        <path d="M12 68 52 8h14L26 68z" fill={W} fillOpacity="0.7" />
-        <path d="M30 70 64 20v18L42 70z" fill={W} />
-      </>
-    ),
-  },
-  {
-    id: 'pulso',
-    label: 'Pulso',
-    from: '#0d9488',
-    to: '#4f46e5',
-    art: () => <path d="M6 34h12l6-14 9 26 7-18 5 6h13" fill="none" stroke={W} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />,
-  },
-  {
-    id: 'cruz',
-    label: 'Cruz',
-    from: '#f43f5e',
-    to: '#f97316',
-    art: () => (
-      <>
-        <rect x="24" y="10" width="16" height="44" rx="6" fill={W} />
-        <rect x="10" y="24" width="44" height="16" rx="6" fill={W} fillOpacity="0.65" />
-        <circle cx="32" cy="32" r="5" fill="#f43f5e" fillOpacity="0.55" />
+        <circle cx="32" cy="32" r="17" stroke={fg} strokeOpacity="0.55" strokeWidth="3" fill="none" />
+        <circle cx="32" cy="32" r="7.5" fill={fg} />
+        <circle cx="46.7" cy="23.5" r="4" fill={fg} />
       </>
     ),
   },
 ]
 
+export interface AvatarDef {
+  id: string
+  label: string
+  family: AvatarFamily
+  bg: string
+  fg: string
+  art: Art
+}
+
+/** Cada motivo sale en 3 paletas distintas, repartidas para que las 6 aparezcan por igual. */
+export const AVATARS: AvatarDef[] = MOTIFS.flatMap((m, i) =>
+  [0, 2, 4].map((k) => {
+    const p = PALETTES[(i + k) % PALETTES.length]
+    return { id: `${m.id}-${p.id}`, label: `${m.name} ${p.name}`, family: m.family, bg: p.bg, fg: p.fg, art: m.art }
+  }),
+)
+
+/** Diseños de la versión anterior: quien ya eligió uno ve el motivo más parecido de los nuevos (motivo, n.º de paleta). */
+const LEGACY_MOTIF: Record<string, [string, number]> = {
+  aurora: ['guijarro', 0],
+  ondas: ['ondas', 0],
+  montes: ['montes', 0],
+  orbita: ['orbita', 0],
+  mosaico: ['flor', 1],
+  sol: ['sol', 0],
+  hojas: ['hoja', 0],
+  diamantes: ['arcos', 1],
+  burbujas: ['guijarro', 1],
+  rayas: ['ondas', 1],
+  pulso: ['gota', 0],
+  cruz: ['flor', 0],
+}
+
+const BY_ID = new Map(AVATARS.map((a) => [a.id, a]))
+
+export function avatarDef(id: unknown): AvatarDef | undefined {
+  if (typeof id !== 'string') return undefined
+  const direct = BY_ID.get(id)
+  if (direct) return direct
+  const legacy = Object.hasOwn(LEGACY_MOTIF, id) ? LEGACY_MOTIF[id] : undefined
+  return legacy ? AVATARS.filter((a) => a.id.startsWith(`${legacy[0]}-`))[legacy[1]] : undefined
+}
+
 export function isAvatarId(id: unknown): id is string {
-  return typeof id === 'string' && AVATARS.some((a) => a.id === id)
+  return avatarDef(id) !== undefined
 }
 
 /** Foto de perfil: el diseño elegido o, si no hay, la inicial sobre el degradado de la marca. */
 export function Avatar({ avatar, initial, className, children }: { avatar?: string | null; initial?: string; className?: string; children?: ReactNode }) {
-  const gid = `av${useId().replace(/[^a-zA-Z0-9]/g, '')}`
-  const def = isAvatarId(avatar) ? AVATARS.find((a) => a.id === avatar) : undefined
+  const def = avatarDef(avatar)
   if (!def) {
     return (
       <span className={cn('grid place-items-center overflow-hidden rounded-full bg-brand-gradient font-display font-bold text-white', className)}>
@@ -190,17 +244,8 @@ export function Avatar({ avatar, initial, className, children }: { avatar?: stri
   }
   return (
     <svg viewBox="0 0 64 64" className={cn('overflow-hidden rounded-full', className)} role="img" aria-label={`Foto de perfil: ${def.label}`}>
-      <defs>
-        <linearGradient id={gid} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor={def.from} />
-          <stop offset="1" stopColor={def.to} />
-        </linearGradient>
-        <clipPath id={`${gid}c`}>
-          <rect width="64" height="64" />
-        </clipPath>
-      </defs>
-      <rect width="64" height="64" fill={`url(#${gid})`} />
-      <g clipPath={`url(#${gid}c)`}>{def.art()}</g>
+      <rect width="64" height="64" fill={def.bg} />
+      {def.art(def.fg)}
     </svg>
   )
 }
