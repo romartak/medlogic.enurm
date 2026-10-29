@@ -51,7 +51,7 @@ export const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
       { to: '/logros', label: 'Logros', icon: Trophy, description: 'Niveles y medallas' },
       { to: '/roadmap', label: 'Lo que viene', icon: Rocket, description: 'Hoja de ruta y próximas funciones' },
       { to: '/cuenta', label: 'Mi cuenta', icon: UserRound, description: 'Iniciar sesión y sincronizar tu progreso' },
-      { to: '/ajustes', label: 'Ajustes', icon: Settings, description: 'Perfil, tema y respaldo' },
+      { to: '/ajustes', label: 'Configuración', icon: Settings, description: 'Perfil, foto, cuenta, tema y respaldo' },
     ],
   },
 ]

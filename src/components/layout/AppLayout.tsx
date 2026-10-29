@@ -8,8 +8,9 @@ import { Logo, GithubIcon } from '@/components/ui/Logo'
 import { CommandPalette } from './CommandPalette'
 import { FunctionsSheet, FunctionsTab } from './MobileMenu'
 import { useProgress, levelFromXp } from '@/store/progress'
-import { displayName, useAuth } from '@/store/auth'
-import { Avatar, isAvatarId } from '@/components/ui/Avatar'
+import { useAuth } from '@/store/auth'
+import { Avatar } from '@/components/ui/Avatar'
+import { useMyAvatar } from '@/components/AvatarPicker'
 import { computeStreak } from '@/lib/stats'
 import { cn, daysBetween } from '@/lib/utils'
 import { enurmDate, formatEnurmDate, upcomingEnurm } from '@/data/enurm'
@@ -111,8 +112,8 @@ function UserChip() {
 /** Acceso a la cuenta: inicial del usuario si hay sesión, «Entrar» si no. Oculto si Supabase no está configurado. */
 function AccountButton() {
   const status = useAuth((s) => s.status)
-  const user = useAuth((s) => s.user)
   const sync = useAuth((s) => s.sync)
+  const { avatar, initial } = useMyAvatar()
   if (status === 'disabled' || status === 'loading') return null
   if (status === 'signed-out')
     return (
@@ -120,11 +121,9 @@ function AccountButton() {
         <LogIn className="size-4" /> <span className="max-sm:hidden">Iniciar sesión</span>
       </NavLink>
     )
-  const meta = user?.user_metadata as { call_name?: string; avatar?: string } | undefined
-  const initial = (meta?.call_name || displayName(user)).charAt(0).toUpperCase()
   return (
-    <NavLink to="/cuenta" className="relative ml-1 block size-9 shrink-0 before:absolute before:-inset-1" aria-label="Mi cuenta">
-      <Avatar avatar={isAvatarId(meta?.avatar) ? meta.avatar : null} initial={initial} className="size-9 text-sm">
+    <NavLink to="/ajustes" className="relative ml-1 block size-9 shrink-0 before:absolute before:-inset-1" aria-label="Configuración y cuenta">
+      <Avatar avatar={avatar} initial={initial} className="size-9 text-sm">
         <UserRound className="size-4" />
       </Avatar>
       {(sync === 'error' || sync === 'offline' || sync === 'conflict') && <span className="absolute -top-0.5 -right-0.5 size-3 rounded-full border-2 border-[var(--surface)] bg-amber-500" aria-label="Sincronización pendiente" />}

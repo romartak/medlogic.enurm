@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { AVATARS, isAvatarId } from './Avatar'
+import { AVATARS, avatarDef, isAvatarId } from './Avatar'
 
 describe('fotos de perfil', () => {
   it('hay al menos 10 diseños, con ids y nombres únicos', () => {
@@ -13,5 +13,11 @@ describe('fotos de perfil', () => {
     expect(isAvatarId('<script>')).toBe(false)
     expect(isAvatarId(undefined)).toBe(false)
     expect(isAvatarId(42)).toBe(false)
+    expect(isAvatarId('constructor')).toBe(false)
+  })
+
+  it('hay 36 diseños y los de la versión anterior siguen mostrando uno', () => {
+    expect(AVATARS.length).toBe(36)
+    for (const old of ['aurora', 'ondas', 'montes', 'orbita', 'mosaico', 'sol', 'hojas', 'diamantes', 'burbujas', 'rayas', 'pulso', 'cruz']) expect(avatarDef(old)).toBeDefined()
   })
 })

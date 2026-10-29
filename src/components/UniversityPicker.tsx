@@ -3,7 +3,7 @@ import { Check, Landmark, Search } from 'lucide-react'
 import { UNIVERSITIES, UNIVERSITY_NEEDS_NAME, UNIVERSITY_OTHER } from '@/data/universities'
 import { cn } from '@/lib/utils'
 
-/** Buscador de universidades (cuestionario y Ajustes). */
+/** Buscador de universidades (cuestionario y Configuración). */
 export function UniversityPicker({ value, other, onChange }: { value: string | null; other: string; onChange: (id: string, other: string) => void }) {
   const [q, setQ] = useState('')
   const norm = (s: string) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
