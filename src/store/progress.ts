@@ -160,11 +160,18 @@ function checkAchievements(s: ProgressData): Pick<ProgressData, 'achievements' |
   if (!unlocked.length) return null
   const achievements = { ...s.achievements }
   let xp = s.xp
-  for (const id of unlocked) {
-    const a = ACHIEVEMENTS.find((x) => x.id === id)!
-    achievements[id] = Date.now()
+  const won = unlocked.map((id) => ACHIEVEMENTS.find((x) => x.id === id)!)
+  for (const a of won) {
+    achievements[a.id] = Date.now()
     xp += a.xp
+  }
+  // Varios a la vez (p. ej., al importar progreso) van en un solo aviso: antes se apilaban hasta cuatro y tapaban la pantalla.
+  if (won.length === 1) {
+    const [a] = won
     useToasts.getState().push({ kind: 'achievement', title: a.title, body: `${a.description} · +${a.xp} XP`, icon: a.icon })
+  } else {
+    const titles = new Intl.ListFormat('es', { type: 'conjunction' }).format(won.map((a) => a.title))
+    useToasts.getState().push({ kind: 'achievement', count: won.length, title: titles, body: `+${xp - s.xp} XP` })
   }
   return { achievements, xp }
 }

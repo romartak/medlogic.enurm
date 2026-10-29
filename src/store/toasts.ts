@@ -6,6 +6,8 @@ export interface Toast {
   title: string
   body?: string
   icon?: string
+  /** Logros desbloqueados juntos en este aviso. */
+  count?: number
 }
 
 interface ToastState {
