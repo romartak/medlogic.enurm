@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { NavLink } from 'react-router-dom'
-import { ChevronRight, LayoutGrid, Play, Search, Target, X } from 'lucide-react'
+import { ChevronRight, Ellipsis, Play, Search, Target, X } from 'lucide-react'
 import { useProgress } from '@/store/progress'
 import { cn } from '@/lib/utils'
 import { ALL_NAV, NAV_GROUPS, type NavItem } from './nav'
@@ -174,14 +174,9 @@ export function FunctionsSheet({ open, onClose, footer }: { open: boolean; onClo
 /** Acceso a todas las funciones como una pestaña más de la barra inferior. */
 export function FunctionsTab({ active, onClick }: { active: boolean; onClick: () => void }) {
   return (
-    <button
-      onClick={onClick}
-      className={`relative flex flex-col items-center gap-0.5 py-2.5 text-xs font-semibold transition-colors ${active ? 'text-brand-600 dark:text-brand-400' : 'text-muted'}`}
-    >
-      {active && <motion.span layoutId="tab-active" className="absolute inset-x-3 inset-y-1 rounded-xl bg-brand-500/10" />}
-      <LayoutGrid className="relative size-5" />
-      <span className="relative min-[400px]:hidden">Más</span>
-      <span className="relative max-[399px]:hidden">Funciones</span>
+    <button onClick={onClick} aria-label="Más funciones" aria-expanded={active} className={cn('relative grid size-11 place-items-center rounded-full transition-colors', active ? 'text-brand-600 dark:text-brand-400' : 'text-muted')}>
+      {active && <motion.span layoutId="tab-active" transition={{ type: 'spring', stiffness: 420, damping: 34 }} className="absolute inset-0 rounded-full bg-brand-500/15" />}
+      <Ellipsis className="relative size-5" />
     </button>
   )
 }

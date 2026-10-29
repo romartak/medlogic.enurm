@@ -59,4 +59,4 @@ export const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
 export const ALL_NAV = NAV_GROUPS.flatMap((g) => g.items)
 
 /** Pestañas de la barra inferior en móvil. */
-export const MOBILE_TABS = ['/inicio', '/plan', '/especialidades', '/practica', '/flashcards'].map((to) => ALL_NAV.find((n) => n.to === to)!)
+export const MOBILE_TABS = ['/inicio', '/plan', '/practica', '/flashcards'].map((to) => ALL_NAV.find((n) => n.to === to)!)
