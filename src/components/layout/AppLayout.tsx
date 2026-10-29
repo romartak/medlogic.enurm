@@ -249,21 +249,30 @@ export function AppLayout() {
   )
 }
 
+/** Píldora flotante: solo íconos y la pestaña activa muestra su nombre. Sube con el borde seguro del iPhone en vez de dejar un hueco dentro. */
 function MobileTabBar({ onOpenFunctions, functionsOpen }: { onOpenFunctions: () => void; functionsOpen: boolean }) {
-  const tabs = MOBILE_TABS
   return (
-    <nav className="glass fixed inset-x-3 bottom-3 z-30 rounded-2xl shadow-lift lg:hidden" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
-      <ul className="grid grid-cols-6">
-        {tabs.map((t) => (
+    <nav aria-label="Principal" className="fixed inset-x-0 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-30 flex justify-center px-3 lg:hidden">
+      <ul className="glass flex items-center gap-0.5 rounded-full p-1.5 shadow-lift">
+        {MOBILE_TABS.map((t) => (
           <li key={t.to}>
-            <NavLink to={t.to} className={({ isActive }) => cn('relative flex flex-col items-center gap-0.5 py-2.5 text-xs font-semibold transition-colors', isActive ? 'text-brand-600 dark:text-brand-400' : 'text-muted')}>
-              {({ isActive }) => (
-                <>
-                  {isActive && <motion.span layoutId="tab-active" className="absolute inset-x-3 inset-y-1 rounded-xl bg-brand-500/10" />}
-                  <t.icon className="relative size-5" />
-                  <span className="relative">{t.label === 'Especialidades' ? 'Áreas' : t.label === 'Flashcards' ? 'Tarjetas' : t.label}</span>
-                </>
-              )}
+            <NavLink to={t.to} aria-label={t.label} className={({ isActive }) => cn('relative flex h-11 items-center gap-1.5 rounded-full px-3 text-sm font-semibold transition-colors', isActive && !functionsOpen ? 'text-brand-600 dark:text-brand-400' : 'text-muted')}>
+              {({ isActive }) => {
+                const on = isActive && !functionsOpen
+                return (
+                  <>
+                    {on && <motion.span layoutId="tab-active" transition={{ type: 'spring', stiffness: 420, damping: 34 }} className="absolute inset-0 rounded-full bg-brand-500/15" />}
+                    <t.icon className="relative size-5 shrink-0" />
+                    <AnimatePresence initial={false}>
+                      {on && (
+                        <motion.span initial={{ width: 0, opacity: 0 }} animate={{ width: 'auto', opacity: 1 }} exit={{ width: 0, opacity: 0 }} transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }} className="relative overflow-hidden whitespace-nowrap">
+                          {t.label === 'Flashcards' ? 'Tarjetas' : t.label}
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </>
+                )
+              }}
             </NavLink>
           </li>
         ))}
