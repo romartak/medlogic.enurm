@@ -91,6 +91,7 @@ Las cuentas son opcionales y necesitan Supabase. Sin ellas la app funciona compl
 ├── scripts/           importador de preguntas, armado del banco y migraciones de despliegue
 ├── supabase/          migraciones SQL: cuentas, seguridad por filas, ranking y simulacro nacional
 ├── docs/              despliegue, formato de preguntas, hoja de ruta y revisión de respuestas
+├── instagram/         posts, historias y reels de Instagram hechos con Remotion (guía en instagram/PUBLICAR.md)
 └── .github/           integración continua y plantillas de issues y pull requests
 ```
 
