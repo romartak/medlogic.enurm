@@ -1,4 +1,4 @@
-import { supabase } from './supabase'
+import { getSupabase } from './supabase'
 import { overview, computeStreak } from './stats'
 import { useProgress } from '@/store/progress'
 import { useAuth, displayName } from '@/store/auth'
@@ -73,7 +73,7 @@ let pending: ReturnType<typeof setTimeout> | null = null
 const MIN_GAP = 15_000
 
 async function upsertStats(userId: string) {
-  return supabase!.from('leaderboard').upsert({ user_id: userId, ...myPublicStats() })
+  return (await getSupabase())!.from('leaderboard').upsert({ user_id: userId, ...myPublicStats() })
 }
 
 /**
@@ -82,7 +82,7 @@ async function upsertStats(userId: string) {
  */
 export async function publishStats(force = false): Promise<boolean> {
   const user = useAuth.getState().user
-  if (!supabase || !user) return false
+  if (!(await getSupabase()) || !user) return false
   const wait = MIN_GAP - (Date.now() - lastPublish)
   if (!force && wait > 0) {
     if (!pending) {
@@ -107,6 +107,7 @@ export async function publishStats(force = false): Promise<boolean> {
 }
 
 export async function fetchRanking(order: RankingOrder, university: string | null) {
+  const supabase = await getSupabase()
   if (!supabase) return { rows: [] as RankingRow[], me: null as MyPosition | null }
   const [list, me] = await Promise.all([
     supabase.rpc('ranking_lista', { p_orden: order, p_universidad: university, p_limite: 100 }),
@@ -124,6 +125,7 @@ export async function fetchRanking(order: RankingOrder, university: string | nul
 }
 
 export async function fetchUniversities(): Promise<UniversityRow[]> {
+  const supabase = await getSupabase()
   if (!supabase) return []
   const { data, error } = await supabase.rpc('ranking_universidades')
   if (error) throw error

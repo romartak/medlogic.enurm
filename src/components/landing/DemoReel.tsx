@@ -86,7 +86,20 @@ function PhoneVideo({ id, title }: { id: string; title: string }) {
       { threshold: 0.5 },
     )
     io.observe(v)
-    return () => io.disconnect()
+    // Empieza a bajar el video un poco antes de que llegue a la vista, para que no aparezca en blanco.
+    const warm = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return
+        v.preload = 'auto'
+        warm.disconnect()
+      },
+      { rootMargin: '600px 600px' },
+    )
+    warm.observe(v)
+    return () => {
+      io.disconnect()
+      warm.disconnect()
+    }
   }, [reduce, held])
 
   const toggle = () => {
