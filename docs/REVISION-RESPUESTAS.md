@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **1166** (1166 de 1166 del documento original · 0 de 1320 de la recopilación 2002-2024) · publicadas: **1082** · respuesta corregida: **166** · retiradas: **84**.
+Preguntas revisadas: **1312** (1166 de 1166 del documento original · 146 de 1320 de la recopilación 2002-2024) · publicadas: **1228** · respuesta corregida: **171** · retiradas: **84**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -483,6 +483,21 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **Q212_87** — ¿Cuáles son los microorganismos patógenos que se aíslan con mayor frecuencia de los dispositivos (prótesis) colocados a un paciente?
   - Documento: B (Estreptococo betahemolítico del grupo A) → publicada: **C (Estafilococos coagulasa negativos)**
   - El archivo marcaba el estreptococo betahemolítico del grupo A. Los microorganismos que más se aíslan de los dispositivos y prótesis son los estafilococos coagulasa negativos (sobre todo Staphylococcus epidermidis), seguidos de S. aureus.
+- **ENURM-2007-014** — Coco Gram+ ordenados en paquetes irregulares que causan abscesos, infecciones piógenas (endocarditis osteomielitis) síndrome de choque toxico:
+  - Documento: D (Streptococcus pyogenes) → publicada: **C (Staphylococcus aureaus)**
+  - El documento marca Streptococcus pyogenes; el enunciado describe cocos grampositivos en racimos con abscesos, endocarditis, osteomielitis y síndrome de choque tóxico, que corresponden a Staphylococcus aureus.
+- **ENURM-2013-010** — Durante el ensayo clínico de un nuevo fármaco, se incluye una muestra grande de pacientes, distribuidos al azar, con un diseño doble ciego y se busca evaluar su seguridad y eficacia. Esta fase corresponde a:
+  - Documento: B (Fase clínica 2) → publicada: **D (Fase clínica 3)**
+  - El documento marca fase 2; el enunciado describe una muestra grande, aleatorizada y doble ciego para evaluar seguridad y eficacia, que es la fase 3.
+- **ENURM-2011-002** — Unicelular, mononuclear, axostilo que sobrepasa el extreme posterior del cuerpo. Define:
+  - Documento: A (La Giardia Lamblia) → publicada: **D (La trichomona vaginalis)**
+  - El documento marca Giardia lamblia, pero Giardia tiene dos núcleos; el protozoario mononuclear con axostilo que sobresale por el extremo posterior es Trichomonas vaginalis.
+- **ENURM-2011-055** — La prevención primaria más efectiva del cáncer cervico-uterino es:
+  - Documento: C (El Papanicolaou a temprana edad) → publicada: **A (La vacuna contra el HPV)**
+  - El documento marca Papanicolaou, que es prevención secundaria (detección); la prevención primaria más efectiva es la vacuna contra el VPH.
+- **ENURM-2009-046** — Cual de los siguientes medicamentos ayuda a la maduración pulmonar del feto?
+  - Documento: C (Surfactante pulmonares) → publicada: **B (Glucocorticoide)**
+  - El documento marca surfactante, pero este se administra al recién nacido; el medicamento que madura el pulmón fetal antes del parto son los glucocorticoides.
 
 ## Retiradas
 
