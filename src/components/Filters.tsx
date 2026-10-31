@@ -22,7 +22,7 @@ export function SpecialtyPicker({ value, onChange }: { value: string[]; onChange
           <Chip key={id} active={value.includes(id)} onClick={() => onChange(toggle(value, id))} color={s.color}>
             <Icon name={s.icon} className="size-3.5" />
             {s.short}
-            <span className="opacity-60">{counts[id]}</span>
+            <span className="font-normal">{counts[id]}</span>
           </Chip>
         )
       })}

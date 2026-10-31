@@ -119,7 +119,7 @@ function AccountButton() {
   if (status === 'signed-out')
     return (
       <NavLink to="/cuenta" state={{ mode: 'signin' }} className="ml-1 inline-flex h-11 items-center gap-1.5 rounded-xl bg-brand-gradient px-3 text-xs font-semibold text-white shadow-glow">
-        <LogIn className="size-4" /> <span className="max-sm:hidden">Iniciar sesión</span>
+        <LogIn className="size-4" /> <span className="max-sm:sr-only">Iniciar sesión</span>
       </NavLink>
     )
   return (

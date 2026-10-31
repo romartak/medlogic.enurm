@@ -176,7 +176,7 @@ export function EnterBar() {
   const returning = useReturning()
   const status = useAuth((s) => s.status)
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:hidden">
+    <div role="region" aria-label="Entrar a la plataforma" className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:hidden">
       <div className="pointer-events-auto mx-auto flex max-w-md items-center gap-2 rounded-3xl border border-soft bg-[var(--surface)] p-2 shadow-lift">
         {(status === 'signed-out' || (status === 'loading' && !hasStoredSession())) && (
           <Link to="/cuenta" state={{ mode: 'signin' }} className={buttonClass('ghost', 'lg', 'shrink-0 px-4 text-sm')}>

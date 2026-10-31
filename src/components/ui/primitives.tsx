@@ -223,7 +223,7 @@ export function Chip({ active, onClick, children, color }: { active: boolean; on
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-all',
+        'relative inline-flex items-center gap-1.5 rounded-full border px-3 py-2 text-xs font-semibold transition-all after:absolute after:inset-x-0 after:-inset-y-[5px]',
         active ? 'border-transparent text-white shadow-sm' : 'border-soft text-muted hover:border-brand-500/40 hover:text-[var(--text)]',
       )}
       style={active ? solidBg(color ?? 'var(--color-brand-500)') : undefined}

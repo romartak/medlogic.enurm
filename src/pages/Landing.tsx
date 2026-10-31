@@ -169,7 +169,7 @@ function ExamCountdown() {
             <p className="mt-1 text-white/90 first-letter:uppercase">{formatEnurmDate(next, { weekday: true })}</p>
             <div className="mt-6 grid grid-cols-4 gap-2 sm:gap-3">
               {parts.map((p) => (
-                <div key={p.l} className="rounded-2xl bg-white/15 px-1 py-3 text-center backdrop-blur-sm">
+                <div key={p.l} className="rounded-2xl bg-white/15 px-1 py-3 text-center">
                   <div className="font-display text-2xl font-extrabold tabular-nums sm:text-4xl">{String(p.v).padStart(2, '0')}</div>
                   <div className="text-xs font-medium text-white/80">{p.l}</div>
                 </div>
@@ -480,7 +480,7 @@ export default function Landing() {
         <div className="relative flex [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
           <div className="marquee flex shrink-0 animate-marquee gap-3 pr-3">
             {[...SPECIALTIES, ...SPECIALTIES].map((s, i) => (
-              <Link key={i} to={`/especialidades/${s.id}`} tabIndex={i >= SPECIALTIES.length ? -1 : undefined} className="card flex shrink-0 items-center gap-2 px-4 py-2.5 text-sm font-medium transition-colors hover:border-brand-500/40">
+              <Link key={i} to={`/especialidades/${s.id}`} tabIndex={i >= SPECIALTIES.length ? -1 : undefined} aria-hidden={i >= SPECIALTIES.length || undefined} className="card flex shrink-0 items-center gap-2 px-4 py-2.5 text-sm font-medium transition-colors hover:border-brand-500/40">
                 <span style={tintText(s.color)}>
                   <Icon name={s.icon} className="size-4" />
                 </span>
@@ -519,7 +519,7 @@ export default function Landing() {
               <Link to="/inicio" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-white px-6 font-semibold text-slate-900 transition-transform hover:scale-[1.02] active:scale-[0.97]">
                 Comenzar ahora <ArrowRight className="size-5" />
               </Link>
-              <Link to="/como-prepararte" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-white/15 px-6 font-semibold text-white backdrop-blur transition-colors hover:bg-white/25">
+              <Link to="/como-prepararte" className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-white/15 px-6 font-semibold text-white transition-colors hover:bg-white/25">
                 <Compass className="size-5" /> Cómo prepararte
               </Link>
             </div>

@@ -87,7 +87,7 @@ function SectionIndex() {
             <button
               type="button"
               onClick={() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-              className="h-9 rounded-full border border-soft bg-[var(--surface)] px-3.5 text-sm font-medium whitespace-nowrap transition-colors hover:border-brand-500/40"
+              className="relative h-9 rounded-full border border-soft bg-[var(--surface)] px-3.5 text-sm font-medium whitespace-nowrap transition-colors after:absolute after:inset-x-0 after:-inset-y-1 hover:border-brand-500/40"
             >
               {label}
             </button>

@@ -44,10 +44,10 @@ export function QuestionCard({ question: q, mode, selected, onSelect, revealed =
         {q.difficulty && <Badge className="hidden sm:inline-flex">{DIFFICULTY[q.difficulty]}</Badge>}
         {q.sample && <Badge color="#94a3b8">Muestra</Badge>}
         <div className="ml-auto flex items-center gap-1">
-          <button onClick={() => setNoteOpen((o) => !o)} className={cn('rounded-lg p-2 transition-colors hover:bg-slate-900/5 dark:hover:bg-white/5', note ? 'text-accent-500' : 'text-muted')} aria-label="Nota personal" title="Nota personal">
+          <button onClick={() => setNoteOpen((o) => !o)} className={cn('relative rounded-lg p-2 transition-colors after:absolute after:inset-x-0 after:-inset-y-1.5 hover:bg-slate-900/5 dark:hover:bg-white/5', note ? 'text-accent-500' : 'text-muted')} aria-label="Nota personal" title="Nota personal">
             <NotebookPen className="size-4" />
           </button>
-          <motion.button whileTap={{ scale: 0.8 }} onClick={() => toggleBookmark(q.id)} className={cn('rounded-lg p-2 transition-colors hover:bg-slate-900/5 dark:hover:bg-white/5', bookmarked ? 'text-amber-500' : 'text-muted')} aria-label={bookmarked ? 'Quitar de marcadas' : 'Marcar pregunta'} title="Marcar">
+          <motion.button whileTap={{ scale: 0.8 }} onClick={() => toggleBookmark(q.id)} className={cn('relative rounded-lg p-2 transition-colors after:absolute after:inset-x-0 after:-inset-y-1.5 hover:bg-slate-900/5 dark:hover:bg-white/5', bookmarked ? 'text-amber-500' : 'text-muted')} aria-label={bookmarked ? 'Quitar de marcadas' : 'Marcar pregunta'} title="Marcar">
             {bookmarked ? <BookmarkCheck className="size-4 fill-amber-500/20" /> : <Bookmark className="size-4" />}
           </motion.button>
         </div>
