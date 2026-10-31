@@ -39,6 +39,8 @@ npm run import:questions -- banco.csv --base 1             # fuerza respuestas n
 | Dificultad | | `difficulty`, `dificultad` | `1/2/3` o `fácil/media/difícil`. |
 | Etiquetas | | `tags`, `etiquetas` | Separadas por `,` `;` o `\|`. |
 | Imagen | | `image`, `imagen` | URL (p. ej. un ECG en `public/img/`). |
+| Apariciones | | `appearances`, `apariciones`, `veces` | Veces que salió la pregunta en los exámenes (entero de 1 a 50). Con 2 o más se marca como **High yield** y tiene su propio filtro. |
+| Años en que salió | | `years`, `anios`, `años` | Lista de años de ENURM en que apareció (`2007;2015`). Con ellos se muestra «apareció en N de los 23 exámenes». |
 | Id | | `id`, `codigo`, `numero` | Si falta se genera uno estable a partir del año y el enunciado, para que el progreso de los usuarios no se pierda al reimportar. |
 
 ### Especialidades reconocidas
