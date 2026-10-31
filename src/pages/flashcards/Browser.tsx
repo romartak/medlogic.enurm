@@ -191,7 +191,7 @@ export default function Browser() {
             <div className="flex flex-wrap gap-1 px-1">
               {tags.map(([t, n]) => (
                 <button key={t} onClick={() => run(`tag:${t}`)} className="rounded-md surface-2 px-1.5 py-0.5 text-xs text-muted hover:text-[var(--text)]">
-                  {t} <span className="opacity-60">{n}</span>
+                  {t} <span className="font-normal">{n}</span>
                 </button>
               ))}
             </div>

@@ -95,7 +95,7 @@ export default function SpecialtyDetail() {
           <div className="flex-1">
             {area && <div className="text-xs font-semibold tracking-wider text-white/75 uppercase">{area.name}</div>}
             <h1 className="mt-1 flex items-center gap-3 text-3xl font-extrabold sm:text-4xl">
-              <span className="grid size-12 place-items-center rounded-2xl bg-white/20 backdrop-blur">
+              <span className="grid size-12 place-items-center rounded-2xl bg-white/20">
                 <Icon name={s.icon} className="size-6" />
               </span>
               {s.name}
@@ -105,16 +105,16 @@ export default function SpecialtyDetail() {
               <button onClick={() => navigate(`/practica?specialty=${id}&count=20&auto=1`)} disabled={!specQuestions.length} className="inline-flex h-11 items-center gap-2 rounded-xl bg-white px-5 text-sm font-semibold text-slate-900 shadow-lg transition-transform hover:scale-[1.03] active:scale-95 disabled:opacity-50">
                 <Play className="size-4 fill-current" /> Practicar
               </button>
-              <Link to={`/simulacro?specialty=${id}`} className="inline-flex h-11 items-center gap-2 rounded-xl bg-white/15 px-4 text-sm font-semibold backdrop-blur transition-colors hover:bg-white/25">
+              <Link to={`/simulacro?specialty=${id}`} className="inline-flex h-11 items-center gap-2 rounded-xl bg-white/15 px-4 text-sm font-semibold transition-colors hover:bg-white/25">
                 <GraduationCap className="size-4" /> Simulacro
               </Link>
               {cards.length > 0 && (
-                <Link to={`/flashcards/esp-${id}`} className="inline-flex h-11 items-center gap-2 rounded-xl bg-white/15 px-4 text-sm font-semibold backdrop-blur transition-colors hover:bg-white/25">
+                <Link to={`/flashcards/esp-${id}`} className="inline-flex h-11 items-center gap-2 rounded-xl bg-white/15 px-4 text-sm font-semibold transition-colors hover:bg-white/25">
                   <Layers className="size-4" /> Flashcards
                 </Link>
               )}
               {errors.length > 0 && (
-                <button onClick={() => navigate(`/practica?specialty=${id}&status=failed&auto=1`)} className="inline-flex h-11 items-center gap-2 rounded-xl bg-white/15 px-4 text-sm font-semibold backdrop-blur transition-colors hover:bg-white/25">
+                <button onClick={() => navigate(`/practica?specialty=${id}&status=failed&auto=1`)} className="inline-flex h-11 items-center gap-2 rounded-xl bg-white/15 px-4 text-sm font-semibold transition-colors hover:bg-white/25">
                   <RotateCcw className="size-4" /> Mis errores ({errors.length})
                 </button>
               )}
