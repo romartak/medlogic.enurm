@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { motion, useReducedMotionConfig, type Variants } from 'motion/react'
 import { BatteryFull, Flame, Layers, Play, Signal, Sparkles, Trophy, Wifi } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { startHalftone } from './halftone'
 
 interface Demo {
   id: string
@@ -72,6 +73,9 @@ function PhoneVideo({ id, title }: { id: string; title: string }) {
   const ref = useRef<HTMLVideoElement>(null)
   const reduce = useReducedMotionConfig()
   const [playing, setPlaying] = useState(false)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  /** El semitono ya dibujó su primer cuadro: desde ahí tapa al video normal. */
+  const [dots, setDots] = useState(false)
   /** Pausado a mano: no se reanuda solo al volver a la vista. */
   const [held, setHeld] = useState(false)
 
@@ -102,6 +106,14 @@ function PhoneVideo({ id, title }: { id: string; title: string }) {
     }
   }, [reduce, held])
 
+  // El video se dibuja como una trama de puntos (semitono). Sin WebGL o con «reducir movimiento» se ve el video normal.
+  useEffect(() => {
+    const v = ref.current
+    const c = canvasRef.current
+    if (!v || !c || reduce) return
+    return startHalftone(c, v, () => setDots(true)) ?? undefined
+  }, [reduce])
+
   const toggle = () => {
     const v = ref.current
     if (!v) return
@@ -127,6 +139,7 @@ function PhoneVideo({ id, title }: { id: string; title: string }) {
             <BatteryFull className="size-3.5" />
           </span>
         </div>
+        <div className="relative">
         <video
           ref={ref}
           className="block aspect-[390/844] w-full object-cover"
@@ -141,6 +154,8 @@ function PhoneVideo({ id, title }: { id: string; title: string }) {
         >
           <source src={`${import.meta.env.BASE_URL}demo/${id}.mp4`} type="video/mp4" />
         </video>
+        <canvas ref={canvasRef} aria-hidden className={cn('pointer-events-none absolute inset-0 size-full transition-opacity duration-500', dots ? 'opacity-100' : 'opacity-0')} />
+        </div>
       </div>
       <button type="button" onClick={toggle} className="absolute inset-0 grid place-items-center rounded-[2.4rem]" aria-label={`${playing ? 'Pausar' : 'Reproducir'} la demostración: ${title}`}>
         {!playing && (reduce || held) && (
