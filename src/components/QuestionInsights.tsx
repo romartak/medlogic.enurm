@@ -8,8 +8,8 @@ import { isSupabaseConfigured } from '@/lib/supabase'
 import { useAuth } from '@/store/auth'
 import { cn, LETTERS } from '@/lib/utils'
 
-/** Exámenes que cubre el banco recopilado: del 2002 al 2024, uno por año. */
-export const EXAMS_COVERED = { from: 2002, to: 2024, count: 23 }
+/** Exámenes de la recopilación: 28 entre 2002 y 2024 (2021 y 2022 tuvieron varias versiones). Algunos vienen incompletos. */
+export const EXAMS_COVERED = { from: 2002, to: 2024, count: 28 }
 
 /** Qué tan repetida es la pregunta en los exámenes recopilados, para saber si es «alto rendimiento». */
 export function HighYieldNote({ q }: { q: Question }) {
@@ -22,9 +22,7 @@ export function HighYieldNote({ q }: { q: Question }) {
       <div>
         <div className="font-bold text-orange-700 dark:text-orange-300">Pregunta de alto rendimiento</div>
         <p className="mt-0.5 text-muted">
-          {years.length
-            ? `Apareció en ${years.length} de los ${EXAMS_COVERED.count} exámenes del ${EXAMS_COVERED.from} al ${EXAMS_COVERED.to} (${Math.round((years.length / EXAMS_COVERED.count) * 100)} %): ${years.join(', ')}.`
-            : `Apareció ${n} veces en los exámenes del ${EXAMS_COVERED.from} al ${EXAMS_COVERED.to}. Si salió tantas veces, vale la pena dominarla.`}
+          {`Apareció en ${n} de los ${EXAMS_COVERED.count} exámenes recopilados (${Math.round((n / EXAMS_COVERED.count) * 100)} %)${years.length ? `: ${years.join(', ')}` : ''}. Si salió tantas veces, vale la pena dominarla.`}
         </p>
       </div>
     </div>
