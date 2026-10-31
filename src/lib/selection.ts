@@ -11,7 +11,10 @@ export function searchTokens(term: string): string[] {
     .filter((w) => w.length >= 2 && !STOP.has(w))
 }
 
-export type StatusFilter = 'all' | 'unseen' | 'failed' | 'bookmarked'
+export type StatusFilter = 'all' | 'unseen' | 'failed' | 'bookmarked' | 'highyield'
+
+/** Pregunta de «alto rendimiento»: apareció 2 o más veces en los exámenes recopilados. */
+export const isHighYield = (q: Question) => (q.appearances ?? 1) >= 2
 
 export interface SelectionFilters {
   specialties: string[]
@@ -32,6 +35,7 @@ export function filterQuestions(questions: Question[], f: SelectionFilters, atte
     if (f.status === 'unseen' && a) return false
     if (f.status === 'failed' && (!a || a.lastCorrect)) return false
     if (f.status === 'bookmarked' && !bm.has(q.id)) return false
+    if (f.status === 'highyield' && !isHighYield(q)) return false
     if (tokens.length) {
       const text = normalizeText(`${q.stem} ${q.topic ?? ''} ${q.options.join(' ')} ${q.explanation ?? ''}`)
       // Todas las palabras deben aparecer; se toleran plurales comparando por las primeras 6 letras.

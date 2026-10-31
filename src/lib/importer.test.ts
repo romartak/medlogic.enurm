@@ -21,6 +21,14 @@ describe('importador de preguntas', () => {
     expect(r.questions[0].answer).toBe(1)
   })
 
+  it('lee las apariciones y los años de una pregunta repetida', () => {
+    const r = normalizeRows([{ stem: 'X', options: ['a', 'b'], answer: 0, appearances: 3, years: [2015, 2007, 2015, 1800] }])
+    expect(r.questions[0]).toMatchObject({ appearances: 3, years: [2007, 2015] })
+    const csv = parseQuestionFile('pregunta,opcion a,opcion b,respuesta,apariciones,años\nQ,uno,dos,A,2,"2010;2020"', 'x.csv')
+    expect(csv.questions[0]).toMatchObject({ appearances: 2, years: [2010, 2020] })
+    expect(normalizeRows([{ stem: 'X', options: ['a', 'b'], answer: 0, appearances: 'muchas' }]).questions[0].appearances).toBeUndefined()
+  })
+
   it('detecta respuestas numéricas que empiezan en 1', () => {
     const rows = [
       { stem: 'a', options: ['1', '2', '3', '4'], answer: 4 },

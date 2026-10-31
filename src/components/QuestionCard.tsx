@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { Bookmark, BookmarkCheck, Check, NotebookPen, X } from 'lucide-react'
+import { Bookmark, BookmarkCheck, Check, Flame, NotebookPen, X } from 'lucide-react'
 import { QuestionAnalysis } from './QuestionAnalysis'
+import { CommunityStats, HighYieldNote } from './QuestionInsights'
+import { isHighYield } from '@/lib/selection'
 import type { Question } from '@/types'
 import { Badge, SpecialtyBadge } from '@/components/ui/primitives'
 import { useProgress } from '@/store/progress'
@@ -40,6 +42,11 @@ export function QuestionCard({ question: q, mode, selected, onSelect, revealed =
         {header}
         <SpecialtyBadge id={q.specialty} />
         {q.year && <Badge>ENURM {q.year}</Badge>}
+        {isHighYield(q) && (
+          <Badge color="#f97316">
+            <Flame className="size-3" /> High yield
+          </Badge>
+        )}
         {q.topic && <Badge className="hidden sm:inline-flex">{q.topic}</Badge>}
         {q.difficulty && <Badge className="hidden sm:inline-flex">{DIFFICULTY[q.difficulty]}</Badge>}
         {q.sample && <Badge color="#94a3b8">Muestra</Badge>}
@@ -99,6 +106,13 @@ export function QuestionCard({ question: q, mode, selected, onSelect, revealed =
           )
         })}
       </div>
+
+      {showAnswer && (
+        <>
+          <HighYieldNote q={q} />
+          <CommunityStats q={q} selected={selected} order={order} record={mode === 'tutor'} />
+        </>
+      )}
 
       <AnimatePresence>
         {showAnswer && <QuestionAnalysis q={q} selected={selected} order={order} />}
