@@ -82,7 +82,14 @@ function clean(text, { keepDot = false } = {}) {
 }
 
 const original = JSON.parse(readFileSync(join(ROOT, 'data/banco/original.json'), 'utf8'))
-const byId = new Map(original.map((q) => [q.id, q]))
+// Preguntas nuevas de la recopilación ENURM 2002-2024 (ids «ENURM-2010-023»): se publican solo si tienen revisión en data/banco/revision.
+const nuevas = JSON.parse(readFileSync(join(ROOT, 'data/enurm-2002-2024/nuevas-para-medlogic.json'), 'utf8'))
+const byId = new Map([
+  ...original.map((q) => [q.id, q]),
+  ...nuevas.map((q) => [q.id, { id: q.id, question: q.stem, options: Object.fromEntries(q.options.map((o, i) => [LETTERS[i], o])), correct_answer: q.answer }]),
+])
+/** Id publicado: «Q3_7» → «bq-3_7»; «ENURM-2010-023» → «bq-2010-023». */
+const publishedId = (id) => (id.startsWith('ENURM-') ? `bq-${id.slice(6)}` : `bq-${id.slice(1)}`)
 
 const dir = join(ROOT, 'data/banco/revision')
 const reviews = readdirSync(dir)
@@ -139,7 +146,7 @@ for (const r of reviews) {
   }
 
   const q = {
-    id: `bq-${r.id.slice(1)}`,
+    id: publishedId(r.id),
     specialty: r.sp,
     topic: r.t,
     stem,
@@ -152,7 +159,7 @@ for (const r of reviews) {
     references,
     difficulty: r.d,
     tags: ['banco-recopilado'],
-    ...appearanceOf(`bq-${r.id.slice(1)}`),
+    ...appearanceOf(publishedId(r.id)),
   }
   out.push(Object.fromEntries(Object.entries(q).filter(([, v]) => v !== undefined && v !== '' && !(Array.isArray(v) && !v.length))))
 
@@ -168,11 +175,13 @@ if (problems.length) {
 
 writeFileSync(join(ROOT, 'public/data/questions.json'), JSON.stringify(out))
 
+const newRevised = reviews.filter((r) => r.id.startsWith('ENURM-')).length
+const oldRevised = reviews.length - newRevised
 const letter = (i) => (i >= 0 ? LETTERS[i] : '—')
 const md = [
   '# Revisión de respuestas del banco recopilado',
   '',
-  `Preguntas revisadas: **${out.length + dropped.length}** de ${original.length} · publicadas: **${out.length}** · respuesta corregida: **${changed.length}** · retiradas: **${dropped.length}**.`,
+  `Preguntas revisadas: **${reviews.length}** (${oldRevised} de ${original.length} del documento original · ${newRevised} de ${nuevas.length} de la recopilación 2002-2024) · publicadas: **${out.length}** · respuesta corregida: **${changed.length}** · retiradas: **${dropped.length}**.`,
   '',
   'En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.',
   'Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.',
@@ -193,5 +202,5 @@ writeFileSync(join(ROOT, 'docs/REVISION-RESPUESTAS.md'), md)
 
 const bySpec = {}
 for (const q of out) bySpec[q.specialty] = (bySpec[q.specialty] ?? 0) + 1
-console.log(`✓ ${out.length} preguntas publicadas · ${changed.length} respuestas corregidas · ${dropped.length} retiradas · ${original.length - reviews.length} sin revisar`)
+console.log(`✓ ${out.length} preguntas publicadas · ${changed.length} respuestas corregidas · ${dropped.length} retiradas · ${original.length - oldRevised} del original y ${nuevas.length - newRevised} de la recopilación sin revisar`)
 console.table(bySpec)
