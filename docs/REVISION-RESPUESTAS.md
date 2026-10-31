@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **1166** de 1166 · publicadas: **1082** · respuesta corregida: **166** · retiradas: **84**.
+Preguntas revisadas: **1166** (1166 de 1166 del documento original · 0 de 1320 de la recopilación 2002-2024) · publicadas: **1082** · respuesta corregida: **166** · retiradas: **84**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
