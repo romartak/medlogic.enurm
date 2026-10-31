@@ -359,7 +359,7 @@ export default function Prompts() {
                   <motion.div key={p.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
                     <Link to={`/prompts/${p.id}`} className="group relative block h-full overflow-hidden rounded-3xl p-6 text-white shadow-lift transition-transform hover:-translate-y-1" style={{ background: `linear-gradient(135deg, ${c.color}, #4f46e5)` }}>
                       <Icon className="absolute -right-6 -bottom-6 size-36 text-white/15 transition-transform group-hover:scale-110 group-hover:-rotate-6" strokeWidth={1.5} />
-                      <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-semibold backdrop-blur">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-semibold">
                         <Sparkles className="size-3" /> Destacado
                       </span>
                       <h3 className="relative mt-4 font-display text-xl font-extrabold">{p.title}</h3>

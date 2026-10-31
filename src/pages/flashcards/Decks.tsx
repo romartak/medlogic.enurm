@@ -63,7 +63,7 @@ export default function Decks() {
       <>
         <div className="group flex items-center gap-2 border-t border-soft px-3 py-2.5 transition-colors hover:bg-slate-900/[0.02] sm:px-5 dark:hover:bg-white/[0.02]" style={{ paddingLeft: `${12 + node.depth * 20}px` }}>
           {node.children.length ? (
-            <button onClick={() => toggleCollapsed(node.key)} className="grid size-6 place-items-center rounded-md text-muted hover:bg-slate-900/5 dark:hover:bg-white/5" aria-label={open ? 'Contraer' : 'Expandir'}>
+            <button onClick={() => toggleCollapsed(node.key)} className="relative grid size-6 place-items-center rounded-md text-muted after:absolute after:inset-x-0 after:-inset-y-2.5 hover:bg-slate-900/5 dark:hover:bg-white/5" aria-label={open ? 'Contraer' : 'Expandir'}>
               <ChevronRight className={cn('size-4 transition-transform', open && 'rotate-90')} />
             </button>
           ) : (
@@ -74,7 +74,7 @@ export default function Decks() {
           </Link>
           <CountTriplet n={c.new} l={c.learn} r={c.review} />
           <div className="relative">
-            <button onClick={() => setMenu(menu === node.key ? null : node.key)} className="grid size-8 place-items-center rounded-lg text-muted opacity-70 hover:bg-slate-900/5 hover:opacity-100 dark:hover:bg-white/5" aria-label="Opciones del mazo">
+            <button onClick={() => setMenu(menu === node.key ? null : node.key)} className="relative grid size-8 place-items-center rounded-lg text-muted opacity-70 after:absolute after:inset-x-0 after:-inset-y-1.5 hover:bg-slate-900/5 hover:opacity-100 dark:hover:bg-white/5" aria-label="Opciones del mazo">
               <Settings2 className="size-4" />
             </button>
             {menu === node.key && (

@@ -306,6 +306,10 @@ html:not(.dark) .text-amber-500,
 html:not(.dark) .text-amber-600 {
   color: var(--color-amber-700);
 }
+/* El 700 sobre el tinte amber-500/15 de los avisos queda en 4,48:1: el 800 llega a AA. */
+html:not(.dark) .text-amber-700 {
+  color: var(--color-amber-800);
+}
 html:not(.dark) .text-violet-500,
 html:not(.dark) .text-violet-600 {
   color: var(--color-violet-700);
