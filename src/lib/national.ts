@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { ExamResult, Question } from '@/types'
-import { supabase } from './supabase'
+import { getSupabase } from './supabase'
 import { seededPick } from './selection'
 import { useAuth } from '@/store/auth'
 import { useProgress } from '@/store/progress'
@@ -77,7 +77,9 @@ export const useNational = create<NationalState>()(
 export async function sendNational(edition: string): Promise<boolean> {
   const a = useNational.getState().attempts[edition]
   const user = useAuth.getState().user
-  if (!a || a.sent || !supabase || !user) return !!a?.sent
+  if (!a || a.sent || !user) return !!a?.sent
+  const supabase = await getSupabase()
+  if (!supabase) return false
   const { error } = await supabase.from('simulacro_nacional').insert({
     user_id: user.id,
     edicion: edition,
@@ -107,6 +109,7 @@ export interface NationalResults {
 }
 
 export async function fetchNationalResults(edition: string): Promise<NationalResults | null> {
+  const supabase = await getSupabase()
   if (!supabase || !useAuth.getState().user) return null
   const { data, error } = await supabase.rpc('simulacro_resultados', { p_edicion: edition })
   if (error) throw error

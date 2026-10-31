@@ -1,4 +1,4 @@
-import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import type { SupabaseClient } from '@supabase/supabase-js'
 
 /**
  * Cliente de Supabase. Se activa solo si hay URL y clave pública (ver .env.example y docs/DESPLIEGUE.md):
@@ -9,21 +9,30 @@ const env = import.meta.env
 const url = env.VITE_SUPABASE_URL || env.NEXT_PUBLIC_SUPABASE_URL
 const anonKey = env.VITE_SUPABASE_ANON_KEY || env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-export const supabase: SupabaseClient | null =
-  url && anonKey
-    ? createClient(url, anonKey, {
-        auth: {
-          // PKCE devuelve ?code= en la URL, compatible con el enrutado por # de la app.
-          flowType: 'pkce',
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true,
-          storageKey: 'medlogic-auth',
-        },
-      })
-    : null
+export const isSupabaseConfigured = Boolean(url && anonKey)
 
-export const isSupabaseConfigured = supabase !== null
+let client: Promise<SupabaseClient | null> | null = null
+
+/**
+ * El cliente se descarga aparte (unos 200 KB): la portada y las páginas públicas no lo necesitan para verse,
+ * y así el celular no tiene que bajarlo ni procesarlo antes de mostrar nada.
+ */
+export function getSupabase(): Promise<SupabaseClient | null> {
+  if (!url || !anonKey) return Promise.resolve(null)
+  client ??= import('@supabase/supabase-js').then(({ createClient }) =>
+    createClient(url, anonKey, {
+      auth: {
+        // PKCE devuelve ?code= en la URL, compatible con el enrutado por # de la app.
+        flowType: 'pkce',
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+        storageKey: 'medlogic-auth',
+      },
+    }),
+  )
+  return client
+}
 
 /** URL a la que Supabase devuelve al usuario tras confirmar el correo, Google o recuperar la contraseña. */
 export function authRedirectUrl(): string {

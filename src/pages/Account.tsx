@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { Link, Navigate, useLocation } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { CloudOff, Cloud, Eye, EyeOff, KeyRound, Laptop, Mail, RefreshCw, ShieldCheck, Smartphone, UserRound } from 'lucide-react'
-import { authErrorMessage, authRedirectUrl, isSupabaseConfigured, supabase } from '@/lib/supabase'
+import { authErrorMessage, authRedirectUrl, getSupabase, isSupabaseConfigured } from '@/lib/supabase'
 import { useAuth } from '@/store/auth'
 import { Button, Card, PageHeader, Segmented } from '@/components/ui/primitives'
 import { Modal } from '@/components/ui/Modal'
@@ -133,13 +133,14 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
 
   const submit = async (e: FormEvent) => {
     e.preventDefault()
-    if (!supabase) return
+    if (!isSupabaseConfigured) return
     if (mode === 'signup' && password !== password2) return setError('Las contraseñas no coinciden.')
     if (captchaEnabled && !captchaToken) return setError('Espera a que termine la verificación anti-robots.')
     const captcha = captchaEnabled ? { captchaToken } : {}
     setBusy(true)
     setError('')
     try {
+      const supabase = (await getSupabase())!
       if (mode === 'signin') {
         const { error } = await supabase.auth.signInWithPassword({ email, password, options: captcha })
         if (error) throw error
@@ -172,6 +173,7 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
   }
 
   const google = async () => {
+    const supabase = await getSupabase()
     if (!supabase) return
     setError('')
     const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: authRedirectUrl() } })
@@ -382,7 +384,7 @@ function NewPassword() {
     e.preventDefault()
     setBusy(true)
     setError('')
-    const { error } = await supabase!.auth.updateUser({ password })
+    const { error } = await (await getSupabase())!.auth.updateUser({ password })
     setBusy(false)
     if (error) return setError(authErrorMessage(error))
     setSync({ recovering: false })

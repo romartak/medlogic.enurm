@@ -159,6 +159,15 @@ export function LandingNav({ sections, onGo }: { sections: readonly SectionLink[
   )
 }
 
+/** Hay una sesión guardada en este navegador (se confirma en cuanto carga el cliente de la cuenta). */
+function hasStoredSession(): boolean {
+  try {
+    return localStorage.getItem('medlogic-auth') !== null
+  } catch {
+    return false
+  }
+}
+
 /**
  * Barra al alcance del pulgar (solo teléfono): entrar a la plataforma sin estirar el dedo hasta arriba.
  * Quien ya la usó ve «Continuar»; quien no tiene sesión puede iniciarla desde aquí si ya tiene cuenta.
@@ -169,7 +178,7 @@ export function EnterBar() {
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:hidden">
       <div className="pointer-events-auto mx-auto flex max-w-md items-center gap-2 rounded-3xl border border-soft bg-[var(--surface)] p-2 shadow-lift">
-        {status === 'signed-out' && (
+        {(status === 'signed-out' || (status === 'loading' && !hasStoredSession())) && (
           <Link to="/cuenta" state={{ mode: 'signin' }} className={buttonClass('ghost', 'lg', 'shrink-0 px-4 text-sm')}>
             <LogIn className="size-5" /> Iniciar sesión
           </Link>
