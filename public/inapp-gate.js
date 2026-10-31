@@ -31,13 +31,13 @@
     '#gate .g-stage{position:relative;width:84px;height:84px;flex:none}',
     '#gate .g-logo{display:block;width:84px;height:84px;filter:drop-shadow(0 14px 30px rgba(13,148,136,.35))}',
     '#gate .g-line{stroke-dasharray:100}',
-    '#gate .g-ring{position:absolute;inset:0;border-radius:26px;border:2px solid rgba(20,184,166,.6);opacity:0}',
+    '#gate .g-ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(20,184,166,.6);opacity:0}',
     '#gate .g-sh{position:absolute;left:50%;top:50%;opacity:0;margin:-8px 0 0 -8px;width:16px;height:16px}',
     '#gate .g-sh i{display:block;width:100%;height:100%;background:var(--c)}',
-    '#gate .g-sh.dot i{border-radius:50%}#gate .g-sh.sq i{border-radius:3px}',
-    '#gate .g-sh.ring i{background:none;border:3px solid var(--c);border-radius:50%}',
-    '#gate .g-sh.tri i{clip-path:polygon(50% 0,100% 100%,0 100%)}',
-    '#gate .g-sh.plus i{background:linear-gradient(var(--c),var(--c)) center/100% 3px no-repeat,linear-gradient(var(--c),var(--c)) center/3px 100% no-repeat}',
+    '#gate .g-sh.g-k-dot i{border-radius:50%}#gate .g-sh.g-k-sq i{border-radius:3px}',
+    '#gate .g-sh.g-k-ring i{background:none;border:3px solid var(--c);border-radius:50%}',
+    '#gate .g-sh.g-k-tri i{clip-path:polygon(50% 0,100% 100%,0 100%)}',
+    '#gate .g-sh.g-k-plus i{background:linear-gradient(var(--c),var(--c)) center/100% 3px no-repeat,linear-gradient(var(--c),var(--c)) center/3px 100% no-repeat}',
     '#gate h1{margin-top:26px;font-size:28px;line-height:1.12;font-weight:800;letter-spacing:-.025em;text-wrap:balance}',
     '#gate .g-sub{margin-top:12px;font-size:16px;color:var(--mu);text-wrap:balance}',
     '#gate .g-main{display:flex;flex-direction:column;align-items:center;width:100%}',
@@ -86,7 +86,7 @@
     '@media (prefers-reduced-motion:reduce){#gate *{animation:none!important}#gate .g-sh,#gate .g-ring{display:none}}',
   ].join('\n')
 
-  var SHAPES = ['dot', 'sq', 'ring', 'plus', 'tri']
+  var SHAPES = ['g-k-dot', 'g-k-sq', 'g-k-ring', 'g-k-plus', 'g-k-tri']
   var COLORS = ['#0ba595', '#6366f1', '#ec4899', '#f59e0b', '#14b8a6', '#8b5cf6']
   var shapes = ''
   for (var i = 0; i < 14; i++) {
