@@ -11,7 +11,7 @@ El banco es el núcleo del producto: una respuesta equivocada enseña mal a quie
 
 - Formato de campos y ejemplos: `docs/FORMATO_PREGUNTAS.md` (léelo antes de importar).
 - Banco original recopilado: `data/banco/original.json`.
-- Revisiones por lote: `data/banco/revision/lote-NNN.json`. Cada entrada lleva el `id` de la pregunta original, la respuesta correcta (`a`, base 0: 0 = A), el motivo si la corrige (`rev`), la explicación (`ex`), el análisis por opción (`oe`), correcciones de enunciado u opciones (`fix`) y, si se retira, `drop` con el motivo. Si se conoce el año de ENURM de una pregunta (o de su repetida descartada), se anota en `yrs: [2007]`: `build-bank.mjs` los suma como años de aparición y cuenta cada repetición descartada («Repetida: es la misma pregunta que Q10_4») como una aparición más de la conservada, que queda marcada como High yield.
+- Revisiones por lote: `data/banco/revision/lote-NNN.json`. Cada entrada lleva el `id` de la pregunta original, la respuesta correcta (`a`, base 0: 0 = A), el motivo si la corrige (`rev`), la explicación (`ex`), el análisis por opción (`oe`), correcciones de enunciado u opciones (`fix`) y, si se retira, `drop` con el motivo. Los años y las apariciones no se escriben a mano: `node scripts/build-apariciones.mjs` los calcula desde la recopilación `data/enurm-2002-2024/` (28 exámenes) y desde las repeticiones retiradas («Repetida: es la misma pregunta que Q10_4»), y `build-bank.mjs` los publica. Una pregunta que salió en 2 o más exámenes queda marcada como High yield.
 - Reconstruir el banco publicado: `node scripts/build-bank.mjs`.
 - Informe de cambios: `docs/REVISION-RESPUESTAS.md` (corregidas y retiradas, con el motivo).
 
@@ -29,5 +29,6 @@ El banco es el núcleo del producto: una respuesta equivocada enseña mal a quie
 
 - Revisa por lotes pequeños y deja el resultado en `data/banco/revision/`, no editando `original.json`.
 - La pregunta que no se pueda salvar se retira con `"drop": "motivo"` en su entrada del lote, en vez de borrarla del original. Queda listada en `docs/REVISION-RESPUESTAS.md`.
-- Después de cambiar un lote: `node scripts/build-bank.mjs`, `npm test` y `npm run build`.
+- Después de cambiar un lote: `node scripts/build-apariciones.mjs && node scripts/build-bank.mjs`, `npm test` y `npm run build`.
+- Las preguntas nuevas de la recopilación están en `data/enurm-2002-2024/nuevas-para-medlogic.json` (1.320, sin verificar). No se publican sin pasar por este flujo: cada una necesita especialidad, tema, respuesta confirmada con bibliografía y análisis por opción. Los casos con avisos están en `para-revisar.json`.
 - Si dudas de una respuesta, no la publiques: déjala anotada para que la confirme el dueño (médico). No inventes referencias ni DOIs.

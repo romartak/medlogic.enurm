@@ -5,7 +5,7 @@ import { ArrowLeft, ArrowRight, Check, ChevronRight, Clock, Flag, GraduationCap,
 import type { ExamResult, Question } from '@/types'
 import { useBank } from '@/store/bank'
 import { useProgress } from '@/store/progress'
-import { filterQuestions, optionOrder, proportionalPick } from '@/lib/selection'
+import { filterQuestions, inYear, optionOrder, proportionalPick, yearsOf } from '@/lib/selection'
 import { SpecialtyPicker } from '@/components/Filters'
 import { Badge, Button, Card, EmptyState, PageHeader, ProgressBar, Ring, Segmented, SpecialtyIcon } from '@/components/ui/primitives'
 import { Modal } from '@/components/ui/Modal'
@@ -29,9 +29,17 @@ const PRESETS = [
   { id: 'quick', label: 'Rápido', count: 20, minutes: 24, description: 'Para un rato libre' },
 ] as const
 
+/** Mínimo de preguntas de un año en el banco para ofrecer «examen de ese año». */
+const MIN_YEAR_EXAM = 20
+
 export default function Exam() {
   const questions = useBank((s) => s.questions)
-  const years = useBank((s) => s.years)
+  /** Años con suficientes preguntas en el banco para armar un examen (con 2 o 3 preguntas no tiene sentido ofrecerlo). */
+  const examYears = useMemo(() => {
+    const count = new Map<number, number>()
+    for (const q of questions) for (const y of yearsOf(q)) count.set(y, (count.get(y) ?? 0) + 1)
+    return [...count.entries()].filter(([, n]) => n >= MIN_YEAR_EXAM).sort((a, b) => b[0] - a[0])
+  }, [questions])
   const { attempts, bookmarks, exams } = useProgress()
   const [params] = useSearchParams()
   const paramCount = Number(params.get('count')) || 0
@@ -60,7 +68,7 @@ export default function Exam() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pool.length])
   const startYear = (y: number) => {
-    const qs = questions.filter((q) => q.year === y).sort((a, b) => a.id.localeCompare(b.id, 'es', { numeric: true }))
+    const qs = questions.filter((q) => inYear(q, y)).sort((a, b) => a.id.localeCompare(b.id, 'es', { numeric: true }))
     setRunning({ title: `ENURM ${y}`, questions: qs, minutes: Math.max(10, Math.round(qs.length * 1.2)) })
   }
 
@@ -126,13 +134,12 @@ export default function Exam() {
             <SpecialtyPicker value={specialties} onChange={setSpecialties} />
           </Card>
 
-          {years.length > 0 && (
+          {examYears.length > 0 && (
             <Card className="p-5 sm:p-6">
-              <h2 className="mb-1 font-semibold">Exámenes completos por año</h2>
-              <p className="mb-4 text-xs text-muted">Resuelve el examen de un año tal como salió.</p>
+              <h2 className="mb-1 font-semibold">Exámenes por año</h2>
+              <p className="mb-4 text-xs text-muted">Las preguntas de cada examen que ya están en el banco. Se suman más con cada revisión.</p>
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                {years.map((y) => {
-                  const n = questions.filter((q) => q.year === y).length
+                {examYears.map(([y, n]) => {
                   return (
                     <button key={y} onClick={() => startYear(y)} className="group flex items-center justify-between rounded-xl border border-soft px-4 py-3 text-left transition-all hover:border-brand-500/50 hover:bg-brand-500/5">
                       <span>

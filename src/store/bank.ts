@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import type { Question } from '@/types'
 import { SAMPLE_QUESTIONS } from '@/data/sampleQuestions'
 import { normalizeRows } from '@/lib/importer'
+import { yearsOf } from '@/lib/selection'
 
 export type BankSource = 'sample' | 'official'
 
@@ -36,7 +37,7 @@ async function fetchBundled(): Promise<Question[]> {
 
 function derive(questions: Question[]) {
   const byId = new Map(questions.map((q) => [q.id, q]))
-  const years = [...new Set(questions.map((q) => q.year).filter((y): y is number => typeof y === 'number'))].sort((a, b) => b - a)
+  const years = [...new Set(questions.flatMap(yearsOf))].sort((a, b) => b - a)
   const specialtyCounts: Record<string, number> = {}
   for (const q of questions) specialtyCounts[q.specialty] = (specialtyCounts[q.specialty] ?? 0) + 1
   return { byId, years, specialtyCounts }

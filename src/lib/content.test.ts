@@ -48,19 +48,23 @@ describe('análisis de ejemplo', () => {
   })
 })
 
-describe('banco publicado: preguntas de alto rendimiento', async () => {
+describe('banco publicado: años y preguntas de alto rendimiento', async () => {
   const { readFileSync } = await import('node:fs')
-  const bank = JSON.parse(readFileSync('public/data/questions.json', 'utf8')) as { id: string; appearances?: number; years?: number[] }[]
+  const bank = JSON.parse(readFileSync('public/data/questions.json', 'utf8')) as { id: string; year?: number; appearances?: number; years?: number[] }[]
 
-  it('las repetidas del documento quedan marcadas con su número de apariciones', () => {
+  it('las preguntas repetidas en varios exámenes quedan marcadas', () => {
     const marked = bank.filter((q) => q.appearances !== undefined)
-    expect(marked.length).toBeGreaterThanOrEqual(66)
-    expect(marked.every((q) => Number.isInteger(q.appearances) && q.appearances! >= 2 && q.appearances! <= 10)).toBe(true)
+    expect(marked.length).toBeGreaterThanOrEqual(120)
+    expect(marked.every((q) => Number.isInteger(q.appearances) && q.appearances! >= 2 && q.appearances! <= 12)).toBe(true)
   })
-  it('si hay años, son coherentes con las apariciones', () => {
-    for (const q of bank.filter((x) => x.years)) {
-      expect(q.years!.every((y) => y >= 2002 && y <= 2030)).toBe(true)
-      expect(q.appearances).toBeGreaterThanOrEqual(q.years!.length)
+  it('los años son de exámenes reales (2002 a 2024) y el año principal es el más reciente', () => {
+    const withYears = bank.filter((q) => q.years)
+    expect(withYears.length).toBeGreaterThanOrEqual(900)
+    for (const q of withYears) {
+      expect(q.years!.every((y) => y >= 2002 && y <= 2024)).toBe(true)
+      expect(q.year).toBe(Math.max(...q.years!))
+      // Cada examen cuenta una vez; una pregunta puede salir en dos versiones del mismo año (2021-A y 2021-C).
+      if (q.appearances) expect(q.appearances).toBeGreaterThanOrEqual(q.years!.length)
     }
   })
 })

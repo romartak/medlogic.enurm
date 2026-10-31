@@ -13,6 +13,10 @@ export function searchTokens(term: string): string[] {
 
 export type StatusFilter = 'all' | 'unseen' | 'failed' | 'bookmarked' | 'highyield'
 
+/** Años en que salió la pregunta (`years`) o, si solo se conoce uno, su `year`. */
+export const yearsOf = (q: Question): number[] => (q.years?.length ? q.years : q.year ? [q.year] : [])
+export const inYear = (q: Question, y: number) => yearsOf(q).includes(y)
+
 /** Pregunta de «alto rendimiento»: apareció 2 o más veces en los exámenes recopilados. */
 export const isHighYield = (q: Question) => (q.appearances ?? 1) >= 2
 
@@ -29,7 +33,7 @@ export function filterQuestions(questions: Question[], f: SelectionFilters, atte
   const tokens = f.search ? searchTokens(f.search) : []
   return questions.filter((q) => {
     if (f.specialties.length && !f.specialties.includes(q.specialty)) return false
-    if (f.years.length && (q.year === undefined || !f.years.includes(q.year))) return false
+    if (f.years.length && !yearsOf(q).some((y) => f.years.includes(y))) return false
     if (f.difficulty?.length && (!q.difficulty || !f.difficulty.includes(q.difficulty))) return false
     const a = attempts[q.id]
     if (f.status === 'unseen' && a) return false

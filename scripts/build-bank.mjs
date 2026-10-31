@@ -90,35 +90,16 @@ const reviews = readdirSync(dir)
   .sort()
   .flatMap((f) => JSON.parse(readFileSync(join(dir, f), 'utf8')).map((r) => ({ ...r, _file: f })))
 
-// Preguntas que el documento traía repetidas: la descartada apunta a la que se conservó («es la misma pregunta que Q10_4»).
-// Cada repetición cuenta una aparición más para la conservada; las cadenas (A repite a B, B repite a C) se siguen hasta el final.
-const REPEAT_OF = new Map()
-for (const r of reviews) {
-  if (!r.drop || !/^Repetida/i.test(r.drop)) continue
-  const target = (r.drop.match(/\bQ\d+_\d+\b/g) ?? []).find((id) => id !== r.id)
-  if (target) REPEAT_OF.set(r.id, target)
-}
-const repeatRoot = (id, trail = new Set()) => {
-  const next = REPEAT_OF.get(id)
-  if (!next || trail.has(next)) return id
-  return repeatRoot(next, trail.add(id))
-}
-const extra = new Map() // id conservado → { count, years }
-for (const r of reviews) {
-  if (!REPEAT_OF.has(r.id)) continue
-  const root = repeatRoot(r.id)
-  const e = extra.get(root) ?? { count: 0, years: [] }
-  e.count++
-  e.years.push(...(r.yrs ?? []))
-  extra.set(root, e)
-}
+// En qué exámenes salió cada pregunta (data/banco/apariciones.json, lo genera scripts/build-apariciones.mjs).
+const apariciones = JSON.parse(readFileSync(join(ROOT, 'data/banco/apariciones.json'), 'utf8'))
 
-/** Apariciones de una pregunta: ella misma + las repeticiones descartadas. `yrs` en la revisión (años de ENURM) es opcional. */
-function appearanceOf(r) {
-  const e = extra.get(r.id) ?? { count: 0, years: [] }
-  const years = [...new Set([...(r.yrs ?? []), ...e.years])].sort((a, b) => a - b)
-  const appearances = Math.max(1 + e.count, years.length)
-  return { appearances: appearances > 1 ? appearances : undefined, years: years.length ? years : undefined }
+/** `year` = el examen más reciente donde salió; `years` = todos; `appearances` solo si salió 2 o más veces (alto rendimiento). */
+function appearanceOf(id) {
+  const a = apariciones[id]
+  if (!a) return {}
+  const years = [...new Set(a.examenes.map((e) => parseInt(e, 10)))].sort((x, y) => x - y)
+  const appearances = a.examenes.length + (a.sinUbicar ?? 0)
+  return { year: years.at(-1), years: years.length ? years : undefined, appearances: appearances > 1 ? appearances : undefined }
 }
 
 const out = []
@@ -171,7 +152,7 @@ for (const r of reviews) {
     references,
     difficulty: r.d,
     tags: ['banco-recopilado'],
-    ...appearanceOf(r),
+    ...appearanceOf(`bq-${r.id.slice(1)}`),
   }
   out.push(Object.fromEntries(Object.entries(q).filter(([, v]) => v !== undefined && v !== '' && !(Array.isArray(v) && !v.length))))
 
