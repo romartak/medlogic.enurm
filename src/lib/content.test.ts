@@ -47,3 +47,20 @@ describe('análisis de ejemplo', () => {
     }
   })
 })
+
+describe('banco publicado: preguntas de alto rendimiento', async () => {
+  const { readFileSync } = await import('node:fs')
+  const bank = JSON.parse(readFileSync('public/data/questions.json', 'utf8')) as { id: string; appearances?: number; years?: number[] }[]
+
+  it('las repetidas del documento quedan marcadas con su número de apariciones', () => {
+    const marked = bank.filter((q) => q.appearances !== undefined)
+    expect(marked.length).toBeGreaterThanOrEqual(66)
+    expect(marked.every((q) => Number.isInteger(q.appearances) && q.appearances! >= 2 && q.appearances! <= 10)).toBe(true)
+  })
+  it('si hay años, son coherentes con las apariciones', () => {
+    for (const q of bank.filter((x) => x.years)) {
+      expect(q.years!.every((y) => y >= 2002 && y <= 2030)).toBe(true)
+      expect(q.appearances).toBeGreaterThanOrEqual(q.years!.length)
+    }
+  })
+})

@@ -50,6 +50,8 @@ const FIELD_KEYS = {
   difficulty: ['difficulty', 'dificultad', 'nivel'],
   tags: ['tags', 'etiquetas', 'palabrasclave', 'keywords'],
   image: ['image', 'imagen', 'img', 'imageurl'],
+  appearances: ['appearances', 'apariciones', 'veces'],
+  years: ['years', 'anios', 'anos'],
 } as const
 
 type Field = keyof typeof FIELD_KEYS
@@ -240,6 +242,20 @@ function parseDifficulty(raw: unknown): 1 | 2 | 3 | undefined {
   return undefined
 }
 
+/** Cuántas veces salió la pregunta: un entero de 1 a 50 (otra cosa se ignora). */
+function parseAppearances(raw: unknown): number | undefined {
+  const n = Number(raw)
+  return Number.isInteger(n) && n >= 1 && n <= 50 ? n : undefined
+}
+
+/** Años de aparición: lista de años de 4 dígitos entre 1990 y 2100, sin repetir y en orden. */
+function parseYears(raw: unknown): number[] | undefined {
+  if (raw === undefined) return undefined
+  const list = Array.isArray(raw) ? raw : String(raw).split(/[,;|\s]+/)
+  const years = [...new Set(list.map((y) => Number(y)).filter((y) => Number.isInteger(y) && y >= 1990 && y <= 2100))].sort((a, b) => a - b)
+  return years.length ? years : undefined
+}
+
 function parseTags(raw: unknown): string[] | undefined {
   if (raw === undefined) return undefined
   const list = Array.isArray(raw) ? raw.map(String) : String(raw).split(/[,;|]/)
@@ -357,6 +373,8 @@ export function normalizeRows(rows: Row[], opts: ImportOptions = {}): ImportResu
       difficulty: parseDifficulty(pick(row, keyMap, 'difficulty')),
       tags: parseTags(pick(row, keyMap, 'tags')),
       image: str('image'),
+      appearances: parseAppearances(pick(row, keyMap, 'appearances')),
+      years: parseYears(pick(row, keyMap, 'years')),
     })
   }
 

@@ -87,6 +87,7 @@ export default function Practice() {
           <Card className="p-5 sm:p-6">
             <h2 className="mb-3 font-semibold">Preguntas</h2>
             <Segmented
+              className="flex-wrap"
               value={config.status}
               onChange={(s) => setConfig({ ...config, status: s })}
               options={[
@@ -94,6 +95,7 @@ export default function Practice() {
                 { value: 'unseen', label: 'No vistas' },
                 { value: 'failed', label: 'Falladas' },
                 { value: 'bookmarked', label: 'Marcadas' },
+                { value: 'highyield', label: 'High yield' },
               ]}
             />
           </Card>

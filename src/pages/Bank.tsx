@@ -91,7 +91,7 @@ export default function Bank() {
             </div>
             <div>
               <div className="mb-2 text-sm font-semibold">Estado</div>
-              <Segmented value={status} onChange={resetPage(setStatus)} options={[{ value: 'all', label: 'Todas' }, { value: 'unseen', label: 'No vistas' }, { value: 'failed', label: 'Falladas' }, { value: 'bookmarked', label: 'Marcadas' }]} />
+              <Segmented className="flex-wrap" value={status} onChange={resetPage(setStatus)} options={[{ value: 'all', label: 'Todas' }, { value: 'unseen', label: 'No vistas' }, { value: 'failed', label: 'Falladas' }, { value: 'bookmarked', label: 'Marcadas' }, { value: 'highyield', label: 'High yield' }]} />
             </div>
           </Card>
         </motion.div>

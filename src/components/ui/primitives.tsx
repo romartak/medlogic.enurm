@@ -187,7 +187,7 @@ export function Segmented<T extends string | number>({ value, onChange, options,
             role="radio"
             aria-checked={active}
             onClick={() => onChange(o.value)}
-            className={cn('relative rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors sm:text-sm', active ? 'text-[var(--text)]' : 'text-muted hover:text-[var(--text)]')}
+            className={cn('relative rounded-lg px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition-colors sm:text-sm', active ? 'text-[var(--text)]' : 'text-muted hover:text-[var(--text)]')}
           >
             {active && <motion.span layoutId={`seg-${options.map((x) => x.value).join('')}`} className="absolute inset-0 rounded-lg bg-[var(--surface)] shadow-sm" transition={{ type: 'spring', stiffness: 500, damping: 35 }} />}
             <span className="relative">{o.label}</span>

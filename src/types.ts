@@ -35,6 +35,10 @@ export interface Question {
   /** 1 = fácil, 2 = media, 3 = difícil. */
   difficulty?: 1 | 2 | 3
   tags?: string[]
+  /** Veces que apareció en los exámenes recopilados (2 o más: pregunta de «alto rendimiento»). */
+  appearances?: number
+  /** Años del ENURM en que apareció, cuando se conocen. */
+  years?: number[]
   /** URL de imagen opcional (ECG, radiografía…). */
   image?: string
   /** true si es una pregunta de ejemplo incluida con la plataforma. */

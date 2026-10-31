@@ -11,7 +11,7 @@ El banco es el núcleo del producto: una respuesta equivocada enseña mal a quie
 
 - Formato de campos y ejemplos: `docs/FORMATO_PREGUNTAS.md` (léelo antes de importar).
 - Banco original recopilado: `data/banco/original.json`.
-- Revisiones por lote: `data/banco/revision/lote-NNN.json`. Cada entrada lleva el `id` de la pregunta original, la respuesta correcta (`a`, base 0: 0 = A), el motivo si la corrige (`rev`), la explicación (`ex`), el análisis por opción (`oe`), correcciones de enunciado u opciones (`fix`) y, si se retira, `drop` con el motivo.
+- Revisiones por lote: `data/banco/revision/lote-NNN.json`. Cada entrada lleva el `id` de la pregunta original, la respuesta correcta (`a`, base 0: 0 = A), el motivo si la corrige (`rev`), la explicación (`ex`), el análisis por opción (`oe`), correcciones de enunciado u opciones (`fix`) y, si se retira, `drop` con el motivo. Si se conoce el año de ENURM de una pregunta (o de su repetida descartada), se anota en `yrs: [2007]`: `build-bank.mjs` los suma como años de aparición y cuenta cada repetición descartada («Repetida: es la misma pregunta que Q10_4») como una aparición más de la conservada, que queda marcada como High yield.
 - Reconstruir el banco publicado: `node scripts/build-bank.mjs`.
 - Informe de cambios: `docs/REVISION-RESPUESTAS.md` (corregidas y retiradas, con el motivo).
 
