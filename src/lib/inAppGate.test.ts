@@ -50,6 +50,32 @@ describe('pantalla «Ábrelo en Safari»', () => {
     const doc = { documentElement: { appendChild: () => { throw new Error('no debe tocar la página') } }, createElement: () => { throw new Error('no debe tocar la página') } }
     expect(() => runInNewContext(GATE, { window: {}, navigator: { userAgent: SAFARI }, document: doc })).not.toThrow()
   })
+  it('todas las clases de la pantalla llevan el prefijo «g-»: sin él chocan con las utilidades de Tailwind (la clase «ring» dibujaba un cuadrado)', () => {
+    let html = ''
+    const el = (): Record<string, unknown> => ({
+      style: { setProperty: () => {} },
+      setAttribute: () => {},
+      appendChild: () => {},
+      remove: () => {},
+      addEventListener: () => {},
+      querySelector: () => el(),
+      getBoundingClientRect: () => ({ top: 0, height: 0 }),
+      set innerHTML(v: string) {
+        html += v
+      },
+    })
+    runInNewContext(GATE, {
+      window: { __inappGate: true },
+      navigator: { userAgent: IG_IOS },
+      location: { href: 'https://medlogicenurm.vercel.app/' },
+      innerHeight: 800,
+      setTimeout: () => 0,
+      document: { createElement: el, head: { appendChild: () => {} }, documentElement: { appendChild: () => {} } },
+    })
+    const classes = [...html.matchAll(/class="([^"]+)"/g)].flatMap((m) => m[1].split(/\s+/))
+    expect(classes.length).toBeGreaterThan(10)
+    expect(classes.filter((c) => !c.startsWith('g-'))).toEqual([])
+  })
   it('la pantalla ofrece Chrome en Android y Safari en iPhone', () => {
     expect(GATE).toContain("var browser = ios ? 'Safari' : 'Chrome'")
     expect(GATE).toContain('package=com.android.chrome')
