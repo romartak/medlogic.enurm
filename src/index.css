@@ -422,3 +422,14 @@ html:not(.dark) .text-violet-600 {
 .drop-panel[data-open='true'] > a:nth-child(4) {
   animation-delay: 120ms;
 }
+
+/* Acabado de los videos de la portada: ruido fino + trama de puntos, estáticos (no cuestan nada al reproducir). */
+.phone-grain {
+  background-image:
+    radial-gradient(rgb(15 23 42 / 0.09) 0.5px, transparent 0.75px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .06 0 0 0 0 .09 0 0 0 0 .16 0 0 0 .55 -.12'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:
+    4px 4px,
+    160px 160px;
+  opacity: 0.5;
+}

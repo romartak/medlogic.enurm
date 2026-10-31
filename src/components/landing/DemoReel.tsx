@@ -127,6 +127,7 @@ function PhoneVideo({ id, title }: { id: string; title: string }) {
             <BatteryFull className="size-3.5" />
           </span>
         </div>
+        <div className="relative">
         <video
           ref={ref}
           className="block aspect-[390/844] w-full object-cover"
@@ -141,6 +142,9 @@ function PhoneVideo({ id, title }: { id: string; title: string }) {
         >
           <source src={`${import.meta.env.BASE_URL}demo/${id}.mp4`} type="video/mp4" />
         </video>
+        {/* Grano fino y trama de puntos: le dan al video un acabado de impresión y disimulan su compresión. */}
+        <span aria-hidden className="phone-grain pointer-events-none absolute inset-0" />
+        </div>
       </div>
       <button type="button" onClick={toggle} className="absolute inset-0 grid place-items-center rounded-[2.4rem]" aria-label={`${playing ? 'Pausar' : 'Reproducir'} la demostración: ${title}`}>
         {!playing && (reduce || held) && (
