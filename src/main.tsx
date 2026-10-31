@@ -12,8 +12,15 @@ if (!window.location.hash && path !== base && path !== `${base}index.html`) {
   window.history.replaceState(null, '', `${base}#${path}`)
 }
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+function mount() {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  )
+}
+
+// En el navegador integrado de Instagram y otras redes, public/inapp-gate.js muestra «Ábrelo en Safari»:
+// la app solo se monta si la persona decide continuar ahí (el paquete ya está descargado, así que es inmediato).
+if (window.__inappGate) window.addEventListener('medlogic:continue', mount, { once: true })
+else mount()
