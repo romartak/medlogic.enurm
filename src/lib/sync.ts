@@ -1,4 +1,4 @@
-import { supabase } from './supabase'
+import { getSupabase, isSupabaseConfigured } from './supabase'
 import { hasLocalProgress, MAX_SNAPSHOT_BYTES, onProgressChange, restoreSnapshot, takeSnapshot } from './backup'
 import { useAuth } from '@/store/auth'
 import { publishStats } from './ranking'
@@ -55,7 +55,8 @@ export function pauseSync(): void {
 }
 
 async function pull(userId: string): Promise<{ snapshot: unknown; updatedAt: string } | null> {
-  const { data, error } = await supabase!.from('user_state').select('snapshot, updated_at').eq('user_id', userId).maybeSingle()
+  const supabase = (await getSupabase())!
+  const { data, error } = await supabase.from('user_state').select('snapshot, updated_at').eq('user_id', userId).maybeSingle()
   if (error) throw error
   return data ? { snapshot: data.snapshot, updatedAt: data.updated_at as string } : null
 }
@@ -68,7 +69,8 @@ async function push(userId: string): Promise<void> {
   if (new Blob([JSON.stringify(snapshot)]).size > MAX_SNAPSHOT_BYTES) return auth.setSync({ sync: 'error' })
   auth.setSync({ sync: 'syncing' })
   try {
-    const { data, error } = await supabase!.from('user_state').upsert({ user_id: userId, snapshot }).select('updated_at').single()
+    const supabase = (await getSupabase())!
+    const { data, error } = await supabase.from('user_state').upsert({ user_id: userId, snapshot }).select('updated_at').single()
     if (error) throw error
     writeMeta({ userId, lastSyncedAt: data.updated_at as string, dirty: false })
     useAuth.getState().setSync({ sync: 'synced', lastSyncedAt: data.updated_at as string })
@@ -145,7 +147,7 @@ export async function resolveConflict(keep: 'cloud' | 'device'): Promise<void> {
  */
 export async function flushPending(): Promise<boolean> {
   const { user } = useAuth.getState()
-  if (!supabase || !user) return true
+  if (!isSupabaseConfigured || !user) return true
   if (timer) clearTimeout(timer)
   timer = null
   // Si justo se está subiendo, espera a que termine (máximo unos segundos).
@@ -165,7 +167,7 @@ export function syncNow(): Promise<void> {
 
 /** Arranca la sincronización: al iniciar sesión, al cambiar el progreso y al volver a la pestaña. */
 export function startSync(): () => void {
-  if (!supabase) return () => {}
+  if (!isSupabaseConfigured) return () => {}
   let current: string | null = null
 
   const unsubAuth = useAuth.subscribe((s) => {

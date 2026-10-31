@@ -1,4 +1,4 @@
-import { supabase } from './supabase'
+import { getSupabase } from './supabase'
 import { flushPending, pauseSync } from './sync'
 import { publishStats } from './ranking'
 import { useAuth } from '@/store/auth'
@@ -29,6 +29,7 @@ export function markHadAccount(): void {
 
 /** Elige la foto de perfil (null = usar la inicial). Se guarda en los datos de la cuenta. */
 export async function setAvatar(avatar: string | null): Promise<void> {
+  const supabase = await getSupabase()
   if (!supabase) throw new Error('Las cuentas no están activadas.')
   const { error } = await supabase.auth.updateUser({ data: { avatar } })
   if (error) throw error
@@ -86,7 +87,7 @@ async function endSession(notice: AccountNotice): Promise<void> {
   pauseSync()
   // 2) Cerrar solo esta sesión (no las de otros dispositivos). Sin conexión puede fallar; abajo se fuerza.
   try {
-    await supabase?.auth.signOut({ scope: 'local' })
+    await (await getSupabase())?.auth.signOut({ scope: 'local' })
   } catch {
     /* se fuerza más abajo */
   }
@@ -112,6 +113,7 @@ export function logout(): Promise<void> {
  * este dispositivo. Primero la base de datos; solo si eso sale bien se cierra la sesión.
  */
 export async function deleteMyAccount(): Promise<void> {
+  const supabase = await getSupabase()
   if (!supabase) throw new Error('Las cuentas no están activadas.')
   const { error } = await supabase.rpc('delete_own_account')
   if (error) throw error
@@ -139,6 +141,7 @@ export async function saveProfile(edit: ProfileEdit): Promise<boolean> {
   progress.updateProfile({ university: edit.university, universityOther: edit.universityOther.trim().slice(0, 80) })
 
   const user = useAuth.getState().user
+  const supabase = await getSupabase()
   if (!supabase || !user) return true
   let ok = true
   const { error } = await supabase.auth.updateUser({ data: { name: addressName({ name, honorific }), call_name: name, treatment: honorific } })
