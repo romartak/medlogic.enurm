@@ -97,9 +97,11 @@
       }
     </script>
     <script src="./theme-init.js"></script>
+    <script src="./inapp-gate.js" defer></script>
     <style>
       /* Pantalla de carga: se ve antes de que cargue la app (y la app la reutiliza). */
       .boot{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:#f6f8fb;color:#0f172a;font-family:'Plus Jakarta Sans Variable','Inter Variable',system-ui,-apple-system,'Segoe UI',sans-serif}
+      html.inapp #root{display:none}
       html.dark .boot{background:#070b14;color:#e8edf5}
       .boot::before{content:'';position:absolute;inset:0;background:radial-gradient(520px circle at 50% 40%,rgba(20,184,166,.16),transparent 62%),radial-gradient(460px circle at 58% 62%,rgba(99,102,241,.12),transparent 62%)}
       .boot-in{position:relative;display:flex;flex-direction:column;align-items:center;animation:boot-fade .5s ease both}

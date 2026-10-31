@@ -13,7 +13,6 @@ import { startSync } from '@/lib/sync'
 import { SyncConflict } from '@/components/SyncConflict'
 import { PlanReveal } from '@/components/PlanReveal'
 import { VercelInsights } from '@/components/VercelInsights'
-import { OpenInBrowser } from '@/components/OpenInBrowser'
 import { motionAllowed } from '@/lib/fx'
 
 /**
@@ -274,7 +273,6 @@ export default function App() {
       <PlanReveal />
       <Toaster />
       <VercelInsights />
-      <OpenInBrowser />
       {bootWait && <Splash />}
       {bootLeaving && <Splash onLeft={endBoot} />}
     </MotionConfig>

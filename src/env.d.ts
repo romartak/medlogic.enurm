@@ -15,3 +15,8 @@ interface ImportMeta {
 
 /** true cuando la app se compila en Vercel. */
 declare const __VERCEL__: boolean
+
+/** Lo activa public/theme-init.js en el navegador integrado de redes sociales (ver inapp-gate.js). */
+interface Window {
+  __inappGate?: boolean
+}
