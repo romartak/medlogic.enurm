@@ -36,6 +36,10 @@ for (const e of entries) {
   for (const x of examsOfGroup.get(e.grupo)) slot(e.id_medlogic).exams.add(x)
 }
 
+// Preguntas nuevas de la recopilación (todavía sin publicar): se calculan igual para que, al revisarse, ya traigan sus años.
+const nuevas = JSON.parse(readFileSync(join(ROOT, 'data/enurm-2002-2024/nuevas-para-medlogic.json'), 'utf8'))
+for (const q of nuevas) for (const x of examsOfGroup.get(q.grupo) ?? []) slot(`bq-${q.id.slice(6)}`).exams.add(x)
+
 // Repeticiones de concepto que se retiraron en la revisión.
 const dir = join(ROOT, 'data/banco/revision')
 const reviews = readdirSync(dir)
