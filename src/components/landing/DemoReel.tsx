@@ -78,10 +78,15 @@ function PhoneVideo({ id, title }: { id: string; title: string }) {
   useEffect(() => {
     const v = ref.current
     if (!v || reduce || held) return
+    // Al pasar de un teléfono a otro con el dedo, el video cruza el borde varias veces: se pausa con un pequeño
+    // retraso para no alternar pausa y reproducción a cada rebote (en iPhone eso se ve como parpadeo).
+    let pauseTimer: ReturnType<typeof setTimeout> | undefined
     const io = new IntersectionObserver(
-      ([e]) => {
+      (entries) => {
+        const e = entries[entries.length - 1]
+        clearTimeout(pauseTimer)
         if (e.isIntersecting) void v.play().catch(() => {})
-        else v.pause()
+        else pauseTimer = setTimeout(() => v.pause(), 250)
       },
       { threshold: 0.5 },
     )
@@ -97,6 +102,7 @@ function PhoneVideo({ id, title }: { id: string; title: string }) {
     )
     warm.observe(v)
     return () => {
+      clearTimeout(pauseTimer)
       io.disconnect()
       warm.disconnect()
     }
@@ -116,7 +122,8 @@ function PhoneVideo({ id, title }: { id: string; title: string }) {
 
   return (
     <div className="relative mx-auto w-[min(15.5rem,70vw)] rounded-[2.4rem] bg-slate-900 p-[7px] shadow-[0_30px_60px_-20px_rgb(15_23_42/0.45)] ring-1 ring-slate-900/10 dark:ring-white/10">
-      <div className="overflow-hidden rounded-[1.95rem] bg-white">
+      {/* El recorte redondeado de un video dentro de un contenedor que se desplaza parpadea en WebKit (iPhone): se aísla en su propia capa. */}
+      <div className="isolate overflow-hidden rounded-[1.95rem] bg-white" style={{ transform: 'translateZ(0)', WebkitMaskImage: '-webkit-radial-gradient(white, black)' }}>
         {/* Barra de estado de mentira: la isla no tapa la cabecera de la app. */}
         <div className="relative flex h-7 items-center justify-between px-5 text-[10px] font-semibold text-slate-900" aria-hidden>
           <span>9:41</span>
@@ -129,11 +136,15 @@ function PhoneVideo({ id, title }: { id: string; title: string }) {
         </div>
         <video
           ref={ref}
-          className="block aspect-[390/844] w-full object-cover"
+          className="block aspect-[390/844] w-full bg-cover bg-center object-cover"
+          // El mismo cuadro del poster queda detrás del video: si el sistema libera el video mientras está fuera de pantalla, no se ve un hueco blanco.
+          style={{ backgroundImage: `url(${import.meta.env.BASE_URL}demo/${id}.webp)` }}
           poster={`${import.meta.env.BASE_URL}demo/${id}.webp`}
           muted
           loop
           playsInline
+          disablePictureInPicture
+          disableRemotePlayback
           preload="none"
           aria-hidden
           onPlay={() => setPlaying(true)}
