@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **1779** (1166 de 1166 del documento original · 613 de 1320 de la recopilación 2002-2024) · publicadas: **1695** · respuesta corregida: **202** · retiradas: **84**.
+Preguntas revisadas: **1929** (1166 de 1166 del documento original · 763 de 1320 de la recopilación 2002-2024) · publicadas: **1845** · respuesta corregida: **212** · retiradas: **84**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -591,6 +591,36 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **ENURM-2014-079** — En un paciente diagnosticado de meningitis bacteriana aguda, para administrar antibióticos se debe:
   - Documento: A (Determinar el germen causal por medio de cultivo) → publicada: **C (Iniciar la administración de antibióticos según la clínica)**
   - El documento marca determinar el germen por cultivo antes del antibiótico, pero en la meningitis bacteriana el tratamiento empírico se inicia de inmediato según la clínica (Mandell, IDSA).
+- **ENURM-2014-088** — ¿Cuál es el método diagnóstico de elección en la úlcera péptica perforada?
+  - Documento: B (Sonografia) → publicada: **C (Radiografía de torax)**
+  - El documento marca la sonografía, pero el estudio inicial de elección para la úlcera perforada es la radiografía de tórax de pie (neumoperitoneo), con la TC como alternativa más sensible.
+- **ENURM-2014-097** — Paciente de 60 años de edad que se presenta con dolor en fosa iliaca izquierda, que se irradia a la región supra pubica y a la ingle izquierda. Presenta cambios en el ritmo intestinal, fiebre, escalofrio y urgencia urinaria. ¿Cuál es el diagnostico?
+  - Documento: C (Calculo renal) → publicada: **D (Diverticulitis)**
+  - El documento marca cálculo renal, pero el dolor en fosa ilíaca izquierda con fiebre, escalofríos y cambio del ritmo intestinal en un paciente de 60 años orienta a diverticulitis; el cólico renal no da fiebre ni cambios intestinales sin complicación.
+- **ENURM-2014-098** — Paciente con historia clínica de pirosis de largo tiempo de evolución y regurgitación de alimentos digeridos de menos tiempo y disfagia ocasional. ¿Cuál de los siguientes es el diagnóstico más probable?
+  - Documento: C (Divertículo esofágico) → publicada: **B (Hernia hiatal)**
+  - El documento marca divertículo esofágico, pero la pirosis de larga evolución con regurgitación de alimento digerido orienta a reflujo con hernia hiatal; el divertículo regurgita alimento no digerido.
+- **ENURM-2015-042** — El estudio más sensible para diagnosticar miomatosis uterina es:
+  - Documento: B (Ecografía transvaginal) → publicada: **C (Resonancia magnética)**
+  - El documento marca la ecografía transvaginal, que es la prueba inicial; el estudio más sensible para los miomas es la resonancia magnética (Williams Ginecología).
+- **ENURM-2016-070** — En el tratamiento de una crisis asmática aguda y grave se utiliza:
+  - Documento: D (Agonista Beta 2, EV) → publicada: **C (Prednisona oral)**
+  - El documento marca el betaagonista IV, que GINA no recomienda de rutina; de las opciones, el tratamiento indicado es el corticoide sistémico precoz, y la prednisona oral es tan eficaz como la IV.
+- **ENURM-2018-024** — ¿Cuál es la principal causa de muerte en niños provocada por accidentes?
+  - Documento: A (Quemaduras) → publicada: **C (Ahogamiento)**
+  - El documento marca las quemaduras, pero según la OMS el ahogamiento causa más muertes accidentales en niños que las quemaduras.
+- **ENURM-2019-001** — El riesgo de transmisión a través de la lactancia materna en mujeres con infección crónica por VIH es de:
+  - Documento: C (20-25 %) → publicada: **D (9-16 %)**
+  - El documento marca 20-25 %, pero el riesgo de transmisión por lactancia en la infección crónica es de alrededor del 14 % (Dunn); la opción 9-16 % es la que lo contiene.
+- **ENURM-2020-034** — ¿Cuál es la discapacidad del desarrollo específicas entre los niños de 3-17 años más frecuente a nivel internacional?
+  - Documento: C (Autismo) → publicada: **B (Trastorno por déficit de atención con hiperactividad)**
+  - El documento marca el autismo, pero según los CDC la discapacidad del desarrollo más frecuente en niños de 3 a 17 años es el TDAH (≈9-10 % frente a ≈2,5-3 % del autismo).
+- **ENURM-2020-074** — Una mujer de 65 años va a consulta de emergencia por historia de pirosis y regurgitación, dolor torácico y disfagia, en ocasiones tos crónica, al examen físico el médico encontró obesidad abdominal, la señora se define como glotona. ¿Qué patología considera tiene esta señora?
+  - Documento: A (Dispepsia) → publicada: **C (Enfermedad por reflujo gastroesofágico)**
+  - El documento marca dispepsia, pero la pirosis y la regurgitación con tos crónica, dolor torácico y disfagia en una paciente obesa definen la enfermedad por reflujo gastroesofágico.
+- **ENURM-2021A-023** — El lactante se sienta solo y permanece sentado independientemente sin soporte, con la espalda recta a l edad de:
+  - Documento: B (10 meses) → publicada: **C (9 meses)**
+  - El documento marca 10 meses, pero la sedestación estable sin apoyo con la espalda recta se logra hacia los 8-9 meses (Nelson).
 
 ## Retiradas
 
