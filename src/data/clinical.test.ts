@@ -5,6 +5,7 @@ import { SPIRO_EXAMPLES, SPIRO_QUIZ, SPIRO_SECTIONS } from './spirometry'
 import { HEMO_CASES, HEMO_SECTIONS } from './hemogram'
 import { allSigns, SYSTEMS } from './semiology'
 import { QUADRANTS, REGIONS, TOPO_ITEMS } from './quadrants'
+import { PHYSIO_QUIZ, SCHEMES, SHOCKS } from './physiopathology'
 import { interpretSpirometry } from '@/lib/spirometry'
 import { absolute, readHemogram } from '@/lib/hemogram'
 import type { GuideSection, QuizItem } from '@/types'
@@ -32,6 +33,7 @@ describe('contenido de habilidades clínicas', () => {
     checkQuiz('ATLS', ATLS_QUIZ)
     checkQuiz('fracturas', FRACTURE_QUIZ)
     checkQuiz('espirometría', SPIRO_QUIZ)
+    checkQuiz('fisiopatología', PHYSIO_QUIZ)
   })
 
   it('secciones con contenido y tablas completas', () => {
@@ -88,5 +90,42 @@ describe('contenido de habilidades clínicas', () => {
     }
     // Hacen falta al menos 12 preguntas por modo para una ronda completa.
     expect(TOPO_ITEMS.filter((t) => t.quadrants).length).toBeGreaterThanOrEqual(12)
+  })
+
+  it('esquemas de fisiopatología coherentes', () => {
+    expect(new Set(SCHEMES.map((s) => s.id)).size).toBe(SCHEMES.length)
+    for (const s of SCHEMES) {
+      const ids = new Set(s.nodes.map((n) => n.id))
+      expect(ids.size, `${s.id}: nodos repetidos`).toBe(s.nodes.length)
+      // Dos nodos no pueden ocupar la misma celda de la rejilla.
+      const cells = s.nodes.map((n) => `${n.col}:${n.row}`)
+      expect(new Set(cells).size, `${s.id}: nodos encimados`).toBe(cells.length)
+      for (const n of s.nodes) {
+        expect(n.col, `${s.id}/${n.id}`).toBeGreaterThanOrEqual(0)
+        expect(n.col, `${s.id}/${n.id}`).toBeLessThanOrEqual(2)
+        expect(n.label.split('\n').length, `${s.id}/${n.id}: máximo dos líneas`).toBeLessThanOrEqual(2)
+        expect(n.step, `${s.id}/${n.id}`).toBeGreaterThanOrEqual(1)
+        expect(n.step, `${s.id}/${n.id}`).toBeLessThanOrEqual(s.steps.length)
+        expect(n.detail.length, `${s.id}/${n.id}`).toBeGreaterThan(20)
+      }
+      // Cada paso muestra algo nuevo.
+      for (let i = 1; i <= s.steps.length; i++) expect(s.nodes.some((n) => n.step === i), `${s.id}: paso ${i} vacío`).toBe(true)
+      for (const e of s.edges) {
+        expect(ids.has(e.from) && ids.has(e.to), `${s.id}: ${e.from} → ${e.to}`).toBe(true)
+        const [a, b] = [s.nodes.find((n) => n.id === e.from)!, s.nodes.find((n) => n.id === e.to)!]
+        // Sin rodeo, las flechas solo bajan (las que suben tienen que ir por un costado).
+        if (!e.route) expect(b.row, `${s.id}: ${e.from} → ${e.to}`).toBeGreaterThan(a.row)
+      }
+      for (const d of s.drugs) expect(ids.has(d.target), `${s.id}: ${d.name}`).toBe(true)
+    }
+  })
+
+  it('los tipos de shock tienen su firma hemodinámica', () => {
+    const get = (id: string) => SHOCKS.find((s) => s.id === id)!
+    expect(get('cardiogenico').pcp.v).toBe(1)
+    expect(get('hipovolemico').pvc.v).toBe(-1)
+    expect(get('distributivo').rvs.v).toBe(-1)
+    expect(get('neurogenico').fc.v).toBe(-1)
+    expect(get('obstructivo').pvc.v).toBe(1)
   })
 })

@@ -78,6 +78,7 @@ const Fractures = lazy(() => import('@/pages/Fractures'))
 const Spirometry = lazy(() => import('@/pages/Spirometry'))
 const Semiology = lazy(() => import('@/pages/Semiology'))
 const Hemogram = lazy(() => import('@/pages/Hemogram'))
+const Physiopathology = lazy(() => import('@/pages/Physiopathology'))
 const Account = lazy(() => import('@/pages/Account'))
 const LingoPath = lazy(() => import('@/pages/lingo/Path'))
 const LingoLesson = lazy(() => import('@/pages/lingo/Lesson'))
@@ -234,6 +235,8 @@ export default function App() {
               <Route path="/espirometria" element={<Lazy><Spirometry /></Lazy>} />
               <Route path="/semiologia" element={<Lazy><Semiology /></Lazy>} />
               <Route path="/hemograma" element={<Lazy><Hemogram /></Lazy>} />
+              <Route path="/fisiopatologia" element={<Lazy><Physiopathology /></Lazy>} />
+              <Route path="/fisiopatologia/:id" element={<Lazy><Physiopathology /></Lazy>} />
               <Route path="/repaso" element={<Lazy><Review /></Lazy>} />
               <Route path="/flashcards" element={<Lazy><Decks /></Lazy>} />
               <Route path="/flashcards/navegador" element={<Lazy><CardBrowser /></Lazy>} />
