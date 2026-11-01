@@ -43,7 +43,7 @@ export default function Guides() {
       </div>
 
       {list.length === 0 ? (
-        <EmptyState icon={<Search className="size-7" />} title="No se encontraron guías" />
+        <EmptyState icon={<Search className="size-7" />} title="No se encontraron guías" body="Prueba con otra palabra o quita el filtro de especialidad." action={<Button variant="outline" onClick={() => { setQuery(''); setSpec(null) }}>Quitar filtros</Button>} />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {list.map((g, i) => {

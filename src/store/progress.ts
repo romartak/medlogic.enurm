@@ -173,6 +173,9 @@ function checkAchievements(s: ProgressData): Pick<ProgressData, 'achievements' |
     const titles = new Intl.ListFormat('es', { type: 'conjunction' }).format(won.map((a) => a.title))
     useToasts.getState().push({ kind: 'achievement', count: won.length, title: titles, body: `+${xp - s.xp} XP` })
   }
+  // Rachas de 3, 7 y 30 días: confeti (más largo en las dos últimas). Va por importación dinámica porque fx.ts lee este mismo store.
+  const streakWin = won.filter((a) => a.id.startsWith('streak-')).pop()
+  if (streakWin && won.length <= 2) void import('@/lib/fx').then((m) => m.celebrate(streakWin.id === 'streak-3' ? 'small' : 'big'))
   return { achievements, xp }
 }
 
