@@ -9,7 +9,7 @@ type Variant = 'primary' | 'secondary' | 'ghost' | 'outline' | 'danger' | 'succe
 type Size = 'sm' | 'md' | 'lg'
 
 const VARIANTS: Record<Variant, string> = {
-  primary: 'bg-brand-gradient text-white shadow-glow hover:brightness-110 active:brightness-95',
+  primary: 'bg-brand-700 text-white hover:bg-brand-900',
   secondary: 'surface-2 text-[var(--text)] hover:bg-slate-200/70 dark:hover:bg-slate-700/40',
   ghost: 'text-[var(--text)] hover:bg-slate-900/5 dark:hover:bg-white/5',
   outline: 'border border-soft text-[var(--text)] hover:border-brand-500/50 hover:bg-brand-500/5',
@@ -89,7 +89,7 @@ export function ProgressBar({ value, className, color, height = 'h-2' }: { value
   return (
     <div className={cn('w-full overflow-hidden rounded-full surface-2', height, className)}>
       <motion.div
-        className={cn('h-full w-full origin-left rounded-full', !color && 'bg-brand-gradient')}
+        className={cn('h-full w-full origin-left rounded-full', !color && 'bg-brand-600')}
         style={color ? { backgroundColor: color } : undefined}
         initial={{ scaleX: 0 }}
         animate={{ scaleX: v }}
@@ -100,19 +100,13 @@ export function ProgressBar({ value, className, color, height = 'h-2' }: { value
 }
 
 /** Anillo de progreso circular animado. */
-export function Ring({ value, size = 120, stroke = 10, color = 'url(#ring-grad)', track = 'var(--surface-2)', children }: { value: number; size?: number; stroke?: number; color?: string; track?: string; children?: ReactNode }) {
+export function Ring({ value, size = 120, stroke = 10, color = 'var(--color-brand-600)', track = 'var(--surface-2)', children }: { value: number; size?: number; stroke?: number; color?: string; track?: string; children?: ReactNode }) {
   const r = (size - stroke) / 2
   const c = 2 * Math.PI * r
   const v = Math.max(0, Math.min(1, value))
   return (
     <div className="relative grid place-items-center" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="-rotate-90">
-        <defs>
-          <linearGradient id="ring-grad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#12b8a6" />
-            <stop offset="100%" stopColor="#066a60" />
-          </linearGradient>
-        </defs>
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={track} strokeWidth={stroke} />
         <motion.circle
           cx={size / 2}
@@ -135,11 +129,11 @@ export function Ring({ value, size = 120, stroke = 10, color = 'url(#ring-grad)'
 
 export function PageHeader({ title, subtitle, icon, actions, eyebrow }: { title: ReactNode; subtitle?: ReactNode; icon?: ReactNode; actions?: ReactNode; eyebrow?: ReactNode }) {
   return (
-    <motion.header initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mb-6 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
+    <motion.header initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mb-6 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
       <div className="flex items-start gap-4">
-        {icon && <div className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-white shadow-glow">{icon}</div>}
+        {icon && <div className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-500/10 text-brand-700 dark:text-brand-300">{icon}</div>}
         <div>
-          {eyebrow && <div className="mb-1 text-xs font-semibold tracking-wider text-brand-600 uppercase dark:text-brand-400">{eyebrow}</div>}
+          {eyebrow && <div className="mb-1 text-sm font-medium text-brand-700 dark:text-brand-400">{eyebrow}</div>}
           <h1 className="text-2xl font-bold sm:text-3xl">{title}</h1>
           {subtitle && <p className="mt-1 max-w-2xl text-sm text-muted sm:text-base">{subtitle}</p>}
         </div>
@@ -163,13 +157,13 @@ export function EmptyState({ icon, title, body, action }: { icon: ReactNode; tit
 export function StatCard({ icon, label, value, hint, color = '#06c4b0', delay = 0 }: { icon: ReactNode; label: string; value: ReactNode; hint?: ReactNode; color?: string; delay?: number }) {
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }} className="card p-3.5 sm:p-5">
-      <div className="flex items-center gap-2.5 sm:gap-3">
-        <span className="grid size-9 shrink-0 place-items-center rounded-xl sm:size-10" style={{ backgroundColor: `${color}1a`, color }}>
+      <div className="flex items-center gap-2">
+        <span className="shrink-0 [&>svg]:size-4 sm:[&>svg]:size-5" style={tintText(color)}>
           {icon}
         </span>
         <span className="min-w-0 text-xs leading-tight font-medium text-muted sm:text-sm">{label}</span>
       </div>
-      <div className="mt-2.5 font-display text-xl font-bold tabular-nums sm:mt-3 sm:text-3xl">{value}</div>
+      <div className="mt-2 font-display text-xl font-bold tabular-nums sm:text-3xl">{value}</div>
       {hint && <div className="mt-0.5 text-xs leading-snug text-muted sm:mt-1">{hint}</div>}
     </motion.div>
   )

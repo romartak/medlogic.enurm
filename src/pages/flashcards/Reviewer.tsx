@@ -272,7 +272,7 @@ export default function Reviewer() {
       <div className="mx-auto max-w-2xl">
         {header}
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="card p-10 text-center">
-          <div className="mx-auto grid size-20 place-items-center rounded-3xl bg-brand-gradient text-white shadow-glow">{nextAt ? <Pause className="size-9" /> : <PartyPopper className="size-9" />}</div>
+          <div className="mx-auto grid size-20 place-items-center rounded-3xl bg-brand-gradient text-white">{nextAt ? <Pause className="size-9" /> : <PartyPopper className="size-9" />}</div>
           <h2 className="mt-6 text-2xl font-bold">{nextAt ? 'Pausa breve' : '¡Felicidades! Terminaste por ahora.'}</h2>
           <p className="mt-2 text-muted">
             {studied > 0 ? `Repasaste ${studied} tarjetas en ${elapsedMin} min. ` : ''}

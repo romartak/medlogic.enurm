@@ -118,7 +118,7 @@ function AccountButton() {
   if (status === 'disabled' || status === 'loading') return null
   if (status === 'signed-out')
     return (
-      <NavLink to="/cuenta" state={{ mode: 'signin' }} className="ml-1 inline-flex h-11 items-center gap-1.5 rounded-xl bg-brand-gradient px-3 text-xs font-semibold text-white shadow-glow">
+      <NavLink to="/cuenta" state={{ mode: 'signin' }} className="ml-1 inline-flex h-11 items-center gap-1.5 rounded-xl bg-brand-gradient px-3 text-xs font-semibold text-white">
         <LogIn className="size-4" /> <span className="max-sm:sr-only">Iniciar sesión</span>
       </NavLink>
     )
@@ -176,7 +176,6 @@ export function AppLayout() {
 
   return (
     <div className="min-h-dvh">
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-mesh" />
 
       {/* Barra lateral (escritorio) */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-soft bg-[var(--surface)]/70 backdrop-blur-xl lg:flex">

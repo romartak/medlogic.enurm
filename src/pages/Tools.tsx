@@ -35,10 +35,10 @@ function Select({ label, value, onChange, options }: { label: string; value: num
 }
 
 function Result({ value, label, tone = 'brand', children }: { value: ReactNode; label: string; tone?: 'brand' | 'ok' | 'warn' | 'bad'; children?: ReactNode }) {
-  const colors = { brand: 'from-brand-500 to-brand-700', ok: 'from-emerald-500 to-teal-500', warn: 'from-amber-500 to-orange-500', bad: 'from-rose-500 to-rose-700' }
+  const colors = { brand: 'bg-brand-700', ok: 'bg-emerald-700', warn: 'bg-amber-700', bad: 'bg-rose-700' }
   return (
-    <motion.div key={String(value)} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className={cn('mt-6 rounded-2xl bg-gradient-to-br p-5 text-white shadow-lift', colors[tone])}>
-      <div className="text-xs font-semibold tracking-wider text-white/80 uppercase">{label}</div>
+    <motion.div key={String(value)} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className={cn('mt-6 rounded-2xl p-5 text-white', colors[tone])}>
+      <div className="text-sm font-medium text-white">{label}</div>
       <div className="mt-1 font-display text-4xl font-extrabold">{value}</div>
       {children && <div className="mt-2 text-sm text-white/90">{children}</div>}
     </motion.div>
@@ -353,7 +353,7 @@ export default function Tools() {
           <motion.div key={tool.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.18 }}>
             <Card className="p-5 sm:p-7">
               <div className="mb-6 flex items-start gap-4">
-                <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-white shadow-glow">
+                <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-white">
                   <tool.icon className="size-6" />
                 </span>
                 <div>

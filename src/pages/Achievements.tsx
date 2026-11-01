@@ -57,7 +57,7 @@ export default function Achievements() {
           const at = unlocked[a.id]
           return (
             <motion.div key={a.id} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.03 }} whileHover={at ? { y: -4, rotate: -1 } : {}} className={cn('card relative flex flex-col items-center p-5 text-center', !at && 'opacity-70')}>
-              <div className={cn('relative grid size-16 place-items-center rounded-2xl', at ? 'bg-gradient-to-br from-amber-400 via-orange-500 to-pink-500 text-white shadow-lg' : 'surface-2 text-muted')}>
+              <div className={cn('relative grid size-16 place-items-center rounded-2xl', at ? 'bg-amber-500 text-white' : 'surface-2 text-muted')}>
                 <Icon name={a.icon} className="size-7" />
                 {!at && (
                   <span className="absolute -right-1.5 -bottom-1.5 grid size-6 place-items-center rounded-full bg-[var(--surface)] shadow">

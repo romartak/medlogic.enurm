@@ -59,7 +59,7 @@ function OptionCard({ active, onClick, children, className, check = true }: { ac
       whileTap={{ scale: 0.97 }}
       onClick={onClick}
       aria-pressed={active}
-      className={cn('relative rounded-2xl border-2 p-4 text-left transition-all', active ? 'border-brand-500 bg-brand-500/[0.07] shadow-glow' : 'border-soft bg-[var(--surface)] hover:border-brand-500/40', className)}
+      className={cn('relative rounded-2xl border-2 p-4 text-left transition-all', active ? 'border-brand-500 bg-brand-500/[0.07]' : 'border-soft bg-[var(--surface)] hover:border-brand-500/40', className)}
     >
       {active && check && (
         <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute top-2.5 right-2.5 grid size-5 place-items-center rounded-full bg-brand-500 text-white">
@@ -149,7 +149,6 @@ export default function Onboarding() {
 
   return (
     <div className="relative flex min-h-dvh flex-col">
-      <div className="pointer-events-none fixed inset-0 -z-10 bg-mesh" />
       <header className="mx-auto flex w-full max-w-3xl items-center justify-between px-4 py-5 sm:px-6">
         <Logo />
         {!stored.completed && (
@@ -181,7 +180,7 @@ export default function Onboarding() {
             <div className="mt-8">
               {current.key === 'hola' && (
                 <div className="space-y-6">
-                  <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 15 }} className="grid size-24 place-items-center rounded-3xl bg-brand-gradient text-white shadow-glow">
+                  <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 15 }} className="grid size-24 place-items-center rounded-3xl bg-brand-gradient text-white">
                     <Stethoscope className="size-12" />
                   </motion.div>
                   <div className="max-w-md">
@@ -283,7 +282,7 @@ export default function Onboarding() {
                       {WEEKDAYS.map(({ d, l }) => {
                         const on = p.studyDays.includes(d)
                         return (
-                          <motion.button key={d} whileTap={{ scale: 0.9 }} onClick={() => set({ studyDays: on ? p.studyDays.filter((x) => x !== d) : [...p.studyDays, d] })} className={cn('h-14 rounded-xl border-2 text-sm font-bold transition-all', on ? 'border-brand-500 bg-brand-500 text-white shadow-glow' : 'border-soft text-muted')}>
+                          <motion.button key={d} whileTap={{ scale: 0.9 }} onClick={() => set({ studyDays: on ? p.studyDays.filter((x) => x !== d) : [...p.studyDays, d] })} className={cn('h-14 rounded-xl border-2 text-sm font-bold transition-all', on ? 'border-brand-500 bg-brand-500 text-white' : 'border-soft text-muted')}>
                             {l}
                           </motion.button>
                         )
@@ -358,7 +357,7 @@ export default function Onboarding() {
 
               {current.key === 'resumen' && (
                 <div className="space-y-4">
-                  <div className="relative overflow-hidden rounded-3xl bg-brand-gradient p-6 text-white shadow-glow">
+                  <div className="relative overflow-hidden rounded-3xl bg-brand-gradient p-6 text-white">
                     <Sparkles className="absolute top-5 right-5 size-6 text-white/60" />
                     <div className="text-sm text-white/80">{addressName({ name, honorific }) ? `${addressName({ name, honorific }).replace(/^./, (c) => c.toUpperCase())}, tu` : 'Tu'} punto de partida</div>
                     <div className="mt-1 font-display text-2xl font-extrabold">{phase.name}</div>

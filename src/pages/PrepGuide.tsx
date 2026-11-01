@@ -171,7 +171,6 @@ export default function PrepGuide() {
       </section>
 
       <Card className="relative overflow-hidden p-6 sm:p-8">
-        <div className="pointer-events-none absolute -top-16 -right-16 size-56 rounded-full bg-brand-500/20 blur-3xl" />
         <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center">
           <div className="flex-1">
             <h2 className="font-display text-xl font-bold">Pon esto en práctica hoy</h2>

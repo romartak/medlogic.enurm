@@ -218,7 +218,7 @@ function NationalBanner() {
   const done = useNational((s) => s.attempts[edition])
   return (
     <Link to="/simulacro-nacional" className="card card-hover group mb-6 flex items-center gap-4 border-brand-500/30 bg-brand-500/[0.05] p-4 sm:p-5">
-      <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-white shadow-glow">
+      <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-white">
         <Flag className="size-6" />
       </span>
       <span className="min-w-0 flex-1">

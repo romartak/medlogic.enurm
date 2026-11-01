@@ -67,7 +67,7 @@ export default function Overview() {
 
             {nothing ? (
               <div className="mt-8">
-                <motion.div initial={{ scale: 0.6, rotate: -10 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 200, damping: 12 }} className="mx-auto grid size-20 place-items-center rounded-3xl bg-brand-gradient text-white shadow-glow">
+                <motion.div initial={{ scale: 0.6, rotate: -10 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 200, damping: 12 }} className="mx-auto grid size-20 place-items-center rounded-3xl bg-brand-gradient text-white">
                   <PartyPopper className="size-9" />
                 </motion.div>
                 <h2 className="mt-5 text-xl font-bold">¡Terminaste este mazo por hoy!</h2>

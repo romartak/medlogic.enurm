@@ -50,10 +50,10 @@ export function FlowVolumeLoop({ shape, className }: { shape: LoopShape; classNa
 }
 
 const PATTERN: Record<SpiroPattern, { label: string; tone: string; text: string; loop: LoopShape }> = {
-  normal: { label: 'Espirometría normal', tone: 'from-emerald-500 to-teal-600', text: 'Cociente ≥ 0,70 y FVC ≥ 80 %. Si los síntomas sugieren asma, una espirometría normal no la descarta: considera la prueba de metacolina.', loop: 'normal' },
-  obstructivo: { label: 'Patrón obstructivo', tone: 'from-sky-500 to-indigo-600', text: 'Cociente < 0,70: hay limitación al flujo aéreo. La respuesta al broncodilatador orienta entre asma (reversible) y EPOC (persistente).', loop: 'obstructivo' },
-  restrictivo: { label: 'Sugiere restricción', tone: 'from-amber-500 to-orange-600', text: 'Cociente normal o alto con FVC baja. Confírmalo midiendo la capacidad pulmonar total (TLC < 80 %); la DLCO ayuda a separar causas del parénquima (baja) de las de pared o músculo (normal).', loop: 'restrictivo' },
-  mixto: { label: 'Patrón mixto', tone: 'from-rose-500 to-fuchsia-600', text: 'Cociente bajo y FVC baja. Puede ser una restricción con obstrucción o una obstrucción con atrapamiento de aire que reduce la FVC: los volúmenes pulmonares lo aclaran.', loop: 'obstructivo' },
+  normal: { label: 'Espirometría normal', tone: 'bg-emerald-700', text: 'Cociente ≥ 0,70 y FVC ≥ 80 %. Si los síntomas sugieren asma, una espirometría normal no la descarta: considera la prueba de metacolina.', loop: 'normal' },
+  obstructivo: { label: 'Patrón obstructivo', tone: 'bg-sky-700', text: 'Cociente < 0,70: hay limitación al flujo aéreo. La respuesta al broncodilatador orienta entre asma (reversible) y EPOC (persistente).', loop: 'obstructivo' },
+  restrictivo: { label: 'Sugiere restricción', tone: 'bg-amber-700', text: 'Cociente normal o alto con FVC baja. Confírmalo midiendo la capacidad pulmonar total (TLC < 80 %); la DLCO ayuda a separar causas del parénquima (baja) de las de pared o músculo (normal).', loop: 'restrictivo' },
+  mixto: { label: 'Patrón mixto', tone: 'bg-rose-700', text: 'Cociente bajo y FVC baja. Puede ser una restricción con obstrucción o una obstrucción con atrapamiento de aire que reduce la FVC: los volúmenes pulmonares lo aclaran.', loop: 'obstructivo' },
 }
 
 /** Lectura de la prueba broncodilatadora según la respuesta y el cociente que queda después. */
@@ -130,7 +130,7 @@ function Interpreter() {
       <div className="space-y-4">
         {error && <Card className="p-5 text-sm text-muted">{error}</Card>}
         {result && p && (
-          <motion.div key={result.pattern} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className={cn('rounded-2xl bg-gradient-to-br p-5 text-white shadow-lift', p.tone)}>
+          <motion.div key={result.pattern} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className={cn('rounded-2xl p-5 text-white', p.tone)}>
             <div className="text-xs font-semibold tracking-wider text-white/80 uppercase">Interpretación</div>
             <div className="mt-1 font-display text-3xl font-extrabold">{p.label}</div>
             <div className="mt-3 flex flex-wrap gap-2 text-sm">
