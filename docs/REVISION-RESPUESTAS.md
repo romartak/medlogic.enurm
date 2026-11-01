@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **1679** (1166 de 1166 del documento original · 513 de 1320 de la recopilación 2002-2024) · publicadas: **1595** · respuesta corregida: **197** · retiradas: **84**.
+Preguntas revisadas: **1779** (1166 de 1166 del documento original · 613 de 1320 de la recopilación 2002-2024) · publicadas: **1695** · respuesta corregida: **202** · retiradas: **84**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -576,6 +576,21 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **ENURM-2013-062** — Dentro de Las manifestaciones de la hemorragia digestiva, se encuentra la Hematoquezia, que significa:
   - Documento: B (Heces mal olientes y negras) → publicada: **C (Evacuacion de sangre color rojo vino)**
   - El documento marca «heces malolientes y negras», que es la melena; la hematoquecia es la expulsión de sangre roja por el recto.
+- **ENURM-2013-084** — El microorganismo patógeno aislado más frecuentemente en las infecciones post-operatorias:
+  - Documento: B (Streptococo B hemolítico grupo A) → publicada: **C (Estafilococo coagulasa negativo)**
+  - El documento marca el estreptococo del grupo A, causa rara de infección posoperatoria; el germen más frecuente es S. aureus (no está entre las opciones), seguido de los estafilococos coagulasa negativos.
+- **ENURM-2013-088** — Las quemaduras que afectan hasta las capas reticulares de la dermis se consideran como de:
+  - Documento: B (Segundo grado de espesor parcial superficial) → publicada: **C (Segundo grado de espesor parcial profundo)**
+  - El documento marca segundo grado superficial, pero la afectación de la dermis reticular corresponde al espesor parcial profundo; la superficial llega a la dermis papilar (Sabiston).
+- **ENURM-2014-027** — ¿Cuál de las siguientes acciones es la más efectiva e importante cuando un neonato requiere reanimación?
+  - Documento: B (Masaje cardiaco) → publicada: **C (Ventilación pulmonar)**
+  - El documento marca el masaje cardíaco, pero en la reanimación neonatal lo más importante y efectivo es la ventilación (programa de reanimación neonatal).
+- **ENURM-2014-069** — El diagnóstico definitivo de enfisema pulmonar se realiza por medio de:
+  - Documento: D (Historia clínica, examen físico, radiografía de tórax) → publicada: **C (Tomografia computarizada de torax)**
+  - El documento marca historia, exploración y radiografía, que solo sugieren el enfisema; la tomografía computarizada es la que lo confirma in vivo (GOLD).
+- **ENURM-2014-079** — En un paciente diagnosticado de meningitis bacteriana aguda, para administrar antibióticos se debe:
+  - Documento: A (Determinar el germen causal por medio de cultivo) → publicada: **C (Iniciar la administración de antibióticos según la clínica)**
+  - El documento marca determinar el germen por cultivo antes del antibiótico, pero en la meningitis bacteriana el tratamiento empírico se inicia de inmediato según la clínica (Mandell, IDSA).
 
 ## Retiradas
 
