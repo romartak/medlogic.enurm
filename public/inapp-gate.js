@@ -25,7 +25,7 @@
     '#gate{--bg:#f6f8fb;--tx:#0f172a;--mu:#5b6b80;--cd:#fff;--bd:rgba(15,23,42,.08);--s2:#eef2f6;--hi:#067c71;position:fixed;inset:0;z-index:2147483000;overflow-y:auto;overscroll-behavior:contain;background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-align:center;line-height:1.35}',
     'html.dark #gate{--bg:#070b14;--tx:#e8edf5;--mu:#9fb0c6;--cd:#0e1524;--bd:rgba(255,255,255,.08);--s2:#131c2e;--hi:#1fe0c9}',
     '#gate,#gate *{box-sizing:border-box;margin:0;padding:0;border:0}',
-    '#gate .g-wrap{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:max(72px,env(safe-area-inset-top)) 24px max(32px,env(safe-area-inset-bottom));max-width:440px;margin:0 auto}',
+    '#gate .g-wrap{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:max(48px,env(safe-area-inset-top)) 24px max(48px,env(safe-area-inset-bottom));max-width:440px;margin:0 auto}',
     '#gate .g-glow{position:fixed;inset:0;pointer-events:none;background:radial-gradient(520px circle at 50% 40%,rgba(20,184,166,.16),transparent 62%),radial-gradient(460px circle at 58% 62%,rgba(99,102,241,.12),transparent 62%)}',
     // Logo: arranca al centro de la pantalla y sube a su sitio.
     '#gate .g-stage{position:relative;width:84px;height:84px;flex:none}',
@@ -51,7 +51,7 @@
     '#gate .g-copy{margin-top:12px;width:100%;height:48px;border-radius:999px;background:var(--s2);color:var(--tx);font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px}',
     '#gate .g-copy:active,#gate .g-go:active{transform:scale(.98)}',
     '#gate .g-skip{margin-top:22px;font-size:14px;color:var(--mu);text-decoration:underline;text-underline-offset:4px;padding:8px}',
-    '#gate .g-arrow{position:fixed;top:10px;right:24px;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--hi);pointer-events:none}',
+    '#gate .g-arrow{position:fixed;top:10px;right:20px;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--hi);pointer-events:none}',
     '#gate .g-arrow b{font-size:13px;letter-spacing:3px;line-height:1;font-weight:900}',
     // Entrada: el logo se dibuja, estalla en ondas y formas, sube, y entra el resto en cascada.
     '@keyframes g-bg{from{opacity:0}}',
