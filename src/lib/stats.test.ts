@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { bestStreak, computeStreak, predictedScore, specialtyStats } from './stats'
+import { bestStreak, computeStreak, streakAtRisk, predictedScore, specialtyStats } from './stats'
 import { proportionalPick } from './selection'
 import { addDays, dayKey } from './utils'
 import type { Question } from '@/types'
@@ -15,6 +15,12 @@ describe('rachas', () => {
   it('mantiene la racha si hoy aún no se ha estudiado', () => {
     const a = { [dayKey(addDays(today, -1))]: day, [dayKey(addDays(today, -2))]: day }
     expect(computeStreak(a, today)).toBe(2)
+  })
+  it('avisa cuando la racha está en riesgo hoy', () => {
+    const a = { [dayKey(addDays(today, -1))]: day, [dayKey(addDays(today, -2))]: day, [dayKey(addDays(today, -3))]: day }
+    expect(streakAtRisk(a, today)).toBe(3)
+    expect(streakAtRisk({ ...a, [dayKey(today)]: day }, today)).toBe(0)
+    expect(streakAtRisk({ [dayKey(addDays(today, -1))]: day }, today)).toBe(0)
   })
   it('calcula la mejor racha histórica', () => {
     const a = Object.fromEntries([0, 1, 2, 5, 6].map((d) => [dayKey(addDays(today, -d)), day]))

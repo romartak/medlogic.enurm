@@ -17,6 +17,13 @@ export function computeStreak(activity: Record<string, DayActivity>, today = new
   return n
 }
 
+/** La racha sigue viva pero hoy aún no hay actividad: se rompe al terminar el día. Devuelve los días en juego o 0. */
+export function streakAtRisk(activity: Record<string, DayActivity>, now = new Date(), minStreak = 2): number {
+  if (isActive(activity[dayKey(now)])) return 0
+  const n = computeStreak(activity, now)
+  return n >= minStreak ? n : 0
+}
+
 export function bestStreak(activity: Record<string, DayActivity>): number {
   const days = Object.keys(activity).filter((k) => isActive(activity[k])).sort()
   let best = 0

@@ -25,6 +25,8 @@ import { currentEdition, daysLeftInEdition, editionLabel, useNational } from '@/
 import { duelTally, useDuels } from '@/lib/duel'
 import { ALL_NAV } from '@/components/layout/nav'
 import { hasReminder, ReminderCard } from '@/components/ReminderCard'
+import { InstallCard } from '@/components/InstallCard'
+import { StreakNudge } from '@/components/StreakNudge'
 
 function greeting() {
   const h = new Date().getHours()
@@ -200,6 +202,7 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
+      <StreakNudge />
       {/* Bienvenida: en el teléfono es una tarjeta compacta (anillo + mensaje + acciones); desde tablet, la versión amplia */}
       <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-[1.75rem] bg-brand-gradient p-4 text-white shadow-glow sm:rounded-3xl sm:p-7">
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_90%_at_100%_0%,rgb(255_255_255/0.16),transparent_70%)]" />
@@ -415,6 +418,8 @@ export default function Dashboard() {
           </Card>
 
           <LingoCard />
+
+          <InstallCard />
 
           {!hasReminder() && <ReminderCard compact />}
 
