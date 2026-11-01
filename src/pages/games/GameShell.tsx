@@ -85,7 +85,7 @@ export function GameShell({ id, rules, children }: { id: GameId; rules: string[]
         {phase === 'over' && result && (
           <motion.div key="over" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', stiffness: 220, damping: 20 }} className="card p-8 text-center sm:p-12">
             {result.record && (
-              <motion.div initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full bg-amber-500 px-4 py-1.5 text-sm font-bold text-white">
+              <motion.div initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="mx-auto mb-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 px-4 py-1.5 text-sm font-bold text-white shadow-lg">
                 <Trophy className="size-4" /> ¡Nuevo récord!
               </motion.div>
             )}

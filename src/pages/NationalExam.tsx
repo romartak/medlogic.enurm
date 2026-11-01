@@ -52,6 +52,7 @@ export default function NationalExam() {
       {!attempt ? (
         <div className="grid gap-6 lg:grid-cols-3">
           <Card className="relative overflow-hidden p-6 lg:col-span-2">
+            <div className="pointer-events-none absolute -top-20 -right-16 size-60 rounded-full bg-brand-500/15 blur-3xl" />
             <div className="relative">
               <div className="grid grid-cols-3 gap-3 text-center">
                 {[
@@ -94,7 +95,7 @@ export default function NationalExam() {
         </div>
       ) : (
         <div className="grid gap-6 lg:grid-cols-3">
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-3xl bg-brand-gradient p-6 text-white lg:col-span-2">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-3xl bg-brand-gradient p-6 text-white shadow-glow lg:col-span-2">
             <div className="text-sm text-white/80">Tu resultado de {label.toLowerCase()}</div>
             <div className="mt-1 flex items-end gap-3">
               <span className="font-display text-6xl font-extrabold">{pct(attempt.correct, attempt.total)}%</span>

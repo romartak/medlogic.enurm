@@ -2,7 +2,7 @@ import { LocalProgressCard } from '@/components/AccountNote'
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { ArrowRight, Languages, BookOpen, CalendarDays, Check, ChartColumn, Flag, Flame, Gauge, Info, GraduationCap, HeartPulse, Layers, Medal, Newspaper, RotateCcw, Share2, Stethoscope, Swords, Target, Timer, Trophy, Zap } from 'lucide-react'
+import { ArrowRight, Languages, BookOpen, CalendarDays, Check, ChartColumn, Flag, Flame, GraduationCap, HeartPulse, Layers, Medal, Newspaper, RotateCcw, Share2, Sparkles, Stethoscope, Swords, Target, Timer, Trophy, Zap } from 'lucide-react'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { useProgress, levelFromXp, levelTitle } from '@/store/progress'
 import { resolveExamDate } from '@/lib/plan'
@@ -25,6 +25,8 @@ import { currentEdition, daysLeftInEdition, editionLabel, useNational } from '@/
 import { duelTally, useDuels } from '@/lib/duel'
 import { ALL_NAV } from '@/components/layout/nav'
 import { hasReminder, ReminderCard } from '@/components/ReminderCard'
+import { InstallCard } from '@/components/InstallCard'
+import { StreakNudge } from '@/components/StreakNudge'
 
 function greeting() {
   const h = new Date().getHours()
@@ -59,7 +61,7 @@ function LingoCard() {
         >
           <RotateCcw className="size-4 shrink-0" /> {due ? `Repasar ${due} ${due === 1 ? 'palabra' : 'palabras'}` : 'Sin repaso hoy'}
         </Link>
-        <Link to="/terminologia/relampago" className="flex h-11 items-center justify-center gap-2 rounded-xl bg-amber-500/15 px-3 text-sm font-semibold whitespace-nowrap text-amber-700 dark:text-amber-300">
+        <Link to="/terminologia/relampago" className="flex h-11 items-center justify-center gap-2 rounded-xl bg-amber-500/15 px-3 text-sm font-semibold text-amber-700 dark:text-amber-300">
           <Timer className="size-4 shrink-0" /> Reto relámpago
         </Link>
       </div>
@@ -99,17 +101,19 @@ function ExploreCard() {
   const national = useNational((s) => s.attempts[edition])
   const tally = duelTally(useDuels((s) => s.duels))
   const items = [
-    { to: '/simulacro-nacional', icon: Flag, title: 'Simulacro nacional', hint: national ? `Hecho: ${pct(national.correct, national.total)} %` : `${editionLabel(edition)} · ${daysLeftInEdition()} días` },
-    { to: '/duelo', icon: Swords, title: 'Duelo', hint: tally.total ? `${tally.wins} ganados · ${tally.losses} perdidos` : 'Reta a un amigo' },
-    { to: '/casos', icon: Stethoscope, title: 'Casos clínicos', hint: 'Decide paso a paso' },
-    { to: '/ecg', icon: HeartPulse, title: 'Lee el ECG', hint: 'Arritmias y bloqueos' },
-    { to: '/ranking', icon: Medal, title: 'Ranking', hint: 'Tu posición en el país' },
+    { to: '/simulacro-nacional', icon: Flag, color: '#0ea5e9', title: 'Simulacro nacional', hint: national ? `Hecho: ${pct(national.correct, national.total)} %` : `${editionLabel(edition)} · ${daysLeftInEdition()} días` },
+    { to: '/duelo', icon: Swords, color: '#f97316', title: 'Duelo', hint: tally.total ? `${tally.wins} ganados · ${tally.losses} perdidos` : 'Reta a un amigo' },
+    { to: '/casos', icon: Stethoscope, color: '#8b5cf6', title: 'Casos clínicos', hint: 'Decide paso a paso' },
+    { to: '/ecg', icon: HeartPulse, color: '#ef4444', title: 'Lee el ECG', hint: 'Arritmias y bloqueos' },
+    { to: '/ranking', icon: Medal, color: '#f59e0b', title: 'Ranking', hint: 'Tu posición en el país' },
   ]
   return (
     <div className="-mx-4 flex snap-x scroll-px-4 gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 lg:grid-cols-5">
       {items.map((it) => (
         <Link key={it.to} to={it.to} className="card card-hover group flex w-40 shrink-0 snap-start flex-col p-4 sm:w-auto">
-          <it.icon className="size-5 text-brand-700 dark:text-brand-400" aria-hidden />
+          <span className="grid size-10 place-items-center rounded-xl" style={{ backgroundColor: `${it.color}1a`, color: it.color }}>
+            <it.icon className="size-5" />
+          </span>
           <span className="mt-3 font-display font-bold">{it.title}</span>
           <span className="text-xs text-muted">{it.hint}</span>
         </Link>
@@ -198,8 +202,10 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
+      <StreakNudge />
       {/* Bienvenida: en el teléfono es una tarjeta compacta (anillo + mensaje + acciones); desde tablet, la versión amplia */}
-      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-[1.75rem] bg-brand-gradient p-4 text-white sm:rounded-3xl sm:p-7">
+      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-[1.75rem] bg-brand-gradient p-4 text-white shadow-glow sm:rounded-3xl sm:p-7">
+        <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_90%_at_100%_0%,rgb(255_255_255/0.16),transparent_70%)]" />
 
         {/* Teléfono */}
         <div className="relative md:hidden">
@@ -284,7 +290,7 @@ export default function Dashboard() {
 
       {source === 'sample' && (
         <Card className="flex items-start gap-3 border-dashed p-4 sm:items-center">
-          <Info className="size-5 shrink-0 text-amber-600" />
+          <Sparkles className="size-5 shrink-0 text-amber-500" />
           <p className="flex-1 text-sm text-muted">
             Estás usando <b className="text-[var(--text)]">{questions.length} preguntas de muestra</b>. El banco completo del ENURM aparecerá aquí automáticamente.
           </p>
@@ -320,7 +326,7 @@ export default function Dashboard() {
           <StatCard icon={<Flame className="size-5" />} label="Racha" value={`${streak} ${streak === 1 ? 'día' : 'días'}`} hint={streak ? 'No la rompas hoy' : 'Empieza una racha hoy'} color="#f97316" />
           <StatCard icon={<Target className="size-5" />} label="Precisión" value={`${Math.round(ov.accuracy * 100)}%`} hint={`${ov.correct} de ${ov.answered} correctas`} color="#06c4b0" delay={0.05} />
           <StatCard icon={<Layers className="size-5" />} label="Cobertura" value={`${Math.round(ov.coverage * 100)}%`} hint={`${ov.uniqueSeen} de ${questions.length} vistas`} color="#6366f1" delay={0.1} />
-          <StatCard icon={<Gauge className="size-5" />} label="Puntaje estimado" value={predicted === null ? '—' : `${predicted}%`} hint={predicted === null ? 'Responde 10+ preguntas' : 'Según tu rendimiento'} color="#ec4899" delay={0.15} />
+          <StatCard icon={<Sparkles className="size-5" />} label="Puntaje estimado" value={predicted === null ? '—' : `${predicted}%`} hint={predicted === null ? 'Responde 10+ preguntas' : 'Según tu rendimiento'} color="#ec4899" delay={0.15} />
         </div>
       )}
 
@@ -331,14 +337,16 @@ export default function Dashboard() {
         <div className="min-w-0 space-y-6 lg:col-span-2">
           <div className="grid grid-cols-3 gap-2 sm:gap-3">
             {[
-              { to: '/repaso', icon: RotateCcw, title: 'Errores', value: failedCount, hint: failedCount ? 'pendientes de corregir' : 'sin errores pendientes' },
-              { to: '/flashcards', icon: Layers, title: 'Flashcards', value: dueCards, hint: `para hoy · ${newCards} nuevas` },
-              { to: '/simulacro', icon: GraduationCap, title: 'Simulacros', value: exams.length, hint: exams[0] ? `último: ${pct(exams[0].correct, exams[0].total)}%` : 'aún sin simulacros' },
+              { to: '/repaso', icon: RotateCcw, title: 'Errores', value: failedCount, hint: failedCount ? 'pendientes de corregir' : 'sin errores pendientes', color: '#ef4444' },
+              { to: '/flashcards', icon: Layers, title: 'Flashcards', value: dueCards, hint: `para hoy · ${newCards} nuevas`, color: '#8b5cf6' },
+              { to: '/simulacro', icon: GraduationCap, title: 'Simulacros', value: exams.length, hint: exams[0] ? `último: ${pct(exams[0].correct, exams[0].total)}%` : 'aún sin simulacros', color: '#0ea5e9' },
             ].map((a, i) => (
               <motion.div key={a.to} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.05 }}>
                 <Link to={a.to} className="card card-hover group flex h-full flex-col p-3 sm:p-5">
                   <div className="flex items-center justify-between">
-                    <a.icon className="size-5 text-brand-700 dark:text-brand-400" aria-hidden />
+                    <span className="grid size-9 place-items-center rounded-xl sm:size-10" style={{ backgroundColor: `${a.color}1a`, color: a.color }}>
+                      <a.icon className="size-5" />
+                    </span>
                     <ArrowRight className="size-4 text-muted transition-transform group-hover:translate-x-1 max-sm:hidden" />
                   </div>
                   <div className="mt-3 font-display text-2xl font-bold sm:mt-4 sm:text-3xl">{a.value}</div>
@@ -395,15 +403,23 @@ export default function Dashboard() {
               )}
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={series} margin={{ top: 4, right: 0, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="dash-bar" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#12b8a6" />
+                      <stop offset="100%" stopColor="#066a60" />
+                    </linearGradient>
+                  </defs>
                   <XAxis dataKey="label" hide={!hasActivity} tick={{ fontSize: 10, fill: 'var(--muted)' }} axisLine={false} tickLine={false} interval={2} />
                   <Tooltip cursor={{ fill: 'var(--surface-2)' }} contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, fontSize: 12 }} formatter={(v) => [v, 'Preguntas']} />
-                  <Bar dataKey="answered" fill="var(--color-brand-600)" radius={[6, 6, 2, 2]} />
+                  <Bar dataKey="answered" fill="url(#dash-bar)" radius={[6, 6, 2, 2]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
           </Card>
 
           <LingoCard />
+
+          <InstallCard />
 
           {!hasReminder() && <ReminderCard compact />}
 

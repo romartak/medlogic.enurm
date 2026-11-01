@@ -20,7 +20,7 @@ export function Toaster() {
             className="glass pointer-events-auto flex w-full max-w-sm items-center gap-3 rounded-2xl p-3 pr-4 text-left shadow-lift"
           >
             {t.kind === 'achievement' ? (
-              <span className="relative grid size-11 shrink-0 place-items-center rounded-xl bg-amber-500 text-white">
+              <span className="relative grid size-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 text-white">
                 {t.icon ? <Icon name={t.icon} className="size-5" /> : <Trophy className="size-5" />}
               </span>
             ) : (

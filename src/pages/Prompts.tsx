@@ -10,7 +10,7 @@ import { Button, Card, Chip, EmptyState, LinkButton, PageHeader, Segmented } fro
 import { copyText, openInAi } from '@/lib/clipboard'
 import { normalizeText } from '@/data/specialties'
 import { toast } from '@/store/toasts'
-import { cn, solidBg, tintText } from '@/lib/utils'
+import { cn, tintText } from '@/lib/utils'
 
 export const PROMPT_ICONS: Record<string, LucideIcon> = {
   presentation: Presentation, layers: Layers, 'user-round': UserRound, 'message-circle-question': MessageCircleQuestion, lightbulb: Lightbulb, 'list-checks': ListChecks, stethoscope: Stethoscope, 'file-text': FileText,
@@ -199,7 +199,7 @@ function PromptDetail({ p }: { p: PromptItem }) {
         <ArrowLeft className="size-4" /> Prompts
       </button>
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start">
-        <span className="grid size-14 shrink-0 place-items-center rounded-2xl text-white shadow-lg" style={solidBg(cat.color)}>
+        <span className="grid size-14 shrink-0 place-items-center rounded-2xl text-white shadow-lg" style={{ background: `linear-gradient(135deg, ${cat.color}, ${cat.color}aa)` }}>
           <Icon className="size-7" />
         </span>
         <div className="flex-1">
@@ -357,7 +357,7 @@ export default function Prompts() {
                 const Icon = PROMPT_ICONS[p.icon] ?? Sparkles
                 return (
                   <motion.div key={p.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
-                    <Link to={`/prompts/${p.id}`} className="group relative block h-full overflow-hidden rounded-3xl p-6 text-white shadow-lift transition-transform hover:-translate-y-1" style={solidBg(c.color)}>
+                    <Link to={`/prompts/${p.id}`} className="group relative block h-full overflow-hidden rounded-3xl p-6 text-white shadow-lift transition-transform hover:-translate-y-1" style={{ background: `linear-gradient(135deg, ${c.color}, #4f46e5)` }}>
                       <Icon className="absolute -right-6 -bottom-6 size-36 text-white/15 transition-transform group-hover:scale-110 group-hover:-rotate-6" strokeWidth={1.5} />
                       <span className="inline-flex items-center gap-1 rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-semibold">
                         <Sparkles className="size-3" /> Destacado
@@ -402,7 +402,7 @@ export default function Prompts() {
             )}
 
             <Card className="mt-10 flex flex-col items-start gap-4 p-6 sm:flex-row sm:items-center">
-              <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-white">
+              <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-white shadow-glow">
                 <Lightbulb className="size-6" />
               </span>
               <div className="flex-1">

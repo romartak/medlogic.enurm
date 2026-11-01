@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
-import { ArrowLeft, ArrowRight, Check, ChevronRight, Clock, Flag, GraduationCap, History, LayoutGrid, Play, Send, Timer, X } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Check, Share2, ChevronRight, Clock, Flag, GraduationCap, History, LayoutGrid, Play, Send, Timer, X } from 'lucide-react'
 import type { ExamResult, Question } from '@/types'
 import { useBank } from '@/store/bank'
 import { useProgress } from '@/store/progress'
@@ -13,6 +13,8 @@ import { QuestionCard } from '@/components/QuestionCard'
 import { useCountdown } from '@/hooks/useCountdown'
 import { useHotkeys } from '@/hooks/useHotkeys'
 import { celebrate, playSound } from '@/lib/fx'
+import { shareExam } from '@/lib/shareCard'
+import { toast } from '@/store/toasts'
 import { cn, formatClock, formatDate, formatDuration, LETTERS, pct, uid, softHyphens } from '@/lib/utils'
 import { getSpecialty } from '@/data/specialties'
 import { currentEdition, editionLabel, useNational } from '@/lib/national'
@@ -183,7 +185,10 @@ export default function Exam() {
               <History className="size-4" /> Historial
             </h2>
             {exams.length === 0 ? (
-              <p className="text-sm text-muted">Tus simulacros aparecerán aquí.</p>
+              <div className="rounded-xl surface-2 p-4 text-sm text-muted">
+                <p>Aún no has hecho ningún simulacro. Elige uno arriba y aquí quedará tu nota y su evolución.</p>
+                <p className="mt-2 font-medium text-[var(--text)]">Tip: empieza con uno corto de 25 preguntas.</p>
+              </div>
             ) : (
               <ul className="-mx-2 space-y-1">
                 {exams.slice(0, 8).map((e) => {
@@ -218,7 +223,7 @@ function NationalBanner() {
   const done = useNational((s) => s.attempts[edition])
   return (
     <Link to="/simulacro-nacional" className="card card-hover group mb-6 flex items-center gap-4 border-brand-500/30 bg-brand-500/[0.05] p-4 sm:p-5">
-      <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-white">
+      <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-white shadow-glow">
         <Flag className="size-6" />
       </span>
       <span className="min-w-0 flex-1">
@@ -443,6 +448,7 @@ export function ExamResults() {
   const exams = useProgress((s) => s.exams)
   const byId = useBank((s) => s.byId)
   const [filter, setFilter] = useState<'all' | 'wrong' | 'blank'>('all')
+  const [sharing, setSharing] = useState(false)
 
   if (!exam) return <EmptyState icon={<GraduationCap className="size-7" />} title="Simulacro no encontrado" action={<Link to="/simulacro" className="text-sm font-semibold text-brand-700 hover:underline dark:text-brand-400">Volver</Link>} />
 
@@ -451,6 +457,18 @@ export function ExamResults() {
   const prev = exams.find((e) => e.date < exam.date)
   const delta = prev ? Math.round(score * 100) - pct(prev.correct, prev.total) : null
   const specs = Object.entries(exam.bySpecialty).sort((a, b) => b[1].total - a[1].total)
+  const share = async () => {
+    setSharing(true)
+    try {
+      const top = [...specs].sort((a, b) => b[1].correct / b[1].total - a[1].correct / a[1].total).slice(0, 3).map(([sid, v]) => ({ name: getSpecialty(sid).name, pct: pct(v.correct, v.total) }))
+      const r = await shareExam({ title: exam.title, score: Math.round(score * 100), correct: exam.correct, total: exam.total, durationSec: exam.durationSec, top })
+      if (r === 'downloaded') toast({ kind: 'success', title: 'Imagen guardada', body: 'Súbela a tus historias de Instagram o envíala por WhatsApp.' })
+    } catch {
+      toast({ kind: 'error', title: 'No se pudo crear la imagen' })
+    } finally {
+      setSharing(false)
+    }
+  }
   const items = exam.questionIds
     .map((qid, i) => ({ q: byId.get(qid), a: exam.answers[i], i }))
     .filter(({ q, a }) => q && (filter === 'all' || (filter === 'wrong' && a !== null && a !== q.answer) || (filter === 'blank' && a === null)))
@@ -490,6 +508,9 @@ export function ExamResults() {
               <div className="text-xs text-muted">En blanco</div>
             </div>
           </div>
+          <Button onClick={share} disabled={sharing} className="mt-5 w-full">
+            <Share2 className="size-4" /> {sharing ? 'Creando…' : 'Compartir mi resultado'}
+          </Button>
           <p className="mt-4 text-xs text-muted">
             {formatDate(exam.date, { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })} · {formatDuration(exam.durationSec)}
           </p>

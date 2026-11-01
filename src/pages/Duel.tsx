@@ -311,6 +311,7 @@ function Duel() {
       <div className="mx-auto max-w-2xl space-y-6">
         {header}
         <Card className="relative overflow-hidden p-6 text-center">
+          <div className="pointer-events-none absolute -top-16 left-1/2 size-56 -translate-x-1/2 rounded-full bg-brand-500/15 blur-3xl" />
           <Swords className="relative mx-auto size-10 text-brand-600 dark:text-brand-400" />
           <h2 className="relative mt-2 font-display text-2xl font-extrabold">{incoming.a.name} te reta</h2>
           <p className="relative mt-1 text-muted">

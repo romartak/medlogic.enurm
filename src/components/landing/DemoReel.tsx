@@ -188,11 +188,13 @@ const sticker = (i: number): Variants => ({
 export function DemoReel() {
   return (
     <section id="en-accion" aria-labelledby="en-accion-titulo" className="relative scroll-mt-24 overflow-hidden py-16 sm:py-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 id="en-accion-titulo" className="max-w-2xl text-3xl font-extrabold text-balance sm:text-4xl">
-          La app, grabada en un celular
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-24 -z-10 mx-auto h-72 max-w-5xl rounded-full bg-brand-500/10 blur-3xl" />
+      <div className="mx-auto max-w-2xl px-4 text-center">
+        <div className="text-xs font-bold tracking-[0.18em] text-brand-600 uppercase dark:text-brand-400">Míralo en acción</div>
+        <h2 id="en-accion-titulo" className="mt-3 text-3xl font-extrabold text-balance sm:text-4xl">
+          Así se estudia en MedLogic
         </h2>
-        <p className="mt-3 max-w-2xl text-pretty text-muted">Pantallas reales de MedLogic, tal como las vas a usar.</p>
+        <p className="mt-3 text-pretty text-muted">Nada de capturas bonitas: esto es la app real, en un celular, tal como la vas a usar.</p>
       </div>
 
       {/* En el celular se desliza de lado; en escritorio, los cuatro a la vista. */}

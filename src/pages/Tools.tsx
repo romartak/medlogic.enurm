@@ -353,7 +353,7 @@ export default function Tools() {
           <motion.div key={tool.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.18 }}>
             <Card className="p-5 sm:p-7">
               <div className="mb-6 flex items-start gap-4">
-                <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-white">
+                <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-white shadow-glow">
                   <tool.icon className="size-6" />
                 </span>
                 <div>

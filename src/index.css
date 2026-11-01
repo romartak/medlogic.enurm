@@ -28,8 +28,9 @@
   --radius-2xl: 1.25rem;
   --radius-3xl: 1.75rem;
 
-  --shadow-soft: 0 1px 2px rgb(15 23 42 / 0.05);
+  --shadow-soft: 0 1px 2px rgb(15 23 42 / 0.04), 0 8px 24px -8px rgb(15 23 42 / 0.08);
   --shadow-lift: 0 2px 4px rgb(15 23 42 / 0.04), 0 18px 40px -12px rgb(15 23 42 / 0.18);
+  --shadow-glow: 0 8px 24px -10px rgb(7 95 88 / 0.45);
 
   --animate-float: float 4s ease-in-out 2;
   --animate-marquee: marquee 60s linear infinite;
@@ -232,14 +233,31 @@ html:root {
   .border-soft {
     border-color: var(--border);
   }
-  /* Color de marca plano: los degradados en botones y tarjetas eran ruido visual. */
+  .text-gradient {
+    background: linear-gradient(120deg, var(--color-brand-500), var(--color-brand-700));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
   .bg-brand-gradient {
-    background: var(--color-brand-700);
+    background: linear-gradient(135deg, var(--color-brand-600), var(--color-brand-800));
+  }
+  .bg-mesh {
+    background:
+      radial-gradient(60rem 40rem at 10% -10%, rgb(6 196 176 / 0.12), transparent 60%),
+      radial-gradient(50rem 40rem at 110% 10%, rgb(6 124 113 / 0.08), transparent 60%);
   }
   .skeleton {
     background: linear-gradient(90deg, var(--surface-2) 25%, color-mix(in oklab, var(--surface-2) 60%, white) 50%, var(--surface-2) 75%);
     background-size: 200% 100%;
     animation: var(--animate-shimmer);
+  }
+  .grid-pattern {
+    background-image:
+      linear-gradient(to right, var(--border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
   }
   .perspective {
     perspective: 1400px;

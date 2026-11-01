@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { BookOpen, CalendarCog, Check, Coffee, Gamepad2, GraduationCap, Layers, Play, RotateCcw, Target } from 'lucide-react'
+import { BookOpen, Check, Coffee, Gamepad2, GraduationCap, Layers, Play, RotateCcw, Sparkles, Target } from 'lucide-react'
 import type { PlanTaskKind } from '@/types'
 import { useDailyPlan } from '@/hooks/useDailyPlan'
 import { useProgress } from '@/store/progress'
@@ -66,12 +66,11 @@ export function DailyPlanCard({ compact = false }: { compact?: boolean }) {
 
       {!profile.completed && (
         <Link to="/bienvenida" className="flex items-center gap-3 border-b border-soft bg-amber-500/[0.07] px-5 py-3 text-sm transition-colors hover:bg-amber-500/[0.12] sm:px-6">
-          <CalendarCog className="size-4 shrink-0 self-start text-amber-600 max-sm:mt-0.5 sm:self-center" />
+          <Sparkles className="size-4 shrink-0 text-amber-500" />
           <span className="flex-1">
             <b>Personaliza este plan:</b> dime la fecha de tu examen y cuánto tiempo tienes (1 minuto).
-            <span className="mt-1 block font-semibold text-amber-600 sm:hidden">Empezar →</span>
           </span>
-          <span className="font-semibold text-amber-600 max-sm:hidden">Empezar →</span>
+          <span className="font-semibold text-amber-600">Empezar →</span>
         </Link>
       )}
 

@@ -68,8 +68,9 @@ export default function Roadmap() {
                     whileInView={{ opacity: 1, y: 0, rotate: 0 }}
                     viewport={{ once: true, margin: '-40px' }}
                     transition={{ delay: (i % 4) * 0.06, type: 'spring', stiffness: 160, damping: 20 }}
-                    className="card card-hover group relative flex flex-col overflow-hidden p-5"
+                    className={cn('card card-hover group relative flex flex-col overflow-hidden p-5', stage.id === 'locuras' && 'bg-gradient-to-br from-[var(--surface)] to-pink-500/[0.04]')}
                   >
+                    <div className="pointer-events-none absolute -top-10 -right-10 size-28 rounded-full opacity-0 blur-2xl transition-opacity group-hover:opacity-30" style={{ backgroundColor: stage.color }} />
                     <div className="flex items-start justify-between">
                       <span className="grid size-10 place-items-center rounded-xl transition-transform group-hover:scale-110 group-hover:-rotate-6" style={{ backgroundColor: `${stage.color}1a`, color: stage.color }}>
                         <Icon className="size-5" />

@@ -351,8 +351,9 @@ export default function AiGuide() {
       </section>
 
       <Card className="relative overflow-hidden p-6 sm:p-8">
+        <div className="pointer-events-none absolute -top-16 -right-16 size-56 rounded-full bg-accent-500/20 blur-3xl" />
         <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center">
-          <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-white">
+          <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-brand-gradient text-white shadow-glow">
             <FlaskConical className="size-7" />
           </span>
           <div className="flex-1">

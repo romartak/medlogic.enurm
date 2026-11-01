@@ -131,7 +131,7 @@ export default function LingoBlitz() {
     const total = score + wrong
     return (
       <div className="flex min-h-dvh flex-col items-center justify-center px-6 py-10 text-center">
-        <motion.div initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 14 }} className="grid size-24 place-items-center rounded-[2rem] bg-amber-500 text-white shadow-lift">
+        <motion.div initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 14 }} className="grid size-24 place-items-center rounded-[2rem] bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-lift">
           {result.record ? <Trophy className="size-12" /> : <Timer className="size-12" />}
         </motion.div>
         <h1 className="mt-6 font-display text-3xl font-extrabold">{result.record ? '¡Nuevo récord!' : '¡Se acabó el tiempo!'}</h1>

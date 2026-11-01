@@ -24,6 +24,7 @@ export default function NotFound() {
 
   return (
     <div className="relative flex min-h-dvh flex-col">
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-mesh" />
       <header className="mx-auto flex h-16 w-full max-w-7xl items-center px-4 sm:h-20 sm:px-6 lg:px-8">
         <Link to="/" aria-label="Ir a la portada de MedLogic ENURM">
           <Logo />
