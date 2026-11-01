@@ -145,6 +145,18 @@ for (const r of reviews) {
     err(e.message)
   }
 
+  // Preguntas nuevas: si la respuesta difiere de la del documento o hay una duda (`rv`), se publican con aviso
+  // «Respuesta por confirmar» hasta que el médico las revise (docs/dudas-para-responder.md).
+  const isNew = r.id.startsWith('ENURM-')
+  const differs = isNew && fileAnswer !== r.a
+  const review = [
+    differs ? `Difiere del documento, que marca ${LETTERS[fileAnswer] ?? '—'}) ${options[fileAnswer] ?? ''}. ${r.rev ?? ''}`.trim() : '',
+    r.rv ?? '',
+  ]
+    .filter(Boolean)
+    .join(' ')
+  if (differs && !r.rev) err('la respuesta difiere del documento y no dice por qué (rev)')
+
   const q = {
     id: publishedId(r.id),
     specialty: r.sp,
@@ -158,7 +170,8 @@ for (const r of reviews) {
     keyPoints: r.kp,
     references,
     difficulty: r.d,
-    tags: ['banco-recopilado'],
+    review: review || undefined,
+    tags: review ? ['banco-recopilado', 'por-revisar'] : ['banco-recopilado'],
     ...appearanceOf(publishedId(r.id)),
   }
   out.push(Object.fromEntries(Object.entries(q).filter(([, v]) => v !== undefined && v !== '' && !(Array.isArray(v) && !v.length))))

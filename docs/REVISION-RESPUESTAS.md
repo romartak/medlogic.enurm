@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **1312** (1166 de 1166 del documento original · 146 de 1320 de la recopilación 2002-2024) · publicadas: **1228** · respuesta corregida: **171** · retiradas: **84**.
+Preguntas revisadas: **1479** (1166 de 1166 del documento original · 313 de 1320 de la recopilación 2002-2024) · publicadas: **1395** · respuesta corregida: **190** · retiradas: **84**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -498,6 +498,63 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **ENURM-2009-046** — Cual de los siguientes medicamentos ayuda a la maduración pulmonar del feto?
   - Documento: C (Surfactante pulmonares) → publicada: **B (Glucocorticoide)**
   - El documento marca surfactante, pero este se administra al recién nacido; el medicamento que madura el pulmón fetal antes del parto son los glucocorticoides.
+- **ENURM-2010-025** — El dolor de la madre al amamantar por lo común se debe a:
+  - Documento: D (Todas las anteriores) → publicada: **A (Alteración de la piel del pezón o mala posición del niño al mamar)**
+  - Propuesta: la clave del documento (D) incluye una opción que no es causa habitual de dolor.
+- **ENURM-2010-028** — La sepsis temprana del recién nacido se produce debida a una infección por:
+  - Documento: D (Ay B son correctas) → publicada: **A (Via trasplacentaria o por via ascendente)**
+  - Propuesta: la clave del documento (D) incluye la opción B, que no es correcta.
+- **ENURM-2009-014** — El siguiente ácido graso no esencial regula el metabolismo del colesterol:
+  - Documento: B (Palmitico) → publicada: **A (Oleico)**
+  - El documento marca ácido palmítico, que es saturado y eleva el colesterol; el ácido graso no esencial que regula el colesterol es el oleico (monoinsaturado).
+- **ENURM-2014-014** — Después de ejercitarse por una hora, ¿Cuál de los siguientes órganos experimenta los menores descensos en la presión sanguínea?
+  - Documento: B (Riñones) → publicada: **C (Cerebro)**
+  - El documento marca riñones, que es de los territorios cuyo flujo más disminuye durante el ejercicio; el cerebro es el que mejor conserva su flujo.
+- **ENURM-2011-020** — La vigilancia epidemiológica establecida en la actual epidemia de cólera es una función de:
+  - Documento: B (Investigación en salud) → publicada: **D (Rectoría en salud)**
+  - Propuesta: la vigilancia epidemiológica es una función de rectoría, no de investigación (pendiente de confirmar).
+- **ENURM-2011-031** — El siguiente hallazgo forma parte del cuadro clínico de la deshidratación severa:
+  - Documento: C (Sed y cambios en el comportamiento) → publicada: **A (Enoftalmos, poca turgencia en piel)**
+  - Propuesta: enoftalmos y poca turgencia cutánea son signos clásicos de deshidratación severa; sed y cambios de comportamiento aparecen en grados menores.
+- **ENURM-2011-047** — En la sífilis del embarazo el Treponema pallidum atraviesa la barrera placentaria después de:
+  - Documento: D (Las 28 semanas) → publicada: **B (Las 20 semanas)**
+  - Propuesta: la enseñanza clásica es después de las 16 a 18 semanas; 28 semanas es demasiado tarde.
+- **ENURM-2011-066** — Paciente masculino de 45 años, con dolor retroesternal de más de 60 minutos, opresión irradiado a la mandíbula, hipotenso, con nauseas, salivación excesiva y broncoespasmo. Hipertenso e hipercolesterolemic Con el cuadro anterior, su evidente infarto es de cara:
+  - Documento: D (Todas las caras) → publicada: **C (Inferior)**
+  - Propuesta: el cuadro vagal (náuseas, salivación e hipotensión) corresponde a un infarto de cara inferior.
+- **ENURM-2009-049** — Embarazada con 37 semanas de gestación, con diagnóstico de placenta previa, feto en buen estado sin contracciones uterinas, su manejo seria:
+  - Documento: A (Citar en dos semanas) → publicada: **C (Programar cesárea para dentro de dos semanas)**
+  - Propuesta: programar la cesárea; citar en dos semanas dejaría llegar a las 39 semanas.
+- **ENURM-2002-031** — El siguiente concepto es falso en relación a la teofilina que se usa en el tratamiento del asma bronquial :
+  - Documento: C (Vía rectal) → publicada: **D (IM)**
+  - El documento marca la vía rectal, pero hay supositorios de aminofilina; la vía que no se usa para la teofilina es la intramuscular.
+- **ENURM-2003-023** — Las siguientes son todas características de dengue clásico, excepto:
+  - Documento: D (Ausencia de hemoconcentracion) → publicada: **A (Es más frecuente en lactantes y niños mayores)**
+  - El documento marca la ausencia de hemoconcentración, pero esa sí es característica del dengue clásico; la afirmación falsa es que sea más frecuente en lactantes.
+- **ENURM-2006-069** — Cuál de las caras del corazón humano reflejan la derivación D3 de EINTHOVEEN y la de FRANK WILSON aVF:
+  - Documento: B (La septal) → publicada: **D (La posterior)**
+  - El documento marca la cara septal, pero DIII y aVF exploran la cara inferior (diafragmática), que la nomenclatura clásica llama posterior.
+- **ENURM-2007-019** — La renina producida en el aparato yuxtaglomerular, se considera que es:
+  - Documento: A (Una hormona) → publicada: **B (Una enzima)**
+  - El documento marca «una hormona», pero la renina es una enzima: convierte el angiotensinógeno en angiotensina I y no tiene acción hormonal propia (Guyton).
+- **ENURM-2007-039** — Cual de las siguientes enfermedades exantemáticas tiene el periodo de incubación más largo?
+  - Documento: C (Eritema infeccioso) → publicada: **A (Rubeola)**
+  - El documento marca el eritema infeccioso, pero el parvovirus B19 incuba 4 a 14 días; la rubéola (14 a 21 días) tiene la incubación más larga de las opciones (Nelson, Red Book).
+- **ENURM-2007-055** — El diagnostico de diabetes gestacional se hace por:
+  - Documento: D (A y C son correctas) → publicada: **A (Curva de tolerancia a la glucosa)**
+  - El documento marca «A y C» (curva y glucosa posprandial), pero la glucosa posprandial no es criterio diagnóstico; el diagnóstico se hace con la curva de tolerancia (ADA).
+- **ENURM-2007-060** — Cual de los siguientes se considera muerte fetal temprana?
+  - Documento: D (Antes de las 30 semanas de gestación) → publicada: **C (Antes de las 20 semanas de gestación)**
+  - El documento marca «antes de las 30 semanas», pero la muerte fetal temprana es la que ocurre antes de las 20 semanas; de 20 a 27 es intermedia y desde las 28, tardía.
+- **ENURM-2007-079** — Una expectoración mucopurulenta fétida y de mal sabor en un paciente con neumonía nos hace pensar en
+  - Documento: C (Gérmenes Gram positivos) → publicada: **A (Presencia de gérmenes anaeróbicos)**
+  - El documento marca gérmenes grampositivos, pero la expectoración fétida y de mal sabor es característica de los anaerobios (neumonía por aspiración, absceso pulmonar).
+- **ENURM-2007-099** — La hernia más frecuente en mujeres es la : (ojo)
+  - Documento: C (Femoral) → publicada: **B (Inguinal indirecta)**
+  - El documento marca la femoral, pero la hernia más frecuente en la mujer es la inguinal indirecta; la femoral solo es más frecuente en mujeres que en hombres (Schwartz, Sabiston).
+- **ENURM-2008-043** — Paciente con embarazo de 36 semanas, sonografia reporta oligoamnios severo, no labor de parto, cuello cerrado, no ha expulsado líquido amniótico. Cuál es el manejo aconsejable?
+  - Documento: D (Programar operación cesárea inmediata) → publicada: **B (Inducir labor de parto)**
+  - El documento marca cesárea inmediata, pero el oligohidramnios aislado no es indicación de cesárea: a las 36 semanas se indica terminar el embarazo por inducción, con cesárea solo por indicación obstétrica (Williams, ACOG).
 
 ## Retiradas
 
