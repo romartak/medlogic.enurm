@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **1479** (1166 de 1166 del documento original · 313 de 1320 de la recopilación 2002-2024) · publicadas: **1395** · respuesta corregida: **190** · retiradas: **84**.
+Preguntas revisadas: **1679** (1166 de 1166 del documento original · 513 de 1320 de la recopilación 2002-2024) · publicadas: **1595** · respuesta corregida: **197** · retiradas: **84**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -555,6 +555,27 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **ENURM-2008-043** — Paciente con embarazo de 36 semanas, sonografia reporta oligoamnios severo, no labor de parto, cuello cerrado, no ha expulsado líquido amniótico. Cuál es el manejo aconsejable?
   - Documento: D (Programar operación cesárea inmediata) → publicada: **B (Inducir labor de parto)**
   - El documento marca cesárea inmediata, pero el oligohidramnios aislado no es indicación de cesárea: a las 36 semanas se indica terminar el embarazo por inducción, con cesárea solo por indicación obstétrica (Williams, ACOG).
+- **ENURM-2008-059** — Un paciente con enfriamiento y palidez de una pierna, parestesia y ausencia de pulsos femorales, su diagnóstico seria:
+  - Documento: D (Ambas son falsas) → publicada: **B (Obstrucción aguda de la arteria femoral)**
+  - El documento marca «ambas son falsas», pero la pierna fría y pálida, con parestesias y sin pulsos, es una oclusión arterial aguda (Sabiston).
+- **ENURM-2008-079** — A los niños con meningitis les favorece un balance de líquido:
+  - Documento: C (Negativo) → publicada: **B (Neutro)**
+  - El documento marca balance negativo (restricción), práctica antigua; Nelson y la revisión Cochrane recomiendan líquidos de mantenimiento (balance neutro) y restringir solo si hay SIADH.
+- **ENURM-2008-083** — Con relación a la complicación de la diarrea, cual es la respuesta correcta:
+  - Documento: D (A y B son correctas) → publicada: **A (Deshidratación)**
+  - El documento marca «A y B», pero las evacuaciones líquidas son la diarrea misma, no una complicación; la complicación principal es la deshidratación.
+- **ENURM-2009-082** — La obstrucción del siguiente segmento del tubo digestivo se denomina en asa cerrada:
+  - Documento: C (Ileon) → publicada: **A (Colon)**
+  - El documento marca el íleon, pero la obstrucción en asa cerrada clásica es la del colon con válvula ileocecal competente (Schwartz).
+- **ENURM-2009-093** — La complicación mas frecuente del divertículo de Meckel en un adulto es:
+  - Documento: A (Sangrado) → publicada: **D (Obstrucción intestinal)**
+  - El documento marca el sangrado, que es la complicación más frecuente en niños; en el adulto predomina la obstrucción intestinal (Sabiston).
+- **ENURM-2010-081** — El método diagnóstico más específico en las patologías de vesicular biliar es la:
+  - Documento: A (TAC) → publicada: **D (Gammagrafia)**
+  - El documento marca la TC, pero la prueba más específica en la colecistitis aguda es la gammagrafía con HIDA; la ecografía es la inicial (Schwartz).
+- **ENURM-2013-062** — Dentro de Las manifestaciones de la hemorragia digestiva, se encuentra la Hematoquezia, que significa:
+  - Documento: B (Heces mal olientes y negras) → publicada: **C (Evacuacion de sangre color rojo vino)**
+  - El documento marca «heces malolientes y negras», que es la melena; la hematoquecia es la expulsión de sangre roja por el recto.
 
 ## Retiradas
 
