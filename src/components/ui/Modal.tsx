@@ -8,7 +8,7 @@ import { useScrollLock } from '@/hooks/useScrollLock'
  * Ventana modal accesible: se anuncia con su título, lleva el foco dentro al abrirse, lo devuelve al
  * cerrarse y no deja que el tabulador se escape al contenido de detrás.
  */
-export function Modal({ open, onClose, title, children, className }: { open: boolean; onClose: () => void; title?: ReactNode; children: ReactNode; className?: string }) {
+export function Modal({ open, onClose, title, label, children, className }: { open: boolean; onClose: () => void; title?: ReactNode; /** Nombre accesible cuando la ventana no tiene título visible. */ label?: string; children: ReactNode; className?: string }) {
   const titleId = useId()
   const panelRef = useRef<HTMLDivElement>(null)
   const restoreRef = useRef<HTMLElement | null>(null)
@@ -66,6 +66,7 @@ export function Modal({ open, onClose, title, children, className }: { open: boo
             role="dialog"
             aria-modal="true"
             aria-labelledby={title ? titleId : undefined}
+            aria-label={title ? undefined : label}
             tabIndex={-1}
             className={cn('card relative max-h-[90dvh] w-full overflow-y-auto overscroll-contain rounded-b-none p-5 outline-none sm:max-w-lg sm:rounded-b-[var(--radius-2xl)] sm:p-6', className)}
             initial={{ y: 40 }}
