@@ -1,4 +1,4 @@
-import { Bone, Droplet, Flag, Hand, HeartPulse, Languages, Medal, MonitorDot, Siren, Stethoscope, Swords, UserRound, BookOpen, Calculator, Rocket, Sparkles, WandSparkles, Wind, CalendarCheck, ChartColumn, Compass, Gamepad2, GraduationCap, House, Layers, LayoutGrid, Library, Newspaper, RotateCcw, Settings, Target, Trophy, type LucideIcon } from 'lucide-react'
+import { Bone, Droplet, Flag, Hand, HeartPulse, Languages, Medal, MonitorDot, Siren, Stethoscope, Swords, UserRound, BookOpen, Calculator, Rocket, Sparkles, WandSparkles, Wind, CalendarCheck, ChartColumn, Compass, Gamepad2, GraduationCap, House, Layers, LayoutGrid, Library, Newspaper, RotateCcw, Settings, Target, Trophy, Waypoints, type LucideIcon } from 'lucide-react'
 
 export interface NavItem {
   to: string
@@ -28,6 +28,7 @@ export const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
     items: [
       { to: '/atls', label: 'ATLS', icon: Siren, description: 'El politraumatizado: xABCDE, shock, tórax, TCE y quemaduras' },
       { to: '/fracturas', label: 'Trauma y fracturas', icon: Bone, description: 'Mecanismos, trazos, Salter-Harris y fracturas con nombre propio' },
+      { to: '/fisiopatologia', label: 'Fisiopatología', icon: Waypoints, description: 'Esquemas interactivos de las fisiopatologías más preguntadas' },
       { to: '/semiologia', label: 'Semiología', icon: Hand, description: 'Cómo explorar cada sistema y qué significa cada signo' },
       { to: '/espirometria', label: 'Espirometría', icon: Wind, description: 'Interpreta patrones, gravedad y curvas flujo-volumen' },
       { to: '/hemograma', label: 'Hemograma', icon: Droplet, description: 'Aprende a leer las tres series con casos reales' },
