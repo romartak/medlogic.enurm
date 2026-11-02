@@ -132,7 +132,7 @@ function AccountButton() {
   )
 }
 
-const STUDY_SECTIONS = ['/plan', '/especialidades', '/practica', '/simulacro', '/casos', '/flashcards', '/terminologia', '/guias', '/banco', '/repaso', '/juegos', '/ecg', '/herramientas', '/atls', '/fracturas', '/semiologia', '/espirometria', '/hemograma']
+const STUDY_SECTIONS = ['/plan', '/especialidades', '/practica', '/simulacro', '/casos', '/flashcards', '/terminologia', '/guias', '/banco', '/repaso', '/juegos', '/ecg', '/herramientas', '/atls', '/fracturas', '/semiologia', '/espirometria', '/hemograma', '/fisiopatologia']
 
 export function AppLayout() {
   const [paletteOpen, setPaletteOpen] = useState(false)
