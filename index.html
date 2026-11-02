@@ -3,11 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="description" content="MedLogic ENURM: plataforma gratuita y de código abierto para preparar el Examen Nacional Único de Residencias Médicas. Banco de preguntas, simulacros, flashcards, guías y juegos." />
+    <meta name="description" content="Prepárate gratis para el ENURM: más de 2.400 preguntas de exámenes desde 2002 explicadas opción por opción, simulacros, flashcards y un plan diario." />
     <meta name="theme-color" content="#0d9488" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+    <!-- Icono: Google pide un favicon cuadrado de 48 px o múltiplo, enlazado desde la portada. -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/icon-96.png" />
+    <link rel="icon" type="image/png" sizes="144x144" href="/icon-144.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
     <link rel="canonical" href="https://medlogicenurm.vercel.app/" />
     <!-- Vista previa al compartir el enlace (WhatsApp, Instagram, Facebook, X, Telegram...) -->
@@ -16,44 +20,57 @@
     <meta property="og:locale" content="es_DO" />
     <meta property="og:url" content="https://medlogicenurm.vercel.app/" />
     <meta property="og:title" content="MedLogic ENURM · Prepárate gratis para el ENURM" />
-    <meta property="og:description" content="Más de 1.000 preguntas explicadas (meta: 12.000), simulacros, flashcards, guías y un plan de estudio hecho para ti. Gratis." />
+    <meta property="og:description" content="Más de 2.400 preguntas del ENURM explicadas (meta: 12.000), simulacros, flashcards y un plan de estudio hecho para ti. Gratis." />
     <meta property="og:image" content="https://medlogicenurm.vercel.app/og-image.jpg" />
     <meta property="og:image:secure_url" content="https://medlogicenurm.vercel.app/og-image.jpg" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Logo de MedLogic ENURM: Prepárate para el ENURM gratis, con un plan hecho para ti." />
+    <meta property="og:image:alt" content="MedLogic ENURM: prepara el ENURM con método, no con suerte. Más de 2.400 preguntas explicadas." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="MedLogic ENURM · Prepárate gratis para el ENURM" />
-    <meta name="twitter:description" content="Más de 1.000 preguntas explicadas (meta: 12.000), simulacros, flashcards, guías y un plan de estudio hecho para ti. Gratis." />
+    <meta name="twitter:description" content="Más de 2.400 preguntas del ENURM explicadas (meta: 12.000), simulacros, flashcards y un plan de estudio hecho para ti. Gratis." />
     <meta name="twitter:image" content="https://medlogicenurm.vercel.app/og-image.jpg" />
-    <meta name="twitter:image:alt" content="Logo de MedLogic ENURM" />
+    <meta name="twitter:image:alt" content="MedLogic ENURM: prepara el ENURM con método, no con suerte." />
     <link rel="manifest" href="./manifest.webmanifest" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
-    <title>MedLogic ENURM</title>
+    <title>ENURM: preguntas explicadas, simulacros y plan gratis | MedLogic</title>
     <!-- Datos estructurados: ayudan a que Google entienda qué es la plataforma y responda dudas frecuentes. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@graph": [
           {
+            "@type": "Organization",
+            "@id": "https://medlogicenurm.vercel.app/#organizacion",
+            "name": "MedLogic AI",
+            "url": "https://medlogicenurm.vercel.app/",
+            "logo": { "@type": "ImageObject", "url": "https://medlogicenurm.vercel.app/icon-512.png", "width": 512, "height": 512 },
+            "description": "IA aplicada a la medicina, automatización y desarrollo web para el sector salud.",
+            "sameAs": ["https://www.instagram.com/medlogic.ai/", "https://github.com/romartak/medlogic.enurm"]
+          },
+          {
             "@type": "WebSite",
             "@id": "https://medlogicenurm.vercel.app/#website",
             "url": "https://medlogicenurm.vercel.app/",
             "name": "MedLogic ENURM",
+            "alternateName": ["MedLogic", "MedLogic ENURM"],
             "description": "Plataforma gratuita y de código abierto para preparar el Examen Nacional Único de Residencias Médicas (ENURM).",
-            "inLanguage": "es-DO"
+            "inLanguage": "es-DO",
+            "publisher": { "@id": "https://medlogicenurm.vercel.app/#organizacion" }
           },
           {
-            "@type": "EducationalOrganization",
-            "@id": "https://medlogicenurm.vercel.app/#organizacion",
+            "@type": "WebApplication",
+            "@id": "https://medlogicenurm.vercel.app/#app",
             "name": "MedLogic ENURM",
             "url": "https://medlogicenurm.vercel.app/",
-            "logo": "https://medlogicenurm.vercel.app/icon-512.png",
-            "sameAs": [
-              "https://github.com/romartak/medlogic.enurm",
-              "https://www.instagram.com/medlogic.ai/"
-            ]
+            "applicationCategory": "EducationalApplication",
+            "operatingSystem": "Web, Android, iOS",
+            "inLanguage": "es-DO",
+            "isAccessibleForFree": true,
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "DOP" },
+            "description": "Preguntas del ENURM desde 2002 explicadas opción por opción, simulacros de 100 preguntas, flashcards con repetición espaciada y un plan de estudio diario.",
+            "publisher": { "@id": "https://medlogicenurm.vercel.app/#organizacion" }
           },
           {
             "@type": "FAQPage",
@@ -88,7 +105,7 @@
                 "name": "¿De verdad es gratis?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Sí, ahora y siempre. Es un proyecto de código abierto y sin anuncios. Solo necesitas una cuenta gratis con tu correo para guardar tu progreso."
+                  "text": "Sí, ahora y siempre. Es un proyecto de código abierto y sin anuncios. Puedes estudiar sin registrarte; con una cuenta gratis tu progreso se guarda en la nube."
                 }
               }
             ]
