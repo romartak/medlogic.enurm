@@ -75,4 +75,9 @@ describe('banco oficial ya normalizado', () => {
     const reloaded = normalizeRows(JSON.parse(JSON.stringify(first.questions)), { answerBase: 0 })
     expect(reloaded.questions.map((q) => q.answer)).toEqual(first.questions.map((q) => q.answer))
   })
+
+  it('conserva el aviso «Respuesta por confirmar» del banco publicado', () => {
+    const rows = [{ id: 'x-1', stem: '¿Pregunta?', options: ['Uno', 'Dos'], answer: 1, review: 'Difiere del documento.' }]
+    expect(normalizeRows(rows, { answerBase: 0 }).questions[0].review).toBe('Difiere del documento.')
+  })
 })

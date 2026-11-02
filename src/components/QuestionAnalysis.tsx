@@ -47,6 +47,15 @@ export function QuestionAnalysis({ q, selected, order }: { q: Question; selected
   return (
     <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} transition={{ duration: 0.35, ease: [0.2, 0.8, 0.2, 1] }} className="overflow-hidden">
       <div className="mt-5 space-y-3">
+        {q.review && (
+          <div role="note" className="flex gap-2.5 rounded-xl border border-amber-500/40 bg-amber-500/10 p-3 text-sm leading-relaxed">
+            <CircleAlert className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+            <p>
+              <span className="font-semibold">Respuesta por confirmar.</span> {q.review}
+            </p>
+          </div>
+        )}
+
         {wrong && (
           <Section icon={<X className="size-4 text-rose-500" />} title={`Por qué ${letterOf(selected!)}) «${q.options[selected!]}» es incorrecta`} tone="border-rose-500/25 bg-rose-500/[0.06]">
             {ex?.[selected!] ? <p className="whitespace-pre-line">{ex[selected!]}</p> : <p className="text-muted">Compara tu opción con la respuesta correcta y la explicación de abajo.</p>}

@@ -39,6 +39,11 @@ export interface Question {
   appearances?: number
   /** Años del ENURM en que apareció, cuando se conocen. */
   years?: number[]
+  /**
+   * Aviso de revisión pendiente: la respuesta publicada difiere de la del documento original o hay una duda que debe
+   * confirmar el médico. Se muestra al ver la explicación.
+   */
+  review?: string
   /** URL de imagen opcional (ECG, radiografía…). */
   image?: string
   /** true si es una pregunta de ejemplo incluida con la plataforma. */
