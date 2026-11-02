@@ -100,7 +100,22 @@ export default function Bank() {
       <div className="mb-3 text-sm text-muted">{list.length.toLocaleString('es-DO')} resultados</div>
 
       {list.length === 0 ? (
-        <EmptyState icon={<Search className="size-7" />} title="Sin resultados" body="Prueba con otros términos o quita algunos filtros." />
+        <EmptyState icon={<Search className="size-7" />} title="Sin resultados" body="Prueba con otros términos o quita algunos filtros."
+          action={
+            <Button
+              variant="outline"
+              onClick={() => {
+                setSearch('')
+                setSpecialties([])
+                setYears([])
+                setStatus('all')
+                setPage(0)
+              }}
+            >
+              Quitar filtros
+            </Button>
+          }
+        />
       ) : (
         <div className="space-y-2">
           {current.map((q, i) => {
