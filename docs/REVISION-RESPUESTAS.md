@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **2262** (1166 de 1166 del documento original · 1096 de 1320 de la recopilación 2002-2024) · publicadas: **2178** · respuesta corregida: **217** · retiradas: **84**.
+Preguntas revisadas: **2382** (1166 de 1166 del documento original · 1216 de 1320 de la recopilación 2002-2024) · publicadas: **2298** · respuesta corregida: **220** · retiradas: **84**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -636,6 +636,15 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **ENURM-2022A-100** — Paciente femenina de 40 años de edad, que, al servicio de emergencias, refiriendo que hace aproximadamente cinco a meses, presenta deposiciones líquidas y semi-pastosas, en ocasiones con presenc de sangre y flemas, acompañado en ocasiones de febrículas y fiebre de 39C, dolor abdominal, anorexia, astenia y pérdida de peso. Se tuvo en cuenta estudios de hematología, imagenología y endoscopia la cual sol se observó afectado al colon izquierdo, presentando lesiones discontinuas, edema de la mucosa, úlceras profundas, serpiginosas y visualización de orificios fistulosos. ¿Cuál de las siguientes opciones corresponde su diagnóstico?
   - Documento: D (Colitis ulcerosa) → publicada: **B (Colitis de Crohn)**
   - El documento marca colitis ulcerosa, pero las lesiones discontinuas, las úlceras serpiginosas profundas y las fístulas son de la enfermedad de Crohn; con afectación solo del colon se llama colitis de Crohn.
+- **ENURM-2022B-095** — Un masculino de 42 años en su 3er día de post quirúrgico de una laparotomía abdominal de control de daño, presenta fiebre, la herida se observa eritematosa, al retirar algunas suturas cutáneas el cirujano evidencia secreción purulenta con un poco de sangre. Cuál sería la causa probable?
+  - Documento: C (Fistula entero cutáneo) → publicada: **B (Infección del sitio quirúrgico)**
+  - El documento marca fístula enterocutánea, pero la salida de pus por la herida con eritema y fiebre es una infección del sitio quirúrgico; la fístula drena contenido intestinal.
+- **ENURM-2022C-035** — Las mujeres embarazadas se pueden clasificar de alto riesgo por:
+  - Documento: A (Nivel escolaridad) → publicada: **B (Historia clínica)**
+  - El documento marca el nivel de escolaridad, pero la clasificación de alto riesgo se basa en la historia clínica (antecedentes obstétricos y médicos y hallazgos del embarazo actual).
+- **ENURM-2022C-081** — Femenina de 22 años edad, viene a la consulta por una masa, no dolorosa, en la ingle derecha de tres meses de evolución. ¿Cuál es el diagnóstico más probable en esta paciente?
+  - Documento: B (Hernia inguinal directa) → publicada: **D (Hernia femoral)**
+  - El documento marca hernia directa, que es propia de hombres mayores y rara en mujeres jóvenes; entre las opciones la femoral es la más probable en una mujer.
 
 ## Retiradas
 
