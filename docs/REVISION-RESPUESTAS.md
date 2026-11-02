@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **1312** (1166 de 1166 del documento original · 146 de 1320 de la recopilación 2002-2024) · publicadas: **1228** · respuesta corregida: **171** · retiradas: **84**.
+Preguntas revisadas: **2486** (1166 de 1166 del documento original · 1320 de 1320 de la recopilación 2002-2024) · publicadas: **2402** · respuesta corregida: **223** · retiradas: **84**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -498,6 +498,162 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **ENURM-2009-046** — Cual de los siguientes medicamentos ayuda a la maduración pulmonar del feto?
   - Documento: C (Surfactante pulmonares) → publicada: **B (Glucocorticoide)**
   - El documento marca surfactante, pero este se administra al recién nacido; el medicamento que madura el pulmón fetal antes del parto son los glucocorticoides.
+- **ENURM-2010-025** — El dolor de la madre al amamantar por lo común se debe a:
+  - Documento: D (Todas las anteriores) → publicada: **A (Alteración de la piel del pezón o mala posición del niño al mamar)**
+  - Propuesta: la clave del documento (D) incluye una opción que no es causa habitual de dolor.
+- **ENURM-2010-028** — La sepsis temprana del recién nacido se produce debida a una infección por:
+  - Documento: D (Ay B son correctas) → publicada: **A (Via trasplacentaria o por via ascendente)**
+  - Propuesta: la clave del documento (D) incluye la opción B, que no es correcta.
+- **ENURM-2009-014** — El siguiente ácido graso no esencial regula el metabolismo del colesterol:
+  - Documento: B (Palmitico) → publicada: **A (Oleico)**
+  - El documento marca ácido palmítico, que es saturado y eleva el colesterol; el ácido graso no esencial que regula el colesterol es el oleico (monoinsaturado).
+- **ENURM-2014-014** — Después de ejercitarse por una hora, ¿Cuál de los siguientes órganos experimenta los menores descensos en la presión sanguínea?
+  - Documento: B (Riñones) → publicada: **C (Cerebro)**
+  - El documento marca riñones, que es de los territorios cuyo flujo más disminuye durante el ejercicio; el cerebro es el que mejor conserva su flujo.
+- **ENURM-2011-020** — La vigilancia epidemiológica establecida en la actual epidemia de cólera es una función de:
+  - Documento: B (Investigación en salud) → publicada: **D (Rectoría en salud)**
+  - Propuesta: la vigilancia epidemiológica es una función de rectoría, no de investigación (pendiente de confirmar).
+- **ENURM-2011-031** — El siguiente hallazgo forma parte del cuadro clínico de la deshidratación severa:
+  - Documento: C (Sed y cambios en el comportamiento) → publicada: **A (Enoftalmos, poca turgencia en piel)**
+  - Propuesta: enoftalmos y poca turgencia cutánea son signos clásicos de deshidratación severa; sed y cambios de comportamiento aparecen en grados menores.
+- **ENURM-2011-047** — En la sífilis del embarazo el Treponema pallidum atraviesa la barrera placentaria después de:
+  - Documento: D (Las 28 semanas) → publicada: **B (Las 20 semanas)**
+  - Propuesta: la enseñanza clásica es después de las 16 a 18 semanas; 28 semanas es demasiado tarde.
+- **ENURM-2011-066** — Paciente masculino de 45 años, con dolor retroesternal de más de 60 minutos, opresión irradiado a la mandíbula, hipotenso, con nauseas, salivación excesiva y broncoespasmo. Hipertenso e hipercolesterolemic Con el cuadro anterior, su evidente infarto es de cara:
+  - Documento: D (Todas las caras) → publicada: **C (Inferior)**
+  - Propuesta: el cuadro vagal (náuseas, salivación e hipotensión) corresponde a un infarto de cara inferior.
+- **ENURM-2009-049** — Embarazada con 37 semanas de gestación, con diagnóstico de placenta previa, feto en buen estado sin contracciones uterinas, su manejo seria:
+  - Documento: A (Citar en dos semanas) → publicada: **C (Programar cesárea para dentro de dos semanas)**
+  - Propuesta: programar la cesárea; citar en dos semanas dejaría llegar a las 39 semanas.
+- **ENURM-2002-031** — El siguiente concepto es falso en relación a la teofilina que se usa en el tratamiento del asma bronquial :
+  - Documento: C (Vía rectal) → publicada: **D (IM)**
+  - El documento marca la vía rectal, pero hay supositorios de aminofilina; la vía que no se usa para la teofilina es la intramuscular.
+- **ENURM-2003-023** — Las siguientes son todas características de dengue clásico, excepto:
+  - Documento: D (Ausencia de hemoconcentracion) → publicada: **A (Es más frecuente en lactantes y niños mayores)**
+  - El documento marca la ausencia de hemoconcentración, pero esa sí es característica del dengue clásico; la afirmación falsa es que sea más frecuente en lactantes.
+- **ENURM-2006-069** — Cuál de las caras del corazón humano reflejan la derivación D3 de EINTHOVEEN y la de FRANK WILSON aVF:
+  - Documento: B (La septal) → publicada: **D (La posterior)**
+  - El documento marca la cara septal, pero DIII y aVF exploran la cara inferior (diafragmática), que la nomenclatura clásica llama posterior.
+- **ENURM-2007-019** — La renina producida en el aparato yuxtaglomerular, se considera que es:
+  - Documento: A (Una hormona) → publicada: **B (Una enzima)**
+  - El documento marca «una hormona», pero la renina es una enzima: convierte el angiotensinógeno en angiotensina I y no tiene acción hormonal propia (Guyton).
+- **ENURM-2007-039** — Cual de las siguientes enfermedades exantemáticas tiene el periodo de incubación más largo?
+  - Documento: C (Eritema infeccioso) → publicada: **A (Rubeola)**
+  - El documento marca el eritema infeccioso, pero el parvovirus B19 incuba 4 a 14 días; la rubéola (14 a 21 días) tiene la incubación más larga de las opciones (Nelson, Red Book).
+- **ENURM-2007-055** — El diagnostico de diabetes gestacional se hace por:
+  - Documento: D (A y C son correctas) → publicada: **A (Curva de tolerancia a la glucosa)**
+  - El documento marca «A y C» (curva y glucosa posprandial), pero la glucosa posprandial no es criterio diagnóstico; el diagnóstico se hace con la curva de tolerancia (ADA).
+- **ENURM-2007-060** — Cual de los siguientes se considera muerte fetal temprana?
+  - Documento: D (Antes de las 30 semanas de gestación) → publicada: **C (Antes de las 20 semanas de gestación)**
+  - El documento marca «antes de las 30 semanas», pero la muerte fetal temprana es la que ocurre antes de las 20 semanas; de 20 a 27 es intermedia y desde las 28, tardía.
+- **ENURM-2007-079** — Una expectoración mucopurulenta fétida y de mal sabor en un paciente con neumonía nos hace pensar en
+  - Documento: C (Gérmenes Gram positivos) → publicada: **A (Presencia de gérmenes anaeróbicos)**
+  - El documento marca gérmenes grampositivos, pero la expectoración fétida y de mal sabor es característica de los anaerobios (neumonía por aspiración, absceso pulmonar).
+- **ENURM-2007-099** — La hernia más frecuente en mujeres es la : (ojo)
+  - Documento: C (Femoral) → publicada: **B (Inguinal indirecta)**
+  - El documento marca la femoral, pero la hernia más frecuente en la mujer es la inguinal indirecta; la femoral solo es más frecuente en mujeres que en hombres (Schwartz, Sabiston).
+- **ENURM-2008-043** — Paciente con embarazo de 36 semanas, sonografia reporta oligoamnios severo, no labor de parto, cuello cerrado, no ha expulsado líquido amniótico. Cuál es el manejo aconsejable?
+  - Documento: D (Programar operación cesárea inmediata) → publicada: **B (Inducir labor de parto)**
+  - El documento marca cesárea inmediata, pero el oligohidramnios aislado no es indicación de cesárea: a las 36 semanas se indica terminar el embarazo por inducción, con cesárea solo por indicación obstétrica (Williams, ACOG).
+- **ENURM-2008-059** — Un paciente con enfriamiento y palidez de una pierna, parestesia y ausencia de pulsos femorales, su diagnóstico seria:
+  - Documento: D (Ambas son falsas) → publicada: **B (Obstrucción aguda de la arteria femoral)**
+  - El documento marca «ambas son falsas», pero la pierna fría y pálida, con parestesias y sin pulsos, es una oclusión arterial aguda (Sabiston).
+- **ENURM-2008-079** — A los niños con meningitis les favorece un balance de líquido:
+  - Documento: C (Negativo) → publicada: **B (Neutro)**
+  - El documento marca balance negativo (restricción), práctica antigua; Nelson y la revisión Cochrane recomiendan líquidos de mantenimiento (balance neutro) y restringir solo si hay SIADH.
+- **ENURM-2008-083** — Con relación a la complicación de la diarrea, cual es la respuesta correcta:
+  - Documento: D (A y B son correctas) → publicada: **A (Deshidratación)**
+  - El documento marca «A y B», pero las evacuaciones líquidas son la diarrea misma, no una complicación; la complicación principal es la deshidratación.
+- **ENURM-2009-082** — La obstrucción del siguiente segmento del tubo digestivo se denomina en asa cerrada:
+  - Documento: C (Ileon) → publicada: **A (Colon)**
+  - El documento marca el íleon, pero la obstrucción en asa cerrada clásica es la del colon con válvula ileocecal competente (Schwartz).
+- **ENURM-2009-093** — La complicación mas frecuente del divertículo de Meckel en un adulto es:
+  - Documento: A (Sangrado) → publicada: **D (Obstrucción intestinal)**
+  - El documento marca el sangrado, que es la complicación más frecuente en niños; en el adulto predomina la obstrucción intestinal (Sabiston).
+- **ENURM-2010-081** — El método diagnóstico más específico en las patologías de vesicular biliar es la:
+  - Documento: A (TAC) → publicada: **D (Gammagrafia)**
+  - El documento marca la TC, pero la prueba más específica en la colecistitis aguda es la gammagrafía con HIDA; la ecografía es la inicial (Schwartz).
+- **ENURM-2013-062** — Dentro de Las manifestaciones de la hemorragia digestiva, se encuentra la Hematoquezia, que significa:
+  - Documento: B (Heces mal olientes y negras) → publicada: **C (Evacuacion de sangre color rojo vino)**
+  - El documento marca «heces malolientes y negras», que es la melena; la hematoquecia es la expulsión de sangre roja por el recto.
+- **ENURM-2013-084** — El microorganismo patógeno aislado más frecuentemente en las infecciones post-operatorias:
+  - Documento: B (Streptococo B hemolítico grupo A) → publicada: **C (Estafilococo coagulasa negativo)**
+  - El documento marca el estreptococo del grupo A, causa rara de infección posoperatoria; el germen más frecuente es S. aureus (no está entre las opciones), seguido de los estafilococos coagulasa negativos.
+- **ENURM-2013-088** — Las quemaduras que afectan hasta las capas reticulares de la dermis se consideran como de:
+  - Documento: B (Segundo grado de espesor parcial superficial) → publicada: **C (Segundo grado de espesor parcial profundo)**
+  - El documento marca segundo grado superficial, pero la afectación de la dermis reticular corresponde al espesor parcial profundo; la superficial llega a la dermis papilar (Sabiston).
+- **ENURM-2014-027** — ¿Cuál de las siguientes acciones es la más efectiva e importante cuando un neonato requiere reanimación?
+  - Documento: B (Masaje cardiaco) → publicada: **C (Ventilación pulmonar)**
+  - El documento marca el masaje cardíaco, pero en la reanimación neonatal lo más importante y efectivo es la ventilación (programa de reanimación neonatal).
+- **ENURM-2014-069** — El diagnóstico definitivo de enfisema pulmonar se realiza por medio de:
+  - Documento: D (Historia clínica, examen físico, radiografía de tórax) → publicada: **C (Tomografia computarizada de torax)**
+  - El documento marca historia, exploración y radiografía, que solo sugieren el enfisema; la tomografía computarizada es la que lo confirma in vivo (GOLD).
+- **ENURM-2014-079** — En un paciente diagnosticado de meningitis bacteriana aguda, para administrar antibióticos se debe:
+  - Documento: A (Determinar el germen causal por medio de cultivo) → publicada: **C (Iniciar la administración de antibióticos según la clínica)**
+  - El documento marca determinar el germen por cultivo antes del antibiótico, pero en la meningitis bacteriana el tratamiento empírico se inicia de inmediato según la clínica (Mandell, IDSA).
+- **ENURM-2014-088** — ¿Cuál es el método diagnóstico de elección en la úlcera péptica perforada?
+  - Documento: B (Sonografia) → publicada: **C (Radiografía de torax)**
+  - El documento marca la sonografía, pero el estudio inicial de elección para la úlcera perforada es la radiografía de tórax de pie (neumoperitoneo), con la TC como alternativa más sensible.
+- **ENURM-2014-097** — Paciente de 60 años de edad que se presenta con dolor en fosa iliaca izquierda, que se irradia a la región supra pubica y a la ingle izquierda. Presenta cambios en el ritmo intestinal, fiebre, escalofrio y urgencia urinaria. ¿Cuál es el diagnostico?
+  - Documento: C (Calculo renal) → publicada: **D (Diverticulitis)**
+  - El documento marca cálculo renal, pero el dolor en fosa ilíaca izquierda con fiebre, escalofríos y cambio del ritmo intestinal en un paciente de 60 años orienta a diverticulitis; el cólico renal no da fiebre ni cambios intestinales sin complicación.
+- **ENURM-2014-098** — Paciente con historia clínica de pirosis de largo tiempo de evolución y regurgitación de alimentos digeridos de menos tiempo y disfagia ocasional. ¿Cuál de los siguientes es el diagnóstico más probable?
+  - Documento: C (Divertículo esofágico) → publicada: **B (Hernia hiatal)**
+  - El documento marca divertículo esofágico, pero la pirosis de larga evolución con regurgitación de alimento digerido orienta a reflujo con hernia hiatal; el divertículo regurgita alimento no digerido.
+- **ENURM-2015-042** — El estudio más sensible para diagnosticar miomatosis uterina es:
+  - Documento: B (Ecografía transvaginal) → publicada: **C (Resonancia magnética)**
+  - El documento marca la ecografía transvaginal, que es la prueba inicial; el estudio más sensible para los miomas es la resonancia magnética (Williams Ginecología).
+- **ENURM-2016-070** — En el tratamiento de una crisis asmática aguda y grave se utiliza:
+  - Documento: D (Agonista Beta 2, EV) → publicada: **C (Prednisona oral)**
+  - El documento marca el betaagonista IV, que GINA no recomienda de rutina; de las opciones, el tratamiento indicado es el corticoide sistémico precoz, y la prednisona oral es tan eficaz como la IV.
+- **ENURM-2018-024** — ¿Cuál es la principal causa de muerte en niños provocada por accidentes?
+  - Documento: A (Quemaduras) → publicada: **C (Ahogamiento)**
+  - El documento marca las quemaduras, pero según la OMS el ahogamiento causa más muertes accidentales en niños que las quemaduras.
+- **ENURM-2019-001** — El riesgo de transmisión a través de la lactancia materna en mujeres con infección crónica por VIH es de:
+  - Documento: C (20-25 %) → publicada: **D (9-16 %)**
+  - El documento marca 20-25 %, pero el riesgo de transmisión por lactancia en la infección crónica es de alrededor del 14 % (Dunn); la opción 9-16 % es la que lo contiene.
+- **ENURM-2020-034** — ¿Cuál es la discapacidad del desarrollo específicas entre los niños de 3-17 años más frecuente a nivel internacional?
+  - Documento: C (Autismo) → publicada: **B (Trastorno por déficit de atención con hiperactividad)**
+  - El documento marca el autismo, pero según los CDC la discapacidad del desarrollo más frecuente en niños de 3 a 17 años es el TDAH (≈9-10 % frente a ≈2,5-3 % del autismo).
+- **ENURM-2020-074** — Una mujer de 65 años va a consulta de emergencia por historia de pirosis y regurgitación, dolor torácico y disfagia, en ocasiones tos crónica, al examen físico el médico encontró obesidad abdominal, la señora se define como glotona. ¿Qué patología considera tiene esta señora?
+  - Documento: A (Dispepsia) → publicada: **C (Enfermedad por reflujo gastroesofágico)**
+  - El documento marca dispepsia, pero la pirosis y la regurgitación con tos crónica, dolor torácico y disfagia en una paciente obesa definen la enfermedad por reflujo gastroesofágico.
+- **ENURM-2021A-023** — El lactante se sienta solo y permanece sentado independientemente sin soporte, con la espalda recta a l edad de:
+  - Documento: B (10 meses) → publicada: **C (9 meses)**
+  - El documento marca 10 meses, pero la sedestación estable sin apoyo con la espalda recta se logra hacia los 8-9 meses (Nelson).
+- **ENURM-2021A-069** — Es la hepatopatía crónica más frecuente en muchas partes del mundo, incluido Estados Unidos:
+  - Documento: A (Cirrosis hepática) → publicada: **B (Hígado graso)**
+  - El documento marca la cirrosis, pero según Harrison la hepatopatía crónica más frecuente en muchas partes del mundo, incluido Estados Unidos, es el hígado graso no alcohólico.
+- **ENURM-2021A-087** — Un masculino de 50 años en su quinto día de post quirúrgico de una laparotomía abdominal de emergencia por traumatismo, presenta fiebre, la herida se observa eritematosa, al retirar algunas suturas cutáneas el cirujano evidencia secreción purulenta con un poco de sangre. ¿Cuál sería la causa probable?
+  - Documento: C (Fistula entero cutáneo) → publicada: **B (Infección del sitio quirúrgico)**
+  - El documento marca fístula enterocutánea, pero la secreción purulenta en la herida al quinto día con eritema y fiebre es una infección del sitio quirúrgico; la fístula drena contenido intestinal.
+- **ENURM-2021C-025** — Una causa muy frecuente de la infección de la vía respiratoria superior es debido a:
+  - Documento: D (Estreptococo del grupo A) → publicada: **A (Virus)**
+  - El documento marca el estreptococo del grupo A, pero la causa más frecuente de las infecciones respiratorias altas son los virus; el estreptococo causa una minoría de las faringitis.
+- **ENURM-2022A-078** — ¿Cuál de los siguientes valores es considerado punto de corte a partir del cual es diagnóstico de emergencia y urgencia hipertensiva?
+  - Documento: B (140/90 mmhg) → publicada: **D (180/120 mmhg)**
+  - El documento marca 140/90 mmHg, que es el umbral diagnóstico de hipertensión; la urgencia y la emergencia hipertensivas se definen por ≥180/120 mmHg (ACC/AHA 2017).
+- **ENURM-2022A-100** — Paciente femenina de 40 años de edad, que, al servicio de emergencias, refiriendo que hace aproximadamente cinco a meses, presenta deposiciones líquidas y semi-pastosas, en ocasiones con presenc de sangre y flemas, acompañado en ocasiones de febrículas y fiebre de 39C, dolor abdominal, anorexia, astenia y pérdida de peso. Se tuvo en cuenta estudios de hematología, imagenología y endoscopia la cual sol se observó afectado al colon izquierdo, presentando lesiones discontinuas, edema de la mucosa, úlceras profundas, serpiginosas y visualización de orificios fistulosos. ¿Cuál de las siguientes opciones corresponde su diagnóstico?
+  - Documento: D (Colitis ulcerosa) → publicada: **B (Colitis de Crohn)**
+  - El documento marca colitis ulcerosa, pero las lesiones discontinuas, las úlceras serpiginosas profundas y las fístulas son de la enfermedad de Crohn; con afectación solo del colon se llama colitis de Crohn.
+- **ENURM-2022B-095** — Un masculino de 42 años en su 3er día de post quirúrgico de una laparotomía abdominal de control de daño, presenta fiebre, la herida se observa eritematosa, al retirar algunas suturas cutáneas el cirujano evidencia secreción purulenta con un poco de sangre. Cuál sería la causa probable?
+  - Documento: C (Fistula entero cutáneo) → publicada: **B (Infección del sitio quirúrgico)**
+  - El documento marca fístula enterocutánea, pero la salida de pus por la herida con eritema y fiebre es una infección del sitio quirúrgico; la fístula drena contenido intestinal.
+- **ENURM-2022C-035** — Las mujeres embarazadas se pueden clasificar de alto riesgo por:
+  - Documento: A (Nivel escolaridad) → publicada: **B (Historia clínica)**
+  - El documento marca el nivel de escolaridad, pero la clasificación de alto riesgo se basa en la historia clínica (antecedentes obstétricos y médicos y hallazgos del embarazo actual).
+- **ENURM-2022C-081** — Femenina de 22 años edad, viene a la consulta por una masa, no dolorosa, en la ingle derecha de tres meses de evolución. ¿Cuál es el diagnóstico más probable en esta paciente?
+  - Documento: B (Hernia inguinal directa) → publicada: **D (Hernia femoral)**
+  - El documento marca hernia directa, que es propia de hombres mayores y rara en mujeres jóvenes; entre las opciones la femoral es la más probable en una mujer.
+- **ENURM-2023-087** — Dentro de los microorganismos patogénicos que se aislan con más frecuencia de los dispositivos (prótesis) colocados a un paciente son:
+  - Documento: B (Estreptococo B- hemolítico del grupo A) → publicada: **C (Estafilococo coagulasa negativo)**
+  - El documento marca el estreptococo del grupo A, causa rara de infección de dispositivos; los estafilococos coagulasa negativos son los más aislados por formar biopelículas.
+- **ENURM-2024-060** — Paciente de 21 años, primigesta, 40 semanas en labor de parto, sin complicaciones materna ni fetales; es ingresada en sala de preparto. Luego de comprobarse dilatación cerval completa y cérvix borrado y dilatado se traslada a sala de expulsivo en donde se asiste el parto, obteniéndose un recién nacido en buenas condiciones el cual es entregado al neonatólogo. Luego de la ligadura y sección del cordón umbilical aún falta asistir el alumbramiento. ¿En cuál etapa de la 3era fase del trabajo de parto está la paciente?
+  - Documento: B (Segunda etapa) → publicada: **C (Tercera etapa)**
+  - El documento marca la segunda etapa, pero tras el nacimiento y antes de la salida de la placenta la paciente está en la tercera etapa (alumbramiento) (Williams).
+- **ENURM-2024-092** — ¿Cuál de los siguientes factores de riesgo es el más frecuente para individuos que nunca han fumado?
+  - Documento: B (Ambiente con humo de tabaco) → publicada: **A (Radón residencial)**
+  - El documento marca el humo de tabaco ambiental, pero según la EPA y la OMS el radón residencial es el principal factor de riesgo de cáncer de pulmón en quienes nunca han fumado.
 
 ## Retiradas
 

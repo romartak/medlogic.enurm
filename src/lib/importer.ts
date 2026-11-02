@@ -52,6 +52,7 @@ const FIELD_KEYS = {
   image: ['image', 'imagen', 'img', 'imageurl'],
   appearances: ['appearances', 'apariciones', 'veces'],
   years: ['years', 'anios', 'anos'],
+  review: ['review', 'porconfirmar'],
 } as const
 
 type Field = keyof typeof FIELD_KEYS
@@ -375,6 +376,7 @@ export function normalizeRows(rows: Row[], opts: ImportOptions = {}): ImportResu
       image: str('image'),
       appearances: parseAppearances(pick(row, keyMap, 'appearances')),
       years: parseYears(pick(row, keyMap, 'years')),
+      review: str('review'),
     })
   }
 

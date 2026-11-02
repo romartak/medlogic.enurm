@@ -155,7 +155,7 @@ export default function Bank() {
         </div>
       )}
 
-      <Modal open={!!open} onClose={() => setOpen(null)} className="sm:max-w-3xl">
+      <Modal open={!!open} onClose={() => setOpen(null)} label="Pregunta del banco" className="sm:max-w-3xl">
         {open && (
           <>
             <QuestionCard question={open} mode="review" selected={attempts[open.id]?.lastChoice ?? null} compact />
