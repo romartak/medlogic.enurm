@@ -2,6 +2,13 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App'
+import { ErrorBoundary, reloadOnce } from './components/ErrorBoundary'
+
+// Si se publica una versión nueva con la pestaña abierta, los archivos viejos ya no existen y la descarga de una
+// página falla. Vite avisa con este evento: se recarga una vez para traer la versión nueva.
+window.addEventListener('vite:preloadError', (event) => {
+  if (reloadOnce()) event.preventDefault()
+})
 
 // Las rutas de la app viven después del «#». Si alguien llega por una dirección limpia que no existe
 // (un enlace viejo, por ejemplo), Vercel sirve la app: se pasa esa ruta al hash para que se vea la
@@ -15,7 +22,9 @@ if (!window.location.hash && path !== base && path !== `${base}index.html`) {
 function mount() {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
-      <App />
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
     </StrictMode>,
   )
 }
