@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **2442** (1166 de 1166 del documento original · 1276 de 1320 de la recopilación 2002-2024) · publicadas: **2358** · respuesta corregida: **221** · retiradas: **84**.
+Preguntas revisadas: **2486** (1166 de 1166 del documento original · 1320 de 1320 de la recopilación 2002-2024) · publicadas: **2402** · respuesta corregida: **223** · retiradas: **84**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -648,6 +648,12 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **ENURM-2023-087** — Dentro de los microorganismos patogénicos que se aislan con más frecuencia de los dispositivos (prótesis) colocados a un paciente son:
   - Documento: B (Estreptococo B- hemolítico del grupo A) → publicada: **C (Estafilococo coagulasa negativo)**
   - El documento marca el estreptococo del grupo A, causa rara de infección de dispositivos; los estafilococos coagulasa negativos son los más aislados por formar biopelículas.
+- **ENURM-2024-060** — Paciente de 21 años, primigesta, 40 semanas en labor de parto, sin complicaciones materna ni fetales; es ingresada en sala de preparto. Luego de comprobarse dilatación cerval completa y cérvix borrado y dilatado se traslada a sala de expulsivo en donde se asiste el parto, obteniéndose un recién nacido en buenas condiciones el cual es entregado al neonatólogo. Luego de la ligadura y sección del cordón umbilical aún falta asistir el alumbramiento. ¿En cuál etapa de la 3era fase del trabajo de parto está la paciente?
+  - Documento: B (Segunda etapa) → publicada: **C (Tercera etapa)**
+  - El documento marca la segunda etapa, pero tras el nacimiento y antes de la salida de la placenta la paciente está en la tercera etapa (alumbramiento) (Williams).
+- **ENURM-2024-092** — ¿Cuál de los siguientes factores de riesgo es el más frecuente para individuos que nunca han fumado?
+  - Documento: B (Ambiente con humo de tabaco) → publicada: **A (Radón residencial)**
+  - El documento marca el humo de tabaco ambiental, pero según la EPA y la OMS el radón residencial es el principal factor de riesgo de cáncer de pulmón en quienes nunca han fumado.
 
 ## Retiradas
 
