@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **2382** (1166 de 1166 del documento original · 1216 de 1320 de la recopilación 2002-2024) · publicadas: **2298** · respuesta corregida: **220** · retiradas: **84**.
+Preguntas revisadas: **2442** (1166 de 1166 del documento original · 1276 de 1320 de la recopilación 2002-2024) · publicadas: **2358** · respuesta corregida: **221** · retiradas: **84**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -645,6 +645,9 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **ENURM-2022C-081** — Femenina de 22 años edad, viene a la consulta por una masa, no dolorosa, en la ingle derecha de tres meses de evolución. ¿Cuál es el diagnóstico más probable en esta paciente?
   - Documento: B (Hernia inguinal directa) → publicada: **D (Hernia femoral)**
   - El documento marca hernia directa, que es propia de hombres mayores y rara en mujeres jóvenes; entre las opciones la femoral es la más probable en una mujer.
+- **ENURM-2023-087** — Dentro de los microorganismos patogénicos que se aislan con más frecuencia de los dispositivos (prótesis) colocados a un paciente son:
+  - Documento: B (Estreptococo B- hemolítico del grupo A) → publicada: **C (Estafilococo coagulasa negativo)**
+  - El documento marca el estreptococo del grupo A, causa rara de infección de dispositivos; los estafilococos coagulasa negativos son los más aislados por formar biopelículas.
 
 ## Retiradas
 
