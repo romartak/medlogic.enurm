@@ -39,6 +39,18 @@ import { INSTAGRAM_URL, INSTAGRAM_USER, InstagramIcon } from '@/components/Insta
 import { ENURM_FACTS, formatEnurmDate, upcomingEnurm } from '@/data/enurm'
 import { cn, daysBetween, tintText } from '@/lib/utils'
 
+/** Páginas estáticas para buscadores, generadas en cada build a partir del banco. */
+const SEO_LINKS: [string, string][] = [
+  ['ENURM: fecha, formato y puntaje', 'enurm/'],
+  ['Preguntas del ENURM por especialidad', 'preguntas-enurm/'],
+  ['Simulacro del ENURM gratis', 'simulacro-enurm/'],
+  ['Preguntas de Ginecología y Obstetricia', 'preguntas-enurm/ginecologia-obstetricia/'],
+  ['Preguntas de Pediatría', 'preguntas-enurm/pediatria/'],
+  ['Preguntas de Cirugía', 'preguntas-enurm/cirugia/'],
+  ['Preguntas de Infectología', 'preguntas-enurm/infectologia/'],
+  ['Preguntas de Cardiología', 'preguntas-enurm/cardiologia/'],
+]
+
 const SECTIONS = [
   ['#examen', 'El examen'],
   ['#funciones', 'Funciones'],
@@ -96,7 +108,7 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: '¿De dónde salen las preguntas?',
-    a: <>De exámenes de años anteriores recopilados, más un banco de muestra. Hoy hay más de 1.000 preguntas y nuestra meta es llegar a 12.000. Cada pregunta trae la explicación de todas las opciones, la fisiopatología, puntos clave y la referencia del libro. Las respuestas se revisaron una por una con la bibliografía, y se quitaron las repetidas y las incompletas.</>,
+    a: <>De exámenes de años anteriores recopilados, más un banco de muestra. Hoy hay más de 2.400 preguntas de exámenes desde 2002, y nuestra meta es llegar a 12.000. Cada pregunta trae la explicación de todas las opciones, la fisiopatología, puntos clave y la referencia del libro. Las respuestas se revisaron una por una con la bibliografía, y se quitaron las repetidas y las incompletas.</>,
   },
 ]
 
@@ -373,7 +385,7 @@ export default function Landing() {
           <motion.ul initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-sm text-muted">
             {[
               [HeartHandshake, 'Gratis para siempre'],
-              [ListChecks, 'Más de 1.000 preguntas explicadas · meta: 12.000'],
+              [ListChecks, 'Más de 2.400 preguntas explicadas · meta: 12.000'],
               [ShieldCheck, 'Sin anuncios y sin cuenta obligatoria'],
               [Check, 'Tu progreso queda en tu navegador; con cuenta, en todos tus dispositivos'],
             ].map(([I, t]) => {
@@ -573,6 +585,19 @@ export default function Landing() {
             </div>
           ))}
         </div>
+        {/* Páginas estáticas para buscadores (scripts/build-seo.ts): enlazarlas desde la portada ayuda a que Google las encuentre. */}
+        <nav aria-label="Guías del ENURM" className="mx-auto max-w-7xl border-t border-soft px-4 py-8 sm:px-6 lg:px-8">
+          <div className="text-sm font-semibold">Guías del ENURM</div>
+          <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-3 text-sm">
+            {SEO_LINKS.map(([label, href]) => (
+              <li key={href}>
+                <a href={`${import.meta.env.BASE_URL}${href}`} className="text-muted transition-colors hover:text-[var(--text)]">
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
         <div className="border-t border-soft">
           <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
             <p>Contenido educativo. No sustituye el juicio clínico ni las guías oficiales. Fechas y requisitos: Ministerio de Salud Pública y UASD.</p>
