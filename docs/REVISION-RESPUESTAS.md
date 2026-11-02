@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **2146** (1166 de 1166 del documento original · 980 de 1320 de la recopilación 2002-2024) · publicadas: **2062** · respuesta corregida: **215** · retiradas: **84**.
+Preguntas revisadas: **2262** (1166 de 1166 del documento original · 1096 de 1320 de la recopilación 2002-2024) · publicadas: **2178** · respuesta corregida: **217** · retiradas: **84**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -630,6 +630,12 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **ENURM-2021C-025** — Una causa muy frecuente de la infección de la vía respiratoria superior es debido a:
   - Documento: D (Estreptococo del grupo A) → publicada: **A (Virus)**
   - El documento marca el estreptococo del grupo A, pero la causa más frecuente de las infecciones respiratorias altas son los virus; el estreptococo causa una minoría de las faringitis.
+- **ENURM-2022A-078** — ¿Cuál de los siguientes valores es considerado punto de corte a partir del cual es diagnóstico de emergencia y urgencia hipertensiva?
+  - Documento: B (140/90 mmhg) → publicada: **D (180/120 mmhg)**
+  - El documento marca 140/90 mmHg, que es el umbral diagnóstico de hipertensión; la urgencia y la emergencia hipertensivas se definen por ≥180/120 mmHg (ACC/AHA 2017).
+- **ENURM-2022A-100** — Paciente femenina de 40 años de edad, que, al servicio de emergencias, refiriendo que hace aproximadamente cinco a meses, presenta deposiciones líquidas y semi-pastosas, en ocasiones con presenc de sangre y flemas, acompañado en ocasiones de febrículas y fiebre de 39C, dolor abdominal, anorexia, astenia y pérdida de peso. Se tuvo en cuenta estudios de hematología, imagenología y endoscopia la cual sol se observó afectado al colon izquierdo, presentando lesiones discontinuas, edema de la mucosa, úlceras profundas, serpiginosas y visualización de orificios fistulosos. ¿Cuál de las siguientes opciones corresponde su diagnóstico?
+  - Documento: D (Colitis ulcerosa) → publicada: **B (Colitis de Crohn)**
+  - El documento marca colitis ulcerosa, pero las lesiones discontinuas, las úlceras serpiginosas profundas y las fístulas son de la enfermedad de Crohn; con afectación solo del colon se llama colitis de Crohn.
 
 ## Retiradas
 
