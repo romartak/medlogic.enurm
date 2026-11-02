@@ -37,7 +37,7 @@ import { EnterBar, LandingNav } from '@/components/landing/LandingNav'
 import { DemoReel } from '@/components/landing/DemoReel'
 import { INSTAGRAM_URL, INSTAGRAM_USER, InstagramIcon } from '@/components/Instagram'
 import { ENURM_FACTS, formatEnurmDate, upcomingEnurm } from '@/data/enurm'
-import { cn, daysBetween, softHyphens, tintText } from '@/lib/utils'
+import { cn, daysBetween, tintText } from '@/lib/utils'
 
 const SECTIONS = [
   ['#examen', 'El examen'],
@@ -301,7 +301,7 @@ function Features() {
         {MORE.map((m) => (
           <Link key={m.to} to={m.to} className="card card-hover flex items-center gap-2.5 px-3.5 py-3 text-sm font-medium">
             <m.icon className="size-4 shrink-0 text-brand-600 dark:text-brand-400" />
-            <span className="min-w-0 leading-snug">{softHyphens(m.label)}</span>
+            <span className="min-w-0 leading-snug">{m.label}</span>
           </Link>
         ))}
       </div>
@@ -492,16 +492,19 @@ export default function Landing() {
       </section>
 
       {/* Preguntas frecuentes */}
-      <section id="preguntas" className="mx-auto max-w-3xl scroll-mt-24 px-4 py-20 sm:px-6 sm:py-24">
-        <SectionHeading eyebrow="Preguntas frecuentes" title="Lo que todos preguntan" body="Datos del examen tomados de avisos oficiales y de la prensa de cada año." />
-        <div className="mt-10 space-y-3">
+      <section id="preguntas" className="mx-auto grid max-w-7xl scroll-mt-24 gap-8 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-[1fr_1.6fr] lg:gap-16 lg:px-8">
+        <div className="max-w-2xl">
+          <h2 className="text-3xl font-extrabold text-balance sm:text-4xl">Preguntas frecuentes</h2>
+          <p className="mt-3 text-pretty text-muted">Datos del examen tomados de avisos oficiales y de la prensa de cada año.</p>
+        </div>
+        <div className="divide-y divide-[var(--border)] border-y border-soft">
           {FAQ.map((f) => (
-            <details key={f.q} className="card group overflow-hidden [&_summary::-webkit-details-marker]:hidden">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-semibold">
+            <details key={f.q} className="group [&_summary::-webkit-details-marker]:hidden">
+              <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 font-semibold">
                 {f.q}
                 <ChevronDown className="size-5 shrink-0 text-muted transition-transform duration-200 group-open:rotate-180" />
               </summary>
-              <div className="px-5 pb-5 text-sm leading-relaxed text-pretty text-muted [&_b]:text-[var(--text)]">{f.a}</div>
+              <div className="max-w-prose pb-5 text-sm leading-relaxed text-pretty text-muted [&_b]:text-[var(--text)]">{f.a}</div>
             </details>
           ))}
         </div>

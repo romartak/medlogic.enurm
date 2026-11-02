@@ -315,6 +315,41 @@ html:not(.dark) .text-violet-600 {
   color: var(--color-violet-700);
 }
 
+/* Fisiopatología: flujo de sangre, latido y nodo del paso actual */
+@keyframes fp-flow {
+  to {
+    stroke-dashoffset: -32;
+  }
+}
+@keyframes fp-beat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.12);
+  }
+  30% {
+    transform: scale(0.97);
+  }
+}
+@keyframes fp-glow {
+  50% {
+    opacity: 0.35;
+  }
+}
+.fp-flow {
+  animation: fp-flow 2s linear infinite;
+}
+.fp-beat {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: fp-beat 0.85s ease-in-out infinite;
+}
+.fp-glow {
+  animation: fp-glow 1.6s ease-in-out infinite;
+}
+
 .reduce-motion *,
 .reduce-motion *::before,
 .reduce-motion *::after {

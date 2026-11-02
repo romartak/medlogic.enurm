@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { BellRing, CalendarPlus } from 'lucide-react'
-import { Button, Card } from '@/components/ui/primitives'
+import { Button, buttonClass, Card } from '@/components/ui/primitives'
 import { downloadFile } from '@/lib/utils'
 import { toast } from '@/store/toasts'
 
@@ -99,7 +99,7 @@ export function ReminderCard({ compact = false }: { compact?: boolean }) {
   return (
     <Card className={compact ? 'p-5' : 'p-5 sm:p-6'}>
       <div className="flex items-start gap-3">
-        <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-violet-500/15 text-violet-700 dark:text-violet-300">
+        <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-brand-500/10 text-brand-700 dark:text-brand-300">
           <BellRing className="size-5" />
         </span>
         <div className="min-w-0 flex-1">
@@ -115,7 +115,7 @@ export function ReminderCard({ compact = false }: { compact?: boolean }) {
         <Button onClick={addIcs}>
           <CalendarPlus className="size-4" /> Añadir a mi calendario
         </Button>
-        <a href={googleCalendarUrl(time)} onClick={remember} target="_blank" rel="noopener noreferrer" className="inline-flex h-10 items-center rounded-xl px-3 text-sm font-semibold text-brand-700 hover:bg-brand-500/10 dark:text-brand-400">
+        <a href={googleCalendarUrl(time)} onClick={remember} target="_blank" rel="noopener noreferrer" className={buttonClass('outline')}>
           Usar Google Calendar
         </a>
       </div>
