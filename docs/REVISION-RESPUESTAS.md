@@ -1,6 +1,6 @@
 # Revisión de respuestas del banco recopilado
 
-Preguntas revisadas: **1929** (1166 de 1166 del documento original · 763 de 1320 de la recopilación 2002-2024) · publicadas: **1845** · respuesta corregida: **212** · retiradas: **84**.
+Preguntas revisadas: **2039** (1166 de 1166 del documento original · 873 de 1320 de la recopilación 2002-2024) · publicadas: **1955** · respuesta corregida: **214** · retiradas: **84**.
 
 En estas preguntas la respuesta marcada en el documento no coincidía con la bibliografía y se publicó la corregida.
 Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo de `data/banco/revision/` y vuelve a ejecutar `node scripts/build-bank.mjs`.
@@ -621,6 +621,12 @@ Si no estás de acuerdo con alguna, cambia `a` (0 = A, 1 = B…) en su archivo d
 - **ENURM-2021A-023** — El lactante se sienta solo y permanece sentado independientemente sin soporte, con la espalda recta a l edad de:
   - Documento: B (10 meses) → publicada: **C (9 meses)**
   - El documento marca 10 meses, pero la sedestación estable sin apoyo con la espalda recta se logra hacia los 8-9 meses (Nelson).
+- **ENURM-2021A-069** — Es la hepatopatía crónica más frecuente en muchas partes del mundo, incluido Estados Unidos:
+  - Documento: A (Cirrosis hepática) → publicada: **B (Hígado graso)**
+  - El documento marca la cirrosis, pero según Harrison la hepatopatía crónica más frecuente en muchas partes del mundo, incluido Estados Unidos, es el hígado graso no alcohólico.
+- **ENURM-2021A-087** — Un masculino de 50 años en su quinto día de post quirúrgico de una laparotomía abdominal de emergencia por traumatismo, presenta fiebre, la herida se observa eritematosa, al retirar algunas suturas cutáneas el cirujano evidencia secreción purulenta con un poco de sangre. ¿Cuál sería la causa probable?
+  - Documento: C (Fistula entero cutáneo) → publicada: **B (Infección del sitio quirúrgico)**
+  - El documento marca fístula enterocutánea, pero la secreción purulenta en la herida al quinto día con eritema y fiebre es una infección del sitio quirúrgico; la fístula drena contenido intestinal.
 
 ## Retiradas
 
