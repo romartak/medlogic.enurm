@@ -13,7 +13,7 @@ import { useProgress } from '@/store/progress'
 import { specialtyStats } from '@/lib/stats'
 import { Icon } from '@/components/ui/Icon'
 import { Button, Card, EmptyState, ProgressBar, Ring } from '@/components/ui/primitives'
-import { cn } from '@/lib/utils'
+import { cn, solidBg } from '@/lib/utils'
 import { normalizeText as normalizeTopic } from '@/data/specialties'
 
 function MiniFlashcard({ front, back, color }: { front: string; back: string; color: string }) {
@@ -87,13 +87,13 @@ export default function SpecialtyDetail() {
       </Link>
 
       {/* Hero */}
-      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-3xl p-6 text-white shadow-lift sm:p-8" style={{ background: `linear-gradient(135deg, ${s.color}, ${s.color}cc 45%, #312e81)` }}>
+      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-3xl p-6 text-white shadow-lift sm:p-8" style={solidBg(s.color)}>
         <div className="pointer-events-none absolute -top-10 -right-10 text-white/10">
           <Icon name={s.icon} className="size-72" strokeWidth={1} />
         </div>
         <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center">
           <div className="flex-1">
-            {area && <div className="text-xs font-semibold tracking-wider text-white/75 uppercase">{area.name}</div>}
+            {area && <div className="text-sm font-medium text-white/90">{area.name}</div>}
             <h1 className="mt-1 flex items-center gap-3 text-3xl font-extrabold sm:text-4xl">
               <span className="grid size-12 place-items-center rounded-2xl bg-white/20">
                 <Icon name={s.icon} className="size-6" />
@@ -121,22 +121,22 @@ export default function SpecialtyDetail() {
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3 lg:w-80">
-            <div className="col-span-2 flex items-center gap-4 rounded-2xl bg-white/15 p-4 backdrop-blur">
+            <div className="col-span-2 flex items-center gap-4 rounded-2xl bg-white/15 p-4">
               <Ring value={accuracy} size={72} stroke={7} color="#fff" track="rgb(255 255 255 / 0.25)">
                 <span className="font-display text-lg font-bold">{st?.answered ? `${Math.round(accuracy * 100)}%` : '—'}</span>
               </Ring>
               <div>
                 <div className="text-sm font-semibold">Precisión</div>
-                <div className="text-xs text-white/75">{st?.answered ? `${st.correct} de ${st.answered} correctas` : 'Aún no has respondido'}</div>
+                <div className="text-xs text-white/90">{st?.answered ? `${st.correct} de ${st.answered} correctas` : 'Aún no has respondido'}</div>
               </div>
             </div>
-            <div className="rounded-2xl bg-white/15 p-3 backdrop-blur">
+            <div className="rounded-2xl bg-white/15 p-3">
               <div className="font-display text-2xl font-bold">{specQuestions.length}</div>
-              <div className="text-xs text-white/75">preguntas en el banco</div>
+              <div className="text-xs text-white/90">preguntas en el banco</div>
             </div>
-            <div className="rounded-2xl bg-white/15 p-3 backdrop-blur">
+            <div className="rounded-2xl bg-white/15 p-3">
               <div className="font-display text-2xl font-bold">{Math.round(coverage * 100)}%</div>
-              <div className="text-xs text-white/75">del banco visto</div>
+              <div className="text-xs text-white/90">del banco visto</div>
             </div>
           </div>
         </div>
@@ -156,9 +156,9 @@ export default function SpecialtyDetail() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: i * 0.03 }}
                     onClick={() => navigate(`/banco?specialty=${id}&q=${encodeURIComponent(t)}`)}
-                    className="rounded-xl border border-soft px-3 py-2 text-sm font-medium transition-all hover:-translate-y-0.5 hover:shadow-md"
-                    style={{ borderLeft: `3px solid ${s.color}` }}
+                    className="inline-flex items-center gap-2 rounded-xl border border-soft px-3 py-2 text-sm font-medium transition-colors hover:border-[var(--muted)]"
                   >
+                    <span aria-hidden className="size-1.5 shrink-0 rounded-full" style={{ backgroundColor: s.color }} />
                     {t}
                   </motion.button>
                 ))}
