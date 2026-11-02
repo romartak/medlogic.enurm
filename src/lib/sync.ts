@@ -2,6 +2,7 @@ import { getSupabase, isSupabaseConfigured } from './supabase'
 import { hasLocalProgress, MAX_SNAPSHOT_BYTES, onProgressChange, restoreSnapshot, takeSnapshot } from './backup'
 import { useAuth } from '@/store/auth'
 import { publishStats } from './ranking'
+import { useToasts } from '@/store/toasts'
 
 /**
  * Sincronización del progreso con Supabase (tabla public.user_state, una fila por usuario).
@@ -44,6 +45,8 @@ let timer: ReturnType<typeof setTimeout> | null = null
 /** Reintento automático tras un fallo (mala conexión): 5 s, 15 s, 45 s y luego cada minuto, mientras haya algo sin subir. */
 let retryTimer: ReturnType<typeof setTimeout> | null = null
 let failures = 0
+/** El aviso de «copia demasiado grande» sale una vez por carga de la página, no en cada intento. */
+let oversizeWarned = false
 
 /** Detiene la sincronización para siempre en esta carga de la página (se usa justo antes de limpiar el dispositivo). */
 export function pauseSync(): void {
@@ -66,7 +69,17 @@ async function push(userId: string): Promise<void> {
   if (paused || auth.conflict) return
   const snapshot = takeSnapshot()
   // Mismo límite que la base de datos: evita subir copias enormes (p. ej. mazos con muchas imágenes).
-  if (new Blob([JSON.stringify(snapshot)]).size > MAX_SNAPSHOT_BYTES) return auth.setSync({ sync: 'error' })
+  if (new Blob([JSON.stringify(snapshot)]).size > MAX_SNAPSHOT_BYTES) {
+    if (!oversizeWarned) {
+      oversizeWarned = true
+      useToasts.getState().push({
+        kind: 'error',
+        title: 'Tu progreso es muy grande para la nube',
+        body: 'Ya no se está guardando en tu cuenta. Quita mazos con muchas imágenes en Flashcards o descarga un respaldo en Ajustes.',
+      })
+    }
+    return auth.setSync({ sync: 'error' })
+  }
   auth.setSync({ sync: 'syncing' })
   try {
     const supabase = (await getSupabase())!
