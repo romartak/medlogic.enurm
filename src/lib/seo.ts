@@ -6,7 +6,7 @@
  * así que los conteos y los años se actualizan solos cuando entran preguntas nuevas.
  */
 import type { Question } from '@/types'
-import type { EnurmDate } from '@/data/enurm'
+import { enurmDate, formatEnurmDate, type EnurmDate } from '@/data/enurm'
 
 /** Dirección pública. Al comprar un dominio, cambia esto y el canonical de index.html. */
 export const SITE = 'https://medlogicenurm.vercel.app'
@@ -122,6 +122,8 @@ function layout(o: { path: string; title: string; description: string; h1: strin
 <title>${esc(o.title)}</title>
 <meta name="description" content="${esc(o.description)}" />
 <link rel="canonical" href="${url}" />
+<link rel="alternate" hreflang="es-DO" href="${url}" />
+<link rel="alternate" hreflang="x-default" href="${url}" />
 <meta name="robots" content="index, follow, max-image-preview:large" />
 <meta name="theme-color" content="#075f58" />
 <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -149,7 +151,7 @@ function layout(o: { path: string; title: string; description: string; h1: strin
 ${o.body}
 </main>
 <footer><div class="wrap">
-<div class="links"><a href="/">MedLogic ENURM</a><a href="/enurm/">Guía del ENURM</a><a href="/preguntas-enurm/">Preguntas por especialidad</a><a href="/simulacro-enurm/">Simulacro</a><a href="/privacidad/">Privacidad</a><a href="/terminos/">Términos</a><a href="https://www.instagram.com/medlogic.ai/" rel="me">Instagram</a></div>
+<div class="links"><a href="/">MedLogic ENURM</a><a href="/enurm/">Guía del ENURM</a><a href="/preguntas-enurm/">Preguntas por especialidad</a><a href="/simulacro-enurm/">Simulacro</a><a href="/fecha-del-enurm/">Fecha del ENURM</a><a href="/como-prepararse-para-el-enurm/">Cómo prepararse</a><a href="/privacidad/">Privacidad</a><a href="/terminos/">Términos</a><a href="https://www.instagram.com/medlogic.ai/" rel="me">Instagram</a></div>
 <p>MedLogic ENURM es un proyecto gratuito y de código abierto de MedLogic AI. Contenido educativo: verifica siempre la convocatoria oficial y la bibliografía.</p>
 </div></footer>
 </body>
@@ -350,6 +352,94 @@ ${appCta(`/#/practica?specialty=${s.id}&auto=1`, `Practicar las ${fmt(qs.length)
 </ul>
 ${appCta('/#/simulacro', 'Empezar un simulacro gratis')}`,
       jsonld: [{ '@type': 'WebPage', name: 'Simulacro del ENURM gratis', url: `${SITE}/simulacro-enurm/`, inLanguage: 'es-DO', isPartOf: { '@id': `${SITE}/#website` } }],
+    }),
+  })
+
+  /* Fecha del ENURM */
+  const confirmed = [2018, 2019, 2024, 2025, 2026].map((y) => enurmDate(y))
+  const fechaFaqs: [string, string][] = [
+    [`¿Cuándo es el ENURM ${next.year}?`, next.confirmed ? `El ENURM ${next.year} es el ${nextLabel}.` : `Se espera para el ${nextLabel}: el examen se aplica el primer domingo de marzo. La fecha se confirma en la convocatoria oficial.`],
+    ['¿Qué día de la semana se aplica el ENURM?', 'Siempre un domingo: el primer domingo de marzo. Así fue en 2024 (3 de marzo), 2025 (2 de marzo) y 2026 (1 de marzo).'],
+    ['¿Dónde veo la convocatoria oficial?', `El Ministerio de Salud Pública publica el aviso del concurso, con requisitos y calendario, en ${facts.official.replace('https://', '')}. Ese aviso manda sobre cualquier fecha proyectada.`],
+  ]
+  pages.push({
+    path: 'fecha-del-enurm/',
+    title: `Fecha del ENURM ${next.year}: cuándo es el examen | MedLogic`,
+    priority: 0.9,
+    changefreq: 'monthly',
+    html: layout({
+      path: 'fecha-del-enurm/',
+      title: `Fecha del ENURM ${next.year}: cuándo es el examen | MedLogic`,
+      description: `El ENURM ${next.year} ${next.confirmed ? 'es' : 'se espera'} el ${nextLabel}. Fechas de años anteriores, la regla del primer domingo de marzo y dónde ver la convocatoria oficial.`,
+      h1: `Fecha del ENURM ${next.year}`,
+      crumbs: [['Fecha del ENURM', 'fecha-del-enurm/']],
+      body: `<p class="lead">El ENURM ${next.year} ${next.confirmed ? 'es' : 'se espera'} el <b>${esc(nextLabel)}</b>. ${next.confirmed ? 'La fecha ya está en la convocatoria oficial.' : 'Es una fecha proyectada: el examen se aplica el primer domingo de marzo y se confirma con la convocatoria oficial.'}</p>
+<h2>Cuándo se aplica</h2>
+<p>Lo aplica la ${esc(facts.organizer)} una vez al año, el <b>primer domingo de marzo</b>. Con esa regla, el ENURM ${next.year} cae el ${esc(nextLabel)}.</p>
+<h2>Fechas de convocatorias anteriores</h2>
+<table><thead><tr><th>Año</th><th>Fecha</th><th>Fuente</th></tr></thead><tbody>
+${confirmed.map((d) => `<tr><td>${d.year}</td><td>${esc(formatEnurmDate(d, { weekday: true }))}</td><td>${d.source ? `<a href="${esc(d.source)}" rel="noopener">${esc(new URL(d.source).hostname.replace('www.', ''))}</a>` : ''}</td></tr>`).join('')}
+</tbody></table>
+<h2>Convocatoria oficial</h2>
+<p>El Ministerio de Salud Pública publica el aviso del concurso en <a href="${esc(facts.official)}" rel="noopener">${esc(facts.official.replace('https://', ''))}</a>. Revísalo siempre: los requisitos y las fechas cambian con cada convocatoria.</p>
+<p>Para repartir el tiempo hasta el examen, mira la <a href="/enurm/">guía del ENURM</a> o <a href="/como-prepararse-para-el-enurm/">cómo prepararte</a>.</p>
+${appCta('/#/plan', 'Ver la cuenta atrás y armar mi plan')}
+<h2>Preguntas frecuentes</h2>
+${fechaFaqs.map(([q, a]) => `<h3>${esc(q)}</h3><p>${esc(a)}</p>`).join('\n')}`,
+      jsonld: [{ '@type': 'FAQPage', mainEntity: fechaFaqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }],
+    }),
+  })
+
+  /* Cómo prepararse */
+  const prepFaqs: [string, string][] = [
+    ['¿Cuántas horas debo estudiar al día?', 'Depende del tiempo que falte y de tus responsabilidades. Es mejor un plan sostenible (por ejemplo, 1–2 horas diarias durante meses) que jornadas largas e irregulares.'],
+    ['¿Empiezo por la teoría o por las preguntas?', 'Combina ambas. Al inicio, una guía corta seguida de preguntas del mismo tema. Con el tiempo, las preguntas deben ocupar la mayor parte, porque te enseñan qué y cómo se pregunta.'],
+    ['¿Qué hago con las preguntas que fallo?', 'Lee la explicación, anota lo que no sabías y vuelve a responderlas en unos días. Fallar durante la preparación es la mejor forma de no fallar en el examen.'],
+  ]
+  pages.push({
+    path: 'como-prepararse-para-el-enurm/',
+    title: 'Cómo prepararse para el ENURM: método y plan semanal | MedLogic',
+    priority: 0.8,
+    changefreq: 'monthly',
+    html: layout({
+      path: 'como-prepararse-para-el-enurm/',
+      title: 'Cómo prepararse para el ENURM: método y plan semanal | MedLogic',
+      description: 'Cómo estudiar para el ENURM con técnicas que funcionan: práctica de recuperación, repetición espaciada, un plan semanal, simulacros y qué hacer el día del examen.',
+      h1: 'Cómo prepararse para el ENURM',
+      crumbs: [['Cómo prepararse', 'como-prepararse-para-el-enurm/']],
+      body: `<p class="lead">Un método claro, de principio a fin, basado en técnicas de estudio con evidencia: practicar recordando, repasar a tiempo y aprender de cada error.</p>
+<h2>Seis técnicas que funcionan</h2>
+<ul>
+<li><b>Práctica de recuperación.</b> Intentar recordar (responder preguntas) fija más que releer.</li>
+<li><b>Repetición espaciada.</b> Repasar justo antes de olvidar multiplica la retención a largo plazo. Por eso las flashcards programan cada tarjeta.</li>
+<li><b>Práctica intercalada.</b> Mezclar especialidades obliga a identificar el tipo de problema, como en el examen real.</li>
+<li><b>Aprender del error.</b> Cada pregunta fallada indica exactamente qué te falta. Lee la explicación y vuelve a ella en unos días.</li>
+<li><b>Bloques de concentración.</b> Sesiones de 25–50 minutos sin distracciones, con pausas cortas, rinden más que horas dispersas.</li>
+<li><b>Sueño y descanso.</b> Dormir consolida lo aprendido. Un día de descanso a la semana protege contra el agotamiento.</li>
+</ul>
+<h2>Una semana de ejemplo</h2>
+<table><tbody>
+<tr><th>Lunes</th><td>Preguntas de la especialidad prioritaria + guía corta + flashcards</td></tr>
+<tr><th>Martes</th><td>Segunda especialidad + repaso de errores del lunes</td></tr>
+<tr><th>Miércoles</th><td>Preguntas mezcladas + flashcards</td></tr>
+<tr><th>Jueves</th><td>Especialidad débil + perlas de su espacio</td></tr>
+<tr><th>Viernes</th><td>Preguntas mezcladas + repaso de errores de la semana</td></tr>
+<tr><th>Sábado</th><td>Simulacro con tiempo + revisión completa de resultados</td></tr>
+<tr><th>Domingo</th><td>Descanso (repaso ligero de flashcards opcional)</td></tr>
+</tbody></table>
+<h2>El día del examen</h2>
+<ul>
+<li>Revisa con anticipación lugar, hora y documentos que pide la convocatoria.</li>
+<li>Duerme bien la noche anterior; no estudies hasta tarde.</li>
+<li>Lee el enunciado completo y todas las opciones antes de responder.</li>
+<li>Si una pregunta te traba, márcala y sigue: vuelve al final.</li>
+<li>Controla el ritmo: revisa el reloj cada cierto número de preguntas.</li>
+</ul>
+<p>Practica con el <a href="/preguntas-enurm/">banco de preguntas</a>, mide tu nivel con un <a href="/simulacro-enurm/">simulacro</a> y consulta la <a href="/fecha-del-enurm/">fecha del ENURM ${next.year}</a> para repartir el tiempo.</p>
+${appCta('/#/como-prepararte', 'Ver la guía completa y armar mi plan')}
+<h2>Preguntas frecuentes</h2>
+${prepFaqs.map(([q, a]) => `<h3>${esc(q)}</h3><p>${esc(a)}</p>`).join('\n')}`,
+      jsonld: [{ '@type': 'FAQPage', mainEntity: prepFaqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }],
     }),
   })
 
