@@ -309,8 +309,8 @@ for (const s of specialtiesWithQuestions.filter((x) => bySpecialty.get(x.id)!.le
     h1: `Preguntas de ${s.name} del ENURM`,
     lead: `${nf(qs.length)} preguntas de ${s.name} de exámenes de años anteriores del ENURM, con la explicación de todas las opciones.`,
     body: `
-<h2>Temas de ${esc(s.name)} que más aparecen</h2>
-<p>Estos son los temas con más preguntas en el banco de ${esc(s.name)}:</p>
+<h2>Temas de ${esc(s.name)} en el banco</h2>
+<p>Los temas con más preguntas en ${esc(s.name)}, de mayor a menor:</p>
 <ul class="grid">
 ${topTopics.map(([t, n]) => `<li>${esc(t)} <span class="muted">${n} ${n === 1 ? 'pregunta' : 'preguntas'}</span></li>`).join('\n')}
 </ul>

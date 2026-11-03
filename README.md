@@ -34,7 +34,7 @@ El **ENURM** (Examen Nacional Único de Residencias Médicas, República Dominic
 
 | Área | Qué incluye |
 | --- | --- |
-| **Práctica** | 1 082 preguntas revisadas. Filtra por especialidad, año o estado (no vistas, falladas, marcadas). Explicación inmediata de por qué la correcta lo es y por qué las demás no. |
+| **Práctica** | 2 402 preguntas revisadas. Filtra por especialidad, año o estado (no vistas, falladas, marcadas). Explicación inmediata de por qué la correcta lo es y por qué las demás no. |
 | **Simulacros** | Completo (100 preguntas, 2 h), medio, rápido o personalizado. Cronómetro, preguntas marcadas, nota final y resultado por especialidad. |
 | **Simulacro nacional** | El mismo examen para todos cada mes; cuenta el primer intento y muestra tu percentil. |
 | **Plan diario** | Tareas concretas según la fase de preparación, tu tiempo, tu residencia deseada y tu precisión real. |
