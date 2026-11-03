@@ -179,7 +179,8 @@ export function buildSeoPages(input: SeoInput): SeoPage[] {
   const { questions, specialties, next, nextLabel, facts } = input
   const per = input.perSpecialty ?? 12
   const minPer = input.minPerSpecialty ?? 8
-  const real = questions.filter((q) => yearsOfQ(q).length)
+  // Preguntas de exámenes reales: las que tienen año y las de la recopilación cuyo año no se identificó (159 hoy).
+  const real = questions.filter((q) => yearsOfQ(q).length || q.tags?.includes('banco-recopilado'))
   const range = yearRange(real)
   const since = range ? range[0] : 2002
   const until = range ? range[1] : since
