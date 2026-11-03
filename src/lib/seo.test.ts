@@ -47,6 +47,14 @@ describe('páginas para buscadores', () => {
     for (const q of flagged.slice(0, 50)) expect(all.includes(`id="${q.id}"`), q.id).toBe(false)
   })
 
+  it('cuenta todas las preguntas del banco, también las de la recopilación sin año', () => {
+    const total = questions.filter((q) => (q.years?.length || q.year) || q.tags?.includes('banco-recopilado')).length
+    expect(total).toBe(questions.length)
+    const label = total.toLocaleString('es-DO').replace(/,/g, '.')
+    expect(pages.find((p) => p.path === 'preguntas-enurm/')!.html).toContain(`${label} preguntas`)
+    expect(pages.find((p) => p.path === 'enurm/')!.html).toContain(`${label} preguntas`)
+  })
+
   it('escapa el HTML del contenido', () => {
     expect(esc('<b>"x" & y</b>')).toBe('&lt;b&gt;&quot;x&quot; &amp; y&lt;/b&gt;')
   })
