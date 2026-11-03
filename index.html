@@ -3,11 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="description" content="Prepárate gratis para el ENURM (Examen Nacional Único de Residencias Médicas, República Dominicana): más de 2.400 preguntas explicadas, simulacros de 100 preguntas, flashcards, guías y plan de estudio diario." />
+    <meta name="description" content="Prepárate gratis para el ENURM: más de 2.400 preguntas de exámenes desde 2002 explicadas opción por opción, simulacros, flashcards y un plan diario." />
     <meta name="theme-color" content="#0d9488" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+    <!-- Icono: Google pide un favicon cuadrado de 48 px o múltiplo, enlazado desde la portada. -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/icon-96.png" />
+    <link rel="icon" type="image/png" sizes="144x144" href="/icon-144.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
     <link rel="canonical" href="https://medlogicenurm.vercel.app/" />
     <link rel="alternate" hreflang="es-DO" href="https://medlogicenurm.vercel.app/" />
@@ -17,63 +21,57 @@
     <meta property="og:site_name" content="MedLogic ENURM" />
     <meta property="og:locale" content="es_DO" />
     <meta property="og:url" content="https://medlogicenurm.vercel.app/" />
-    <meta property="og:title" content="MedLogic ENURM: preguntas, simulacros y plan de estudio gratis" />
-    <meta property="og:description" content="Más de 2.400 preguntas del ENURM explicadas, simulacros cronometrados, flashcards, guías y un plan de estudio hecho para ti. Gratis y sin anuncios." />
+    <meta property="og:title" content="MedLogic ENURM · Prepárate gratis para el ENURM" />
+    <meta property="og:description" content="Más de 2.400 preguntas del ENURM explicadas (meta: 12.000), simulacros, flashcards y un plan de estudio hecho para ti. Gratis." />
     <meta property="og:image" content="https://medlogicenurm.vercel.app/og-image.jpg" />
     <meta property="og:image:secure_url" content="https://medlogicenurm.vercel.app/og-image.jpg" />
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Logo de MedLogic ENURM: Prepárate para el ENURM gratis, con un plan hecho para ti." />
+    <meta property="og:image:alt" content="MedLogic ENURM: prepara el ENURM con método, no con suerte. Más de 2.400 preguntas explicadas." />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="MedLogic ENURM: preguntas, simulacros y plan de estudio gratis" />
-    <meta name="twitter:description" content="Más de 2.400 preguntas del ENURM explicadas, simulacros cronometrados, flashcards, guías y un plan de estudio hecho para ti. Gratis y sin anuncios." />
+    <meta name="twitter:title" content="MedLogic ENURM · Prepárate gratis para el ENURM" />
+    <meta name="twitter:description" content="Más de 2.400 preguntas del ENURM explicadas (meta: 12.000), simulacros, flashcards y un plan de estudio hecho para ti. Gratis." />
     <meta name="twitter:image" content="https://medlogicenurm.vercel.app/og-image.jpg" />
-    <meta name="twitter:image:alt" content="Logo de MedLogic ENURM" />
+    <meta name="twitter:image:alt" content="MedLogic ENURM: prepara el ENURM con método, no con suerte." />
     <link rel="manifest" href="./manifest.webmanifest" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
-    <title>MedLogic ENURM: preguntas, simulacros y plan de estudio gratis</title>
+    <title>ENURM: preguntas explicadas, simulacros y plan gratis | MedLogic</title>
     <!-- Datos estructurados: ayudan a que Google entienda qué es la plataforma y responda dudas frecuentes. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@graph": [
           {
+            "@type": "Organization",
+            "@id": "https://medlogicenurm.vercel.app/#organizacion",
+            "name": "MedLogic AI",
+            "url": "https://medlogicenurm.vercel.app/",
+            "logo": { "@type": "ImageObject", "url": "https://medlogicenurm.vercel.app/icon-512.png", "width": 512, "height": 512 },
+            "description": "IA aplicada a la medicina, automatización y desarrollo web para el sector salud.",
+            "sameAs": ["https://www.instagram.com/medlogic.ai/", "https://github.com/romartak/medlogic.enurm"]
+          },
+          {
             "@type": "WebSite",
             "@id": "https://medlogicenurm.vercel.app/#website",
             "url": "https://medlogicenurm.vercel.app/",
             "name": "MedLogic ENURM",
+            "alternateName": ["MedLogic", "MedLogic ENURM"],
             "description": "Plataforma gratuita y de código abierto para preparar el Examen Nacional Único de Residencias Médicas (ENURM).",
-            "inLanguage": "es-DO"
-          },
-          {
-            "@type": "EducationalOrganization",
-            "@id": "https://medlogicenurm.vercel.app/#organizacion",
-            "name": "MedLogic ENURM",
-            "url": "https://medlogicenurm.vercel.app/",
-            "logo": "https://medlogicenurm.vercel.app/icon-512.png",
-            "sameAs": [
-              "https://github.com/romartak/medlogic.enurm",
-              "https://www.instagram.com/medlogic.ai/"
-            ]
+            "inLanguage": "es-DO",
+            "publisher": { "@id": "https://medlogicenurm.vercel.app/#organizacion" }
           },
           {
             "@type": "WebApplication",
             "@id": "https://medlogicenurm.vercel.app/#app",
             "name": "MedLogic ENURM",
             "url": "https://medlogicenurm.vercel.app/",
-            "description": "Banco de preguntas explicadas, simulacros cronometrados, flashcards, guías y plan de estudio diario para preparar el ENURM.",
             "applicationCategory": "EducationalApplication",
-            "operatingSystem": "Cualquiera (web)",
-            "browserRequirements": "Requiere JavaScript",
+            "operatingSystem": "Web, Android, iOS",
             "inLanguage": "es-DO",
             "isAccessibleForFree": true,
             "offers": { "@type": "Offer", "price": "0", "priceCurrency": "DOP" },
-            "audience": {
-              "@type": "Audience",
-              "audienceType": "Médicos en formación que se preparan para el ENURM",
-              "geographicArea": { "@type": "Country", "name": "República Dominicana" }
-            },
+            "description": "Preguntas del ENURM desde 2002 explicadas opción por opción, simulacros de 100 preguntas, flashcards con repetición espaciada y un plan de estudio diario.",
             "publisher": { "@id": "https://medlogicenurm.vercel.app/#organizacion" }
           },
           {
@@ -85,7 +83,7 @@
                 "name": "¿Cuándo es el ENURM?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Se aplica una vez al año, el primer domingo de marzo, en la UASD. Así fue en 2024 (3 de marzo), 2025 (2 de marzo) y 2026 (1 de marzo). Para los próximos años mostramos la fecha proyectada hasta que salga la convocatoria oficial."
+                  "text": "Se aplica una vez al año, el primer domingo de marzo, en la UASD. En la web se muestra la fecha proyectada hasta que sale la convocatoria oficial."
                 }
               },
               {
@@ -93,7 +91,7 @@
                 "name": "¿Qué puntaje necesito para concursar?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Según el aviso del Ministerio de Salud Pública, necesitas 60 puntos o más (de 100) para concursar por una especialidad. La calificación vale por 2 años; si lo tomas de nuevo, solo cuenta el examen más reciente. En el concurso también suman el índice académico, los honores, la pasantía y una entrevista (1–5 puntos)."
+                  "text": "60 puntos o más de 100 para concursar por una especialidad. La calificación vale por 2 años y, si repites, cuenta el examen más reciente."
                 }
               },
               {
@@ -101,7 +99,7 @@
                 "name": "¿Cómo es el examen?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Las guías de preparación coinciden en 100 preguntas de selección múltiple en unas 2 horas: alrededor de 72 segundos por pregunta. Los simulacros de MedLogic usan ese mismo formato. Confirma siempre los detalles en la convocatoria oficial."
+                  "text": "100 preguntas de selección múltiple en unas 2 horas: alrededor de 72 segundos por pregunta. Los simulacros de MedLogic usan ese mismo formato."
                 }
               },
               {
@@ -109,23 +107,7 @@
                 "name": "¿De verdad es gratis?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Sí, ahora y siempre. Es un proyecto de código abierto y sin anuncios. Puedes estudiar sin registrarte: la cuenta es opcional. Nadie vende tus datos."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "¿Dónde se guarda mi progreso?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Sin cuenta, solo en tu navegador: si borras los datos del navegador o cambias de dispositivo, no lo recuperas (desde Configuración puedes descargar una copia). Con una cuenta gratis se guarda en la nube y es el mismo en todos tus dispositivos."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "¿De dónde salen las preguntas?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "De exámenes de años anteriores recopilados, más un banco de muestra. Hoy hay más de 2.400 preguntas y nuestra meta es llegar a 12.000. Cada pregunta trae la explicación de todas las opciones, la fisiopatología, puntos clave y la referencia del libro. Las respuestas se revisaron una por una con la bibliografía, y se quitaron las repetidas y las incompletas."
+                  "text": "Sí, ahora y siempre. Es un proyecto de código abierto y sin anuncios. Puedes estudiar sin registrarte; con una cuenta gratis tu progreso se guarda en la nube."
                 }
               }
             ]
@@ -189,28 +171,10 @@
           <div class="boot-bar"><i></i></div>
         </div>
       </div>
-      <!-- Texto para buscadores y lectores sin JavaScript: queda debajo de la pantalla de carga y React lo reemplaza al montar la app. -->
-      <div class="seo-static">
-        <h1>Prepárate para el ENURM con método, no con suerte</h1>
-        <p>
-          MedLogic ENURM es la plataforma gratuita y de código abierto para preparar el Examen Nacional Único de Residencias Médicas (ENURM) de
-          República Dominicana: más de 2.400 preguntas con el porqué de cada opción, simulacros cronometrados, flashcards estilo Anki, guías y un plan diario que se
-          ajusta al tiempo que te queda.
-        </p>
-        <nav aria-label="Guías del ENURM">
-          <ul>
-            <li><a href="./que-es-el-enurm/">¿Qué es el ENURM?</a></li>
-            <li><a href="./fecha-del-enurm/">Fecha del ENURM</a></li>
-            <li><a href="./banco-de-preguntas-enurm/">Banco de preguntas del ENURM</a></li>
-            <li><a href="./simulacro-enurm/">Simulacro del ENURM</a></li>
-            <li><a href="./como-prepararse-para-el-enurm/">Cómo prepararse para el ENURM</a></li>
-          </ul>
-        </nav>
-      </div>
     </div>
     <noscript>
       MedLogic ENURM necesita JavaScript activado.
-      <a href="./que-es-el-enurm/">¿Qué es el ENURM?</a> · <a href="./banco-de-preguntas-enurm/">Banco de preguntas</a> ·
+      <a href="./enurm/">Guía del ENURM</a> · <a href="./preguntas-enurm/">Preguntas del ENURM</a> · <a href="./simulacro-enurm/">Simulacro</a> ·
       <a href="./privacidad/">Política de privacidad</a> · <a href="./terminos/">Términos de servicio</a>
     </noscript>
     <script type="module" src="/src/main.tsx"></script>

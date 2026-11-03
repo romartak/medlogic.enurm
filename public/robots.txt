@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
 
-# La app usa rutas con # (HashRouter): lo que se indexa es la portada, las guías del ENURM y las páginas legales.
-# El sitemap se genera en cada despliegue (scripts/build-seo.ts).
+# La app usa rutas con # (HashRouter). Para buscadores se publican además páginas estáticas
+# (guía del ENURM, preguntas por especialidad y simulacro), generadas por scripts/build-seo.ts.
 Sitemap: https://medlogicenurm.vercel.app/sitemap.xml
