@@ -19,7 +19,7 @@ describe('páginas para buscadores', () => {
   it('rutas únicas con guía, banco, especialidades y simulacro', () => {
     const paths = pages.map((p) => p.path)
     expect(new Set(paths).size).toBe(paths.length)
-    for (const p of ['enurm/', 'preguntas-enurm/', 'simulacro-enurm/', 'preguntas-enurm/pediatria/']) expect(paths).toContain(p)
+    for (const p of ['enurm/', 'preguntas-enurm/', 'simulacro-enurm/', 'fecha-del-enurm/', 'como-prepararse-para-el-enurm/', 'preguntas-enurm/pediatria/']) expect(paths).toContain(p)
   })
 
   it('cada página tiene título, descripción, canonical propio y datos estructurados válidos', () => {
@@ -28,6 +28,7 @@ describe('páginas para buscadores', () => {
       expect(p.title.length, p.path).toBeLessThanOrEqual(80)
       expect(p.html, p.path).toMatch(/<meta name="description" content="[^"]{60,}"/)
       expect(p.html, p.path).toContain(`<link rel="canonical" href="${SITE}/${p.path}" />`)
+      expect(p.html, p.path).toContain(`<link rel="alternate" hreflang="es-DO" href="${SITE}/${p.path}" />`)
       expect(p.html.match(/<h1>/g)?.length, p.path).toBe(1)
       const ld = p.html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)?.[1]
       expect(() => JSON.parse(ld!), p.path).not.toThrow()
