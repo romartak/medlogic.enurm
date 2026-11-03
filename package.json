@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && vite-node scripts/build-seo.ts",
     "build:vercel": "node scripts/migrate.mjs && npm run build",
     "preview": "vite preview",
     "typecheck": "tsc -b",

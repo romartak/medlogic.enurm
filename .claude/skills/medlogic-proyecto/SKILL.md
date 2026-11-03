@@ -39,4 +39,4 @@ Si una falla, se corrige antes de hacer commit. Nunca se salta ni se desactiva u
 
 - El cliente de Supabase se carga aparte con `getSupabase()` (`src/lib/supabase.ts`); no importarlo de forma estática. En la portada se inicia tras pintar o al primer toque.
 - Los colores de texto de Tailwind en modo claro se oscurecen con las reglas `html:not(.dark) .text-*` de `src/index.css`. Un problema de contraste se arregla ahí, no clase por clase.
-- La app usa rutas con `#` (HashRouter); solo la portada y las páginas legales se indexan.
+- La app usa rutas con `#` (HashRouter): para Google solo existe la portada. Por eso `npm run build` ejecuta al final `scripts/build-seo.ts`, que genera en `dist/` páginas HTML reales (`/que-es-el-enurm/`, `/fecha-del-enurm/`, `/banco-de-preguntas-enurm/`, `/simulacro-enurm/`, `/como-prepararse-para-el-enurm/` y `/preguntas-enurm/<especialidad>/`) y el `sitemap.xml`. Las cifras salen del banco y las fechas de `src/data/enurm.ts`; no se escriben a mano. Texto nuevo en esas páginas: solo datos verificados.
