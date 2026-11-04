@@ -1,5 +1,8 @@
-import confetti from 'canvas-confetti'
+import type { Options } from 'canvas-confetti'
 import { useProgress } from '@/store/progress'
+
+/** El confeti (~24 KB) se descarga la primera vez que se celebra, no al abrir la página. */
+const confetti = (opts: Options) => void import('canvas-confetti').then((m) => m.default(opts))
 
 const COLORS = ['#06c4b0', '#6366f1', '#ec4899', '#f59e0b', '#22c55e']
 
