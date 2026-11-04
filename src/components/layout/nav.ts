@@ -3,6 +3,8 @@ import { Bone, Droplet, Flag, Hand, HeartPulse, Languages, Medal, MonitorDot, Si
 export interface NavItem {
   to: string
   label: string
+  /** Nombre corto para la barra superior del celular, donde el completo no cabe. */
+  short?: string
   icon: LucideIcon
   description: string
 }
@@ -16,7 +18,7 @@ export const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
       { to: '/especialidades', label: 'Especialidades', icon: LayoutGrid, description: 'Un espacio por cada área del examen' },
       { to: '/practica', label: 'Práctica', icon: Target, description: 'Preguntas con retroalimentación inmediata' },
       { to: '/simulacro', label: 'Simulacro', icon: GraduationCap, description: 'Examen cronometrado tipo ENURM' },
-      { to: '/simulacro-nacional', label: 'Simulacro nacional', icon: Flag, description: 'El mismo examen para todo el país cada mes, con percentil' },
+      { to: '/simulacro-nacional', label: 'Simulacro nacional', short: 'Nacional', icon: Flag, description: 'El mismo examen para todo el país cada mes, con percentil' },
       { to: '/casos', label: 'Casos clínicos', icon: Stethoscope, description: 'Decide paso a paso como en la guardia' },
       { to: '/flashcards', label: 'Flashcards', icon: Layers, description: 'Repetición espaciada' },
       { to: '/terminologia', label: 'Terminología', icon: Languages, description: 'Aprende términos médicos por partes, como en Duolingo' },
@@ -27,7 +29,7 @@ export const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
     title: 'Habilidades clínicas',
     items: [
       { to: '/atls', label: 'ATLS', icon: Siren, description: 'El politraumatizado: xABCDE, shock, tórax, TCE y quemaduras' },
-      { to: '/fracturas', label: 'Trauma y fracturas', icon: Bone, description: 'Mecanismos, trazos, Salter-Harris y fracturas con nombre propio' },
+      { to: '/fracturas', label: 'Trauma y fracturas', short: 'Trauma', icon: Bone, description: 'Mecanismos, trazos, Salter-Harris y fracturas con nombre propio' },
       { to: '/fisiopatologia', label: 'Fisiopatología', icon: Waypoints, description: 'Esquemas interactivos de las fisiopatologías más preguntadas' },
       { to: '/semiologia', label: 'Semiología', icon: Hand, description: 'Cómo explorar cada sistema y qué significa cada signo' },
       { to: '/espirometria', label: 'Espirometría', icon: Wind, description: 'Interpreta patrones, gravedad y curvas flujo-volumen' },
@@ -38,14 +40,14 @@ export const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
   {
     title: 'Explorar',
     items: [
-      { to: '/banco', label: 'Banco de preguntas', icon: Library, description: 'Busca y filtra todas las preguntas' },
+      { to: '/banco', label: 'Banco de preguntas', short: 'Banco', icon: Library, description: 'Busca y filtra todas las preguntas' },
       { to: '/repaso', label: 'Repaso', icon: RotateCcw, description: 'Errores, marcadas y notas' },
       { to: '/juegos', label: 'Juegos', icon: Gamepad2, description: 'Aprende jugando' },
       { to: '/duelo', label: 'Duelo', icon: Swords, description: 'Reta a un amigo con las mismas 10 preguntas' },
       { to: '/ecg', label: 'Lee el ECG', icon: HeartPulse, description: 'Reconoce arritmias, bloqueos y lesión aguda' },
       { to: '/herramientas', label: 'Herramientas', icon: Calculator, description: 'Calculadoras y escalas clínicas' },
       { to: '/actualizaciones', label: 'Actualizaciones', icon: Newspaper, description: 'Cambios recientes en guías' },
-      { to: '/como-prepararte', label: 'Cómo prepararte', icon: Compass, description: 'Estrategia, fases y consejos' },
+      { to: '/como-prepararte', label: 'Cómo prepararte', short: 'Prepárate', icon: Compass, description: 'Estrategia, fases y consejos' },
     ],
   },
   {

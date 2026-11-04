@@ -199,7 +199,7 @@ export function AppLayout() {
         <header className="glass sticky top-0 z-20 border-x-0 border-t-0">
           <div className="mx-auto flex h-16 max-w-7xl items-center gap-2 px-4 sm:px-6 lg:px-8">
             <div className='min-w-0 flex-1 lg:hidden'>
-              <span className="truncate font-display font-bold">{current?.label ?? 'MedLogic'}</span>
+              <span className="block truncate font-display font-bold">{current?.short ?? current?.label ?? 'MedLogic'}</span>
             </div>
             <button
               onClick={() => setPaletteOpen(true)}
