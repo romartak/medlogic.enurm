@@ -8,6 +8,7 @@ import { Button, Card, PageHeader, Segmented } from '@/components/ui/primitives'
 import { Modal } from '@/components/ui/Modal'
 import { hadAccount, markHadAccount, takeNotice } from '@/lib/account'
 import { markOAuthStart, clearOAuthReturn } from '@/lib/oauth'
+import { useWelcome } from '@/store/welcome'
 import { useProgress } from '@/store/progress'
 import type { Honorific } from '@/types'
 import { toast } from '@/store/toasts'
@@ -165,7 +166,7 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
       } else if (mode === 'signin') {
         const { error } = await supabase.auth.signInWithPassword({ email, password, options: captcha })
         if (error) throw error
-        toast({ kind: 'success', title: 'Sesión iniciada' })
+        useWelcome.getState().start('back')
       } else if (mode === 'signup') {
         const typed = splitName(answered ? settings.name : name)
         const chosen = answered ? settings.honorific : treatment
@@ -183,7 +184,7 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
         if (!data.session) {
           setCooldown(RESEND_SECONDS)
           setSent({ kind: 'verify', title: 'Confirma tu correo', body: `Te enviamos un enlace a ${email}. Ábrelo desde este dispositivo para activar tu cuenta. Si no llega en unos minutos, mira en spam.` })
-        } else toast({ kind: 'success', title: '¡Cuenta creada!' })
+        } else useWelcome.getState().start('new')
       }
     } catch (err) {
       setError(authErrorMessage(err))
@@ -531,7 +532,7 @@ export default function Account() {
         subtitle={status === 'signed-in' ? 'Tu perfil y la sincronización de tu progreso.' : (intent?.subtitle ?? 'Es opcional: con una cuenta gratis tu progreso se guarda en la nube y lo usas en cualquier dispositivo.')}
       />
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-        {!isSupabaseConfigured ? <NotConfigured /> : !ready ? <div className="skeleton mx-auto h-80 max-w-md rounded-2xl" /> : recovering ? <NewPassword /> : status === 'signed-in' ? <Navigate to="/ajustes" replace /> : <AuthForm from={from} initialMode={state?.mode} />}
+        {!isSupabaseConfigured ? <NotConfigured /> : !ready ? <div className="skeleton mx-auto h-80 max-w-md rounded-2xl" /> : recovering ? <NewPassword /> : status === 'signed-in' ? <Navigate to="/inicio" replace /> : <AuthForm from={from} initialMode={state?.mode} />}
       </motion.div>
     </div>
   )

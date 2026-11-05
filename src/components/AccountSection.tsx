@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { CloudOff, Cloud, LogOut, RefreshCw, Trash2 } from 'lucide-react'
-import { syncNow, flushPending } from '@/lib/sync'
+import { CloudOff, Cloud, RefreshCw, Trash2 } from 'lucide-react'
+import { syncNow } from '@/lib/sync'
 import { useAuth } from '@/store/auth'
 import { Button, Card } from '@/components/ui/primitives'
 import { Modal } from '@/components/ui/Modal'
-import { deleteMyAccount, logout } from '@/lib/account'
+import { deleteMyAccount } from '@/lib/account'
+import { SignOutButton } from '@/components/SignOutButton'
 import { cn, formatDate } from '@/lib/utils'
 
 export const CONTACT_EMAIL = 'medlogic.care@gmail.com'
@@ -28,25 +29,7 @@ export function AccountSection() {
   const [typed, setTyped] = useState('')
   const [deleting, setDeleting] = useState(false)
   const [deleteError, setDeleteError] = useState('')
-  const [leaving, setLeaving] = useState(false)
-  const [confirmLeave, setConfirmLeave] = useState(false)
   const CONFIRM_WORD = 'ELIMINAR'
-
-  /** Sube lo pendiente y cierra la sesión. Si no se pudo subir, avisa antes de borrar este dispositivo. */
-  const leave = async () => {
-    setLeaving(true)
-    if (!(await flushPending())) {
-      setLeaving(false)
-      setConfirmLeave(true)
-      return
-    }
-    await logout()
-  }
-  const leaveAnyway = async () => {
-    setConfirmLeave(false)
-    setLeaving(true)
-    await logout()
-  }
 
   const closeDelete = () => {
     if (deleting) return
@@ -91,9 +74,7 @@ export function AccountSection() {
           <div className="truncate font-semibold">{user?.email}</div>
           <div className="text-sm text-muted">Acceso con {provider === 'google' ? 'Google' : 'correo'}</div>
         </div>
-        <Button variant="outline" className="w-full sm:w-auto" onClick={() => void leave()} disabled={leaving}>
-          {leaving ? <RefreshCw className="size-4 animate-spin" /> : <LogOut className="size-4" />} Cerrar sesión
-        </Button>
+        <SignOutButton className="w-full sm:w-auto" />
       </div>
 
       <div className="p-5 sm:p-6">
@@ -103,19 +84,6 @@ export function AccountSection() {
           <Trash2 className="size-4" /> Eliminar mi cuenta
         </Button>
       </div>
-
-      <Modal open={confirmLeave} onClose={() => setConfirmLeave(false)} title="No se pudo guardar tu último progreso">
-        <div className="space-y-4 text-sm">
-          <p className="text-muted">Tu progreso más reciente todavía no está guardado en la nube (¿sin conexión?). Si cierras sesión ahora, ese progreso se perderá de este dispositivo.</p>
-          <p className="text-muted">Lo mejor es esperar a tener conexión, pulsar «Sincronizar ahora» y cerrar sesión después.</p>
-          <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-            <Button variant="danger" onClick={() => void leaveAnyway()}>
-              Cerrar sesión y perderlo
-            </Button>
-            <Button onClick={() => setConfirmLeave(false)}>Me quedo</Button>
-          </div>
-        </div>
-      </Modal>
 
       <Modal open={confirmDelete} onClose={closeDelete} title="¿Eliminar tu cuenta para siempre?">
         <div className="space-y-4 text-sm">

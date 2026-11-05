@@ -22,6 +22,7 @@ import { saveProfile, type ProfileEdit } from '@/lib/account'
 import { Avatar } from '@/components/ui/Avatar'
 import { AvatarPicker, useMyAvatar } from '@/components/AvatarPicker'
 import { AccountSection } from '@/components/AccountSection'
+import { SignOutButton } from '@/components/SignOutButton'
 
 const SECTIONS = [
   ['perfil', 'Perfil'],
@@ -72,6 +73,7 @@ function ProfileHero() {
           <Cloud className="size-4" /> Guardar en la nube
         </Link>
       )}
+      {status === 'signed-in' && <SignOutButton className="w-full sm:w-auto" />}
       <AvatarPicker open={picking} onClose={() => setPicking(false)} />
     </Card>
   )
