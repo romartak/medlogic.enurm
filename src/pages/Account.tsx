@@ -14,7 +14,9 @@ import { addressName, cleanName, cn, splitName } from '@/lib/utils'
 import { captchaEnabled, Turnstile } from '@/components/Turnstile'
 import { CONTACT_EMAIL } from '@/components/AccountSection'
 
-const RECOVERY_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Olvidé mi contraseña de MedLogic ENURM')}&body=${encodeURIComponent('Hola, olvidé mi contraseña. Mi cuenta es este correo.')}`
+const RECOVERY_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Ayuda con mi cuenta de MedLogic ENURM')}&body=${encodeURIComponent('Hola, no recibo el correo de mi cuenta. Mi cuenta es este correo.')}`
+const RECOVERY_MAILTO_FORGOT = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Olvidé mi contraseña de MedLogic ENURM')}&body=${encodeURIComponent('Hola, olvidé mi contraseña. Mi cuenta es este correo.')}`
+const RESEND_SECONDS = 60
 
 /**
  * La cuenta se pide al entrar a una sección concreta. El mensaje sigue esa intención («venías al
@@ -54,8 +56,17 @@ const TREATMENTS: { value: Honorific; label: string }[] = [
   { value: 'none', label: 'N/A' },
 ]
 
-/** El acceso con Google se activa cuando ya esté listo en Google Cloud y Supabase; hasta entonces solo correo y contraseña. */
-const GOOGLE_LOGIN_ENABLED = false
+/**
+ * El botón de Google solo aparece si en Vercel existe VITE_GOOGLE_LOGIN=true. Ponla DESPUÉS de activar Google en
+ * Supabase (Authentication → Sign In / Providers → Google); sin eso, el botón daría error al pulsarlo.
+ */
+const GOOGLE_LOGIN_ENABLED = import.meta.env.VITE_GOOGLE_LOGIN === 'true'
+
+/**
+ * «¿Olvidaste tu contraseña?» por correo solo se ofrece con VITE_EMAIL_FLOWS=true. Ponla DESPUÉS de configurar el
+ * SMTP en Supabase y de probar que el correo llega; mientras tanto se muestra el enlace para escribir a soporte.
+ */
+const EMAIL_FLOWS_ENABLED = import.meta.env.VITE_EMAIL_FLOWS === 'true'
 
 const field = 'mt-1.5 h-12 w-full rounded-xl border border-soft surface-2 px-4 outline-none transition-colors focus:border-brand-500'
 
@@ -127,21 +138,30 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
   const [password2, setPassword2] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
-  const [sent, setSent] = useState<null | { title: string; body: string }>(null)
+  const [sent, setSent] = useState<null | { title: string; body: string; kind: 'verify' | 'reset' }>(null)
+  const [forgot, setForgot] = useState(false)
+  const [cooldown, setCooldown] = useState(0)
+  const [resending, setResending] = useState(false)
   const [captchaToken, setCaptchaToken] = useState('')
   const [captchaRound, setCaptchaRound] = useState(0)
 
   const submit = async (e: FormEvent) => {
     e.preventDefault()
     if (!isSupabaseConfigured) return
-    if (mode === 'signup' && password !== password2) return setError('Las contraseñas no coinciden.')
+    if (!forgot && mode === 'signup' && password !== password2) return setError('Las contraseñas no coinciden.')
     if (captchaEnabled && !captchaToken) return setError('Espera a que termine la verificación anti-robots.')
     const captcha = captchaEnabled ? { captchaToken } : {}
     setBusy(true)
     setError('')
     try {
       const supabase = (await getSupabase())!
-      if (mode === 'signin') {
+      if (forgot) {
+        // Supabase responde igual exista o no la cuenta, para no revelar quién está registrado.
+        const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: authRedirectUrl(), ...captcha })
+        if (error) throw error
+        setCooldown(RESEND_SECONDS)
+        setSent({ kind: 'reset', title: 'Revisa tu correo', body: `Si existe una cuenta con ${email}, te enviamos un enlace para crear una contraseña nueva. Ábrelo desde este mismo dispositivo y navegador. Si no llega en unos minutos, mira en spam.` })
+      } else if (mode === 'signin') {
         const { error } = await supabase.auth.signInWithPassword({ email, password, options: captcha })
         if (error) throw error
         toast({ kind: 'success', title: 'Sesión iniciada' })
@@ -156,9 +176,13 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
           options: { data: { name: addressName({ name: callName, honorific }), call_name: callName, treatment: honorific }, emailRedirectTo: authRedirectUrl(), ...captcha },
         })
         if (error) throw error
+        // Con la confirmación de correo activada, un correo ya registrado no da error: devuelve un usuario sin identidades.
+        if (data.user && data.user.identities?.length === 0) throw new Error('User already registered')
         if (!answered) updateSettings({ name: callName, honorific })
-        if (!data.session) setSent({ title: 'Confirma tu correo', body: `Te enviamos un enlace a ${email}. Ábrelo desde este dispositivo para activar tu cuenta.` })
-        else toast({ kind: 'success', title: '¡Cuenta creada!' })
+        if (!data.session) {
+          setCooldown(RESEND_SECONDS)
+          setSent({ kind: 'verify', title: 'Confirma tu correo', body: `Te enviamos un enlace a ${email}. Ábrelo desde este dispositivo para activar tu cuenta. Si no llega en unos minutos, mira en spam.` })
+        } else toast({ kind: 'success', title: '¡Cuenta creada!' })
       }
     } catch (err) {
       setError(authErrorMessage(err))
@@ -169,6 +193,33 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
         setCaptchaToken('')
         setCaptchaRound((r) => r + 1)
       }
+    }
+  }
+
+  useEffect(() => {
+    if (cooldown <= 0) return
+    const t = setTimeout(() => setCooldown((c) => c - 1), 1000)
+    return () => clearTimeout(t)
+  }, [cooldown])
+
+  /** Reenvía el correo de confirmación o de recuperación (con espera de un minuto entre envíos). */
+  const resend = async () => {
+    if (!sent || cooldown > 0) return
+    setResending(true)
+    setError('')
+    try {
+      const supabase = (await getSupabase())!
+      const { error } =
+        sent.kind === 'verify'
+          ? await supabase.auth.resend({ type: 'signup', email, options: { emailRedirectTo: authRedirectUrl() } })
+          : await supabase.auth.resetPasswordForEmail(email, { redirectTo: authRedirectUrl() })
+      if (error) throw error
+      toast({ kind: 'success', title: 'Correo reenviado' })
+      setCooldown(RESEND_SECONDS)
+    } catch (err) {
+      setError(authErrorMessage(err))
+    } finally {
+      setResending(false)
     }
   }
 
@@ -188,13 +239,31 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
         </div>
         <h2 className="mt-4 font-display text-xl font-bold">{sent.title}</h2>
         <p className="mt-2 text-sm text-muted">{sent.body}</p>
-        <Button variant="outline" className="mt-6" onClick={() => (setSent(null), setMode('signin'))}>
-          Volver
-        </Button>
+        {error && (
+          <p role="alert" className="mt-4 rounded-xl bg-rose-500/10 px-3 py-2.5 text-sm text-rose-700 dark:text-rose-300">
+            {error}
+          </p>
+        )}
+        <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-center">
+          <Button variant="secondary" onClick={() => void resend()} disabled={cooldown > 0 || resending}>
+            {resending && <RefreshCw className="size-4 animate-spin" />} {cooldown > 0 ? `Reenviar en ${cooldown} s` : 'Reenviar correo'}
+          </Button>
+          <Button variant="outline" onClick={() => (setSent(null), setForgot(false), setError(''), setMode('signin'))}>
+            Volver
+          </Button>
+        </div>
+        <p className="mt-4 text-xs text-muted">
+          ¿Sigue sin llegar?{' '}
+          <a href={RECOVERY_MAILTO} className="font-semibold underline">
+            Escríbenos a {CONTACT_EMAIL}
+          </a>
+          .
+        </p>
       </Card>
     )
 
   const titles: Record<Mode, string> = { signin: 'Inicia sesión', signup: 'Crea tu cuenta gratis' }
+  const title = forgot ? 'Recupera tu contraseña' : titles[mode]
 
   return (
     <div className="mx-auto grid max-w-5xl items-start gap-8 lg:grid-cols-[1fr_440px]">
@@ -244,7 +313,7 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
       <Card className="p-6 sm:p-8">
         <Segmented
           value={mode}
-          onChange={(m) => (setMode(m), setError(''))}
+          onChange={(m) => (setMode(m), setForgot(false), setError(''))}
           className="mb-6 grid w-full grid-cols-2"
           options={[
             { value: 'signin', label: 'Iniciar sesión' },
@@ -256,9 +325,10 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
             {notice === 'deleted' ? 'Tu cuenta fue eliminada. Gracias por haber estudiado con MedLogic.' : 'Cerraste sesión. Tu progreso quedó guardado en tu cuenta y este dispositivo quedó limpio.'}
           </p>
         )}
-        <h2 className="font-display text-xl font-bold">{titles[mode]}</h2>
+        <h2 className="font-display text-xl font-bold">{title}</h2>
+        {forgot && <p className="mt-2 text-sm text-muted">Escribe el correo de tu cuenta y te enviaremos un enlace para crear una contraseña nueva.</p>}
 
-        {GOOGLE_LOGIN_ENABLED && (
+        {GOOGLE_LOGIN_ENABLED && !forgot && (
           <>
             <Button variant="outline" size="lg" className="mt-5 w-full" onClick={google}>
               <GoogleIcon className="size-5" /> Continuar con Google
@@ -269,8 +339,8 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
           </>
         )}
 
-        <form onSubmit={submit} className={cn('space-y-4', !GOOGLE_LOGIN_ENABLED && 'mt-5')}>
-          {mode === 'signup' && answered && (
+        <form onSubmit={submit} className={cn('space-y-4', (!GOOGLE_LOGIN_ENABLED || forgot) && 'mt-5')}>
+          {!forgot && mode === 'signup' && answered && (
             <div className="flex items-center gap-3 rounded-2xl border border-brand-500/25 bg-brand-500/10 px-4 py-3">
               <span className="grid size-10 shrink-0 place-items-center rounded-full bg-brand-gradient font-display font-bold text-white">{(cleanName(settings.name) || addressName(settings) || '·').charAt(0).toUpperCase()}</span>
               <div className="min-w-0 text-sm">
@@ -279,7 +349,7 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
               </div>
             </div>
           )}
-          {mode === 'signup' && !answered && (
+          {!forgot && mode === 'signup' && !answered && (
             <>
               <fieldset>
                 <legend className="text-sm font-medium">¿Cómo prefieres que te llamemos?</legend>
@@ -316,6 +386,7 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
             Correo electrónico
             <input id="acc-email" name="email" type="email" required maxLength={254} value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" inputMode="email" className={field} />
           </label>
+          {!forgot && (
           <div>
             <label htmlFor="acc-pass" className="text-sm font-medium">
               Contraseña
@@ -323,7 +394,8 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
             <PasswordInput id="acc-pass" name="password" value={password} onChange={setPassword} autoComplete={mode === 'signup' ? 'new-password' : 'current-password'} />
             {mode === 'signup' && <p className="mt-1.5 text-xs text-muted">Mínimo 8 caracteres.</p>}
           </div>
-          {mode === 'signup' && (
+          )}
+          {!forgot && mode === 'signup' && (
             <div>
               <label htmlFor="acc-pass2" className="text-sm font-medium">
                 Repite la contraseña
@@ -342,9 +414,14 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
 
           <Button type="submit" size="lg" className="w-full" disabled={busy}>
             {busy && <RefreshCw className="size-4 animate-spin" />}
-            {mode === 'signin' ? 'Entrar' : 'Crear cuenta'}
+            {forgot ? 'Enviar enlace' : mode === 'signin' ? 'Entrar' : 'Crear cuenta'}
           </Button>
-          {mode === 'signup' && <p className="text-center text-xs text-muted">Gratis para siempre · sin anuncios · sin tarjeta</p>}
+          {forgot && (
+            <button type="button" onClick={() => (setForgot(false), setError(''))} className="block w-full py-2 text-center text-sm font-semibold text-brand-700 hover:underline dark:text-brand-400">
+              Volver a iniciar sesión
+            </button>
+          )}
+          {!forgot && mode === 'signup' && <p className="text-center text-xs text-muted">Gratis para siempre · sin anuncios · sin tarjeta</p>}
         </form>
 
         <p className="mt-4 text-center text-xs text-muted">
@@ -359,10 +436,17 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
           .
         </p>
 
-        {mode === 'signin' && (
+        {mode === 'signin' && !forgot && EMAIL_FLOWS_ENABLED && (
+          <p className="mt-5 text-center text-sm text-muted">
+            <button type="button" onClick={() => (setForgot(true), setError(''))} className="relative font-semibold text-brand-700 after:absolute after:-inset-3 hover:underline dark:text-brand-400">
+              ¿Olvidaste tu contraseña?
+            </button>
+          </p>
+        )}
+        {mode === 'signin' && !EMAIL_FLOWS_ENABLED && (
           <p className="mt-5 text-center text-sm text-muted">
             ¿Olvidaste tu contraseña?{' '}
-            <a href={RECOVERY_MAILTO} className="font-semibold text-brand-700 hover:underline dark:text-brand-400">
+            <a href={RECOVERY_MAILTO_FORGOT} className="font-semibold text-brand-700 hover:underline dark:text-brand-400">
               Escríbenos a {CONTACT_EMAIL}
             </a>{' '}
             desde el correo de tu cuenta y te ayudamos.
@@ -378,10 +462,12 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
 function NewPassword() {
   const setSync = useAuth((s) => s.setSync)
   const [password, setPassword] = useState('')
+  const [password2, setPassword2] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const submit = async (e: FormEvent) => {
     e.preventDefault()
+    if (password !== password2) return setError('Las contraseñas no coinciden.')
     setBusy(true)
     setError('')
     const { error } = await (await getSupabase())!.auth.updateUser({ password })
@@ -401,6 +487,10 @@ function NewPassword() {
           Contraseña nueva
         </label>
         <PasswordInput id="new-pass" name="password" value={password} onChange={setPassword} autoComplete="new-password" />
+        <label htmlFor="new-pass2" className="block text-sm font-medium">
+          Repite la contraseña nueva
+        </label>
+        <PasswordInput id="new-pass2" name="password-confirm" value={password2} onChange={setPassword2} autoComplete="new-password" />
         {error && (
           <p role="alert" className="rounded-xl bg-rose-500/10 px-3 py-2.5 text-sm text-rose-700 dark:text-rose-300">
             {error}

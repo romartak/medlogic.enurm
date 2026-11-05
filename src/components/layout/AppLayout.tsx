@@ -1,11 +1,11 @@
 import { LocalProgressLine } from '@/components/AccountNote'
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { NavLink, useLocation, useNavigate, useOutlet } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { Flame, LogIn, Moon, Search, Sun, Monitor, UserRound, Zap } from 'lucide-react'
 import { NAV_GROUPS, MOBILE_TABS, hasNestedNav, navFor } from './nav'
 import { Logo, GithubIcon } from '@/components/ui/Logo'
-import { CommandPalette } from './CommandPalette'
+const CommandPalette = lazy(() => import('./CommandPalette').then((m) => ({ default: m.CommandPalette })))
 import { FunctionsSheet, FunctionsTab } from './MobileMenu'
 import { useProgress, levelFromXp } from '@/store/progress'
 import { useAuth } from '@/store/auth'
@@ -136,6 +136,10 @@ const STUDY_SECTIONS = ['/plan', '/especialidades', '/practica', '/simulacro', '
 
 export function AppLayout() {
   const [paletteOpen, setPaletteOpen] = useState(false)
+  const [paletteSeen, setPaletteSeen] = useState(false)
+  useEffect(() => {
+    if (paletteOpen) setPaletteSeen(true)
+  }, [paletteOpen])
   const [functionsOpen, setFunctionsOpen] = useState(false)
   const location = useLocation()
   const outlet = useOutlet()
@@ -244,7 +248,12 @@ export function AppLayout() {
           </div>
         }
       />
-      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
+      {/* El buscador (con fuse.js) se descarga la primera vez que se abre. */}
+      {paletteSeen && (
+        <Suspense fallback={null}>
+          <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} />
+        </Suspense>
+      )}
     </div>
   )
 }

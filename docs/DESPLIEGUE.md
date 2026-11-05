@@ -1,6 +1,6 @@
 # Publicar MedLogic ENURM en Vercel (con cuentas)
 
-La página funciona sin servidor: sin cuentas, todo se guarda en el navegador de cada persona. Con Supabase se activan las cuentas (Google, o correo y contraseña; quien olvide su contraseña escribe a medlogic.care@gmail.com) y el progreso se sincroniza entre dispositivos.
+La página funciona sin servidor: sin cuentas, todo se guarda en el navegador de cada persona. Con Supabase se activan las cuentas (Google, o correo y contraseña; quien olvide su contraseña recibe un enlace por correo para cambiarla) y el progreso se sincroniza entre dispositivos.
 
 ## Camino corto (recomendado, unos 10 minutos)
 
@@ -20,7 +20,7 @@ Abre Supabase desde Vercel (**Storage → tu base → Open in Supabase**):
 1. **Authentication → URL Configuration**
    - **Site URL**: tu dirección final, por ejemplo `https://medlogic-enurm.vercel.app`.
    - **Redirect URLs**: añade `https://medlogic-enurm.vercel.app/**` y, para desarrollo, `http://localhost:5173/**`.
-2. **Authentication → Sign In / Providers → Google** (lo más cómodo para tus usuarios): crea un cliente OAuth en Google Cloud Console (tipo «Aplicación web») con la URI de redirección `https://TU-PROYECTO.supabase.co/auth/v1/callback` y pega el *Client ID* y el *Client Secret*.
+2. **Authentication → Sign In / Providers → Google** (lo más cómodo para tus usuarios): crea un cliente OAuth en Google Cloud Console (tipo «Aplicación web») con la URI de redirección `https://TU-PROYECTO.supabase.co/auth/v1/callback` y pega el *Client ID* y el *Client Secret*. Después, en Vercel → **Settings → Environment Variables**, añade `VITE_GOOGLE_LOGIN` = `true` y vuelve a desplegar: así el botón «Continuar con Google» aparece solo cuando ya funciona.
 3. **Google Cloud → Google Auth Platform**: en *Información de la marca* pon la página principal, la política de privacidad (`/privacidad/`) y los términos (`/terminos/`) de tu dominio, y en *Público* pulsa **Publicar aplicación** para salir del modo de prueba (solo se piden correo y perfil, sin revisión larga).
 
 Las páginas legales son archivos estáticos en `public/privacidad/` y `public/terminos/`. Revísalas y ajusta el correo de contacto si cambia.
@@ -29,9 +29,11 @@ Las páginas legales son archivos estáticos en `public/privacidad/` y `public/t
 El remitente de correo que trae Supabase **solo envía a los miembros de tu equipo y unas 2 veces por hora**. Para que cualquiera pueda registrarse con correo elige una opción:
 
 - **A. Remitente propio (recomendado)**: crea una cuenta gratis en [Resend](https://resend.com) (3 000 correos al mes), verifica tu dominio y ponlo en **Authentication → Emails → SMTP Settings**. Así funcionan la confirmación de correo, el enlace de acceso y «¿Olvidaste tu contraseña?».
-- **B. Sin correos**: en **Authentication → Sign In / Providers → Email**, desactiva **Confirm email**. El registro con correo y contraseña funciona al instante, pero no habrá recuperación de contraseña ni enlace de acceso. Activa el anti-bots del paso 5.
+- **B. Sin correos**: en **Authentication → Sign In / Providers → Email**, desactiva **Confirm email**. El registro con correo y contraseña funciona al instante, pero no habrá verificación de correo y la recuperación de contraseña no podrá enviar el enlace. Activa el anti-bots del paso 5.
 
 Con Google no hace falta nada de esto.
+
+Con un SMTP propio, activa **Confirm email** (Authentication → Sign In / Providers → Email) para que el registro exija verificar el correo. Después, en **Authentication → Emails → Templates**, traduce al español las plantillas *Confirm signup* y *Reset password*. La página ya ofrece «¿Olvidaste tu contraseña?» y «Reenviar correo». Cuando el correo ya llegue, añade en Vercel `VITE_EMAIL_FLOWS` = `true` y vuelve a desplegar: así «¿Olvidaste tu contraseña?» envía el enlace por correo; sin esa variable se muestra el enlace para escribir a soporte.
 
 ### 5. Anti-bots en el registro (recomendado)
 Así nadie puede llenar tu base de cuentas falsas con un programa.
