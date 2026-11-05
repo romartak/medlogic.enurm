@@ -33,7 +33,7 @@ El remitente de correo que trae Supabase **solo envía a los miembros de tu equi
 
 Con Google no hace falta nada de esto.
 
-Con un SMTP propio, activa **Confirm email** (Authentication → Sign In / Providers → Email) para que el registro exija verificar el correo. Después, en **Authentication → Emails → Templates**, traduce al español las plantillas *Confirm signup* y *Reset password*. La página ya ofrece «¿Olvidaste tu contraseña?» y «Reenviar correo».
+Con un SMTP propio, activa **Confirm email** (Authentication → Sign In / Providers → Email) para que el registro exija verificar el correo. Después, en **Authentication → Emails → Templates**, traduce al español las plantillas *Confirm signup* y *Reset password*. La página ya ofrece «¿Olvidaste tu contraseña?» y «Reenviar correo». Cuando el correo ya llegue, añade en Vercel `VITE_EMAIL_FLOWS` = `true` y vuelve a desplegar: así «¿Olvidaste tu contraseña?» envía el enlace por correo; sin esa variable se muestra el enlace para escribir a soporte.
 
 ### 5. Anti-bots en el registro (recomendado)
 Así nadie puede llenar tu base de cuentas falsas con un programa.

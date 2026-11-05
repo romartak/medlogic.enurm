@@ -15,6 +15,7 @@ import { captchaEnabled, Turnstile } from '@/components/Turnstile'
 import { CONTACT_EMAIL } from '@/components/AccountSection'
 
 const RECOVERY_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Ayuda con mi cuenta de MedLogic ENURM')}&body=${encodeURIComponent('Hola, no recibo el correo de mi cuenta. Mi cuenta es este correo.')}`
+const RECOVERY_MAILTO_FORGOT = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Olvidé mi contraseña de MedLogic ENURM')}&body=${encodeURIComponent('Hola, olvidé mi contraseña. Mi cuenta es este correo.')}`
 const RESEND_SECONDS = 60
 
 /**
@@ -60,6 +61,12 @@ const TREATMENTS: { value: Honorific; label: string }[] = [
  * Supabase (Authentication → Sign In / Providers → Google); sin eso, el botón daría error al pulsarlo.
  */
 const GOOGLE_LOGIN_ENABLED = import.meta.env.VITE_GOOGLE_LOGIN === 'true'
+
+/**
+ * «¿Olvidaste tu contraseña?» por correo solo se ofrece con VITE_EMAIL_FLOWS=true. Ponla DESPUÉS de configurar el
+ * SMTP en Supabase y de probar que el correo llega; mientras tanto se muestra el enlace para escribir a soporte.
+ */
+const EMAIL_FLOWS_ENABLED = import.meta.env.VITE_EMAIL_FLOWS === 'true'
 
 const field = 'mt-1.5 h-12 w-full rounded-xl border border-soft surface-2 px-4 outline-none transition-colors focus:border-brand-500'
 
@@ -429,11 +436,20 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
           .
         </p>
 
-        {mode === 'signin' && !forgot && (
+        {mode === 'signin' && !forgot && EMAIL_FLOWS_ENABLED && (
           <p className="mt-5 text-center text-sm text-muted">
             <button type="button" onClick={() => (setForgot(true), setError(''))} className="relative font-semibold text-brand-700 after:absolute after:-inset-3 hover:underline dark:text-brand-400">
               ¿Olvidaste tu contraseña?
             </button>
+          </p>
+        )}
+        {mode === 'signin' && !EMAIL_FLOWS_ENABLED && (
+          <p className="mt-5 text-center text-sm text-muted">
+            ¿Olvidaste tu contraseña?{' '}
+            <a href={RECOVERY_MAILTO_FORGOT} className="font-semibold text-brand-700 hover:underline dark:text-brand-400">
+              Escríbenos a {CONTACT_EMAIL}
+            </a>{' '}
+            desde el correo de tu cuenta y te ayudamos.
           </p>
         )}
       </Card>
