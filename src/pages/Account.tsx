@@ -7,6 +7,7 @@ import { useAuth } from '@/store/auth'
 import { Button, Card, PageHeader, Segmented } from '@/components/ui/primitives'
 import { Modal } from '@/components/ui/Modal'
 import { hadAccount, markHadAccount, takeNotice } from '@/lib/account'
+import { markOAuthStart, clearOAuthReturn } from '@/lib/oauth'
 import { useProgress } from '@/store/progress'
 import type { Honorific } from '@/types'
 import { toast } from '@/store/toasts'
@@ -227,8 +228,13 @@ function AuthForm({ from, initialMode }: { from?: string; initialMode?: Mode }) 
     const supabase = await getSupabase()
     if (!supabase) return
     setError('')
+    // Google devuelve a la raíz del sitio: se anota a dónde ir (el panel, o la sección que se pedía) para no caer en la portada.
+    markOAuthStart(from)
     const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: authRedirectUrl() } })
-    if (error) setError(authErrorMessage(error))
+    if (error) {
+      clearOAuthReturn()
+      setError(authErrorMessage(error))
+    }
   }
 
   if (sent)

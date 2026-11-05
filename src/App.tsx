@@ -13,6 +13,7 @@ import { startSync } from '@/lib/sync'
 import { SyncConflict } from '@/components/SyncConflict'
 import { PlanReveal } from '@/components/PlanReveal'
 import { VercelInsights } from '@/components/VercelInsights'
+import { OAuthGate } from '@/components/OAuthGate'
 import { motionAllowed } from '@/lib/fx'
 
 /**
@@ -208,6 +209,7 @@ export default function App() {
     <MotionConfig reducedMotion={reduceMotion ? 'always' : 'user'}>
       <HashRouter>
         <Suspense fallback={<Splash />}>
+          <OAuthGate fallback={<Splash />}>
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route element={<BankGate block={false} />}>
@@ -267,6 +269,7 @@ export default function App() {
             </Route>
             </Route>
           </Routes>
+          </OAuthGate>
         </Suspense>
       </HashRouter>
       <Suspense fallback={null}>
