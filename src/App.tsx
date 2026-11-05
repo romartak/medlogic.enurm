@@ -14,6 +14,7 @@ import { SyncConflict } from '@/components/SyncConflict'
 import { PlanReveal } from '@/components/PlanReveal'
 import { VercelInsights } from '@/components/VercelInsights'
 import { OAuthGate } from '@/components/OAuthGate'
+import { WelcomeFlow } from '@/components/WelcomeFlow'
 import { motionAllowed } from '@/lib/fx'
 
 /**
@@ -277,6 +278,7 @@ export default function App() {
       </Suspense>
       <SyncConflict />
       <PlanReveal />
+      <WelcomeFlow />
       <Toaster />
       <VercelInsights />
       {bootWait && <Splash />}

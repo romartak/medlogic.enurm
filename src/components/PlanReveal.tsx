@@ -6,17 +6,19 @@ import { motionAllowed, playSound } from '@/lib/fx'
 
 interface RevealState {
   open: boolean
+  title: string
   subtitle: string
   onCovered: (() => void) | null
-  show: (opts: { subtitle: string; onCovered: () => void }) => void
+  show: (opts: { title: string; subtitle: string; onCovered: () => void }) => void
   hide: () => void
 }
 
 const useReveal = create<RevealState>()((set) => ({
   open: false,
+  title: '',
   subtitle: '',
   onCovered: null,
-  show: ({ subtitle, onCovered }) => set({ open: true, subtitle, onCovered }),
+  show: ({ title, subtitle, onCovered }) => set({ open: true, title, subtitle, onCovered }),
   hide: () => set({ open: false, onCovered: null }),
 }))
 
@@ -26,24 +28,24 @@ const useReveal = create<RevealState>()((set) => ({
  * `onCovered` se llama cuando la pantalla ya está tapada (ahí se cambia de página).
  * Con «reducir movimiento» no hay animación: se llama a `onCovered` directamente.
  */
-export function revealPlan(subtitle: string, onCovered: () => void) {
+export function revealPlan(subtitle: string, onCovered: () => void, title = 'Tu plan está listo') {
   if (!motionAllowed()) return onCovered()
   let done = false
   const once = () => {
     if (!done) (done = true), onCovered()
   }
-  useReveal.getState().show({ subtitle, onCovered: once })
+  useReveal.getState().show({ title, subtitle, onCovered: once })
 }
 
 const EASE = [0.76, 0, 0.24, 1] as const
 const COLORS = ['#0ba595', '#6366f1', '#ec4899', '#f59e0b', '#14b8a6', '#8b5cf6']
-const SHAPES = Array.from({ length: 14 }, (_, i) => {
+export const SHAPES = Array.from({ length: 14 }, (_, i) => {
   const angle = (i / 14) * Math.PI * 2 + (i % 2 ? 0.18 : -0.1)
   const dist = 150 + (i % 3) * 46
   return { x: Math.cos(angle) * dist, y: Math.sin(angle) * dist, color: COLORS[i % COLORS.length], kind: (['dot', 'square', 'ring', 'plus', 'tri'] as const)[i % 5], rotate: (i % 2 ? 1 : -1) * (90 + i * 20), size: 13 + (i % 3) * 6 }
 })
 
-function Shape({ kind, color, size }: { kind: (typeof SHAPES)[number]['kind']; color: string; size: number }) {
+export function Shape({ kind, color, size }: { kind: (typeof SHAPES)[number]['kind']; color: string; size: number }) {
   if (kind === 'dot') return <span className="block rounded-full" style={{ width: size, height: size, background: color }} />
   if (kind === 'square') return <span className="block rounded-[3px]" style={{ width: size, height: size, background: color }} />
   if (kind === 'ring') return <span className="block rounded-full" style={{ width: size + 6, height: size + 6, border: `3px solid ${color}` }} />
@@ -57,7 +59,7 @@ function Shape({ kind, color, size }: { kind: (typeof SHAPES)[number]['kind']; c
 }
 
 export function PlanReveal() {
-  const { open, subtitle, onCovered, hide } = useReveal()
+  const { open, title, subtitle, onCovered, hide } = useReveal()
 
   useEffect(() => {
     if (!open) return
@@ -118,7 +120,7 @@ export function PlanReveal() {
 
             <div className="absolute inset-x-4 top-[calc(50%+96px)] text-center sm:top-[calc(50%+110px)]">
               <motion.h2 initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2, duration: 0.5, ease: [0.16, 1, 0.3, 1] }} className="font-display text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
-                Tu plan está listo
+                {title}
               </motion.h2>
               <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.38, duration: 0.5 }} className="mt-2 text-balance text-slate-500">
                 {subtitle}
