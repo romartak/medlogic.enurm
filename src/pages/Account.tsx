@@ -55,8 +55,11 @@ const TREATMENTS: { value: Honorific; label: string }[] = [
   { value: 'none', label: 'N/A' },
 ]
 
-/** El acceso con Google está activado en Supabase (Authentication → Sign In / Providers → Google). */
-const GOOGLE_LOGIN_ENABLED = true
+/**
+ * El botón de Google solo aparece si en Vercel existe VITE_GOOGLE_LOGIN=true. Ponla DESPUÉS de activar Google en
+ * Supabase (Authentication → Sign In / Providers → Google); sin eso, el botón daría error al pulsarlo.
+ */
+const GOOGLE_LOGIN_ENABLED = import.meta.env.VITE_GOOGLE_LOGIN === 'true'
 
 const field = 'mt-1.5 h-12 w-full rounded-xl border border-soft surface-2 px-4 outline-none transition-colors focus:border-brand-500'
 
