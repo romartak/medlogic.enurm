@@ -8,6 +8,7 @@ import { Logo, GithubIcon } from '@/components/ui/Logo'
 const CommandPalette = lazy(() => import('./CommandPalette').then((m) => ({ default: m.CommandPalette })))
 import { FunctionsSheet, FunctionsTab } from './MobileMenu'
 import { useProgress, levelFromXp } from '@/store/progress'
+import { useInterestTracker } from '@/hooks/useInterestTracker'
 import { useAuth } from '@/store/auth'
 import { Avatar } from '@/components/ui/Avatar'
 import { useMyAvatar } from '@/components/AvatarPicker'
@@ -168,6 +169,8 @@ export function AppLayout() {
   useEffect(() => {
     window.scrollTo({ top: 0 })
   }, [location.pathname])
+
+  useInterestTracker()
 
   // Se recuerda la última sección de estudio usada; viaja con el progreso a la nube. No se anota
   // hasta que la cuenta esté sincronizada, para no pisar lo que ya hay guardado en la nube.
