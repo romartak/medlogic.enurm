@@ -7,6 +7,7 @@ import { useBank } from '@/store/bank'
 import { bestStreak, computeStreak, dailySeries, overview, predictedScore, specialtyStats } from '@/lib/stats'
 import { Card, EmptyState, PageHeader, ProgressBar, Segmented, SpecialtyIcon, StatCard, LinkButton } from '@/components/ui/primitives'
 import { getSpecialty } from '@/data/specialties'
+import { HabitsCard } from '@/components/InterestCard'
 import { addDays, dayKey, formatDate, pct } from '@/lib/utils'
 
 const tooltipStyle = { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, fontSize: 12, color: 'var(--text)' }
@@ -86,6 +87,8 @@ export default function Stats() {
         <StatCard icon={<Flame className="size-5" />} label="Racha actual / mejor" value={`${computeStreak(activity)} / ${bestStreak(activity)}`} hint="días" color="#f97316" delay={0.1} />
         <StatCard icon={<Trophy className="size-5" />} label="Puntaje estimado" value={predicted === null ? '—' : `${predicted}%`} hint="ponderado por especialidad" color="#ec4899" delay={0.15} />
       </div>
+
+      <HabitsCard />
 
       <Card className="p-5 sm:p-6">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
