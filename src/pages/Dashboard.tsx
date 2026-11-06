@@ -27,6 +27,7 @@ import { ALL_NAV } from '@/components/layout/nav'
 import { hasReminder, ReminderCard } from '@/components/ReminderCard'
 import { InstallCard } from '@/components/InstallCard'
 import { StreakNudge } from '@/components/StreakNudge'
+import { InterestCard } from '@/components/InterestCard'
 
 function greeting() {
   const h = new Date().getHours()
@@ -287,6 +288,8 @@ export default function Dashboard() {
       )}
 
       <DailyPlanCard />
+
+      <InterestCard />
 
       {source === 'sample' && (
         <Card className="flex items-start gap-3 border-dashed p-4 sm:items-center">
