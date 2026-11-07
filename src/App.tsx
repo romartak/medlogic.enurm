@@ -73,6 +73,7 @@ const Ranking = lazy(() => import('@/pages/Ranking'))
 const NationalExam = lazy(() => import('@/pages/NationalExam'))
 const Duel = lazy(() => import('@/pages/Duel'))
 const Cases = lazy(() => import('@/pages/Cases'))
+const HotTopics = lazy(() => import('@/pages/HotTopics'))
 const EcgGame = lazy(() => import('@/pages/EcgGame'))
 const EcgMonitor = lazy(() => import('@/pages/EcgMonitor'))
 const Atls = lazy(() => import('@/pages/Atls'))
@@ -229,6 +230,7 @@ export default function App() {
               <Route path="/duelo" element={<Lazy><Duel /></Lazy>} />
               <Route path="/duelo/:code" element={<Lazy><Duel /></Lazy>} />
               <Route path="/d/:code" element={<Lazy><Duel /></Lazy>} />
+              <Route path="/temas-calientes" element={<Lazy><HotTopics /></Lazy>} />
               <Route path="/casos" element={<Lazy><Cases /></Lazy>} />
               <Route path="/casos/:id" element={<Lazy><Cases /></Lazy>} />
               <Route path="/ecg" element={<Lazy><EcgGame /></Lazy>} />

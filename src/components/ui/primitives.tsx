@@ -14,7 +14,7 @@ const VARIANTS: Record<Variant, string> = {
   ghost: 'text-[var(--text)] hover:bg-slate-900/5 dark:hover:bg-white/5',
   outline: 'border border-soft text-[var(--text)] hover:border-brand-500/50 hover:bg-brand-500/5',
   danger: 'bg-rose-600 text-white hover:bg-rose-700',
-  success: 'bg-emerald-600 text-white hover:bg-emerald-700',
+  success: 'bg-emerald-700 text-white hover:bg-emerald-800',
 }
 const SIZES: Record<Size, string> = {
   sm: 'h-8 px-3 text-xs gap-1.5 rounded-lg',

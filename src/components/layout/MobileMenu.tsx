@@ -5,6 +5,7 @@ import { ChevronRight, Ellipsis, Play, Search, Target, X } from 'lucide-react'
 import { useProgress } from '@/store/progress'
 import { cn } from '@/lib/utils'
 import { ALL_NAV, NAV_GROUPS, hasNestedNav, type NavItem } from './nav'
+import { useForYou } from '@/hooks/useForYou'
 import { useScrollLock } from '@/hooks/useScrollLock'
 
 /** Accesos rápidos del teléfono: lo que más se abre además de la barra inferior. */
@@ -92,7 +93,8 @@ export function FunctionsSheet({ open, onClose, footer }: { open: boolean; onClo
 
   const q = query.trim().toLowerCase()
   const results = useMemo(() => (q ? ALL_NAV.filter((i) => `${i.label} ${i.description}`.toLowerCase().includes(q)) : []), [q])
-  const quick = QUICK.map((to) => ALL_NAV.find((n) => n.to === to)).filter((n): n is NavItem => !!n)
+  const forYou = useForYou(5)
+  const quick = forYou.length >= 3 ? forYou : QUICK.map((to) => ALL_NAV.find((n) => n.to === to)).filter((n): n is NavItem => !!n)
 
   return (
     <AnimatePresence>
@@ -136,7 +138,7 @@ export function FunctionsSheet({ open, onClose, footer }: { open: boolean; onClo
                   <p className="mt-5 mb-2 px-1 text-xs font-bold tracking-[0.14em] text-muted uppercase">Retomar</p>
                   <ResumeCard onPick={onClose} />
 
-                  <p className="mt-5 mb-2 px-1 text-xs font-bold tracking-[0.14em] text-muted uppercase">Accesos rápidos</p>
+                  <p className="mt-5 mb-2 px-1 text-xs font-bold tracking-[0.14em] text-muted uppercase">{forYou.length >= 3 ? 'Para ti' : 'Accesos rápidos'}</p>
                   <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none]">
                     {quick.map((i) => (
                       <NavLink key={i.to} to={i.to} onClick={onClose} className="flex h-11 shrink-0 items-center gap-2 rounded-2xl border border-soft bg-[var(--surface)] pr-3.5 pl-2 text-sm font-semibold transition-transform active:scale-[0.96]">

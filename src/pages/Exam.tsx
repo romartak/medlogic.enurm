@@ -15,14 +15,18 @@ import { useHotkeys } from '@/hooks/useHotkeys'
 import { celebrate, playSound } from '@/lib/fx'
 import { shareExam } from '@/lib/shareCard'
 import { toast } from '@/store/toasts'
-import { cn, formatClock, formatDate, formatDuration, LETTERS, pct, uid, softHyphens } from '@/lib/utils'
+import { cn, formatClock, formatDate, formatDuration, LETTERS, pct, softHyphens } from '@/lib/utils'
 import { getSpecialty } from '@/data/specialties'
 import { currentEdition, editionLabel, useNational } from '@/lib/national'
+import { gradeExam } from '@/lib/examResult'
+import { enterFullscreen, RealExam } from '@/components/RealExam'
 
 export interface ExamConfig {
   title: string
   questions: Question[]
   minutes: number
+  /** Modo examen real: pantalla completa, hoja de burbujas y sin ayudas. */
+  real?: boolean
 }
 
 const PRESETS = [
@@ -49,6 +53,7 @@ export default function Exam() {
   const [specialties, setSpecialties] = useState<string[]>(() => (params.get('specialty') ? [params.get('specialty')!] : []))
   const [custom, setCustom] = useState(paramCount ? { count: paramCount, minutes: Math.round(paramCount * 1.2) } : { count: 30, minutes: 36 })
   const [running, setRunning] = useState<ExamConfig | null>(null)
+  const [real, setReal] = useState(false)
 
   const pool = useMemo(() => filterQuestions(questions, { specialties, years: [], status: 'all' }, attempts, bookmarks), [questions, specialties, attempts, bookmarks])
   const p = PRESETS.find((x) => x.id === preset)
@@ -57,7 +62,8 @@ export default function Exam() {
 
   const startCustom = () => {
     const title = specialties.length === 1 ? `Simulacro de ${getSpecialty(specialties[0]).name}` : p ? `Simulacro ${p.label.toLowerCase()}` : 'Simulacro personalizado'
-    setRunning({ title, questions: proportionalPick(pool, count), minutes })
+    if (real) enterFullscreen()
+    setRunning({ title, questions: proportionalPick(pool, count), minutes, real })
   }
 
   // Inicio directo desde el plan diario (?count=50&start=1).
@@ -71,10 +77,11 @@ export default function Exam() {
   }, [pool.length])
   const startYear = (y: number) => {
     const qs = questions.filter((q) => inYear(q, y)).sort((a, b) => a.id.localeCompare(b.id, 'es', { numeric: true }))
-    setRunning({ title: `ENURM ${y}`, questions: qs, minutes: Math.max(10, Math.round(qs.length * 1.2)) })
+    if (real) enterFullscreen()
+    setRunning({ title: `ENURM ${y}`, questions: qs, minutes: Math.max(10, Math.round(qs.length * 1.2)), real })
   }
 
-  if (running) return <ExamRunner config={running} onExit={() => setRunning(null)} />
+  if (running) return running.real ? <RealExam config={running} onExit={() => setRunning(null)} /> : <ExamRunner config={running} onExit={() => setRunning(null)} />
 
   return (
     <div>
@@ -129,6 +136,14 @@ export default function Exam() {
               </motion.div>
             )}
           </AnimatePresence>
+
+          <label className="card flex cursor-pointer items-start gap-4 p-5 sm:p-6">
+            <input type="checkbox" role="switch" checked={real} onChange={(e) => setReal(e.target.checked)} className="mt-1 size-5 shrink-0 accent-[var(--color-brand-500)]" />
+            <span className="min-w-0">
+              <span className="block font-semibold">Modo examen real</span>
+              <span className="mt-1 block text-sm text-muted">Pantalla completa, hoja de respuestas con burbujas y cronómetro. Sin marcadores, notas ni explicaciones hasta entregar, y las opciones en su orden original.</span>
+            </span>
+          </label>
 
           <Card className="p-5 sm:p-6">
             <h2 className="mb-1 font-semibold">Especialidades incluidas</h2>
@@ -251,28 +266,11 @@ export function ExamRunner({ config, onExit, onSubmitted }: { config: ExamConfig
   const totalSec = config.minutes * 60
 
   const submit = () => {
-    const bySpecialty: ExamResult['bySpecialty'] = {}
-    let correct = 0
     questions.forEach((q, i) => {
-      const b = (bySpecialty[q.specialty] ??= { total: 0, correct: 0 })
-      b.total++
-      if (answers[i] === q.answer) {
-        b.correct++
-        correct++
-      }
       if (answers[i] !== null) recordAnswer(q, answers[i]!)
     })
-    const result: ExamResult = {
-      id: uid('ex'),
-      title: config.title,
-      date: Date.now(),
-      durationSec: Math.min(totalSec, Math.round((Date.now() - startedAt) / 1000)),
-      total: questions.length,
-      correct,
-      bySpecialty,
-      questionIds: questions.map((q) => q.id),
-      answers,
-    }
+    const result = gradeExam({ title: config.title, questions, answers, startedAt, totalSec })
+    const correct = result.correct
     saveExam(result)
     onSubmitted?.(result)
     const ratio = correct / questions.length

@@ -2,13 +2,13 @@ import { LocalProgressCard } from '@/components/AccountNote'
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { ArrowRight, Languages, BookOpen, CalendarDays, Check, ChartColumn, Flag, Flame, GraduationCap, HeartPulse, Layers, Medal, Newspaper, RotateCcw, Share2, Sparkles, Stethoscope, Swords, Target, Timer, Trophy, Zap } from 'lucide-react'
+import { ArrowRight, Languages, BookOpen, Check, ChartColumn, GraduationCap, Layers, Newspaper, RotateCcw, Share2, Sparkles, Target, Timer } from 'lucide-react'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { useProgress, levelFromXp, levelTitle } from '@/store/progress'
 import { resolveExamDate } from '@/lib/plan'
 import { useBank } from '@/store/bank'
 import { computeStreak, dailySeries, overview, predictedScore, specialtyStats, weakest } from '@/lib/stats'
-import { Badge, Card, ProgressBar, Ring, SpecialtyIcon, StatCard } from '@/components/ui/primitives'
+import { Badge, Card, ProgressBar, SpecialtyIcon, StatCard } from '@/components/ui/primitives'
 import { DailyPlanCard } from '@/components/DailyPlanCard'
 import { QuestionCard } from '@/components/QuestionCard'
 import { UPDATES } from '@/data/updates'
@@ -28,6 +28,7 @@ import { hasReminder, ReminderCard } from '@/components/ReminderCard'
 import { InstallCard } from '@/components/InstallCard'
 import { StreakNudge } from '@/components/StreakNudge'
 import { InterestCard } from '@/components/InterestCard'
+import { TodayHero } from '@/components/TodayHero'
 
 function greeting() {
   const h = new Date().getHours()
@@ -96,30 +97,57 @@ function ShareButton({ stats, className, iconOnly = false }: { stats: ShareStats
   )
 }
 
-/** Simulacro nacional, duelos, casos, ECG y ranking: accesos rápidos con el estado de cada uno. */
-function ExploreCard() {
+/** Todo lo que se puede hacer, a la vista: un acceso grande por función, con una frase que dice para qué sirve. */
+function FunctionsGrid() {
   const edition = currentEdition()
   const national = useNational((s) => s.attempts[edition])
   const tally = duelTally(useDuels((s) => s.duels))
-  const items = [
-    { to: '/simulacro-nacional', icon: Flag, color: '#0ea5e9', title: 'Simulacro nacional', hint: national ? `Hecho: ${pct(national.correct, national.total)} %` : `${editionLabel(edition)} · ${daysLeftInEdition()} días` },
-    { to: '/duelo', icon: Swords, color: '#f97316', title: 'Duelo', hint: tally.total ? `${tally.wins} ganados · ${tally.losses} perdidos` : 'Reta a un amigo' },
-    { to: '/casos', icon: Stethoscope, color: '#8b5cf6', title: 'Casos clínicos', hint: 'Decide paso a paso' },
-    { to: '/ecg', icon: HeartPulse, color: '#ef4444', title: 'Lee el ECG', hint: 'Arritmias y bloqueos' },
-    { to: '/ranking', icon: Medal, color: '#f59e0b', title: 'Ranking', hint: 'Tu posición en el país' },
+  // Un color por función (no por categoría) para reconocerlas de un vistazo.
+  const items: { to: string; color: string; hint?: string }[] = [
+    { to: '/practica', color: '#0d9488', hint: 'Preguntas con explicación inmediata' },
+    { to: '/simulacro', color: '#0284c7', hint: 'Examen cronometrado, con modo examen real' },
+    { to: '/casos', color: '#7c3aed', hint: 'Decide paso a paso como en la guardia' },
+    { to: '/flashcards', color: '#4f46e5', hint: 'Repetición espaciada para no olvidar' },
+    { to: '/guias', color: '#d97706', hint: 'Resúmenes de alto rendimiento' },
+    { to: '/temas-calientes', color: '#ea580c', hint: 'Lo que más se repite en el ENURM' },
+    { to: '/terminologia', color: '#059669', hint: 'Términos médicos por partes' },
+    { to: '/especialidades', color: '#db2777', hint: 'Un espacio por cada área del examen' },
+    { to: '/simulacro-nacional', color: '#2563eb', hint: national ? `Hecho: ${pct(national.correct, national.total)} %` : `${editionLabel(edition)} · ${daysLeftInEdition()} días` },
+    { to: '/ecg/monitor', color: '#dc2626', hint: 'Ritmos en vivo como en la emergencia' },
+    { to: '/duelo', color: '#f97316', hint: tally.total ? `${tally.wins} ganados · ${tally.losses} perdidos` : 'Reta a un amigo' },
+    { to: '/herramientas', color: '#475569', hint: 'Calculadoras y escalas clínicas' },
   ]
   return (
-    <div className="-mx-4 flex snap-x scroll-px-4 gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 lg:grid-cols-5">
-      {items.map((it) => (
-        <Link key={it.to} to={it.to} className="card card-hover group flex w-40 shrink-0 snap-start flex-col p-4 sm:w-auto">
-          <span className="grid size-10 place-items-center rounded-xl" style={{ backgroundColor: `${it.color}1a`, color: it.color }}>
-            <it.icon className="size-5" />
-          </span>
-          <span className="mt-3 font-display font-bold">{it.title}</span>
-          <span className="text-xs text-muted">{it.hint}</span>
+    <section aria-labelledby="funciones">
+      <div className="mb-3 flex items-baseline justify-between gap-3">
+        <h2 id="funciones" className="font-display text-lg font-bold text-balance">
+          Todo lo que puedes hacer
+        </h2>
+        <Link to="/banco" className="shrink-0 text-sm font-semibold text-brand-700 hover:underline dark:text-brand-300">
+          Banco <span className="max-sm:hidden">de preguntas </span>→
         </Link>
-      ))}
-    </div>
+      </div>
+      <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4">
+        {items.map((it) => {
+          const nav = ALL_NAV.find((n) => n.to === it.to)
+          if (!nav) return null
+          const color = it.color
+          return (
+            <li key={it.to}>
+              <Link to={it.to} className="card card-hover group flex h-full flex-col gap-3 p-4">
+                <span className="grid size-11 place-items-center rounded-2xl transition-transform group-hover:scale-105" style={{ backgroundColor: `${color}1f`, color }}>
+                  <nav.icon className="size-6" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block font-display text-[15px] leading-tight font-bold">{nav.label}</span>
+                  <span className="mt-1 line-clamp-2 block text-xs leading-snug text-muted">{it.hint ?? nav.description}</span>
+                </span>
+              </Link>
+            </li>
+          )
+        })}
+      </ul>
+    </section>
   )
 }
 
@@ -157,7 +185,6 @@ export default function Dashboard() {
 
   const shareStats: ShareStats = { predicted, streak, accuracy: ov.accuracy, answered: ov.answered, level: lvl.level, levelTitle: levelTitle(lvl.level), daysLeft }
 
-  const goalProgress = Math.min(1, ov.todayAnswered / Math.max(1, settings.dailyGoal))
   const isNew = ov.answered === 0 && exams.length === 0
   const hasActivity = series.some((d) => d.answered > 0)
   const cardsStudied = Object.values(activity).some((d) => d.cards > 0)
@@ -171,105 +198,25 @@ export default function Dashboard() {
   const lastSection = useProgress((st) => st.lastSection)
   const lastNav = lastSection ? ALL_NAV.find((n) => n.to === lastSection.to) : undefined
 
-  const goalMet = ov.todayAnswered >= settings.dailyGoal
-  const heroTitle = goalMet ? 'Meta diaria cumplida' : ov.todayAnswered > 0 ? 'Vas por buen camino' : '¿Listo para tu sesión de hoy?'
-  const heroSub = goalMet ? 'Sigue así: cada pregunta suma.' : ov.todayAnswered > 0 ? `Te faltan ${settings.dailyGoal - ov.todayAnswered} para tu meta de hoy.` : `Tu meta de hoy: ${settings.dailyGoal} preguntas.`
-  const chipCls = 'inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-xs font-semibold'
-  const heroChips = (
-    <>
-      <span className={chipCls}>
-        <Trophy className="size-3.5" /> Nivel {lvl.level} · {levelTitle(lvl.level)}
-      </span>
-      {daysLeft !== null && daysLeft >= 0 && (
-        <span className={chipCls}>
-          <CalendarDays className="size-3.5" /> {daysLeft === 0 ? '¡El examen es hoy!' : `${daysLeft} días para el ENURM`}
-        </span>
-      )}
-    </>
-  )
-  const xpBar = (
-    <div>
-      <div className="mb-1 flex justify-between text-xs text-white/75 tabular-nums">
-        <span>
-          {lvl.current} / {lvl.needed} XP
-        </span>
-        <span>Nivel {lvl.level + 1}</span>
-      </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-white/20">
-        <motion.div className="h-full w-full origin-left rounded-full bg-white" initial={{ scaleX: 0 }} animate={{ scaleX: lvl.progress }} transition={{ duration: 1 }} />
-      </div>
-    </div>
-  )
 
   return (
     <div className="space-y-6">
       <StreakNudge />
-      {/* Bienvenida: en el teléfono es una tarjeta compacta (anillo + mensaje + acciones); desde tablet, la versión amplia */}
-      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-[1.75rem] bg-brand-gradient p-4 text-white shadow-glow sm:rounded-3xl sm:p-7">
-        <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_90%_at_100%_0%,rgb(255_255_255/0.16),transparent_70%)]" />
-
-        {/* Teléfono */}
-        <div className="relative md:hidden">
-          <div className="flex items-center gap-4">
-            <Ring value={goalProgress} size={84} stroke={8} color="#fff" track="rgb(255 255 255 / 0.22)">
-              <div className="leading-none">
-                <div className="font-display text-2xl font-extrabold tabular-nums">{ov.todayAnswered}</div>
-                <div className="mt-1 text-xs text-white/75">de {settings.dailyGoal}</div>
-              </div>
-            </Ring>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-medium text-white/75">
-                {greeting()}
-                {addressName(settings) ? `, ${addressName(settings)}` : ''}
-              </p>
-              <h1 className="mt-0.5 text-lg leading-snug font-bold text-balance">{heroTitle}</h1>
-              <p className="mt-0.5 text-[13px] text-white/80">{heroSub}</p>
-            </div>
-          </div>
-          <div className="mt-3.5 flex flex-wrap gap-1.5">{heroChips}</div>
-          <div className="mt-3">{xpBar}</div>
-          <div className={cn('mt-4 grid gap-2', isNew ? 'grid-cols-2' : 'grid-cols-[1fr_1fr_auto]')}>
-            <button onClick={() => navigate('/practica?auto=1')} className="inline-flex h-11 items-center justify-center gap-2 rounded-2xl bg-white px-3 text-sm font-semibold whitespace-nowrap text-slate-900 shadow-lg transition-transform active:scale-[0.97]">
-              <Zap className="size-4" /> Práctica rápida
-            </button>
-            <Link to="/simulacro" className="inline-flex h-11 items-center justify-center gap-2 rounded-2xl bg-white/15 px-3 text-sm font-semibold whitespace-nowrap transition-transform active:scale-[0.97]">
-              <GraduationCap className="size-4" /> Simulacro
-            </Link>
-            {!isNew && <ShareButton iconOnly stats={shareStats} className="bg-white/15" />}
-          </div>
-        </div>
-
-        {/* Tablet y escritorio */}
-        <div className="relative hidden gap-6 md:flex md:items-center md:justify-between">
-          <div className="min-w-0">
-            <p className="text-sm font-medium text-white/80">
-              {greeting()}
-              {addressName(settings) ? `, ${addressName(settings)}` : ''}
-            </p>
-            <h1 className="mt-1 text-2xl font-bold text-balance lg:text-[1.7rem]">{heroTitle}</h1>
-            <p className="mt-1 text-sm text-white/80">{heroSub}</p>
-            <div className="mt-4 flex flex-wrap items-center gap-2">{heroChips}</div>
-            <div className="mt-4 max-w-sm">{xpBar}</div>
-          </div>
-          <div className="flex shrink-0 items-center gap-5">
-            <Ring value={goalProgress} size={112} stroke={9} color="#fff" track="rgb(255 255 255 / 0.22)">
-              <div className="leading-none">
-                <div className="font-display text-3xl font-extrabold tabular-nums">{ov.todayAnswered}</div>
-                <div className="mt-1 text-xs text-white/75">de {settings.dailyGoal} hoy</div>
-              </div>
-            </Ring>
-            <div className="flex flex-col gap-2">
-              <button onClick={() => navigate('/practica?auto=1')} className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-white px-4 text-sm font-semibold whitespace-nowrap text-slate-900 shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.97]">
-                <Zap className="size-4" /> Práctica rápida
-              </button>
-              <Link to="/simulacro" className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-white/15 px-4 text-sm font-semibold whitespace-nowrap transition-colors hover:bg-white/25">
-                <GraduationCap className="size-4" /> Simulacro
-              </Link>
-              {!isNew && <ShareButton stats={shareStats} className="bg-white/15 whitespace-nowrap hover:bg-white/25" />}
-            </div>
-          </div>
-        </div>
-      </motion.section>
+      <TodayHero
+        greeting={`${greeting()}${addressName(settings) ? `, ${addressName(settings)}` : ''}`}
+        goal={settings.dailyGoal}
+        todayAnswered={ov.todayAnswered}
+        accuracy={ov.answered ? ov.accuracy : null}
+        streak={streak}
+        daysLeft={daysLeft}
+        level={lvl.level}
+        levelTitle={levelTitle(lvl.level)}
+        xpCurrent={lvl.current}
+        xpNeeded={lvl.needed}
+        xpProgress={lvl.progress}
+        isNew={isNew}
+        share={!isNew ? <ShareButton stats={shareStats} className="surface-2 hover:bg-brand-500/10" /> : undefined}
+      />
 
       {/* Quien estudia sin cuenta: su progreso queda solo en este navegador */}
       <LocalProgressCard />
@@ -288,6 +235,8 @@ export default function Dashboard() {
       )}
 
       <DailyPlanCard />
+
+      <FunctionsGrid />
 
       <InterestCard />
 
@@ -325,15 +274,11 @@ export default function Dashboard() {
           </ol>
         </Card>
       ) : (
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-          <StatCard icon={<Flame className="size-5" />} label="Racha" value={`${streak} ${streak === 1 ? 'día' : 'días'}`} hint={streak ? 'No la rompas hoy' : 'Empieza una racha hoy'} color="#f97316" />
-          <StatCard icon={<Target className="size-5" />} label="Precisión" value={`${Math.round(ov.accuracy * 100)}%`} hint={`${ov.correct} de ${ov.answered} correctas`} color="#06c4b0" delay={0.05} />
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
           <StatCard icon={<Layers className="size-5" />} label="Cobertura" value={`${Math.round(ov.coverage * 100)}%`} hint={`${ov.uniqueSeen} de ${questions.length} vistas`} color="#6366f1" delay={0.1} />
           <StatCard icon={<Sparkles className="size-5" />} label="Puntaje estimado" value={predicted === null ? '—' : `${predicted}%`} hint={predicted === null ? 'Responde 10+ preguntas' : 'Según tu rendimiento'} color="#ec4899" delay={0.15} />
         </div>
       )}
-
-      <ExploreCard />
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Acciones */}

@@ -4,6 +4,7 @@ import './index.css'
 import App from './App'
 import { ErrorBoundary, reloadOnce } from './components/ErrorBoundary'
 import { entryRedirect } from './lib/entryUrl'
+import { registerServiceWorker } from './lib/offline'
 
 // Si se publica una versión nueva con la pestaña abierta, los archivos viejos ya no existen y la descarga de una
 // página falla. Vite avisa con este evento: se recarga una vez para traer la versión nueva.
@@ -16,6 +17,8 @@ window.addEventListener('vite:preloadError', (event) => {
 // página de «no existe» y no la portada con una dirección equivocada en la barra.
 const redirect = entryRedirect(window.location, import.meta.env.BASE_URL)
 if (redirect) window.history.replaceState(null, '', redirect)
+
+registerServiceWorker()
 
 function mount() {
   createRoot(document.getElementById('root')!).render(

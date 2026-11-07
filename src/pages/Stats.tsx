@@ -8,6 +8,7 @@ import { bestStreak, computeStreak, dailySeries, overview, predictedScore, speci
 import { Card, EmptyState, PageHeader, ProgressBar, Segmented, SpecialtyIcon, StatCard, LinkButton } from '@/components/ui/primitives'
 import { getSpecialty } from '@/data/specialties'
 import { HabitsCard } from '@/components/InterestCard'
+import { CalibrationCard } from '@/components/CalibrationCard'
 import { addDays, dayKey, formatDate, pct } from '@/lib/utils'
 
 const tooltipStyle = { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, fontSize: 12, color: 'var(--text)' }
@@ -33,7 +34,7 @@ function Heatmap({ activity }: { activity: Record<string, { answered: number; ca
   })
   return (
     <div>
-      <div className="flex gap-[3px] overflow-x-auto pb-2">
+      <div className="flex gap-[3px] overflow-x-auto pb-2" tabIndex={0} role="region" aria-label="Mapa de actividad, desplazable">
         {columns.map((col, i) => (
           <div key={i} className="flex flex-col gap-[3px]">
             {col.map((c) => (
@@ -87,6 +88,8 @@ export default function Stats() {
         <StatCard icon={<Flame className="size-5" />} label="Racha actual / mejor" value={`${computeStreak(activity)} / ${bestStreak(activity)}`} hint="días" color="#f97316" delay={0.1} />
         <StatCard icon={<Trophy className="size-5" />} label="Puntaje estimado" value={predicted === null ? '—' : `${predicted}%`} hint="ponderado por especialidad" color="#ec4899" delay={0.15} />
       </div>
+
+      <CalibrationCard />
 
       <HabitsCard />
 
@@ -167,7 +170,7 @@ export default function Stats() {
 
       <Card className="p-5 sm:p-6">
         <h2 className="mb-4 font-semibold">Detalle por especialidad</h2>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto" tabIndex={0} role="region" aria-label="Tabla por especialidad, desplazable">
           <table className="w-full min-w-[560px] text-sm">
             <thead>
               <tr className="text-left text-xs text-muted">
