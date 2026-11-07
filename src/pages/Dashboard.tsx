@@ -2,7 +2,7 @@ import { LocalProgressCard } from '@/components/AccountNote'
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { ArrowRight, Languages, BookOpen, Check, ChartColumn, Flag, Flame, GraduationCap, HeartPulse, Layers, Medal, Newspaper, RotateCcw, Share2, Sparkles, Stethoscope, Swords, Target, Timer } from 'lucide-react'
+import { ArrowRight, Languages, BookOpen, Check, ChartColumn, GraduationCap, Layers, Newspaper, RotateCcw, Share2, Sparkles, Target, Timer } from 'lucide-react'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { useProgress, levelFromXp, levelTitle } from '@/store/progress'
 import { resolveExamDate } from '@/lib/plan'
@@ -97,30 +97,57 @@ function ShareButton({ stats, className, iconOnly = false }: { stats: ShareStats
   )
 }
 
-/** Simulacro nacional, duelos, casos, ECG y ranking: accesos rápidos con el estado de cada uno. */
-function ExploreCard() {
+/** Todo lo que se puede hacer, a la vista: un acceso grande por función, con una frase que dice para qué sirve. */
+function FunctionsGrid() {
   const edition = currentEdition()
   const national = useNational((s) => s.attempts[edition])
   const tally = duelTally(useDuels((s) => s.duels))
-  const items = [
-    { to: '/simulacro-nacional', icon: Flag, color: '#0ea5e9', title: 'Simulacro nacional', hint: national ? `Hecho: ${pct(national.correct, national.total)} %` : `${editionLabel(edition)} · ${daysLeftInEdition()} días` },
-    { to: '/duelo', icon: Swords, color: '#f97316', title: 'Duelo', hint: tally.total ? `${tally.wins} ganados · ${tally.losses} perdidos` : 'Reta a un amigo' },
-    { to: '/casos', icon: Stethoscope, color: '#8b5cf6', title: 'Casos clínicos', hint: 'Decide paso a paso' },
-    { to: '/ecg', icon: HeartPulse, color: '#ef4444', title: 'Lee el ECG', hint: 'Arritmias y bloqueos' },
-    { to: '/ranking', icon: Medal, color: '#f59e0b', title: 'Ranking', hint: 'Tu posición en el país' },
+  // Un color por función (no por categoría) para reconocerlas de un vistazo.
+  const items: { to: string; color: string; hint?: string }[] = [
+    { to: '/practica', color: '#0d9488', hint: 'Preguntas con explicación inmediata' },
+    { to: '/simulacro', color: '#0284c7', hint: 'Examen cronometrado, con modo examen real' },
+    { to: '/casos', color: '#7c3aed', hint: 'Decide paso a paso como en la guardia' },
+    { to: '/flashcards', color: '#4f46e5', hint: 'Repetición espaciada para no olvidar' },
+    { to: '/guias', color: '#d97706', hint: 'Resúmenes de alto rendimiento' },
+    { to: '/temas-calientes', color: '#ea580c', hint: 'Lo que más se repite en el ENURM' },
+    { to: '/terminologia', color: '#059669', hint: 'Términos médicos por partes' },
+    { to: '/especialidades', color: '#db2777', hint: 'Un espacio por cada área del examen' },
+    { to: '/simulacro-nacional', color: '#2563eb', hint: national ? `Hecho: ${pct(national.correct, national.total)} %` : `${editionLabel(edition)} · ${daysLeftInEdition()} días` },
+    { to: '/ecg/monitor', color: '#dc2626', hint: 'Ritmos en vivo como en la emergencia' },
+    { to: '/duelo', color: '#f97316', hint: tally.total ? `${tally.wins} ganados · ${tally.losses} perdidos` : 'Reta a un amigo' },
+    { to: '/herramientas', color: '#475569', hint: 'Calculadoras y escalas clínicas' },
   ]
   return (
-    <div className="-mx-4 flex snap-x scroll-px-4 gap-3 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 lg:grid-cols-5">
-      {items.map((it) => (
-        <Link key={it.to} to={it.to} className="card card-hover group flex w-40 shrink-0 snap-start flex-col p-4 sm:w-auto">
-          <span className="grid size-10 place-items-center rounded-xl" style={{ backgroundColor: `${it.color}1a`, color: it.color }}>
-            <it.icon className="size-5" />
-          </span>
-          <span className="mt-3 font-display font-bold">{it.title}</span>
-          <span className="text-xs text-muted">{it.hint}</span>
+    <section aria-labelledby="funciones">
+      <div className="mb-3 flex items-baseline justify-between gap-3">
+        <h2 id="funciones" className="font-display text-lg font-bold text-balance">
+          Todo lo que puedes hacer
+        </h2>
+        <Link to="/banco" className="shrink-0 text-sm font-semibold text-brand-700 hover:underline dark:text-brand-300">
+          Banco <span className="max-sm:hidden">de preguntas </span>→
         </Link>
-      ))}
-    </div>
+      </div>
+      <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4">
+        {items.map((it) => {
+          const nav = ALL_NAV.find((n) => n.to === it.to)
+          if (!nav) return null
+          const color = it.color
+          return (
+            <li key={it.to}>
+              <Link to={it.to} className="card card-hover group flex h-full flex-col gap-3 p-4">
+                <span className="grid size-11 place-items-center rounded-2xl transition-transform group-hover:scale-105" style={{ backgroundColor: `${color}1f`, color }}>
+                  <nav.icon className="size-6" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block font-display text-[15px] leading-tight font-bold">{nav.label}</span>
+                  <span className="mt-1 line-clamp-2 block text-xs leading-snug text-muted">{it.hint ?? nav.description}</span>
+                </span>
+              </Link>
+            </li>
+          )
+        })}
+      </ul>
+    </section>
   )
 }
 
@@ -209,6 +236,8 @@ export default function Dashboard() {
 
       <DailyPlanCard />
 
+      <FunctionsGrid />
+
       <InterestCard />
 
       {source === 'sample' && (
@@ -245,15 +274,11 @@ export default function Dashboard() {
           </ol>
         </Card>
       ) : (
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-          <StatCard icon={<Flame className="size-5" />} label="Racha" value={`${streak} ${streak === 1 ? 'día' : 'días'}`} hint={streak ? 'No la rompas hoy' : 'Empieza una racha hoy'} color="#f97316" />
-          <StatCard icon={<Target className="size-5" />} label="Precisión" value={`${Math.round(ov.accuracy * 100)}%`} hint={`${ov.correct} de ${ov.answered} correctas`} color="#06c4b0" delay={0.05} />
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
           <StatCard icon={<Layers className="size-5" />} label="Cobertura" value={`${Math.round(ov.coverage * 100)}%`} hint={`${ov.uniqueSeen} de ${questions.length} vistas`} color="#6366f1" delay={0.1} />
           <StatCard icon={<Sparkles className="size-5" />} label="Puntaje estimado" value={predicted === null ? '—' : `${predicted}%`} hint={predicted === null ? 'Responde 10+ preguntas' : 'Según tu rendimiento'} color="#ec4899" delay={0.15} />
         </div>
       )}
-
-      <ExploreCard />
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Acciones */}

@@ -3,7 +3,7 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import { NavLink, useLocation, useNavigate, useOutlet } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
 import { ChevronDown, Flame, LogIn, Moon, Search, Sparkles, Sun, Monitor, UserRound, Zap } from 'lucide-react'
-import { NAV_GROUPS, MOBILE_TABS, hasNestedNav, navFor, type NavItem } from './nav'
+import { NAV_GROUPS, MOBILE_TABS, hasNestedNav, navColor, navFor, type NavItem } from './nav'
 import { useForYou } from '@/hooks/useForYou'
 import { Logo, GithubIcon } from '@/components/ui/Logo'
 const CommandPalette = lazy(() => import('./CommandPalette').then((m) => ({ default: m.CommandPalette })))
@@ -55,7 +55,7 @@ function SidebarLink({ item }: { item: NavItem }) {
       end={hasNestedNav(item.to)}
       className={({ isActive }) =>
         cn(
-          'group relative flex items-center gap-3 rounded-xl px-3 py-[7px] text-sm font-medium transition-colors',
+          'group relative flex items-center gap-3 rounded-xl px-2.5 py-1.5 text-sm font-medium transition-colors',
           isActive ? 'text-brand-700 dark:text-brand-300' : 'text-muted hover:bg-slate-900/[0.04] hover:text-[var(--text)] dark:hover:bg-white/[0.04]',
         )
       }
@@ -63,7 +63,9 @@ function SidebarLink({ item }: { item: NavItem }) {
       {({ isActive }) => (
         <>
           {isActive && <motion.span layoutId="nav-active" className="absolute inset-0 rounded-xl bg-brand-500/10 ring-1 ring-brand-500/20" transition={{ type: 'spring', stiffness: 500, damping: 38 }} />}
-          <item.icon className="relative size-[18px]" />
+          <span className="relative grid size-7 shrink-0 place-items-center rounded-lg" style={{ backgroundColor: `${navColor(item.to)}1f`, color: navColor(item.to) }}>
+            <item.icon className="size-4" />
+          </span>
           <span className="relative">{item.label}</span>
         </>
       )}
@@ -73,7 +75,7 @@ function SidebarLink({ item }: { item: NavItem }) {
 
 /**
  * Menú lateral: arriba «Para ti» (lo que más usa la persona) y debajo las categorías plegables.
- * «Estudiar» empieza abierta; la que contiene la página actual se abre sola; la elección se recuerda.
+ * «Todas las categorías empiezan abiertas para que ninguna función quede escondida; quien quiera puede plegarlas y la elección se recuerda.
  */
 function SidebarNav() {
   const { pathname } = useLocation()
@@ -108,7 +110,7 @@ function SidebarNav() {
       )}
       {NAV_GROUPS.map((g, gi) => {
         const containsHere = !!here && g.items.some((i) => i.to === here.to)
-        const isOpen = containsHere || (open[g.title] ?? gi === 0)
+        const isOpen = containsHere || (open[g.title] ?? true)
         return (
           <div key={g.title}>
             <button

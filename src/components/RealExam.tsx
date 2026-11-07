@@ -77,6 +77,11 @@ export function RealExam({ config, onExit }: { config: ExamConfig; onExit: () =>
     }
   }, [])
 
+  // La hoja sigue a la pregunta actual cuando se navega con las flechas o los botones.
+  useEffect(() => {
+    document.querySelectorAll('ol[aria-label="Hoja de respuestas"] [aria-current="true"]').forEach((el) => el.scrollIntoView({ block: 'nearest' }))
+  }, [index, sheetOpen])
+
   const mark = (i: number, opt: number) => setAnswers((cur) => cur.map((a, j) => (j === i ? (a === opt ? null : opt) : a)))
 
   useHotkeys((e) => {
@@ -86,48 +91,57 @@ export function RealExam({ config, onExit }: { config: ExamConfig; onExit: () =>
     else if (e.key === 'ArrowLeft') setIndex((i) => Math.max(0, i - 1))
   }, !confirm && !sheetOpen)
 
+  // Hoja compacta: las filas se acomodan en tantas columnas como quepan, así se ven muchas preguntas a la vez
+  // y no queda un hueco vacío a la derecha. Con 4 opciones las burbujas miden 24 px; con 5, 20 px.
   const Sheet = (
-    <ol className="space-y-1" aria-label="Hoja de respuestas">
-      {questions.map((qq, i) => (
-        <li key={qq.id} aria-current={i === index ? 'true' : undefined} className={cn('flex items-center gap-2 rounded-lg px-2 py-1', i === index && 'bg-brand-500/10')}>
-          <button
-            type="button"
-            onClick={() => {
-              setIndex(i)
-              setSheetOpen(false)
-            }}
-            className="relative w-8 text-right text-xs font-bold tabular-nums text-muted after:absolute after:-inset-y-2 after:-inset-x-1"
-            aria-label={`Ir a la pregunta ${i + 1}`}
-          >
-            {i + 1}
-          </button>
-          <div className="flex gap-1.5" role="group" aria-label={`Pregunta ${i + 1}`}>
-            {qq.options.map((_, o) => {
-              const on = answers[i] === o
-              return (
-                <button
-                  key={o}
-                  type="button"
-                  onClick={() => {
-                    setIndex(i)
-                    mark(i, o)
-                  }}
-                  aria-pressed={on}
-                  aria-label={`Pregunta ${i + 1}, opción ${LETTERS[o]}`}
-                  className={cn('relative grid size-7 place-items-center rounded-full border-2 text-[11px] font-bold transition-colors after:absolute after:-inset-1', on ? 'border-slate-900 bg-slate-900 text-white dark:border-white dark:bg-white dark:text-slate-900' : 'border-slate-400 text-slate-600 hover:border-brand-500 dark:border-slate-500 dark:text-slate-300')}
-                >
-                  {LETTERS[o]}
-                </button>
-              )
-            })}
-          </div>
-        </li>
-      ))}
+    <ol className="grid gap-x-3 gap-y-0 [grid-template-columns:repeat(auto-fill,minmax(150px,1fr))]" aria-label="Hoja de respuestas">
+      {questions.map((qq, i) => {
+        const small = qq.options.length > 4
+        return (
+          <li key={qq.id} aria-current={i === index ? 'true' : undefined} className={cn('flex items-center justify-between gap-1.5 rounded-lg px-1.5 py-[3px]', i === index && 'bg-brand-500/10 ring-1 ring-brand-500/30')}>
+            <button
+              type="button"
+              onClick={() => {
+                setIndex(i)
+                setSheetOpen(false)
+              }}
+              className="relative w-6 text-right text-[11px] font-bold tabular-nums text-muted after:absolute after:-inset-y-2 after:-inset-x-1"
+              aria-label={`Ir a la pregunta ${i + 1}`}
+            >
+              {i + 1}
+            </button>
+            <div className="flex w-[117px] shrink-0 justify-start gap-[3px]" role="group" aria-label={`Pregunta ${i + 1}`}>
+              {qq.options.map((_, o) => {
+                const on = answers[i] === o
+                return (
+                  <button
+                    key={o}
+                    type="button"
+                    onClick={() => {
+                      setIndex(i)
+                      mark(i, o)
+                    }}
+                    aria-pressed={on}
+                    aria-label={`Pregunta ${i + 1}, opción ${LETTERS[o]}`}
+                    className={cn(
+                      'relative grid place-items-center rounded-full border-[1.5px] text-[10px] font-bold transition-colors after:absolute after:-inset-[3px]',
+                      small ? 'size-5' : 'size-6',
+                      on ? 'border-slate-900 bg-slate-900 text-white dark:border-white dark:bg-white dark:text-slate-900' : 'border-slate-400 text-slate-600 hover:border-brand-500 dark:border-slate-500 dark:text-slate-300',
+                    )}
+                  >
+                    {LETTERS[o]}
+                  </button>
+                )
+              })}
+            </div>
+          </li>
+        )
+      })}
     </ol>
   )
 
   return (
-    <div className="fixed inset-0 z-[60] flex flex-col bg-[var(--surface)] text-[var(--text)]" role="main" aria-label="Examen en modo real">
+    <div className="fixed inset-0 z-[60] flex flex-col bg-[var(--surface)] text-[var(--text)]" role="region" aria-label="Examen en modo real">
       <header className="flex items-center gap-3 border-b border-soft px-4 py-3 sm:px-6">
         <div className="min-w-0 flex-1">
           <div className="truncate text-xs font-semibold tracking-wider text-muted uppercase">Modo examen real</div>
@@ -139,12 +153,12 @@ export function RealExam({ config, onExit }: { config: ExamConfig; onExit: () =>
         <Button variant="secondary" size="sm" className="lg:hidden" onClick={() => setSheetOpen(true)} aria-label="Abrir hoja de respuestas">
           <LayoutGrid className="size-4" />
         </Button>
-        <Button variant="success" onClick={() => setConfirm(true)}>
+        <Button variant="success" onClick={() => setConfirm(true)} aria-label="Entregar examen">
           <Send className="size-4" /> <span className="hidden sm:inline">Entregar</span>
         </Button>
       </header>
 
-      <div className="grid min-h-0 flex-1 lg:grid-cols-[1fr_360px]">
+      <div className="grid min-h-0 flex-1 lg:grid-cols-[1fr_400px] xl:grid-cols-[1fr_540px]">
         <div className="min-h-0 overflow-y-auto px-4 py-6 sm:px-10">
           <div className="mx-auto max-w-3xl">
             <div className="text-sm font-semibold text-muted tabular-nums">
@@ -175,13 +189,13 @@ export function RealExam({ config, onExit }: { config: ExamConfig; onExit: () =>
         </div>
 
         <aside className="hidden min-h-0 flex-col border-l border-soft lg:flex" aria-label="Hoja de respuestas">
-          <div className="flex items-center justify-between px-5 py-4">
+          <div className="flex items-center justify-between gap-3 px-5 py-4">
             <h2 className="font-semibold">Hoja de respuestas</h2>
-            <span className="text-xs text-muted tabular-nums">
-              {answered}/{questions.length}
+            <span className="rounded-full surface-2 px-2.5 py-0.5 text-xs font-semibold tabular-nums">
+              {answered} de {questions.length} respondidas
             </span>
           </div>
-          <div className="min-h-0 flex-1 overflow-y-auto px-3 pb-4">{Sheet}</div>
+          <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">{Sheet}</div>
           <div className="border-t border-soft p-4">
             <Button variant="ghost" size="sm" className="w-full text-muted" onClick={onExit}>
               Abandonar sin guardar
@@ -191,7 +205,7 @@ export function RealExam({ config, onExit }: { config: ExamConfig; onExit: () =>
       </div>
 
       <Modal open={sheetOpen} onClose={() => setSheetOpen(false)} title={`Hoja de respuestas · ${answered}/${questions.length}`}>
-        <div className="max-h-[60vh] overflow-y-auto">{Sheet}</div>
+        <div className="max-h-[62vh] overflow-y-auto pr-1">{Sheet}</div>
         <Button variant="ghost" size="sm" className="mt-3 w-full text-muted" onClick={onExit}>
           Abandonar sin guardar
         </Button>

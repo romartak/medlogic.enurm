@@ -80,3 +80,18 @@ export const hasNestedNav = (to: string) => ALL_NAV.some((o) => o.to !== to && o
 
 /** Pestañas de la barra inferior en móvil. */
 export const MOBILE_TABS = ['/inicio', '/plan', '/practica', '/flashcards'].map((to) => ALL_NAV.find((n) => n.to === to)!)
+
+/** Color de cada categoría del menú: ayuda a distinguirlas de un vistazo (menú lateral y cuadrícula del Inicio). */
+export const GROUP_COLOR: Record<string, string> = {
+  Estudiar: '#0ba595',
+  'Habilidades clínicas': '#8b5cf6',
+  Explorar: '#d97706',
+  'Inteligencia artificial': '#db2777',
+  Progreso: '#0284c7',
+}
+
+/** Color de la categoría a la que pertenece una ruta. */
+export const navColor = (to: string): string => {
+  const g = NAV_GROUPS.find((x) => x.items.some((i) => i.to === to))
+  return (g && GROUP_COLOR[g.title]) || '#0ba595'
+}

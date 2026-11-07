@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { ArrowRight, CalendarDays, Flame, GraduationCap, Trophy } from 'lucide-react'
+import { ArrowRight, CalendarDays, Flame, GraduationCap, Target, Trophy } from 'lucide-react'
 import { useDailyPlan } from '@/hooks/useDailyPlan'
 import { getSpecialty } from '@/data/specialties'
 import { PHASES } from '@/lib/plan'
@@ -23,6 +23,28 @@ interface Props {
   xpProgress: number
   isNew: boolean
   share?: ReactNode
+}
+
+
+const TONES = {
+  brand: { box: 'bg-brand-500/[0.08]', chip: 'bg-brand-500/15 text-brand-700 dark:text-brand-300', text: 'text-brand-900 dark:text-brand-100' },
+  orange: { box: 'bg-orange-500/[0.08]', chip: 'bg-orange-500/15 text-orange-700 dark:text-orange-300', text: 'text-orange-900 dark:text-orange-100' },
+  sky: { box: 'bg-sky-500/[0.08]', chip: 'bg-sky-500/15 text-sky-700 dark:text-sky-300', text: 'text-sky-900 dark:text-sky-100' },
+} as const
+
+/** Ficha de una cifra: ícono en círculo de color, el dato grande y una frase corta debajo. */
+function Tile({ icon, tone, label, value, hint }: { icon: ReactNode; tone: keyof typeof TONES; label: string; value: string; hint: string }) {
+  const t = TONES[tone]
+  return (
+    <div className={`flex flex-col justify-between rounded-2xl p-3.5 ${t.box}`}>
+      <span className={`flex items-center gap-2 text-xs font-semibold ${t.text}`}>
+        <span className={`grid size-8 place-items-center rounded-full ${t.chip}`}>{icon}</span>
+        {label}
+      </span>
+      <span className="mt-2 font-display text-[22px] leading-none font-extrabold tabular-nums sm:text-2xl">{value}</span>
+      <span className={`mt-1 text-xs opacity-80 ${t.text}`}>{hint}</span>
+    </div>
+  )
 }
 
 /**
@@ -91,47 +113,36 @@ export function TodayHero(p: Props) {
         </div>
       </div>
 
-      <dl className="grid grid-cols-3 divide-x divide-[var(--border)] border-t border-soft">
-        <div className="px-4 py-3.5 sm:px-8 sm:py-4">
-          <dt className="text-xs font-medium text-muted">Aciertos</dt>
-          <dd className="mt-0.5 font-display text-xl font-extrabold tabular-nums sm:text-2xl">{p.accuracy === null ? '—' : `${Math.round(p.accuracy * 100)} %`}</dd>
+      <div role="group" aria-label="Tu resumen" className="grid grid-cols-2 gap-2.5 px-5 pb-5 sm:grid-cols-4 sm:gap-3 sm:px-8 sm:pb-8">
+        <Tile icon={<Target className="size-[18px]" aria-hidden />} tone="brand" label="Aciertos" value={p.accuracy === null ? '—' : `${Math.round(p.accuracy * 100)} %`} hint={p.accuracy === null ? 'Responde para medirlos' : p.accuracy >= 0.7 ? 'Vas muy bien' : 'Sigue practicando'} />
+        <Tile icon={<Flame className="size-[18px]" aria-hidden />} tone="orange" label="Racha" value={`${p.streak} ${p.streak === 1 ? 'día' : 'días'}`} hint={p.todayAnswered > 0 ? 'Hoy ya sumaste' : 'Estudia hoy para mantenerla'} />
+        {p.daysLeft === null || p.daysLeft < 0 ? (
+          <Link to="/plan" className="group flex flex-col justify-between rounded-2xl border-2 border-dashed border-sky-500/40 bg-sky-500/[0.06] p-3.5 transition-colors hover:bg-sky-500/10">
+            <span className="flex items-center gap-2 text-xs font-semibold text-sky-800 dark:text-sky-200">
+              <span className="grid size-8 place-items-center rounded-full bg-sky-500/15 text-sky-700 dark:text-sky-300">
+                <CalendarDays className="size-[18px]" aria-hidden />
+              </span>
+              ENURM
+            </span>
+            <span className="mt-2 font-display text-[15px] leading-tight font-bold text-sky-900 dark:text-sky-100">Elige la fecha de tu examen</span>
+            <span className="mt-1 text-xs font-semibold text-sky-700 group-hover:underline dark:text-sky-300">Fijar fecha →</span>
+          </Link>
+        ) : (
+          <Tile icon={<CalendarDays className="size-[18px]" aria-hidden />} tone="sky" label="Para el ENURM" value={p.daysLeft === 0 ? '¡Hoy!' : `${p.daysLeft} días`} hint={`Fase: ${PHASES[plan.phase].name}`} />
+        )}
+        <div className="flex flex-col justify-between rounded-2xl bg-violet-500/[0.08] p-3.5">
+          <span className="flex items-center gap-2 text-xs font-semibold text-violet-900 dark:text-violet-200">
+            <span className="grid size-8 place-items-center rounded-full bg-violet-500/15 text-violet-700 dark:text-violet-300">
+              <Trophy className="size-[18px]" aria-hidden />
+            </span>
+            Nivel
+          </span>
+          <span className="mt-2 font-display text-[22px] leading-none font-extrabold tabular-nums sm:text-2xl">{p.level}</span>
+          <span className="mt-1 text-xs text-violet-900/80 dark:text-violet-200/80">{p.levelTitle}</span>
+          <span className="mt-2 block h-1.5 overflow-hidden rounded-full bg-violet-500/15" role="img" aria-label={`${p.xpCurrent} de ${p.xpNeeded} XP para el siguiente nivel`}>
+            <motion.span className="block h-full w-full origin-left rounded-full bg-violet-500" initial={{ scaleX: 0 }} animate={{ scaleX: p.xpProgress }} transition={{ duration: 0.9 }} />
+          </span>
         </div>
-        <div className="px-4 py-3.5 sm:px-8 sm:py-4">
-          <dt className="flex items-center gap-1 text-xs font-medium text-muted">
-            <Flame className="size-3 text-orange-500" aria-hidden /> Racha
-          </dt>
-          <dd className="mt-0.5 font-display text-xl font-extrabold tabular-nums sm:text-2xl">{p.streak} {p.streak === 1 ? 'día' : 'días'}</dd>
-        </div>
-        <div className="px-4 py-3.5 sm:px-8 sm:py-4">
-          <dt className="flex items-center gap-1 text-xs font-medium text-muted">
-            <CalendarDays className="size-3" aria-hidden /> Para el ENURM
-          </dt>
-          <dd className="mt-0.5 font-display text-xl font-extrabold tabular-nums sm:text-2xl">
-            {p.daysLeft === null || p.daysLeft < 0 ? (
-              <Link to="/plan" className="text-sm font-semibold text-brand-700 hover:underline sm:text-base dark:text-brand-300">
-                Fijar fecha →
-              </Link>
-            ) : p.daysLeft === 0 ? (
-              '¡Hoy!'
-            ) : (
-              `${p.daysLeft} días`
-            )}
-          </dd>
-          {p.daysLeft !== null && p.daysLeft > 0 && <div className="hidden text-xs text-muted sm:block">Fase: {PHASES[plan.phase].name}</div>}
-        </div>
-      </dl>
-
-      <div className="flex items-center gap-3 border-t border-soft px-5 py-3 text-xs text-muted sm:px-8">
-        <Trophy className="size-3.5 shrink-0" aria-hidden />
-        <span className="shrink-0 font-semibold text-[var(--text)]">
-          Nivel {p.level} · {p.levelTitle}
-        </span>
-        <div className="h-1.5 flex-1 overflow-hidden rounded-full surface-2">
-          <motion.div className="h-full w-full origin-left rounded-full bg-brand-gradient" initial={{ scaleX: 0 }} animate={{ scaleX: p.xpProgress }} transition={{ duration: 0.9 }} />
-        </div>
-        <span className="shrink-0 tabular-nums">
-          {p.xpCurrent}/{p.xpNeeded} XP
-        </span>
       </div>
     </motion.section>
   )
