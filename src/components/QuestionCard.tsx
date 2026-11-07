@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import { Bookmark, BookmarkCheck, Check, Flame, NotebookPen, X } from 'lucide-react'
+import { Bookmark, BookmarkCheck, Check, CircleAlert, Flame, NotebookPen, X } from 'lucide-react'
 import { QuestionAnalysis } from './QuestionAnalysis'
 import { CommunityStats, HighYieldNote } from './QuestionInsights'
 import { isHighYield } from '@/lib/selection'
 import type { Question } from '@/types'
 import { Badge, SpecialtyBadge } from '@/components/ui/primitives'
 import { useProgress } from '@/store/progress'
+import { useInReview } from '@/hooks/useInReview'
 import { cn, LETTERS } from '@/lib/utils'
 
 export type QuestionMode = 'tutor' | 'exam' | 'review'
@@ -32,6 +33,7 @@ export function QuestionCard({ question: q, mode, selected, onSelect, revealed =
   const note = useProgress((s) => s.notes[q.id] ?? '')
   const setNote = useProgress((s) => s.setNote)
   const [noteOpen, setNoteOpen] = useState(false)
+  const inReview = useInReview(q.id)
   const bookmarked = bookmarks.includes(q.id)
   const showAnswer = mode === 'review' || (mode === 'tutor' && revealed)
   const positions = order ?? q.options.map((_, i) => i)
@@ -49,6 +51,11 @@ export function QuestionCard({ question: q, mode, selected, onSelect, revealed =
         )}
         {q.topic && <Badge className="hidden sm:inline-flex">{q.topic}</Badge>}
         {q.difficulty && <Badge className="hidden sm:inline-flex">{DIFFICULTY[q.difficulty]}</Badge>}
+        {inReview && (
+          <Badge color="#d97706">
+            <CircleAlert className="size-3" aria-hidden /> En revisión
+          </Badge>
+        )}
         {q.sample && <Badge color="#94a3b8">Muestra</Badge>}
         <div className="ml-auto flex items-center gap-1">
           <button data-track="nota" onClick={() => setNoteOpen((o) => !o)} className={cn('relative rounded-lg p-2 transition-colors after:absolute after:inset-x-0 after:-inset-y-1.5 hover:bg-slate-900/5 dark:hover:bg-white/5', note ? 'text-accent-500' : 'text-muted')} aria-label="Nota personal" title="Nota personal">

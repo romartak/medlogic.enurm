@@ -15,6 +15,8 @@ interface Props {
   /** Precisión global de 0 a 1, o null si aún no hay respuestas. */
   accuracy: number | null
   streak: number
+  /** Congeladores de racha disponibles. */
+  freezes: number
   daysLeft: number | null
   level: number
   levelTitle: string
@@ -115,7 +117,7 @@ export function TodayHero(p: Props) {
 
       <div role="group" aria-label="Tu resumen" className="grid grid-cols-2 gap-2.5 px-5 pb-5 sm:grid-cols-4 sm:gap-3 sm:px-8 sm:pb-8">
         <Tile icon={<Target className="size-[18px]" aria-hidden />} tone="brand" label="Aciertos" value={p.accuracy === null ? '—' : `${Math.round(p.accuracy * 100)} %`} hint={p.accuracy === null ? 'Responde para medirlos' : p.accuracy >= 0.7 ? 'Vas muy bien' : 'Sigue practicando'} />
-        <Tile icon={<Flame className="size-[18px]" aria-hidden />} tone="orange" label="Racha" value={`${p.streak} ${p.streak === 1 ? 'día' : 'días'}`} hint={p.todayAnswered > 0 ? 'Hoy ya sumaste' : 'Estudia hoy para mantenerla'} />
+        <Tile icon={<Flame className="size-[18px]" aria-hidden />} tone="orange" label="Racha" value={`${p.streak} ${p.streak === 1 ? 'día' : 'días'}`} hint={p.freezes > 0 ? `${p.freezes} ${p.freezes === 1 ? 'congelador listo' : 'congeladores listos'}` : p.todayAnswered > 0 ? 'Hoy ya sumaste' : 'Estudia hoy para mantenerla'} />
         {p.daysLeft === null || p.daysLeft < 0 ? (
           <Link to="/plan" className="group flex flex-col justify-between rounded-2xl border-2 border-dashed border-sky-500/40 bg-sky-500/[0.06] p-3.5 transition-colors hover:bg-sky-500/10">
             <span className="flex items-center gap-2 text-xs font-semibold text-sky-800 dark:text-sky-200">

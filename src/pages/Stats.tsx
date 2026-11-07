@@ -9,6 +9,7 @@ import { Card, EmptyState, PageHeader, ProgressBar, Segmented, SpecialtyIcon, St
 import { getSpecialty } from '@/data/specialties'
 import { HabitsCard } from '@/components/InterestCard'
 import { CalibrationCard } from '@/components/CalibrationCard'
+import { WeekCard } from '@/components/WeekCard'
 import { addDays, dayKey, formatDate, pct } from '@/lib/utils'
 
 const tooltipStyle = { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, fontSize: 12, color: 'var(--text)' }
@@ -55,7 +56,8 @@ function Heatmap({ activity }: { activity: Record<string, { answered: number; ca
 }
 
 export default function Stats() {
-  const { attempts, activity, exams } = useProgress()
+  const { attempts, activity, exams, streakFreeze } = useProgress()
+  const frozen = streakFreeze.frozen
   const questions = useBank((s) => s.questions)
   const [range, setRange] = useState<14 | 30 | 90>(30)
   const ov = overview(attempts, activity, questions.length)
@@ -85,9 +87,11 @@ export default function Stats() {
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         <StatCard icon={<Target className="size-5" />} label="Respondidas" value={ov.answered.toLocaleString('es-DO')} hint={`${Math.round(ov.accuracy * 100)}% de precisión`} color="#06c4b0" />
         <StatCard icon={<Clock className="size-5" />} label="Tiempo de estudio" value={`${Math.floor(ov.minutes / 60)} h ${ov.minutes % 60} m`} color="#6366f1" delay={0.05} />
-        <StatCard icon={<Flame className="size-5" />} label="Racha actual / mejor" value={`${computeStreak(activity)} / ${bestStreak(activity)}`} hint="días" color="#f97316" delay={0.1} />
+        <StatCard icon={<Flame className="size-5" />} label="Racha actual / mejor" value={`${computeStreak(activity, new Date(), frozen)} / ${bestStreak(activity, frozen)}`} hint="días" color="#f97316" delay={0.1} />
         <StatCard icon={<Trophy className="size-5" />} label="Puntaje estimado" value={predicted === null ? '—' : `${predicted}%`} hint="ponderado por especialidad" color="#ec4899" delay={0.15} />
       </div>
+
+      <WeekCard />
 
       <CalibrationCard />
 

@@ -1,5 +1,6 @@
 import { getSupabase } from './supabase'
 import { overview, computeStreak } from './stats'
+import { isoWeekId, weekPoints } from './league'
 import { useProgress } from '@/store/progress'
 import { useAuth, displayName } from '@/store/auth'
 import { addressName, splitName } from './utils'
@@ -50,8 +51,14 @@ export function shortName(full: string): string {
   return parts[1] ? `${first} ${parts[1][0].toUpperCase()}.` : first
 }
 
-/** Resumen público del progreso de este dispositivo. */
-export function myPublicStats() {
+/** Último día en que hubo estudio (aaaa-mm-dd), o null. Sirve para que un compañero vea si ya estudiaste hoy. */
+export function lastStudyDay(activity: Record<string, { answered: number; cards: number; minutes: number }>): string | null {
+  const days = Object.keys(activity).filter((k) => activity[k].answered + activity[k].cards + activity[k].minutes > 0)
+  return days.length ? days.sort().at(-1)! : null
+}
+
+/** Resumen público del progreso de este dispositivo (sin la parte semanal, que puede no existir en la base). */
+export function myBaseStats() {
   const p = useProgress.getState()
   const ov = overview(p.attempts, p.activity, 0)
   const user = useAuth.getState().user
@@ -64,7 +71,18 @@ export function myPublicStats() {
     correct: Math.min(ov.correct, ov.answered),
     minutes: Math.round(ov.minutes),
     xp: Math.round(p.xp),
-    streak: computeStreak(p.activity),
+    streak: computeStreak(p.activity, new Date(), p.streakFreeze.frozen),
+  }
+}
+
+/** Resumen público completo: lo anterior más los puntos de la semana y el último día de estudio. */
+export function myPublicStats() {
+  const p = useProgress.getState()
+  return {
+    ...myBaseStats(),
+    semana: isoWeekId(),
+    xp_semana: Math.min(100000, weekPoints(p.activity)),
+    ultimo_estudio: lastStudyDay(p.activity),
   }
 }
 
@@ -73,7 +91,14 @@ let pending: ReturnType<typeof setTimeout> | null = null
 const MIN_GAP = 15_000
 
 async function upsertStats(userId: string) {
-  return (await getSupabase())!.from('leaderboard').upsert({ user_id: userId, ...myPublicStats() })
+  const supabase = (await getSupabase())!
+  const res = await supabase.from('leaderboard').upsert({ user_id: userId, ...myPublicStats() })
+  // Si la base todavía no tiene las columnas semanales (migración 0008 sin aplicar), se sube el resumen de siempre:
+  // así el ranking no se rompe mientras tanto. 42703 = columna inexistente; PGRST204 = PostgREST no la conoce.
+  if (res.error && (res.error.code === '42703' || res.error.code === 'PGRST204')) {
+    return supabase.from('leaderboard').upsert({ user_id: userId, ...myBaseStats() })
+  }
+  return res
 }
 
 /**
@@ -130,4 +155,39 @@ export async function fetchUniversities(): Promise<UniversityRow[]> {
   const { data, error } = await supabase.rpc('ranking_universidades')
   if (error) throw error
   return (data ?? []).map((r: UniversityRow) => ({ ...r, estudiantes: Number(r.estudiantes), respondidas: Number(r.respondidas), acierto: Number(r.acierto), xp_promedio: Number(r.xp_promedio) }))
+}
+
+/** Una persona en tu liga de esta semana. */
+export interface LeagueRow {
+  posicion: number
+  nombre: string
+  liga: number
+  puntos: number
+  es_yo: boolean
+}
+
+/** La liga de esta semana: quienes están en tu misma liga, ordenados por puntos. */
+export async function fetchLeague(week: string = isoWeekId()): Promise<LeagueRow[]> {
+  const supabase = await getSupabase()
+  if (!supabase) return []
+  const { data, error } = await supabase.rpc('liga_semanal', { p_semana: week, p_limite: 30 })
+  if (error) throw error
+  return (data ?? []).map((r: LeagueRow) => ({ ...r, posicion: Number(r.posicion), liga: Number(r.liga), puntos: Number(r.puntos) }))
+}
+
+export interface ChallengeRow {
+  universidad: string
+  participantes: number
+  puntos_total: number
+  puntos_promedio: number
+  es_la_mia: boolean
+}
+
+/** El reto de la semana entre universidades (solo las que tienen 3 o más participantes). */
+export async function fetchUniversityChallenge(week: string = isoWeekId()): Promise<ChallengeRow[]> {
+  const supabase = await getSupabase()
+  if (!supabase) return []
+  const { data, error } = await supabase.rpc('reto_universidades', { p_semana: week })
+  if (error) throw error
+  return (data ?? []).map((r: ChallengeRow) => ({ ...r, participantes: Number(r.participantes), puntos_total: Number(r.puntos_total), puntos_promedio: Number(r.puntos_promedio) }))
 }

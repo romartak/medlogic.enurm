@@ -59,9 +59,14 @@ export default function HotTopics() {
             <span className="mt-3 text-sm">
               Salió en <b>{t.recentYears}</b> de los últimos {RECENT_WINDOW} años · {t.total} apariciones
             </span>
-            <Link to={`/practica?specialty=${t.specialty}`} className="mt-3 inline-flex h-11 items-center justify-center rounded-xl bg-brand-500/10 px-4 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-500/20 dark:text-brand-300">
-              Practicar {getSpecialty(t.specialty).short}
-            </Link>
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              <Link to={`/practica?specialty=${t.specialty}&topic=${encodeURIComponent(t.topic)}`} className="inline-flex h-11 items-center justify-center rounded-xl bg-brand-500/10 px-3 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-500/20 dark:text-brand-300">
+                Practicar
+              </Link>
+              <Link to={`/retos?especialidad=${t.specialty}&tema=${encodeURIComponent(t.topic)}`} className="inline-flex h-11 items-center justify-center rounded-xl surface-2 px-3 text-sm font-semibold transition-colors hover:bg-orange-500/10">
+                Reto de 7 días
+              </Link>
+            </div>
           </Card>
         ))}
       </section>

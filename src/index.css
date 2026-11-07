@@ -314,6 +314,10 @@ html:not(.dark) .text-violet-500,
 html:not(.dark) .text-violet-600 {
   color: var(--color-violet-700);
 }
+html:not(.dark) .text-orange-500,
+html:not(.dark) .text-orange-600 {
+  color: var(--color-orange-700);
+}
 
 /* Fisiopatología: flujo de sangre, latido y nodo del paso actual */
 @keyframes fp-flow {

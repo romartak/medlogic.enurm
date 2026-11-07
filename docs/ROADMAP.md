@@ -16,6 +16,13 @@ Hacia dónde va el proyecto. También se ve dentro de la app en **Lo que viene**
 - **Calibración y diagnóstico de errores.** Indica qué tan seguro estás: verás tus aciertos por suerte, tus puntos ciegos y si fallas por ir rápido, dudar o no saber.
 - **Estudiar sin conexión.** Guarda la plataforma y el banco de preguntas en tu dispositivo para estudiar sin internet.
 - **Sugerencias según tu actividad.** La plataforma aprende dónde pasas el tiempo, a qué hora estudias y dónde fallas, y te propone qué hacer. Todo se calcula en tu dispositivo.
+- **Cuentas y sincronización.** Entra con Google o correo y estudia en el teléfono y la computadora sin perder nada. Es opcional.
+- **Ranking, liga semanal y reto entre universidades.** Tu posición en el país y en tu universidad, ligas de Bronce a Diamante que se reinician cada lunes y un reto semanal entre universidades. Más el simulacro nacional mensual con percentil.
+- **Retos de 7 días.** Elige un tema caliente y practica 5 preguntas al día en 5 de los próximos 7 días para ganar XP.
+- **Compañero de estudio.** Únete con un código a otra persona y vean si el otro ya estudió hoy y su racha, sin compartir respuestas.
+- **Congeladores de racha y tarjeta semanal.** Un congelador salva tu racha si un día faltas, y puedes compartir el resumen de tu semana por WhatsApp.
+- **Calidad del banco con tu ayuda.** Reporta un error en cualquier pregunta y vota si una explicación te sirvió. Las preguntas con varios reportes se marcan «en revisión».
+- **Páginas públicas de temas calientes.** Lo que más se repite en el ENURM, por especialidad, en páginas que Google puede mostrar.
 
 ## Próximo — 1–3 meses
 
@@ -26,9 +33,7 @@ Hacia dónde va el proyecto. También se ve dentro de la app en **Lo que viene**
 
 ## Después — 3–6 meses
 
-- **Cuenta y sincronización.** Inicio de sesión opcional para estudiar en el teléfono y la computadora sin perder nada.
-- **Ranking nacional y percentil.** Compárate de forma anónima con otros aspirantes y conoce tu percentil estimado.
-- **Duelos, ligas y torneos.** Duelos 1 vs 1 en vivo, ligas semanales (Bronce → Diamante) y torneos entre universidades.
+- **Torneos y duelos en vivo.** Los duelos 1 contra 1 con código ya existen; faltan los torneos entre universidades y los duelos en vivo.
 - **Salas de estudio en vivo.** Estudia con otros, con pomodoro compartido y chat de dudas.
 - **Mazos de la comunidad.** Mazos y preguntas aportados por la comunidad, con revisión médica por pares y votos.
 - **Bot de WhatsApp y Telegram.** Pregunta del día, recordatorios de repaso y tu racha, directamente en tu chat.

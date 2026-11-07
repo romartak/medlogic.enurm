@@ -1,4 +1,4 @@
-import { Flame, Bone, Droplet, Flag, Hand, HeartPulse, Languages, Medal, MonitorDot, Siren, Stethoscope, Swords, UserRound, BookOpen, Calculator, Rocket, Sparkles, WandSparkles, Wind, CalendarCheck, ChartColumn, Compass, Gamepad2, GraduationCap, House, Layers, LayoutGrid, Library, Newspaper, RotateCcw, Settings, Target, Trophy, Waypoints, type LucideIcon } from 'lucide-react'
+import { Crosshair, Users, Flame, Bone, Droplet, Flag, Hand, HeartPulse, Languages, Medal, MonitorDot, Siren, Stethoscope, Swords, UserRound, BookOpen, Calculator, Rocket, Sparkles, WandSparkles, Wind, CalendarCheck, ChartColumn, Compass, Gamepad2, GraduationCap, House, Layers, LayoutGrid, Library, Newspaper, RotateCcw, Settings, Target, Trophy, Waypoints, type LucideIcon } from 'lucide-react'
 
 export interface NavItem {
   to: string
@@ -18,6 +18,7 @@ export const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
       { to: '/simulacro', label: 'Simulacro', icon: GraduationCap, description: 'Examen cronometrado tipo ENURM' },
       { to: '/simulacro-nacional', label: 'Simulacro nacional', icon: Flag, description: 'El mismo examen para todo el país cada mes, con percentil' },
       { to: '/temas-calientes', label: 'Temas calientes', icon: Flame, description: 'Qué temas se repiten año tras año en el ENURM' },
+      { to: '/retos', label: 'Retos de 7 días', icon: Crosshair, description: 'Practica 5 preguntas al día de un tema caliente y gana XP' },
       { to: '/casos', label: 'Casos clínicos', icon: Stethoscope, description: 'Decide paso a paso como en la guardia' },
       { to: '/flashcards', label: 'Flashcards', icon: Layers, description: 'Repetición espaciada' },
       { to: '/terminologia', label: 'Terminología', icon: Languages, description: 'Aprende términos médicos por partes, como en Duolingo' },
@@ -42,6 +43,7 @@ export const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
       { to: '/banco', label: 'Banco de preguntas', icon: Library, description: 'Busca y filtra todas las preguntas' },
       { to: '/repaso', label: 'Repaso', icon: RotateCcw, description: 'Errores, marcadas y notas' },
       { to: '/juegos', label: 'Juegos', icon: Gamepad2, description: 'Aprende jugando' },
+      { to: '/companero', label: 'Compañero de estudio', icon: Users, description: 'Estudia en pareja: mira si tu compañero ya estudió hoy y se motivan' },
       { to: '/duelo', label: 'Duelo', icon: Swords, description: 'Reta a un amigo con las mismas 10 preguntas' },
       { to: '/ecg', label: 'Lee el ECG', icon: HeartPulse, description: 'Reconoce arritmias, bloqueos y lesión aguda' },
       { to: '/herramientas', label: 'Herramientas', icon: Calculator, description: 'Calculadoras y escalas clínicas' },

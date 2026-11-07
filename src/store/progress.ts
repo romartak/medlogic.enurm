@@ -5,6 +5,7 @@ import { DEFAULT_PROFILE } from '@/lib/plan'
 import { dayKey, pickKnown } from '@/lib/utils'
 import { ACHIEVEMENTS } from '@/data/achievements'
 import { computeStreak } from '@/lib/stats'
+import { EMPTY_FREEZE, planFreeze, sanitizeFreeze, type StreakFreeze } from '@/lib/freeze'
 import { useToasts } from './toasts'
 
 export const GAME_IDS = ['contrarreloj', 'supervivencia', 'verdadero-falso', 'parejas', 'pistas', 'cuadrantes'] as const
@@ -37,6 +38,8 @@ interface ProgressData {
   planSnapshot: { plan: DailyPlan; profileAt: number } | null
   /** Última sección de estudio que usó la persona (para «Continuar donde lo dejaste»). */
   lastSection: { to: string; at: number } | null
+  /** Congeladores de racha (ver lib/freeze.ts). */
+  streakFreeze: StreakFreeze
 }
 
 interface ProgressActions {
@@ -59,6 +62,8 @@ interface ProgressActions {
   setPlanSnapshot: (snap: ProgressData['planSnapshot']) => void
   markPlanDone: () => boolean
   setLastSection: (to: string) => void
+  /** Cubre un día fallado o da un congelador nuevo, según corresponda. Devuelve qué pasó para avisar a la persona. */
+  syncStreakFreeze: () => { used: string | null; awarded: boolean }
 }
 
 export type ProgressState = ProgressData & ProgressActions
@@ -97,6 +102,7 @@ const INITIAL: ProgressData = {
   planDone: {},
   planSnapshot: null,
   lastSection: null,
+  streakFreeze: EMPTY_FREEZE,
 }
 
 const EMPTY_DAY: DayActivity = { answered: 0, correct: 0, cards: 0, minutes: 0 }
@@ -125,9 +131,9 @@ const RULES: Record<string, (s: ProgressData, specialtiesSeen: number) => boolea
   'answers-100': (s) => totalAnswered(s) >= 100,
   'answers-500': (s) => totalAnswered(s) >= 500,
   'answers-1000': (s) => totalAnswered(s) >= 1000,
-  'streak-3': (s) => computeStreak(s.activity) >= 3,
-  'streak-7': (s) => computeStreak(s.activity) >= 7,
-  'streak-30': (s) => computeStreak(s.activity) >= 30,
+  'streak-3': (s) => computeStreak(s.activity, new Date(), s.streakFreeze.frozen) >= 3,
+  'streak-7': (s) => computeStreak(s.activity, new Date(), s.streakFreeze.frozen) >= 7,
+  'streak-30': (s) => computeStreak(s.activity, new Date(), s.streakFreeze.frozen) >= 30,
   'first-exam': (s) => s.exams.length >= 1,
   'exam-80': (s) => s.exams.some((e) => e.total >= 20 && e.correct / e.total >= 0.8),
   'cards-50': (s) => s.totalCardsReviewed >= 50,
@@ -263,6 +269,12 @@ export const useProgress = create<ProgressState>()(
           set({ lastSection: { to, at: Date.now() } })
         },
 
+        syncStreakFreeze: () => {
+          const r = planFreeze(get().activity, get().streakFreeze)
+          if (r.state !== get().streakFreeze) set({ streakFreeze: r.state })
+          return { used: r.used, awarded: r.awarded }
+        },
+
         addXp: (n) => commit({ xp: get().xp + n }),
 
         updateSettings: (patch) => set({ settings: { ...get().settings, ...patch } }),
@@ -291,7 +303,7 @@ export const useProgress = create<ProgressState>()(
 
         importBackup: (data) => {
           const clean = pickKnown(INITIAL, data)
-          set({ ...clean, settings: { ...DEFAULT_SETTINGS, ...pickKnown(DEFAULT_SETTINGS, clean.settings ?? get().settings) }, profile: { ...DEFAULT_PROFILE, ...pickKnown(DEFAULT_PROFILE, clean.profile ?? get().profile) }, planSnapshot: null })
+          set({ ...clean, streakFreeze: sanitizeFreeze(clean.streakFreeze), settings: { ...DEFAULT_SETTINGS, ...pickKnown(DEFAULT_SETTINGS, clean.settings ?? get().settings) }, profile: { ...DEFAULT_PROFILE, ...pickKnown(DEFAULT_PROFILE, clean.profile ?? get().profile) }, planSnapshot: null })
         },
       }
     },
@@ -305,7 +317,7 @@ export const useProgress = create<ProgressState>()(
       },
       merge: (persisted, current) => {
         const p = (persisted ?? {}) as Partial<ProgressData>
-        return { ...current, ...p, settings: { ...DEFAULT_SETTINGS, ...(p.settings ?? {}) }, profile: { ...DEFAULT_PROFILE, ...(p.profile ?? {}) } }
+        return { ...current, ...p, streakFreeze: sanitizeFreeze(p.streakFreeze), settings: { ...DEFAULT_SETTINGS, ...(p.settings ?? {}) }, profile: { ...DEFAULT_PROFILE, ...(p.profile ?? {}) } }
       },
     },
   ),

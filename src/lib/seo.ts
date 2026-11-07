@@ -7,6 +7,7 @@
  */
 import type { Question } from '@/types'
 import { enurmDate, formatEnurmDate, type EnurmDate } from '@/data/enurm'
+import { examYears, hotTopics, RECENT_WINDOW, type HotTopic } from '@/lib/hot'
 
 /** Dirección pública. Al comprar un dominio, cambia esto y el canonical de index.html. */
 export const SITE = 'https://medlogicenurm.vercel.app'
@@ -104,7 +105,8 @@ details{margin-top:10px}summary{cursor:pointer;font-weight:700;color:var(--brand
 .why li{margin:6px 0}.muted{color:var(--muted);font-size:14px}
 .row{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
 footer{border-top:1px solid var(--border);padding:24px 0 40px;font-size:14px;color:var(--muted)}footer a{color:var(--muted)}
-footer .links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:10px}`
+footer .links{display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:10px}
+.scroll{overflow-x:auto}.scroll table{min-width:620px}`
 
 function layout(o: { path: string; title: string; description: string; h1: string; crumbs: [string, string][]; body: string; jsonld?: object[] }) {
   const url = `${SITE}/${o.path}`
@@ -143,7 +145,7 @@ function layout(o: { path: string; title: string; description: string; h1: strin
 <body>
 <header><div class="wrap">
 <a class="brand" href="/">${MARK}<span>MedLogic<small>ENURM</small></span></a>
-<nav class="top" aria-label="Secciones"><a href="/enurm/">Guía del ENURM</a><a href="/preguntas-enurm/">Preguntas</a><a href="/simulacro-enurm/">Simulacro</a></nav>
+<nav class="top" aria-label="Secciones"><a href="/enurm/">Guía del ENURM</a><a href="/preguntas-enurm/">Preguntas</a><a href="/temas-calientes-enurm/">Temas calientes</a><a href="/simulacro-enurm/">Simulacro</a></nav>
 </div></header>
 <main class="wrap">
 <nav class="crumbs" aria-label="Ruta">${crumbs.map(([n, p], i) => (i < crumbs.length - 1 ? `<a href="/${p}">${esc(n)}</a> › ` : esc(n))).join('')}</nav>
@@ -442,6 +444,76 @@ ${prepFaqs.map(([q, a]) => `<h3>${esc(q)}</h3><p>${esc(a)}</p>`).join('\n')}`,
       jsonld: [{ '@type': 'FAQPage', mainEntity: prepFaqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }],
     }),
   })
+
+  /* Temas calientes: qué se repite en los exámenes recopilados */
+  const hot = hotTopics(real)
+  if (hot.length >= 10) {
+    const yrs = examYears(real)
+    const [first, last] = [yrs[0], yrs[yrs.length - 1]]
+    const specName = new Map(specialties.map((sp) => [sp.id, sp.name]))
+    const nameOf = (id: string) => specName.get(id) ?? id
+    const row = (t: HotTopic) => {
+      const ys = Object.keys(t.byYear).map(Number).sort((a, b) => b - a)
+      return `<tr><td>${esc(t.topic)}</td><td>${esc(nameOf(t.specialty))}</td><td class="n">${t.recentYears} de ${RECENT_WINDOW}</td><td class="n">${t.total}</td><td>${ys.slice(0, 6).join(', ')}${ys.length > 6 ? '…' : ''}</td></tr>`
+    }
+    const table = (list: HotTopic[]) =>
+      `<div class="scroll" tabindex="0" role="region" aria-label="Tabla de temas, desplazable"><table><thead><tr><th>Tema</th><th>Especialidad</th><th>Salió en los últimos ${RECENT_WINDOW} años</th><th>Apariciones</th><th>Años</th></tr></thead><tbody>${list.map(row).join('')}</tbody></table></div>`
+    const caveat = `<p class="muted">Se calcula con la recopilación de exámenes ${first}–${last}, agrupando preguntas parecidas. Que un tema se repita no garantiza que salga en el próximo examen: sirve para priorizar el estudio, no para dejar temas fuera.</p>`
+    const hotFaqs: [string, string][] = [
+      ['¿Qué es un tema caliente del ENURM?', `Un tema que aparece una y otra vez en los exámenes de años anteriores. Aquí se ordenan por en cuántos de los últimos ${RECENT_WINDOW} años salió algo de ese tema.`],
+      ['¿Cómo se calculan?', `Se agrupan las preguntas parecidas de los exámenes ${first}–${last} y se cuenta en qué años apareció cada tema. Los datos vienen del banco de MedLogic ENURM y crecen con cada revisión.`],
+      ['¿Garantiza que el tema saldrá en el próximo examen?', 'No. Es una guía para decidir qué estudiar primero, no una predicción. Estudia el temario completo y usa esta lista para reforzar lo que más se repite.'],
+    ]
+    const hotLd = [{ '@type': 'FAQPage', mainEntity: hotFaqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }]
+    const hotSpecs = specialties.map((sp) => ({ ...sp, list: hotTopics(real, sp.id) })).filter((sp) => sp.list.length >= 8).sort((a, b) => b.list.length - a.list.length)
+    const title = `Temas calientes del ENURM: los que más se repiten (${first}–${last}) | MedLogic`
+    pages.push({
+      path: 'temas-calientes-enurm/',
+      title,
+      priority: 0.8,
+      changefreq: 'monthly',
+      html: layout({
+        path: 'temas-calientes-enurm/',
+        title,
+        description: `Qué temas se repiten más en el ENURM: ${fmt(hot.length)} temas de los exámenes ${first}–${last} ordenados por cuántos años salieron. Gratis, con mapa de calor interactivo.`,
+        h1: 'Temas calientes del ENURM',
+        crumbs: [['Temas calientes', 'temas-calientes-enurm/']],
+        body: `<p class="lead">Los temas que más se repiten en los exámenes del ENURM, para que sepas qué estudiar primero.</p>
+<div class="facts"><div class="fact"><b>${fmt(hot.length)}</b><span>temas con apariciones</span></div><div class="fact"><b>${yrs.length}</b><span>años con examen recopilado</span></div><div class="fact"><b>${first}–${last}</b><span>período cubierto</span></div></div>
+<h2>Los 40 temas más constantes</h2>
+${table(hot.slice(0, 40))}
+${caveat}
+${appCta('/#/temas-calientes', 'Ver el mapa de calor interactivo')}
+<h2>Temas calientes por especialidad</h2>
+<ul>${hotSpecs.map((sp) => `<li><a href="/temas-calientes-enurm/${esc(sp.id)}/">${esc(sp.name)}</a> <span class="muted">(${sp.list.length} temas)</span></li>`).join('')}</ul>
+<h2>Preguntas frecuentes</h2>
+${hotFaqs.map(([q, a]) => `<h3>${esc(q)}</h3><p>${esc(a)}</p>`).join('\n')}`,
+        jsonld: hotLd,
+      }),
+    })
+    for (const sp of hotSpecs) {
+      const path = `temas-calientes-enurm/${sp.id}/`
+      const t = `Temas calientes de ${sp.name} en el ENURM | MedLogic`
+      pages.push({
+        path,
+        title: t,
+        priority: 0.6,
+        changefreq: 'monthly',
+        html: layout({
+          path,
+          title: t,
+          description: `Los temas de ${sp.name} que más se repiten en el ENURM (${first}–${last}): ${fmt(sp.list.length)} temas ordenados por cuántos años salieron, con los años exactos.`,
+          h1: `Temas calientes de ${esc(sp.name)}`,
+          crumbs: [['Temas calientes', 'temas-calientes-enurm/'], [sp.name, path]],
+          body: `<p class="lead">Lo que más se repite de ${esc(sp.name)} en los exámenes del ENURM.</p>
+${table(sp.list.slice(0, 30))}
+${caveat}
+${appCta(`/#/practica?specialty=${sp.id}`, `Practicar ${esc(sp.name)}`)}
+<p><a href="/temas-calientes-enurm/">← Todos los temas calientes</a> · <a href="/preguntas-enurm/${esc(sp.id)}/">Preguntas resueltas de ${esc(sp.name)}</a></p>`,
+        }),
+      })
+    }
+  }
 
   return pages
 }

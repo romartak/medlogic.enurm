@@ -6,6 +6,7 @@ import { Card, PageHeader, Segmented } from '@/components/ui/primitives'
 import { useAuth } from '@/store/auth'
 import { useProgress } from '@/store/progress'
 import { isSupabaseConfigured } from '@/lib/supabase'
+import { LeaguePanel, UniversityChallengePanel } from '@/components/LeagueTabs'
 import { fetchRanking, fetchUniversities, myPublicStats, publishStats, type MyPosition, type RankingOrder, type RankingRow, type UniversityRow } from '@/lib/ranking'
 import { universityLabel } from '@/data/universities'
 import { cn } from '@/lib/utils'
@@ -76,6 +77,7 @@ export default function Ranking() {
   const showName = useProgress((s) => s.settings.rankingShowName)
   const updateSettings = useProgress((s) => s.updateSettings)
   const [order, setOrder] = useState<RankingOrder>('xp')
+  const [view, setView] = useState<'general' | 'liga' | 'reto'>('general')
   const [scope, setScope] = useState<'pais' | 'universidad' | 'universidades'>('pais')
   const [rows, setRows] = useState<RankingRow[]>([])
   const [me, setMe] = useState<MyPosition | null>(null)
@@ -100,8 +102,8 @@ export default function Ranking() {
   }, [order, scope, university])
 
   useEffect(() => {
-    if (status === 'signed-in') void load()
-  }, [status, load])
+    if (status === 'signed-in' && view === 'general') void load()
+  }, [status, load, view])
 
   const header = <PageHeader icon={<Medal className="size-6" />} eyebrow="Progreso" title="Ranking" subtitle="Tu posición frente a los demás estudiantes del país y de tu universidad." />
 
@@ -127,6 +129,23 @@ export default function Ranking() {
     <div className="space-y-6">
       {header}
 
+      <Segmented
+        value={view}
+        onChange={setView}
+        className="grid grid-cols-3 sm:inline-flex"
+        options={[
+          { value: 'general', label: 'Clasificación' },
+          { value: 'liga', label: 'Liga semanal' },
+          { value: 'reto', label: 'Reto' },
+        ]}
+      />
+
+      {view === 'liga' ? (
+        <LeaguePanel />
+      ) : view === 'reto' ? (
+        <UniversityChallengePanel />
+      ) : (
+        <>
       <div className="grid gap-3 sm:grid-cols-3">
         <Card className="relative overflow-hidden p-5">
           <div className="text-xs font-semibold text-muted">Tu posición en el país</div>
@@ -237,6 +256,8 @@ export default function Ranking() {
       <p className="text-xs text-muted">
         Aparecen todas las cuentas activas en los últimos 120 días, incluso las que apenas empiezan. Tu resumen (preguntas, precisión, tiempo, XP y racha) se actualiza cada vez que se sincroniza tu progreso; tus respuestas no se comparten.
       </p>
+        </>
+      )}
     </div>
   )
 }

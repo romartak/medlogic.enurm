@@ -243,6 +243,124 @@ export async function makeExamImage(s: ExamShare): Promise<Blob> {
   return new Promise((resolve, reject) => canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('sin imagen'))), 'image/png'))
 }
 
+export interface WeekShare {
+  /** «2–8 nov». */
+  range: string
+  answered: number
+  /** 0–100 o null. */
+  accuracy: number | null
+  activeDays: number
+  streak: number
+  league: string
+  leagueColor: string
+  points: number
+  topSpecialty: string | null
+  /** Diferencia de preguntas con la semana anterior. */
+  delta: number
+}
+
+/** Imagen vertical con el resumen de la semana, lista para WhatsApp o Stories. */
+export async function makeWeekImage(s: WeekShare): Promise<Blob> {
+  try {
+    await Promise.all([document.fonts.load(`800 64px ${DISPLAY}`), document.fonts.load(`500 28px ${BODY}`)])
+  } catch {
+    /* se usa la fuente del sistema */
+  }
+  const canvas = document.createElement('canvas')
+  canvas.width = W
+  canvas.height = H
+  const ctx = canvas.getContext('2d')!
+  ctx.fillStyle = '#070b14'
+  ctx.fillRect(0, 0, W, H)
+  for (const [cx, cy, r, c] of [
+    [W * 0.9, 140, 640, 'rgba(20,184,166,0.30)'],
+    [W * 0.05, H * 0.95, 620, 'rgba(99,102,241,0.30)'],
+  ] as const) {
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r)
+    g.addColorStop(0, c)
+    g.addColorStop(1, 'rgba(7,11,20,0)')
+    ctx.fillStyle = g
+    ctx.fillRect(0, 0, W, H)
+  }
+  logo(ctx, 72, 72, 96)
+  ctx.fillStyle = '#e8edf5'
+  ctx.font = `800 46px ${DISPLAY}`
+  ctx.textBaseline = 'alphabetic'
+  ctx.fillText('MedLogic', 192, 120)
+  ctx.fillStyle = '#1fe0c9'
+  ctx.font = `700 20px ${DISPLAY}`
+  ctx.letterSpacing = '7px'
+  ctx.fillText('ENURM', 194, 154)
+  ctx.letterSpacing = '0px'
+
+  ctx.fillStyle = '#94a3b8'
+  ctx.font = `600 32px ${BODY}`
+  ctx.fillText(`Mi semana · ${s.range}`, 72, 290)
+
+  const g = ctx.createLinearGradient(72, 360, 700, 540)
+  g.addColorStop(0, '#2dd4bf')
+  g.addColorStop(1, '#818cf8')
+  ctx.fillStyle = g
+  ctx.font = `800 240px ${DISPLAY}`
+  ctx.fillText(String(s.answered), 64, 540)
+  const w = ctx.measureText(String(s.answered)).width
+  ctx.fillStyle = '#e8edf5'
+  ctx.font = `700 52px ${DISPLAY}`
+  ctx.fillText(s.answered === 1 ? 'pregunta' : 'preguntas', 64 + w + 20, 540)
+  if (s.delta !== 0) {
+    ctx.fillStyle = s.delta > 0 ? '#34d399' : '#94a3b8'
+    ctx.font = `700 34px ${BODY}`
+    ctx.fillText(`${s.delta > 0 ? '+' : ''}${s.delta} frente a la semana pasada`, 72, 600)
+  }
+
+  const stats: [string, string][] = [
+    [s.accuracy === null ? '—' : `${s.accuracy}%`, 'de aciertos'],
+    [String(s.activeDays), s.activeDays === 1 ? 'día de estudio' : 'días de estudio'],
+    [String(s.streak), s.streak === 1 ? 'día de racha' : 'días de racha'],
+  ]
+  const cw = (W - 144 - 2 * 24) / 3
+  stats.forEach(([value, label], i) => {
+    const x = 72 + i * (cw + 24)
+    ctx.fillStyle = 'rgba(255,255,255,0.07)'
+    roundRect(ctx, x, 670, cw, 200, 28)
+    ctx.fill()
+    ctx.fillStyle = '#e8edf5'
+    ctx.font = `800 68px ${DISPLAY}`
+    ctx.fillText(value, x + 32, 765)
+    ctx.fillStyle = '#94a3b8'
+    ctx.font = `600 28px ${BODY}`
+    ctx.fillText(label, x + 32, 820)
+  })
+
+  ctx.fillStyle = s.leagueColor
+  roundRect(ctx, 72, 920, W - 144, 130, 32)
+  ctx.fill()
+  ctx.fillStyle = '#ffffff'
+  ctx.font = `800 54px ${DISPLAY}`
+  ctx.fillText(`Liga ${s.league}`, 112, 1000)
+  ctx.font = `700 34px ${BODY}`
+  const pts = `${s.points.toLocaleString('es-DO')} puntos`
+  ctx.fillText(pts, W - 112 - ctx.measureText(pts).width, 1000)
+
+  if (s.topSpecialty) {
+    ctx.fillStyle = '#94a3b8'
+    ctx.font = `600 32px ${BODY}`
+    ctx.fillText(`Lo que más practiqué: ${s.topSpecialty.length > 28 ? s.topSpecialty.slice(0, 27) + '…' : s.topSpecialty}`, 72, 1120)
+  }
+
+  ctx.fillStyle = '#e8edf5'
+  ctx.font = `800 40px ${DISPLAY}`
+  ctx.fillText('Practica gratis conmigo', 72, 1218)
+  ctx.fillStyle = '#2dd4bf'
+  ctx.font = `700 34px ${BODY}`
+  ctx.fillText(SITE, 72, 1272)
+  ctx.fillStyle = '#94a3b8'
+  ctx.font = `600 30px ${BODY}`
+  const handle = `@${INSTAGRAM_USER}`
+  ctx.fillText(handle, W - 72 - ctx.measureText(handle).width, 1272)
+  return new Promise((resolve, reject) => canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('sin imagen'))), 'image/png'))
+}
+
 /** Comparte la imagen con el menú del teléfono; si no se puede, la descarga. Devuelve cómo salió. */
 export async function shareBlob(blob: Blob, filename: string, text: string): Promise<'shared' | 'downloaded' | 'cancelled'> {
   const file = new File([blob], filename, { type: 'image/png' })
@@ -271,4 +389,8 @@ export async function shareProgress(s: ShareStats) {
 
 export async function shareExam(s: ExamShare) {
   return shareBlob(await makeExamImage(s), 'mi-simulacro-medlogic.png', `Saqué ${s.score}/100 en un simulacro del ENURM con MedLogic, gratis: https://${SITE}`)
+}
+
+export async function shareWeek(s: WeekShare, text: string) {
+  return shareBlob(await makeWeekImage(s), 'mi-semana-medlogic.png', text)
 }
