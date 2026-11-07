@@ -6,6 +6,8 @@ import type { Question } from '@/types'
 import { useBank } from '@/store/bank'
 import { useProgress } from '@/store/progress'
 import { useMetacog } from '@/store/metacog'
+import { useChallenge } from '@/store/challenge'
+import { getSpecialty } from '@/data/specialties'
 import { ConfidenceBar } from '@/components/ConfidenceBar'
 import { feedbackFor, type Confidence } from '@/lib/metacog'
 import { filterQuestions, optionOrder, type StatusFilter } from '@/lib/selection'
@@ -22,6 +24,8 @@ interface Config {
   years: number[]
   status: StatusFilter
   count: number
+  /** Tema por el que empezar (viene de un reto o de «Temas calientes»). */
+  topic?: string
 }
 
 export default function Practice() {
@@ -35,6 +39,7 @@ export default function Practice() {
     years: params.get('year') ? [Number(params.get('year'))] : [],
     status: (params.get('status') as StatusFilter) || 'all',
     count: Number(params.get('count')) || 20,
+    topic: params.get('topic') || undefined,
   }))
   const [session, setSession] = useState<Question[] | null>(null)
   // Cada sesión nueva (o «Repetir falladas») empieza desde cero: sin esto conservaba la pregunta y el resultado de la anterior y la pantalla quedaba en negro.
@@ -43,11 +48,13 @@ export default function Practice() {
   const pool = useMemo(() => filterQuestions(questions, { ...config }, attempts, bookmarks), [questions, config, attempts, bookmarks])
 
   const start = (qs = pool) => {
-    // Prioriza las no vistas y luego el resto, para cubrir el banco más rápido.
-    const unseen = shuffle(qs.filter((q) => !attempts[q.id]))
-    const seen = shuffle(qs.filter((q) => attempts[q.id]))
+    // Prioriza las no vistas y luego el resto, para cubrir el banco más rápido. Si hay un tema elegido
+    // (un reto o «Temas calientes»), primero salen las preguntas de ese tema y después el resto.
+    const order = (list: Question[]) => [...shuffle(list.filter((q) => !attempts[q.id])), ...shuffle(list.filter((q) => attempts[q.id]))]
+    const onTopic = config.topic ? qs.filter((q) => q.topic === config.topic) : []
+    const rest = config.topic ? qs.filter((q) => q.topic !== config.topic) : qs
     setRound((r) => r + 1)
-    setSession([...unseen, ...seen].slice(0, config.count))
+    setSession([...order(onTopic), ...order(rest)].slice(0, config.count))
   }
 
   const autoStarted = useRef(false)
@@ -77,6 +84,16 @@ export default function Practice() {
       <PageHeader icon={<Target className="size-6" />} eyebrow="Modo tutor" title="Práctica" subtitle="Responde y recibe la explicación al instante. Ideal para aprender tema por tema." />
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="min-w-0 space-y-6 lg:col-span-2">
+          {config.topic && (
+            <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-brand-500/30 bg-brand-500/[0.06] px-4 py-3 text-sm">
+              <span>
+                Empezamos por el tema <b>«{config.topic}»</b> y seguimos con el resto{config.specialties[0] ? ` de ${getSpecialty(config.specialties[0]).name}` : ''}.
+              </span>
+              <button type="button" onClick={() => setConfig({ ...config, topic: undefined })} className="relative font-semibold text-brand-700 underline after:absolute after:-inset-2 dark:text-brand-300">
+                Quitar
+              </button>
+            </div>
+          )}
           <Card className="p-5 sm:p-6">
             <h2 className="mb-3 font-semibold">Especialidades</h2>
             <SpecialtyPicker value={config.specialties} onChange={(specialties) => setConfig({ ...config, specialties })} />
@@ -176,6 +193,7 @@ function PracticeSession({ questions, onExit, onRestart }: { questions: Question
     const ok = recordAnswer(q, orig)
     recordMeta({ id: q.id, spec: q.specialty, ms: Date.now() - shownAt.current, conf, ok, at: Date.now() })
     setFeedback(feedbackFor(conf, ok))
+    useChallenge.getState().record(q, ok)
     playSound(ok ? 'correct' : 'wrong')
   }
 

@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { ExplanationFeedback } from './ExplanationFeedback'
+import { useInReview } from '@/hooks/useInReview'
 import { AnimatePresence, motion } from 'motion/react'
-import { Activity, BookMarked, Check, ChevronDown, CircleAlert, ExternalLink, Layers, Lightbulb, ListChecks, MessageSquareWarning, Sparkles, X } from 'lucide-react'
+import { Activity, BookMarked, Check, ChevronDown, CircleAlert, ExternalLink, Layers, Lightbulb, ListChecks, Sparkles, X } from 'lucide-react'
 import type { Question } from '@/types'
 import { useNoteEditor } from '@/components/anki/common'
 import { cn, LETTERS, safeUrl } from '@/lib/utils'
@@ -34,6 +36,7 @@ function Section({ icon, title, tone, children, collapsible = false, defaultOpen
  */
 export function QuestionAnalysis({ q, selected, order }: { q: Question; selected: number | null; order?: number[] }) {
   const openEditor = useNoteEditor((s) => s.open)
+  const inReview = useInReview(q.id)
   const wrong = selected !== null && selected !== q.answer
   const ex = q.optionExplanations
   const positions = order ?? q.options.map((_, i) => i)
@@ -47,6 +50,15 @@ export function QuestionAnalysis({ q, selected, order }: { q: Question; selected
   return (
     <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} transition={{ duration: 0.35, ease: [0.2, 0.8, 0.2, 1] }} className="overflow-hidden">
       <div className="mt-5 space-y-3">
+        {inReview && (
+          <div role="note" className="flex gap-2.5 rounded-xl border border-amber-500/40 bg-amber-500/10 p-3 text-sm leading-relaxed">
+            <CircleAlert className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" aria-hidden />
+            <p>
+              <span className="font-semibold">En revisión.</span> Varias personas reportaron un posible error en esta pregunta. Tómala con cuidado mientras la revisamos.
+            </p>
+          </div>
+        )}
+
         {q.review && (
           <div role="note" className="flex gap-2.5 rounded-xl border border-amber-500/40 bg-amber-500/10 p-3 text-sm leading-relaxed">
             <CircleAlert className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
@@ -157,15 +169,13 @@ export function QuestionAnalysis({ q, selected, order }: { q: Question; selected
           >
             <Sparkles className="size-3.5" /> Explícalo con IA
           </button>
-          <a href={issueUrl} target="_blank" rel="noreferrer" className="inline-flex h-8 items-center gap-1.5 rounded-lg px-3 text-xs font-semibold text-muted hover:bg-slate-900/5 hover:text-[var(--text)] dark:hover:bg-white/5">
-            <MessageSquareWarning className="size-3.5" /> Reportar un error
-          </a>
           {!ex?.some(Boolean) && !q.pathophysiology && (
             <span className="inline-flex items-center gap-1 text-xs text-muted">
               <CircleAlert className="size-3" /> Análisis detallado en preparación
             </span>
           )}
         </div>
+        <ExplanationFeedback q={q} issueUrl={issueUrl} />
       </div>
     </motion.div>
   )

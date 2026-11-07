@@ -11,6 +11,7 @@ import { FunctionsSheet, FunctionsTab } from './MobileMenu'
 import { useProgress, levelFromXp } from '@/store/progress'
 import { useInterestTracker } from '@/hooks/useInterestTracker'
 import { OfflineBanner } from '@/components/OfflineCard'
+import { toast } from '@/store/toasts'
 import { useAuth } from '@/store/auth'
 import { Avatar } from '@/components/ui/Avatar'
 import { useMyAvatar } from '@/components/AvatarPicker'
@@ -159,7 +160,8 @@ function ThemeButton() {
 function UserChip() {
   const xp = useProgress((s) => s.xp)
   const activity = useProgress((s) => s.activity)
-  const streak = computeStreak(activity)
+  const frozen = useProgress((s) => s.streakFreeze.frozen)
+  const streak = computeStreak(activity, new Date(), frozen)
   const { level, progress } = levelFromXp(xp)
   return (
     <NavLink to="/logros" className="flex items-center gap-2 rounded-xl py-1 pr-1 pl-2 transition-colors hover:bg-slate-900/5 dark:hover:bg-white/5">
@@ -239,6 +241,14 @@ export function AppLayout() {
 
   useInterestTracker()
 
+  // Congeladores de racha: cubre el día que se faltó (si hay uno disponible) o da uno nuevo al llegar a 7, 14, 21… días.
+  const activityForFreeze = useProgress((s) => s.activity)
+  useEffect(() => {
+    const r = useProgress.getState().syncStreakFreeze()
+    if (r.used) toast({ kind: 'success', title: 'Tu racha se salvó', body: 'Usamos un congelador por el día que no estudiaste.' })
+    else if (r.awarded) toast({ kind: 'success', title: 'Ganaste un congelador de racha', body: 'Si un día fallas, cubrirá tu racha solo. Guardas hasta 2.' })
+  }, [activityForFreeze])
+
   // Se recuerda la última sección de estudio usada; viaja con el progreso a la nube. No se anota
   // hasta que la cuenta esté sincronizada, para no pisar lo que ya hay guardado en la nube.
   const setLastSection = useProgress((s) => s.setLastSection)
@@ -273,7 +283,7 @@ export function AppLayout() {
         <header className="glass sticky top-0 z-20 border-x-0 border-t-0">
           <div className="mx-auto flex h-16 max-w-7xl items-center gap-2 px-4 sm:px-6 lg:px-8">
             <div className='min-w-0 flex-1 lg:hidden'>
-              <span className="truncate font-display font-bold">{current?.label ?? 'MedLogic'}</span>
+              <span className="block truncate font-display font-bold">{current?.label ?? 'MedLogic'}</span>
             </div>
             <button
               onClick={() => setPaletteOpen(true)}

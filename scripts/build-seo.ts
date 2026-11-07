@@ -34,6 +34,7 @@ for (const p of pages) dates.set(p.path, old.get(p.path) === p.html ? (oldDates.
 
 // Borra las páginas por especialidad anteriores (por si una especialidad deja de tener página).
 rmSync(resolve(PUBLIC, 'preguntas-enurm'), { recursive: true, force: true })
+rmSync(resolve(PUBLIC, 'temas-calientes-enurm'), { recursive: true, force: true })
 for (const p of pages) {
   const file = resolve(PUBLIC, p.path, 'index.html')
   mkdirSync(dirname(file), { recursive: true })

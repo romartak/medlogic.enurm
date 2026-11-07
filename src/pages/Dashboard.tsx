@@ -29,6 +29,9 @@ import { InstallCard } from '@/components/InstallCard'
 import { StreakNudge } from '@/components/StreakNudge'
 import { InterestCard } from '@/components/InterestCard'
 import { TodayHero } from '@/components/TodayHero'
+import { WeekCard } from '@/components/WeekCard'
+import { ChallengeCard } from '@/components/ChallengeCard'
+import { useChallenge } from '@/store/challenge'
 
 function greeting() {
   const h = new Date().getHours()
@@ -153,15 +156,16 @@ function FunctionsGrid() {
 
 export default function Dashboard() {
   const navigate = useNavigate()
-  const { attempts, activity, xp, settings, exams, profile, guidesRead } = useProgress()
+  const { attempts, activity, xp, settings, exams, profile, guidesRead, streakFreeze: freeze } = useProgress()
   const cardTotals = useCardTotals()
+  const activeChallenge = useChallenge((s) => s.active)
   const recordAnswer = useProgress((s) => s.recordAnswer)
   const questions = useBank((s) => s.questions)
   const source = useBank((s) => s.source)
   const byId = useBank((s) => s.byId)
 
   const ov = overview(attempts, activity, questions.length)
-  const streak = computeStreak(activity)
+  const streak = computeStreak(activity, new Date(), freeze.frozen)
   const lvl = levelFromXp(xp)
   const stats = useMemo(() => specialtyStats(attempts, questions), [attempts, questions])
   const weak = weakest(stats, 3)
@@ -208,6 +212,7 @@ export default function Dashboard() {
         todayAnswered={ov.todayAnswered}
         accuracy={ov.answered ? ov.accuracy : null}
         streak={streak}
+        freezes={freeze.available}
         daysLeft={daysLeft}
         level={lvl.level}
         levelTitle={levelTitle(lvl.level)}
@@ -237,6 +242,10 @@ export default function Dashboard() {
       <DailyPlanCard />
 
       <FunctionsGrid />
+
+      <ChallengeCard challenge={activeChallenge} />
+
+      <WeekCard />
 
       <InterestCard />
 

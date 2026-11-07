@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { buildSeoPages, buildSitemap, esc, showcase, SITE } from './seo'
+import { hotTopics } from './hot'
 import { SPECIALTIES } from '@/data/specialties'
 import { ENURM_FACTS, enurmDate, formatEnurmDate } from '@/data/enurm'
 import type { Question } from '@/types'
@@ -19,7 +20,7 @@ describe('páginas para buscadores', () => {
   it('rutas únicas con guía, banco, especialidades y simulacro', () => {
     const paths = pages.map((p) => p.path)
     expect(new Set(paths).size).toBe(paths.length)
-    for (const p of ['enurm/', 'preguntas-enurm/', 'simulacro-enurm/', 'fecha-del-enurm/', 'como-prepararse-para-el-enurm/', 'preguntas-enurm/pediatria/']) expect(paths).toContain(p)
+    for (const p of ['enurm/', 'preguntas-enurm/', 'simulacro-enurm/', 'fecha-del-enurm/', 'como-prepararse-para-el-enurm/', 'preguntas-enurm/pediatria/', 'temas-calientes-enurm/']) expect(paths).toContain(p)
   })
 
   it('cada página tiene título, descripción, canonical propio y datos estructurados válidos', () => {
@@ -55,5 +56,30 @@ describe('páginas para buscadores', () => {
     const xml = buildSitemap(pages, () => '2026-11-02')
     expect(xml).toContain(`<loc>${SITE}/</loc>`)
     for (const p of pages) expect(xml).toContain(`<loc>${SITE}/${p.path}</loc>`)
+  })
+})
+
+describe('páginas de temas calientes', () => {
+  const real = questions.filter((q) => (q.years?.length ? true : !!q.year))
+  const hot = hotTopics(real)
+  const index = pages.find((p) => p.path === 'temas-calientes-enurm/')
+  it('hay un índice y páginas por especialidad con suficientes temas', () => {
+    expect(index).toBeDefined()
+    const per = pages.filter((p) => p.path.startsWith('temas-calientes-enurm/') && p.path !== 'temas-calientes-enurm/')
+    expect(per.length).toBeGreaterThan(3)
+    for (const p of per) expect(p.html, p.path).toContain('href="/temas-calientes-enurm/"')
+  })
+  it('el índice lista el tema más constante con sus años y avisa que no es una garantía', () => {
+    const top = hot[0]
+    expect(index!.html).toContain(top.topic.replace(/&/g, '&amp;'))
+    expect(index!.html).toContain(String(top.total))
+    expect(index!.html).toMatch(/no garantiza que salga/)
+  })
+  it('las cifras del índice coinciden con el banco', () => {
+    expect(index!.html).toContain(`<b>${hot.length.toLocaleString('es-DO').replace(/,/g, '.')}</b>`)
+  })
+  it('no muestra enunciados ni respuestas, solo temas', () => {
+    expect(index!.html).not.toContain('Respuesta correcta')
+    expect(index!.html).not.toContain('class="opts"')
   })
 })

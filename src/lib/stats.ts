@@ -5,13 +5,16 @@ function isActive(d: DayActivity | undefined): boolean {
   return !!d && d.answered + d.cards + d.minutes > 0
 }
 
-/** Días consecutivos de estudio terminando hoy (o ayer, si hoy aún no se ha estudiado). */
-export function computeStreak(activity: Record<string, DayActivity>, today = new Date()): number {
+/**
+ * Días consecutivos de estudio terminando hoy (o ayer, si hoy aún no se ha estudiado).
+ * Un día «congelado» (ver lib/freeze.ts) no rompe la racha, pero tampoco suma a la cuenta.
+ */
+export function computeStreak(activity: Record<string, DayActivity>, today = new Date(), frozen: readonly string[] = []): number {
   let cursor = today
   if (!isActive(activity[dayKey(cursor)])) cursor = addDays(cursor, -1)
   let n = 0
-  while (isActive(activity[dayKey(cursor)])) {
-    n++
+  while (isActive(activity[dayKey(cursor)]) || frozen.includes(dayKey(cursor))) {
+    if (isActive(activity[dayKey(cursor)])) n++
     cursor = addDays(cursor, -1)
   }
   return n
@@ -24,15 +27,16 @@ export function streakAtRisk(activity: Record<string, DayActivity>, now = new Da
   return n >= minStreak ? n : 0
 }
 
-export function bestStreak(activity: Record<string, DayActivity>): number {
-  const days = Object.keys(activity).filter((k) => isActive(activity[k])).sort()
+export function bestStreak(activity: Record<string, DayActivity>, frozen: readonly string[] = []): number {
+  const days = [...new Set([...Object.keys(activity).filter((k) => isActive(activity[k])), ...frozen])].sort()
   let best = 0
   let run = 0
   let prev: Date | null = null
   for (const k of days) {
     const [y, m, d] = k.split('-').map(Number)
     const date = new Date(y, m - 1, d)
-    run = prev && dayKey(addDays(prev, 1)) === k ? run + 1 : 1
+    const gain = isActive(activity[k]) ? 1 : 0 // un día congelado no rompe la racha, pero tampoco suma
+    run = prev && dayKey(addDays(prev, 1)) === k ? run + gain : gain
     best = Math.max(best, run)
     prev = date
   }
