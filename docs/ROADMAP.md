@@ -11,17 +11,18 @@ Hacia dónde va el proyecto. También se ve dentro de la app en **Lo que viene**
 - **Prompts e IA para médicos.** Biblioteca de prompts (diapositivas, flashcards, casos, tutor) y una guía para usar la IA con seguridad.
 - **Simulacros, juegos y herramientas.** Examen cronometrado, 6 juegos y 12 calculadoras clínicas.
 - **Habilidades clínicas.** ATLS, trauma y fracturas, semiología por sistemas, espirometría, hemograma, monitor de ECG en vivo y 18 casos clínicos por especialidad.
+- **Temas calientes del ENURM.** Mapa de calor tema × año con los exámenes 2002-2024: qué se repite y qué practicar primero.
+- **Modo examen real.** Pantalla completa, hoja de respuestas tipo burbuja y cronómetro, sin ayudas hasta entregar.
+- **Calibración y diagnóstico de errores.** Indica qué tan seguro estás: verás tus aciertos por suerte, tus puntos ciegos y si fallas por ir rápido, dudar o no saber.
+- **Estudiar sin conexión.** Guarda la plataforma y el banco de preguntas en tu dispositivo para estudiar sin internet.
+- **Sugerencias según tu actividad.** La plataforma aprende dónde pasas el tiempo, a qué hora estudias y dónde fallas, y te propone qué hacer. Todo se calcula en tu dispositivo.
 
 ## Próximo — 1–3 meses
 
 - **Banco completo de todos los años.** Todas las preguntas del ENURM con análisis por opción, fisiopatología y referencias actualizadas.
-- **Temas calientes del ENURM.** Mapa de calor tema × año para ver qué se repite y qué temas podrían salir en el próximo examen.
-- **Modo examen real.** Pantalla completa, hoja de respuestas tipo burbuja y cronómetro oficial, sin distracciones.
-- **Calibración de confianza.** Indica qué tan seguro estás antes de responder: verás tu curva metacognitiva y los aciertos "por suerte".
-- **Diagnóstico de tus errores.** Clasifica cada fallo (no lo sabía, leí mal, dudé entre dos, cambié la respuesta) usando tus tiempos de respuesta.
 - **FSRS: el algoritmo moderno de Anki.** Programación optimizada con tu propio historial de repasos, con el porcentaje de retención que elijas.
 - **Importar mazos .apkg de Anki.** Trae tus mazos de Anki con su progreso.
-- **App instalable y sin conexión.** PWA con notificaciones de "tu repaso de hoy" y funcionamiento completo sin internet.
+- **Avisos de tu repaso de hoy.** La app ya funciona sin conexión; falta avisarte con una notificación cuando tengas tarjetas pendientes.
 
 ## Después — 3–6 meses
 

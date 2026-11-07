@@ -2,13 +2,15 @@ import { LocalProgressLine } from '@/components/AccountNote'
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { NavLink, useLocation, useNavigate, useOutlet } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
-import { Flame, LogIn, Moon, Search, Sun, Monitor, UserRound, Zap } from 'lucide-react'
-import { NAV_GROUPS, MOBILE_TABS, hasNestedNav, navFor } from './nav'
+import { ChevronDown, Flame, LogIn, Moon, Search, Sparkles, Sun, Monitor, UserRound, Zap } from 'lucide-react'
+import { NAV_GROUPS, MOBILE_TABS, hasNestedNav, navFor, type NavItem } from './nav'
+import { useForYou } from '@/hooks/useForYou'
 import { Logo, GithubIcon } from '@/components/ui/Logo'
 const CommandPalette = lazy(() => import('./CommandPalette').then((m) => ({ default: m.CommandPalette })))
 import { FunctionsSheet, FunctionsTab } from './MobileMenu'
 import { useProgress, levelFromXp } from '@/store/progress'
 import { useInterestTracker } from '@/hooks/useInterestTracker'
+import { OfflineBanner } from '@/components/OfflineCard'
 import { useAuth } from '@/store/auth'
 import { Avatar } from '@/components/ui/Avatar'
 import { useMyAvatar } from '@/components/AvatarPicker'
@@ -36,38 +38,101 @@ function ExamChip() {
   )
 }
 
-function SidebarNav() {
+const NAV_OPEN_KEY = 'medlogic-nav-open'
+
+function readOpen(): Record<string, boolean> {
+  try {
+    return JSON.parse(localStorage.getItem(NAV_OPEN_KEY) ?? '{}') as Record<string, boolean>
+  } catch {
+    return {}
+  }
+}
+
+function SidebarLink({ item }: { item: NavItem }) {
   return (
-    <nav className="flex flex-col gap-5">
-      {NAV_GROUPS.map((g) => (
-        <div key={g.title}>
-          <div className="mb-1.5 px-3 text-xs font-bold tracking-[0.18em] text-muted uppercase">{g.title}</div>
+    <NavLink
+      to={item.to}
+      end={hasNestedNav(item.to)}
+      className={({ isActive }) =>
+        cn(
+          'group relative flex items-center gap-3 rounded-xl px-3 py-[7px] text-sm font-medium transition-colors',
+          isActive ? 'text-brand-700 dark:text-brand-300' : 'text-muted hover:bg-slate-900/[0.04] hover:text-[var(--text)] dark:hover:bg-white/[0.04]',
+        )
+      }
+    >
+      {({ isActive }) => (
+        <>
+          {isActive && <motion.span layoutId="nav-active" className="absolute inset-0 rounded-xl bg-brand-500/10 ring-1 ring-brand-500/20" transition={{ type: 'spring', stiffness: 500, damping: 38 }} />}
+          <item.icon className="relative size-[18px]" />
+          <span className="relative">{item.label}</span>
+        </>
+      )}
+    </NavLink>
+  )
+}
+
+/**
+ * Menú lateral: arriba «Para ti» (lo que más usa la persona) y debajo las categorías plegables.
+ * «Estudiar» empieza abierta; la que contiene la página actual se abre sola; la elección se recuerda.
+ */
+function SidebarNav() {
+  const { pathname } = useLocation()
+  const forYou = useForYou(4)
+  const [open, setOpen] = useState<Record<string, boolean>>(readOpen)
+  const toggle = (title: string, isOpen: boolean) => {
+    const next = { ...open, [title]: !isOpen }
+    setOpen(next)
+    try {
+      localStorage.setItem(NAV_OPEN_KEY, JSON.stringify(next))
+    } catch {
+      /* se recuerda solo mientras la pestaña esté abierta */
+    }
+  }
+  const here = navFor(pathname)
+
+  return (
+    <nav className="flex flex-col gap-4" aria-label="Secciones">
+      {forYou.length > 0 && (
+        <div>
+          <div className="mb-1.5 flex items-center gap-1.5 px-3 text-xs font-bold tracking-[0.18em] text-brand-700 uppercase dark:text-brand-300">
+            <Sparkles className="size-3.5" aria-hidden /> Para ti
+          </div>
           <ul className="flex flex-col gap-0.5">
-            {g.items.map((item) => (
+            {forYou.map((item) => (
               <li key={item.to}>
-                <NavLink
-                  to={item.to}
-                  end={hasNestedNav(item.to)}
-                  className={({ isActive }) =>
-                    cn(
-                      'group relative flex items-center gap-3 rounded-xl px-3 py-[7px] text-sm font-medium transition-colors',
-                      isActive ? 'text-brand-700 dark:text-brand-300' : 'text-muted hover:bg-slate-900/[0.04] hover:text-[var(--text)] dark:hover:bg-white/[0.04]',
-                    )
-                  }
-                >
-                  {({ isActive }) => (
-                    <>
-                      {isActive && <motion.span layoutId="nav-active" className="absolute inset-0 rounded-xl bg-brand-500/10 ring-1 ring-brand-500/20" transition={{ type: 'spring', stiffness: 500, damping: 38 }} />}
-                      <item.icon className="relative size-[18px]" />
-                      <span className="relative">{item.label}</span>
-                    </>
-                  )}
-                </NavLink>
+                <SidebarLink item={item} />
               </li>
             ))}
           </ul>
         </div>
-      ))}
+      )}
+      {NAV_GROUPS.map((g, gi) => {
+        const containsHere = !!here && g.items.some((i) => i.to === here.to)
+        const isOpen = containsHere || (open[g.title] ?? gi === 0)
+        return (
+          <div key={g.title}>
+            <button
+              type="button"
+              onClick={() => toggle(g.title, isOpen)}
+              aria-expanded={isOpen}
+              aria-controls={`nav-${gi}`}
+              className="mb-1 flex w-full items-center justify-between rounded-lg px-3 py-1.5 text-xs font-bold tracking-[0.18em] text-muted uppercase transition-colors hover:text-[var(--text)]"
+            >
+              {g.title}
+              <ChevronDown className={cn('size-3.5 transition-transform', !isOpen && '-rotate-90')} aria-hidden />
+            </button>
+            {isOpen && (
+              <ul id={`nav-${gi}`} className="flex flex-col gap-0.5">
+                {g.items.map((item) => (
+                  <li key={item.to}>
+                    <SidebarLink item={item} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )
+      })}
     </nav>
   )
 }
@@ -229,6 +294,7 @@ export function AppLayout() {
         </header>
 
         <main className="mx-auto max-w-7xl px-4 pt-6 pb-28 sm:px-6 lg:px-8 lg:pt-8 lg:pb-12">
+          <OfflineBanner />
           <AnimatePresence mode="wait">
             <motion.div key={location.pathname} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6, transition: { duration: 0.12 } }} transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}>
               {outlet}

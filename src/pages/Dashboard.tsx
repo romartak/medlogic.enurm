@@ -2,13 +2,13 @@ import { LocalProgressCard } from '@/components/AccountNote'
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
-import { ArrowRight, Languages, BookOpen, CalendarDays, Check, ChartColumn, Flag, Flame, GraduationCap, HeartPulse, Layers, Medal, Newspaper, RotateCcw, Share2, Sparkles, Stethoscope, Swords, Target, Timer, Trophy, Zap } from 'lucide-react'
+import { ArrowRight, Languages, BookOpen, Check, ChartColumn, Flag, Flame, GraduationCap, HeartPulse, Layers, Medal, Newspaper, RotateCcw, Share2, Sparkles, Stethoscope, Swords, Target, Timer } from 'lucide-react'
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts'
 import { useProgress, levelFromXp, levelTitle } from '@/store/progress'
 import { resolveExamDate } from '@/lib/plan'
 import { useBank } from '@/store/bank'
 import { computeStreak, dailySeries, overview, predictedScore, specialtyStats, weakest } from '@/lib/stats'
-import { Badge, Card, ProgressBar, Ring, SpecialtyIcon, StatCard } from '@/components/ui/primitives'
+import { Badge, Card, ProgressBar, SpecialtyIcon, StatCard } from '@/components/ui/primitives'
 import { DailyPlanCard } from '@/components/DailyPlanCard'
 import { QuestionCard } from '@/components/QuestionCard'
 import { UPDATES } from '@/data/updates'
@@ -28,6 +28,7 @@ import { hasReminder, ReminderCard } from '@/components/ReminderCard'
 import { InstallCard } from '@/components/InstallCard'
 import { StreakNudge } from '@/components/StreakNudge'
 import { InterestCard } from '@/components/InterestCard'
+import { TodayHero } from '@/components/TodayHero'
 
 function greeting() {
   const h = new Date().getHours()
@@ -157,7 +158,6 @@ export default function Dashboard() {
 
   const shareStats: ShareStats = { predicted, streak, accuracy: ov.accuracy, answered: ov.answered, level: lvl.level, levelTitle: levelTitle(lvl.level), daysLeft }
 
-  const goalProgress = Math.min(1, ov.todayAnswered / Math.max(1, settings.dailyGoal))
   const isNew = ov.answered === 0 && exams.length === 0
   const hasActivity = series.some((d) => d.answered > 0)
   const cardsStudied = Object.values(activity).some((d) => d.cards > 0)
@@ -171,105 +171,25 @@ export default function Dashboard() {
   const lastSection = useProgress((st) => st.lastSection)
   const lastNav = lastSection ? ALL_NAV.find((n) => n.to === lastSection.to) : undefined
 
-  const goalMet = ov.todayAnswered >= settings.dailyGoal
-  const heroTitle = goalMet ? 'Meta diaria cumplida' : ov.todayAnswered > 0 ? 'Vas por buen camino' : '¿Listo para tu sesión de hoy?'
-  const heroSub = goalMet ? 'Sigue así: cada pregunta suma.' : ov.todayAnswered > 0 ? `Te faltan ${settings.dailyGoal - ov.todayAnswered} para tu meta de hoy.` : `Tu meta de hoy: ${settings.dailyGoal} preguntas.`
-  const chipCls = 'inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-xs font-semibold'
-  const heroChips = (
-    <>
-      <span className={chipCls}>
-        <Trophy className="size-3.5" /> Nivel {lvl.level} · {levelTitle(lvl.level)}
-      </span>
-      {daysLeft !== null && daysLeft >= 0 && (
-        <span className={chipCls}>
-          <CalendarDays className="size-3.5" /> {daysLeft === 0 ? '¡El examen es hoy!' : `${daysLeft} días para el ENURM`}
-        </span>
-      )}
-    </>
-  )
-  const xpBar = (
-    <div>
-      <div className="mb-1 flex justify-between text-xs text-white/75 tabular-nums">
-        <span>
-          {lvl.current} / {lvl.needed} XP
-        </span>
-        <span>Nivel {lvl.level + 1}</span>
-      </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-white/20">
-        <motion.div className="h-full w-full origin-left rounded-full bg-white" initial={{ scaleX: 0 }} animate={{ scaleX: lvl.progress }} transition={{ duration: 1 }} />
-      </div>
-    </div>
-  )
 
   return (
     <div className="space-y-6">
       <StreakNudge />
-      {/* Bienvenida: en el teléfono es una tarjeta compacta (anillo + mensaje + acciones); desde tablet, la versión amplia */}
-      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-[1.75rem] bg-brand-gradient p-4 text-white shadow-glow sm:rounded-3xl sm:p-7">
-        <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_90%_at_100%_0%,rgb(255_255_255/0.16),transparent_70%)]" />
-
-        {/* Teléfono */}
-        <div className="relative md:hidden">
-          <div className="flex items-center gap-4">
-            <Ring value={goalProgress} size={84} stroke={8} color="#fff" track="rgb(255 255 255 / 0.22)">
-              <div className="leading-none">
-                <div className="font-display text-2xl font-extrabold tabular-nums">{ov.todayAnswered}</div>
-                <div className="mt-1 text-xs text-white/75">de {settings.dailyGoal}</div>
-              </div>
-            </Ring>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-medium text-white/75">
-                {greeting()}
-                {addressName(settings) ? `, ${addressName(settings)}` : ''}
-              </p>
-              <h1 className="mt-0.5 text-lg leading-snug font-bold text-balance">{heroTitle}</h1>
-              <p className="mt-0.5 text-[13px] text-white/80">{heroSub}</p>
-            </div>
-          </div>
-          <div className="mt-3.5 flex flex-wrap gap-1.5">{heroChips}</div>
-          <div className="mt-3">{xpBar}</div>
-          <div className={cn('mt-4 grid gap-2', isNew ? 'grid-cols-2' : 'grid-cols-[1fr_1fr_auto]')}>
-            <button onClick={() => navigate('/practica?auto=1')} className="inline-flex h-11 items-center justify-center gap-2 rounded-2xl bg-white px-3 text-sm font-semibold whitespace-nowrap text-slate-900 shadow-lg transition-transform active:scale-[0.97]">
-              <Zap className="size-4" /> Práctica rápida
-            </button>
-            <Link to="/simulacro" className="inline-flex h-11 items-center justify-center gap-2 rounded-2xl bg-white/15 px-3 text-sm font-semibold whitespace-nowrap transition-transform active:scale-[0.97]">
-              <GraduationCap className="size-4" /> Simulacro
-            </Link>
-            {!isNew && <ShareButton iconOnly stats={shareStats} className="bg-white/15" />}
-          </div>
-        </div>
-
-        {/* Tablet y escritorio */}
-        <div className="relative hidden gap-6 md:flex md:items-center md:justify-between">
-          <div className="min-w-0">
-            <p className="text-sm font-medium text-white/80">
-              {greeting()}
-              {addressName(settings) ? `, ${addressName(settings)}` : ''}
-            </p>
-            <h1 className="mt-1 text-2xl font-bold text-balance lg:text-[1.7rem]">{heroTitle}</h1>
-            <p className="mt-1 text-sm text-white/80">{heroSub}</p>
-            <div className="mt-4 flex flex-wrap items-center gap-2">{heroChips}</div>
-            <div className="mt-4 max-w-sm">{xpBar}</div>
-          </div>
-          <div className="flex shrink-0 items-center gap-5">
-            <Ring value={goalProgress} size={112} stroke={9} color="#fff" track="rgb(255 255 255 / 0.22)">
-              <div className="leading-none">
-                <div className="font-display text-3xl font-extrabold tabular-nums">{ov.todayAnswered}</div>
-                <div className="mt-1 text-xs text-white/75">de {settings.dailyGoal} hoy</div>
-              </div>
-            </Ring>
-            <div className="flex flex-col gap-2">
-              <button onClick={() => navigate('/practica?auto=1')} className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-white px-4 text-sm font-semibold whitespace-nowrap text-slate-900 shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.97]">
-                <Zap className="size-4" /> Práctica rápida
-              </button>
-              <Link to="/simulacro" className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-white/15 px-4 text-sm font-semibold whitespace-nowrap transition-colors hover:bg-white/25">
-                <GraduationCap className="size-4" /> Simulacro
-              </Link>
-              {!isNew && <ShareButton stats={shareStats} className="bg-white/15 whitespace-nowrap hover:bg-white/25" />}
-            </div>
-          </div>
-        </div>
-      </motion.section>
+      <TodayHero
+        greeting={`${greeting()}${addressName(settings) ? `, ${addressName(settings)}` : ''}`}
+        goal={settings.dailyGoal}
+        todayAnswered={ov.todayAnswered}
+        accuracy={ov.answered ? ov.accuracy : null}
+        streak={streak}
+        daysLeft={daysLeft}
+        level={lvl.level}
+        levelTitle={levelTitle(lvl.level)}
+        xpCurrent={lvl.current}
+        xpNeeded={lvl.needed}
+        xpProgress={lvl.progress}
+        isNew={isNew}
+        share={!isNew ? <ShareButton stats={shareStats} className="surface-2 hover:bg-brand-500/10" /> : undefined}
+      />
 
       {/* Quien estudia sin cuenta: su progreso queda solo en este navegador */}
       <LocalProgressCard />

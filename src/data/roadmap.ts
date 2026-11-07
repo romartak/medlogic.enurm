@@ -27,6 +27,11 @@ export const ROADMAP: RoadmapStage[] = [
       { title: 'Prompts e IA para médicos', body: 'Biblioteca de prompts (diapositivas, flashcards, casos, tutor) y una guía para usar la IA con seguridad.', icon: 'bot' },
       { title: 'Simulacros, juegos y herramientas', body: 'Examen cronometrado, 6 juegos y 12 calculadoras clínicas.', icon: 'gamepad' },
       { title: 'Habilidades clínicas', body: 'ATLS, trauma y fracturas, semiología por sistemas, esquemas interactivos de fisiopatología, espirometría, hemograma, monitor de ECG en vivo y 18 casos clínicos por especialidad.', icon: 'heart-pulse' },
+      { title: 'Temas calientes del ENURM', body: 'Mapa de calor tema × año con los exámenes 2002-2024: qué se repite y qué practicar primero.', icon: 'flame' },
+      { title: 'Modo examen real', body: 'Pantalla completa, hoja de respuestas tipo burbuja y cronómetro, sin ayudas hasta entregar.', icon: 'graduation' },
+      { title: 'Calibración y diagnóstico de errores', body: 'Indica qué tan seguro estás: verás tus aciertos por suerte, tus puntos ciegos y si fallas por ir rápido, dudar o no saber.', icon: 'gauge' },
+      { title: 'Estudiar sin conexión', body: 'Guarda la plataforma y el banco de preguntas en tu dispositivo para estudiar sin internet.', icon: 'phone' },
+      { title: 'Sugerencias según tu actividad', body: 'La plataforma aprende dónde pasas el tiempo, a qué hora estudias y dónde fallas, y te propone qué hacer. Todo se calcula en tu dispositivo.', icon: 'sparkles' },
     ],
   },
   {
@@ -36,13 +41,9 @@ export const ROADMAP: RoadmapStage[] = [
     color: '#0ea5e9',
     items: [
       { title: 'Banco de 12,000 preguntas', body: 'Hoy hay más de 2.400 preguntas explicadas; la meta es llegar a 12.000, todas con análisis por opción, fisiopatología y referencias actualizadas.', icon: 'database' },
-      { title: 'Temas calientes del ENURM', body: 'Mapa de calor tema × año para ver qué se repite y qué temas podrían salir en el próximo examen.', icon: 'flame' },
-      { title: 'Modo examen real', body: 'Pantalla completa, hoja de respuestas tipo burbuja y cronómetro oficial, sin distracciones.', icon: 'graduation' },
-      { title: 'Calibración de confianza', body: 'Indica qué tan seguro estás antes de responder: verás tu curva metacognitiva y los aciertos "por suerte".', icon: 'gauge' },
-      { title: 'Diagnóstico de tus errores', body: 'Clasifica cada fallo (no lo sabía, leí mal, dudé entre dos, cambié la respuesta) usando tus tiempos de respuesta.', icon: 'brain' },
       { title: 'FSRS: el algoritmo moderno de Anki', body: 'Programación optimizada con tu propio historial de repasos, con el porcentaje de retención que elijas.', icon: 'sparkles' },
       { title: 'Importar mazos .apkg de Anki', body: 'Trae tus mazos de Anki con su progreso.', icon: 'download' },
-      { title: 'App instalable y sin conexión', body: 'PWA con notificaciones de "tu repaso de hoy" y funcionamiento completo sin internet.', icon: 'phone' },
+      { title: 'Avisos de tu repaso de hoy', body: 'La app ya funciona sin conexión; falta avisarte con una notificación cuando tengas tarjetas pendientes.', icon: 'phone' },
     ],
   },
   {

@@ -5,6 +5,9 @@ import { ArrowRight, Check, ChevronLeft, Clock, Flame, Play, RotateCcw, Shuffle,
 import type { Question } from '@/types'
 import { useBank } from '@/store/bank'
 import { useProgress } from '@/store/progress'
+import { useMetacog } from '@/store/metacog'
+import { ConfidenceBar } from '@/components/ConfidenceBar'
+import { feedbackFor, type Confidence } from '@/lib/metacog'
 import { filterQuestions, optionOrder, type StatusFilter } from '@/lib/selection'
 import { SpecialtyPicker, YearPicker } from '@/components/Filters'
 import { Button, Card, PageHeader, ProgressBar, Ring, Segmented, SpecialtyBadge } from '@/components/ui/primitives'
@@ -140,6 +143,19 @@ function PracticeSession({ questions, onExit, onRestart }: { questions: Question
   const [elapsed, setElapsed] = useState(0)
   const orders = useMemo(() => questions.map((q) => optionOrder(q, shuffleOpts)), [questions, shuffleOpts])
   const navigate = useNavigate()
+  const recordMeta = useMetacog((s) => s.record)
+  const askConfidence = useMetacog((s) => s.askConfidence)
+  const setAskConfidence = useMetacog((s) => s.setAskConfidence)
+  const [conf, setConf] = useState<Confidence | null>(null)
+  const [feedback, setFeedback] = useState<string | null>(null)
+  const shownAt = useRef(Date.now())
+
+  // Cada pregunta nueva reinicia el cronómetro de respuesta y la seguridad elegida.
+  useEffect(() => {
+    shownAt.current = Date.now()
+    setConf(null)
+    setFeedback(null)
+  }, [index])
 
   useEffect(() => {
     if (done) return
@@ -158,6 +174,8 @@ function PracticeSession({ questions, onExit, onRestart }: { questions: Question
     next[index] = orig
     setAnswers(next)
     const ok = recordAnswer(q, orig)
+    recordMeta({ id: q.id, spec: q.specialty, ms: Date.now() - shownAt.current, conf, ok, at: Date.now() })
+    setFeedback(feedbackFor(conf, ok))
     playSound(ok ? 'correct' : 'wrong')
   }
 
@@ -251,6 +269,7 @@ function PracticeSession({ questions, onExit, onRestart }: { questions: Question
 
   return (
     <div className="mx-auto max-w-3xl">
+      <h1 className="sr-only">Sesión de práctica</h1>
       <div className="mb-5 flex items-center gap-3">
         <Button variant="ghost" size="sm" onClick={onExit} aria-label="Salir">
           <ChevronLeft className="size-4" /> Salir
@@ -284,7 +303,13 @@ function PracticeSession({ questions, onExit, onRestart }: { questions: Question
 
       <AnimatePresence mode="wait">
         <motion.div key={q.id + index} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.22 }}>
+          {askConfidence && selected === null && <ConfidenceBar value={conf} onChange={setConf} onHide={() => setAskConfidence(false)} />}
           <QuestionCard question={q} mode="tutor" selected={selected} revealed={selected !== null} onSelect={choose} order={orders[index]} />
+          {selected !== null && feedback && (
+            <p role="status" className="mt-3 rounded-xl surface-2 px-4 py-2.5 text-sm font-medium">
+              {feedback}
+            </p>
+          )}
         </motion.div>
       </AnimatePresence>
 

@@ -16,6 +16,7 @@ import { REPO_URL } from '@/components/layout/AppLayout'
 import { GithubIcon } from '@/components/ui/Logo'
 import type { Honorific, Theme } from '@/types'
 import { ReminderCard } from '@/components/ReminderCard'
+import { OfflineCard } from '@/components/OfflineCard'
 import { UniversityPicker } from '@/components/UniversityPicker'
 import { UNIVERSITY_NEEDS_NAME, universityLabel } from '@/data/universities'
 import { saveProfile, type ProfileEdit } from '@/lib/account'
@@ -294,6 +295,8 @@ export default function Settings() {
         </Card>
 
         <ReminderCard />
+
+        <OfflineCard />
 
         <SectionTitle id="datos">Datos</SectionTitle>
         <Card className="p-5 sm:p-6">

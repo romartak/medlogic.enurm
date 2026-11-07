@@ -1,4 +1,4 @@
-import { Bone, Droplet, Flag, Hand, HeartPulse, Languages, Medal, MonitorDot, Siren, Stethoscope, Swords, UserRound, BookOpen, Calculator, Rocket, Sparkles, WandSparkles, Wind, CalendarCheck, ChartColumn, Compass, Gamepad2, GraduationCap, House, Layers, LayoutGrid, Library, Newspaper, RotateCcw, Settings, Target, Trophy, Waypoints, type LucideIcon } from 'lucide-react'
+import { Flame, Bone, Droplet, Flag, Hand, HeartPulse, Languages, Medal, MonitorDot, Siren, Stethoscope, Swords, UserRound, BookOpen, Calculator, Rocket, Sparkles, WandSparkles, Wind, CalendarCheck, ChartColumn, Compass, Gamepad2, GraduationCap, House, Layers, LayoutGrid, Library, Newspaper, RotateCcw, Settings, Target, Trophy, Waypoints, type LucideIcon } from 'lucide-react'
 
 export interface NavItem {
   to: string
@@ -17,6 +17,7 @@ export const NAV_GROUPS: { title: string; items: NavItem[] }[] = [
       { to: '/practica', label: 'Práctica', icon: Target, description: 'Preguntas con retroalimentación inmediata' },
       { to: '/simulacro', label: 'Simulacro', icon: GraduationCap, description: 'Examen cronometrado tipo ENURM' },
       { to: '/simulacro-nacional', label: 'Simulacro nacional', icon: Flag, description: 'El mismo examen para todo el país cada mes, con percentil' },
+      { to: '/temas-calientes', label: 'Temas calientes', icon: Flame, description: 'Qué temas se repiten año tras año en el ENURM' },
       { to: '/casos', label: 'Casos clínicos', icon: Stethoscope, description: 'Decide paso a paso como en la guardia' },
       { to: '/flashcards', label: 'Flashcards', icon: Layers, description: 'Repetición espaciada' },
       { to: '/terminologia', label: 'Terminología', icon: Languages, description: 'Aprende términos médicos por partes, como en Duolingo' },
